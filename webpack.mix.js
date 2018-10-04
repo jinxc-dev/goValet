@@ -11,7 +11,9 @@ const path = require('path')
  |
  */
 
-mix.js('resources/assets/js/main.js', 'public/js');
+mix.js('resources/assets/js/main.js', 'public/js')
+    // .sass('resources/assets/sass/app.scss', 'public/css')
+    .browserSync('127.0.0.1:8000');
 
 mix.webpackConfig({
     resolve: {
