@@ -7,6 +7,8 @@ import globalMixins from "./globalMixins";
 import globalComponents from "./globalComponents";
 import VueLazyload from "vue-lazyload";
 import VueCarousel from "vue-carousel";
+import VeeValidate from 'vee-validate';
+
 
 export default {
   install(Vue) {
@@ -15,6 +17,7 @@ export default {
     Vue.use(globalMixins);
     Vue.use(globalComponents);
     Vue.use(VueCarousel);
+    Vue.use(VeeValidate, { fieldsBagName: 'veeFields' });
     Vue.use(VueLazyload, {
       observer: true,
       // optional

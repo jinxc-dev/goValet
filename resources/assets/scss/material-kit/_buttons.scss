@@ -19,6 +19,7 @@
 
     &:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple{
       padding: 12px 30px;
+      display: flex;
     }
 
     &:not(.md-just-icon) .md-button-content i:not(.md-tab-icon){

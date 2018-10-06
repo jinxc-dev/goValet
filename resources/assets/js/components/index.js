@@ -8,8 +8,12 @@ import LoginCard from "./cards/LoginCard.vue";
 import WidgetCard from "./cards/WidgetCard.vue";
 import Tabs from "./Tabs.vue";
 import Modal from "./Modal.vue";
+import IconCheckbox from './Inputs/IconCheckbox.vue';
+import SimpleWizard from './Wizard/Wizard.vue';
+import WizardTab from './Wizard/WizardTab.vue';
 
 export {
+  IconCheckbox,
   DropDown,
   // Parallax,
   WidgetCard,
@@ -19,5 +23,7 @@ export {
   NavTabsCard,
   LoginCard,
   Tabs,
-  Modal
+  Modal,
+  SimpleWizard,
+  WizardTab
 };

@@ -69,7 +69,7 @@
 													</a>
 												</li>
 												<li>
-													<a href="#/login">
+													<a href="#/add-parking">
 														<md-icon>local_parking</md-icon>
 														<p>Parking Spot</p>
 													</a>
