@@ -1,4 +1,4 @@
-
+import helper from './services/helper';
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
 
@@ -9,7 +9,8 @@ window.Popper = require('popper.js').default;
  */
 
 window.axios = require('axios');
-
+window.helper = helper;
+helper.check();
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

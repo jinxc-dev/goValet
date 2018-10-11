@@ -23,7 +23,7 @@
 								<p>HOME</p>
 							</md-list-item>
 
-							<li class="md-list-item">
+							<li class="md-list-item" v-if="isAuthed()" >
 								<a href="javascript:void(0)" class="md-list-item-router md-list-item-container md-button-clean dropdown">
 									<div class="md-list-item-content">
 										<drop-down direction="down">
@@ -48,7 +48,7 @@
 									</div>
 								</a>								
 							</li>
-							<li class="md-list-item">
+							<li class="md-list-item"  v-if="isAuthed()" >
 								<a href="javascript:void(0)" class="md-list-item-router md-list-item-container md-button-clean dropdown">
 									<div class="md-list-item-content">
 										<drop-down direction="down">
@@ -85,8 +85,11 @@
 							<md-list-item to="/profile">
 								<p>ABOUT</p>
 							</md-list-item>
-							<md-list-item to="/login">
+							<md-list-item to="/login" v-if="!isAuthed()">
 								<p>LOGIN</p>
+							</md-list-item>
+							<md-list-item to="/" v-else @click="logoutAction">
+								<p>LOGOUT</p>
 							</md-list-item>
 
 						</md-list>
@@ -112,18 +115,6 @@
 	
 </style>
 <script>
-let resizeTimeout;
-function resizeThrottler(actualResizeHandler) {
-	// ignore resize events as long as an actualResizeHandler execution is in the queue
-	if (!resizeTimeout) {
-		resizeTimeout = setTimeout(() => {
-			resizeTimeout = null;
-			actualResizeHandler();
-
-			// The actualResizeHandler will execute at a rate of 15fps
-		}, 66);
-	}
-}
 
 import MobileMenu from "@/layout/MobileMenu";
 export default {
@@ -157,6 +148,16 @@ export default {
 		}
 	},
 	methods: {
+		logoutAction() {
+			console.log('xxxx');
+			helper.initUser();
+			axios.post('/api/user/logout')
+				.then(response =>{
+
+				}).catch(error => {
+					console.log(error);
+				})
+		},
 		bodyClick() {
 			let bodyClick = document.getElementById("bodyClick");
 
@@ -193,13 +194,16 @@ export default {
 			}
 		},
 		scrollListener() {
-			resizeThrottler(this.handleScroll);
+			// resizeThrottler(this.handleScroll);
 		},
 		scrollToElement() {
 			let element_id = document.getElementById("downloadSection");
 			if (element_id) {
 				element_id.scrollIntoView({ block: "end", behavior: "smooth" });
 			}
+		},
+		isAuthed() {
+			return helper.authedStatus();
 		}
 	},
 	mounted() {

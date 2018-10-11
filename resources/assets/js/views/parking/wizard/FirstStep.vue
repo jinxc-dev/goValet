@@ -38,7 +38,7 @@
                     <md-field :class="[
                         {'md-valid': !errors.has('t_name') && touched.t_name},
                         {'md-error': errors.has('t_name')}]">
-                        <label>Tenant Name</label>
+                        <label>Name of legal tenant (IF different from legal owner)</label>
                         <md-input
                             v-model="t_name"
                             data-vv-name="t_name"
