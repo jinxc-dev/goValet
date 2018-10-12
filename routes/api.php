@@ -29,4 +29,40 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('/social/token','SocialLoginController@getToken');
 });
 
+Route::group(['prefix' => 'vehicle'], function () {
+    Route::post('/register','VehicleController@register');
+    Route::get('/get', 'VehicleController@get');
+    Route::delete('/delete/{id}', 'VehicleController@delete');
+});
+
+Route::group(['prefix' => 'parking'], function () {
+    Route::post('/register','ParkingController@register');
+    Route::get('/get', 'ParkingController@get');
+    // Route::delete('/delete/{id}', 'VehicleController@delete');
+});
+
+
+// Route::get('storage/{filename}', function ($filename)
+// {
+
+//     echo storage_path($filename);
+//     return;
+    
+//     $path = storage_path($filename);
+//     return $path;
+
+//     if (!File::exists($path)) {
+//         abort(404);
+//     }
+
+//     $file = File::get($path);
+//     $type = File::mimeType($path);
+
+//     $response = Response::make($file, 200);
+//     $response->header("Content-Type", $type);
+
+//     return $response;
+// });
+
+
 

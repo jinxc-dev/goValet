@@ -4,57 +4,35 @@
 			<div class="container">
 				<h3>Vehicle Profile</h3>
 				<div>
-					<md-button class="md-round md-success" to="/add_vehicle">
+					<md-button class="md-round md-success" to="/add_vehicle" v-show="showAddButton">
 						Add Vehicle
 					</md-button>
 				</div>
 				<div class="md-layout">
-					<div class="md-layout-item md-size-33 md-medium-size-66 md-xsmall-size-100">
+					<div class="md-layout-item md-size-33 md-medium-size-100 md-xsmall-size-100" v-for="item in dataModel" :key=item.id>
 						<md-card>
 							<md-card-media>
-								<img :src="cars[0].image" alt="car">
+								<img :src="item.photo" alt="car">
 							</md-card-media>
 							<md-card-content>
 									<div class="md-title">Brand</div>
-									<div class="md-subhead">Subtitle here</div>
+									<div class="md-subhead">{{item.brand}}</div>
 									<div class="md-title">Model</div>
-									<div class="md-subhead">TOYODA</div>
+									<div class="md-subhead">{{item.model}}</div>
 									<div class="md-title">Plate Number</div>
-									<div class="md-subhead">ABC123456</div>
+									<div class="md-subhead">{{item.plate_number}}</div>
 									<div class="md-title">Expire Date</div>
-									<div class="md-subhead">08/10/2018</div>
+									<div class="md-subhead">{{item.expire_date}}</div>
 							</md-card-content>
 							<md-card-actions>
-								<md-button class="md-just-icon md-round md-danger">
+								<md-button class="md-just-icon md-round md-danger" @click="removeItem(item.id)">
 									<md-icon>delete</md-icon>
 								</md-button>
 							</md-card-actions>
 
 						</md-card>						
 					</div>
-					<div class="md-layout-item md-size-33">
-						<md-card>
-							<md-card-media>
-								<img :src="cars[1].image" alt="car">
-							</md-card-media>
-							<md-card-content>
-									<div class="md-title md-size-50">Brand</div>
-									<div class="md-subhead md-size-50">Subtitle here</div>
-									<div class="md-title">Model</div>
-									<div class="md-subhead">TOYODA</div>
-									<div class="md-title">Plate Number</div>
-									<div class="md-subhead">ABC123456</div>
-									<div class="md-title">Expire Date</div>
-									<div class="md-subhead">08/10/2018</div>
-							</md-card-content>
-							<md-card-actions>
-								<md-button class="md-just-icon md-round md-danger">
-									<md-icon>delete</md-icon>
-								</md-button>
-							</md-card-actions>
-
-						</md-card>
-					</div>					
+				
 				</div>
 			</div>
 		</div>
@@ -70,11 +48,8 @@ export default {
 	bodyClass: "profile-page",
 	data() {
 		return {
-			cars: [
-				{ image: require("@/../images/cars/car3.jpg") },
-				{ image: require("@/../images/cars/car4.jpg") },
-				{ image: require("@/../images/cars/car6.jpg") }
-			]
+			dataModel: [],
+			showAddButton: true
 		};
 	},
 	props: {
@@ -88,10 +63,55 @@ export default {
 		}
 	},
 	computed: {
-		headerStyle() {
-			return {
-				// backgroundImage: `url(${this.header})`
-			};
+
+	},
+	mounted() {
+		axios.get('/api/vehicle/get')
+			.then(response => {
+				console.log(response.data);
+				this.dataModel = response.data;
+				this.isShowAddButton();
+			}).catch(error => {
+				console.log(error);
+			})
+	},
+	methods: {
+		removeItem(id) {
+			this.$swal({
+				title: 'Are you sure?',
+				type: 'warning',
+				showCancelButton: true,				
+				confirmButtonClass: 'md-button md-success',
+				cancelButtonClass: 'md-button md-danger',
+				confirmButtonText: 'Yes, delete it!',
+				buttonsStyling: false				
+			}).then((result) => {
+				console.log(result);
+				if (result.value) {
+					axios.delete('/api/vehicle/delete/' + id)
+						.then(response => {
+							console.log(response.data);
+							this.$swal({
+								position: 'top-end',
+								type: 'success',
+								title: 'Your vehicle has been deleted',
+								showConfirmButton: false,
+								timer: 1000
+							})
+							this.dataModel = response.data;
+							this.isShowAddButton();
+						}).catch(error => {
+							console.log(error);
+						})
+				}
+			});
+		},
+
+		isShowAddButton() {
+			this.showAddButton = false
+			if(this.dataModel.length < 3)
+				this.showAddButton = true;
+			console.log(this.showAddButton);
 		}
 	}
 };

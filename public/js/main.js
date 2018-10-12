@@ -489,7 +489,7 @@ function applyToTag (styleElement, obj) {
 "use strict";
 
 
-var bind = __webpack_require__(10);
+var bind = __webpack_require__(11);
 var isBuffer = __webpack_require__(34);
 
 /*global toString:true*/
@@ -11846,733 +11846,6 @@ module.exports = Vue;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(3);
-var normalizeHeaderName = __webpack_require__(36);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(11);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(11);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(28);
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
-
-var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-    state: {
-        auth: { // to store auth user data
-            id: '',
-            first_name: '',
-            last_name: '',
-            email: '',
-            avatar: '',
-            phone: '',
-            type: 0
-        },
-        is_auth: false, // to store auth status
-        default_role: {
-            host: '',
-            guest: ''
-        }
-    },
-    mutations: {
-        setAuthStatus: function setAuthStatus(state) {
-            state.is_auth = true;
-        },
-        setAuthUserDetail: function setAuthUserDetail(state, auth) {
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = Object.keys(auth)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var key = _step.value;
-
-                    state.auth[key] = auth[key] !== null ? auth[key] : '';
-                }
-                // if ('avatar' in auth)
-                //     state.auth.avatar = auth.avatar !== null ? auth.avatar : '';
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            state.is_auth = true;
-        },
-        resetAuthUserDetail: function resetAuthUserDetail(state) {
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = Object.keys(state.auth)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var key = _step2.value;
-
-                    state.auth[key] = '';
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
-                }
-            }
-
-            state.is_auth = false;
-        }
-    },
-    actions: {
-        setAuthStatus: function setAuthStatus(_ref) {
-            var commit = _ref.commit;
-
-            commit('setAuthStatus');
-        },
-        setAuthUserDetail: function setAuthUserDetail(_ref2, auth) {
-            var commit = _ref2.commit;
-
-            commit('setAuthUserDetail', auth);
-        },
-        resetAuthUserDetail: function resetAuthUserDetail(_ref3) {
-            var commit = _ref3.commit;
-
-            commit('resetAuthUserDetail');
-        }
-    },
-    getters: {
-        getAuthUser: function getAuthUser(state) {
-            return function (name) {
-                return state.auth[name];
-            };
-        },
-        getAuthUserFullName: function getAuthUserFullName(state) {
-            return state.auth['first_name'] + ' ' + state.auth['last_name'];
-        },
-        getAuthStatus: function getAuthStatus(state) {
-            return state.is_auth;
-        },
-        getAuthType: function getAuthType(state) {
-            return state.auth['type'];
-        }
-    }
-});
-
-/* harmony default export */ __webpack_exports__["a"] = (store);
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function bind(fn, thisArg) {
-  return function wrap() {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-    return fn.apply(thisArg, args);
-  };
-};
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(3);
-var settle = __webpack_require__(37);
-var buildURL = __webpack_require__(39);
-var parseHeaders = __webpack_require__(40);
-var isURLSameOrigin = __webpack_require__(41);
-var createError = __webpack_require__(12);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(42);
-
-module.exports = function xhrAdapter(config) {
-  return new Promise(function dispatchXhrRequest(resolve, reject) {
-    var requestData = config.data;
-    var requestHeaders = config.headers;
-
-    if (utils.isFormData(requestData)) {
-      delete requestHeaders['Content-Type']; // Let the browser set it
-    }
-
-    var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if ("development" !== 'test' &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
-
-    // HTTP basic authentication
-    if (config.auth) {
-      var username = config.auth.username || '';
-      var password = config.auth.password || '';
-      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
-    }
-
-    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
-
-    // Set the request timeout in MS
-    request.timeout = config.timeout;
-
-    // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
-        return;
-      }
-
-      // The request errored out and we didn't get a response, this will be
-      // handled by onerror instead
-      // With one exception: request that using file: protocol, most browsers
-      // will return status as 0 even though it's a successful request
-      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
-        return;
-      }
-
-      // Prepare the response
-      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
-      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
-      var response = {
-        data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
-        headers: responseHeaders,
-        config: config,
-        request: request
-      };
-
-      settle(resolve, reject, response);
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle low level network errors
-    request.onerror = function handleError() {
-      // Real errors are hidden from us by the browser
-      // onerror should only fire if it's a network error
-      reject(createError('Network Error', config, null, request));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle timeout
-    request.ontimeout = function handleTimeout() {
-      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
-        request));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Add xsrf header
-    // This is only done if running in a standard browser environment.
-    // Specifically not if we're in a web worker, or react-native.
-    if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(43);
-
-      // Add xsrf header
-      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
-          cookies.read(config.xsrfCookieName) :
-          undefined;
-
-      if (xsrfValue) {
-        requestHeaders[config.xsrfHeaderName] = xsrfValue;
-      }
-    }
-
-    // Add headers to the request
-    if ('setRequestHeader' in request) {
-      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
-        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
-          // Remove Content-Type if data is undefined
-          delete requestHeaders[key];
-        } else {
-          // Otherwise add header to the request
-          request.setRequestHeader(key, val);
-        }
-      });
-    }
-
-    // Add withCredentials to request if needed
-    if (config.withCredentials) {
-      request.withCredentials = true;
-    }
-
-    // Add responseType to request if needed
-    if (config.responseType) {
-      try {
-        request.responseType = config.responseType;
-      } catch (e) {
-        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
-        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
-        if (config.responseType !== 'json') {
-          throw e;
-        }
-      }
-    }
-
-    // Handle progress if needed
-    if (typeof config.onDownloadProgress === 'function') {
-      request.addEventListener('progress', config.onDownloadProgress);
-    }
-
-    // Not all browsers support upload events
-    if (typeof config.onUploadProgress === 'function' && request.upload) {
-      request.upload.addEventListener('progress', config.onUploadProgress);
-    }
-
-    if (config.cancelToken) {
-      // Handle cancellation
-      config.cancelToken.promise.then(function onCanceled(cancel) {
-        if (!request) {
-          return;
-        }
-
-        request.abort();
-        reject(cancel);
-        // Clean up request
-        request = null;
-      });
-    }
-
-    if (requestData === undefined) {
-      requestData = null;
-    }
-
-    // Send the request
-    request.send(requestData);
-  });
-};
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var enhanceError = __webpack_require__(38);
-
-/**
- * Create an Error with the specified message, config, error code, request and response.
- *
- * @param {string} message The error message.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The created error.
- */
-module.exports = function createError(message, config, code, request, response) {
-  var error = new Error(message);
-  return enhanceError(error, config, code, request, response);
-};
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * A `Cancel` is an object that is thrown when an operation is canceled.
- *
- * @class
- * @param {string=} message The message.
- */
-function Cancel(message) {
-  this.message = message;
-}
-
-Cancel.prototype.toString = function toString() {
-  return 'Cancel' + (this.message ? ': ' + this.message : '');
-};
-
-Cancel.prototype.__CANCEL__ = true;
-
-module.exports = Cancel;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/studio-1.jpg?bd90b5d1759ad4eef06381233ef83bcc";
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/olu-eletu.jpg?15d2ebb30a9e54dbbeae0eea100e546b";
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/clem-onojeghuo.jpg?23321ebf2db033bd157dfd5e1d16287f";
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/mariya-georgieva.jpg?66c8b404a88a5d0bc8923314adefd2df";
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/christian.jpg?8c64339c5e3e5616dd5d763626bad946";
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/image-empty.jpg?ebe9884b2152a08a525fcd5054019532";
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -12616,7 +11889,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(188);
+var	fixUrls = __webpack_require__(190);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -12929,6 +12202,733 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(3);
+var normalizeHeaderName = __webpack_require__(36);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(12);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(12);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(28);
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+    state: {
+        auth: { // to store auth user data
+            id: '',
+            first_name: '',
+            last_name: '',
+            email: '',
+            avatar: '',
+            phone: '',
+            type: 0
+        },
+        is_auth: false, // to store auth status
+        default_role: {
+            host: '',
+            guest: ''
+        }
+    },
+    mutations: {
+        setAuthStatus: function setAuthStatus(state) {
+            state.is_auth = true;
+        },
+        setAuthUserDetail: function setAuthUserDetail(state, auth) {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = Object.keys(auth)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var key = _step.value;
+
+                    state.auth[key] = auth[key] !== null ? auth[key] : '';
+                }
+                // if ('avatar' in auth)
+                //     state.auth.avatar = auth.avatar !== null ? auth.avatar : '';
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            state.is_auth = true;
+        },
+        resetAuthUserDetail: function resetAuthUserDetail(state) {
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = Object.keys(state.auth)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var key = _step2.value;
+
+                    state.auth[key] = '';
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+
+            state.is_auth = false;
+        }
+    },
+    actions: {
+        setAuthStatus: function setAuthStatus(_ref) {
+            var commit = _ref.commit;
+
+            commit('setAuthStatus');
+        },
+        setAuthUserDetail: function setAuthUserDetail(_ref2, auth) {
+            var commit = _ref2.commit;
+
+            commit('setAuthUserDetail', auth);
+        },
+        resetAuthUserDetail: function resetAuthUserDetail(_ref3) {
+            var commit = _ref3.commit;
+
+            commit('resetAuthUserDetail');
+        }
+    },
+    getters: {
+        getAuthUser: function getAuthUser(state) {
+            return function (name) {
+                return state.auth[name];
+            };
+        },
+        getAuthUserFullName: function getAuthUserFullName(state) {
+            return state.auth['first_name'] + ' ' + state.auth['last_name'];
+        },
+        getAuthStatus: function getAuthStatus(state) {
+            return state.is_auth;
+        },
+        getAuthType: function getAuthType(state) {
+            return state.auth['type'];
+        }
+    }
+});
+
+/* harmony default export */ __webpack_exports__["a"] = (store);
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(3);
+var settle = __webpack_require__(37);
+var buildURL = __webpack_require__(39);
+var parseHeaders = __webpack_require__(40);
+var isURLSameOrigin = __webpack_require__(41);
+var createError = __webpack_require__(13);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(42);
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+    var loadEvent = 'onreadystatechange';
+    var xDomain = false;
+
+    // For IE 8/9 CORS support
+    // Only supports POST and GET calls and doesn't returns the response headers.
+    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+    if ("development" !== 'test' &&
+        typeof window !== 'undefined' &&
+        window.XDomainRequest && !('withCredentials' in request) &&
+        !isURLSameOrigin(config.url)) {
+      request = new window.XDomainRequest();
+      loadEvent = 'onload';
+      xDomain = true;
+      request.onprogress = function handleProgress() {};
+      request.ontimeout = function handleTimeout() {};
+    }
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password || '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+    }
+
+    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    // Listen for ready state
+    request[loadEvent] = function handleLoad() {
+      if (!request || (request.readyState !== 4 && !xDomain)) {
+        return;
+      }
+
+      // The request errored out and we didn't get a response, this will be
+      // handled by onerror instead
+      // With one exception: request that using file: protocol, most browsers
+      // will return status as 0 even though it's a successful request
+      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+        return;
+      }
+
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+      var response = {
+        data: responseData,
+        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
+        status: request.status === 1223 ? 204 : request.status,
+        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError('Network Error', config, null, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
+        request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      var cookies = __webpack_require__(43);
+
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
+          cookies.read(config.xsrfCookieName) :
+          undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (config.withCredentials) {
+      request.withCredentials = true;
+    }
+
+    // Add responseType to request if needed
+    if (config.responseType) {
+      try {
+        request.responseType = config.responseType;
+      } catch (e) {
+        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
+        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
+        if (config.responseType !== 'json') {
+          throw e;
+        }
+      }
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
+
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (!request) {
+          return;
+        }
+
+        request.abort();
+        reject(cancel);
+        // Clean up request
+        request = null;
+      });
+    }
+
+    if (requestData === undefined) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var enhanceError = __webpack_require__(38);
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, request, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, request, response);
+};
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/studio-1.jpg?bd90b5d1759ad4eef06381233ef83bcc";
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/olu-eletu.jpg?15d2ebb30a9e54dbbeae0eea100e546b";
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/clem-onojeghuo.jpg?23321ebf2db033bd157dfd5e1d16287f";
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/mariya-georgieva.jpg?66c8b404a88a5d0bc8923314adefd2df";
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/christian.jpg?8c64339c5e3e5616dd5d763626bad946";
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/image-empty.jpg?ebe9884b2152a08a525fcd5054019532";
+
+/***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12947,8 +12947,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__App_vue__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__App_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__router__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__plugins_material_kit__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__plugins_material_kit__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_sweetalert2__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue2_google_maps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__);
+
+
 
 
 
@@ -12960,6 +12965,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.config.productionTip = false;
 
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5__plugins_material_kit__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6_vue_sweetalert2__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__, {
+	load: {
+		key: 'AIzaSyAUfciCLFycnIUlrUUwjApQyhRyNr01o7g',
+		libraries: 'places'
+	}
+});
 
 var NavbarStore = {
 	showNavbar: false
@@ -13038,7 +13050,7 @@ if (token) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(9);
 
 // import router from '../routes'
 
@@ -13346,7 +13358,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(10)))
 
 /***/ }),
 /* 28 */
@@ -33991,9 +34003,9 @@ module.exports = __webpack_require__(33);
 
 
 var utils = __webpack_require__(3);
-var bind = __webpack_require__(10);
+var bind = __webpack_require__(11);
 var Axios = __webpack_require__(35);
-var defaults = __webpack_require__(7);
+var defaults = __webpack_require__(8);
 
 /**
  * Create an instance of Axios
@@ -34026,9 +34038,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(14);
+axios.Cancel = __webpack_require__(15);
 axios.CancelToken = __webpack_require__(49);
-axios.isCancel = __webpack_require__(13);
+axios.isCancel = __webpack_require__(14);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -34076,7 +34088,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(7);
+var defaults = __webpack_require__(8);
 var utils = __webpack_require__(3);
 var InterceptorManager = __webpack_require__(44);
 var dispatchRequest = __webpack_require__(45);
@@ -34181,7 +34193,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(12);
+var createError = __webpack_require__(13);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -34614,8 +34626,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(3);
 var transformData = __webpack_require__(46);
-var isCancel = __webpack_require__(13);
-var defaults = __webpack_require__(7);
+var isCancel = __webpack_require__(14);
+var defaults = __webpack_require__(8);
 var isAbsoluteURL = __webpack_require__(47);
 var combineURLs = __webpack_require__(48);
 
@@ -34774,7 +34786,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(14);
+var Cancel = __webpack_require__(15);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -34963,11 +34975,11 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_profile_Profile_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__views_profile_Profile_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_vehicle_Vehicle_vue__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_vehicle_Vehicle_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__views_vehicle_Vehicle_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_vehicle_VehicleRegister_vue__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_vehicle_VehicleRegister_vue__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_vehicle_VehicleRegister_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__views_vehicle_VehicleRegister_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_parking_ParkingRegister_vue__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_parking_ParkingRegister_vue__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_parking_ParkingRegister_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__views_parking_ParkingRegister_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_Home_vue__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_Home_vue__ = __webpack_require__(181);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__views_Home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__views_Home_vue__);
 
 
@@ -45739,9 +45751,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	bodyClass: "profile-page",
 	data: function data() {
 		return {
-			tabPane1: [{ image: __webpack_require__(15) }, { image: __webpack_require__(144) }, { image: __webpack_require__(145) }, { image: __webpack_require__(146) }],
-			tabPane2: [{ image: __webpack_require__(16) }, { image: __webpack_require__(17) }, { image: __webpack_require__(147) }, { image: __webpack_require__(18) }, { image: __webpack_require__(148) }],
-			tabPane3: [{ image: __webpack_require__(18) }, { image: __webpack_require__(149) }, { image: __webpack_require__(17) }, { image: __webpack_require__(16) }, { image: __webpack_require__(15) }]
+			tabPane1: [{ image: __webpack_require__(16) }, { image: __webpack_require__(144) }, { image: __webpack_require__(145) }, { image: __webpack_require__(146) }],
+			tabPane2: [{ image: __webpack_require__(17) }, { image: __webpack_require__(18) }, { image: __webpack_require__(147) }, { image: __webpack_require__(19) }, { image: __webpack_require__(148) }],
+			tabPane3: [{ image: __webpack_require__(19) }, { image: __webpack_require__(149) }, { image: __webpack_require__(18) }, { image: __webpack_require__(17) }, { image: __webpack_require__(16) }]
 		};
 	},
 
@@ -45752,7 +45764,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		img: {
 			type: String,
-			default: __webpack_require__(19)
+			default: __webpack_require__(20)
 		}
 	},
 	computed: {
@@ -45875,7 +45887,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(154)
 /* template */
-var __vue_template__ = __webpack_require__(158)
+var __vue_template__ = __webpack_require__(155)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -46001,28 +46013,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -46032,7 +46022,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	bodyClass: "profile-page",
 	data: function data() {
 		return {
-			cars: [{ image: __webpack_require__(155) }, { image: __webpack_require__(156) }, { image: __webpack_require__(157) }]
+			dataModel: [],
+			showAddButton: true
 		};
 	},
 
@@ -46043,38 +46034,64 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		img: {
 			type: String,
-			default: __webpack_require__(19)
+			default: __webpack_require__(20)
 		}
 	},
-	computed: {
-		headerStyle: function headerStyle() {
-			return {
-				// backgroundImage: `url(${this.header})`
-			};
+	computed: {},
+	mounted: function mounted() {
+		var _this = this;
+
+		axios.get('/api/vehicle/get').then(function (response) {
+			console.log(response.data);
+			_this.dataModel = response.data;
+			_this.isShowAddButton();
+		}).catch(function (error) {
+			console.log(error);
+		});
+	},
+
+	methods: {
+		removeItem: function removeItem(id) {
+			var _this2 = this;
+
+			this.$swal({
+				title: 'Are you sure?',
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonClass: 'md-button md-success',
+				cancelButtonClass: 'md-button md-danger',
+				confirmButtonText: 'Yes, delete it!',
+				buttonsStyling: false
+			}).then(function (result) {
+				console.log(result);
+				if (result.value) {
+					axios.delete('/api/vehicle/delete/' + id).then(function (response) {
+						console.log(response.data);
+						_this2.$swal({
+							position: 'top-end',
+							type: 'success',
+							title: 'Your vehicle has been deleted',
+							showConfirmButton: false,
+							timer: 1000
+						});
+						_this2.dataModel = response.data;
+						_this2.isShowAddButton();
+					}).catch(function (error) {
+						console.log(error);
+					});
+				}
+			});
+		},
+		isShowAddButton: function isShowAddButton() {
+			this.showAddButton = false;
+			if (this.dataModel.length < 3) this.showAddButton = true;
+			console.log(this.showAddButton);
 		}
 	}
 });
 
 /***/ }),
 /* 155 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/car3.jpg?d9e5c5aa5ea1221ee80b7c24e88c8417";
-
-/***/ }),
-/* 156 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/car4.jpg?1c51c352c818dbb064804163e5f16f3e";
-
-/***/ }),
-/* 157 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/car6.jpg?58a2971891b03e0fdfcb1915fcc3a186";
-
-/***/ }),
-/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -46092,6 +46109,14 @@ var render = function() {
             _c(
               "md-button",
               {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showAddButton,
+                    expression: "showAddButton"
+                  }
+                ],
                 staticClass: "md-round md-success",
                 attrs: { to: "/add_vehicle" }
               },
@@ -46101,132 +46126,82 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "md-layout" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "md-layout-item md-size-33 md-medium-size-66 md-xsmall-size-100"
-            },
-            [
-              _c(
-                "md-card",
-                [
-                  _c("md-card-media", [
-                    _c("img", { attrs: { src: _vm.cars[0].image, alt: "car" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("md-card-content", [
-                    _c("div", { staticClass: "md-title" }, [_vm._v("Brand")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("Subtitle here")
+        _c(
+          "div",
+          { staticClass: "md-layout" },
+          _vm._l(_vm.dataModel, function(item) {
+            return _c(
+              "div",
+              {
+                key: item.id,
+                staticClass:
+                  "md-layout-item md-size-33 md-medium-size-100 md-xsmall-size-100"
+              },
+              [
+                _c(
+                  "md-card",
+                  [
+                    _c("md-card-media", [
+                      _c("img", { attrs: { src: item.photo, alt: "car" } })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "md-title" }, [_vm._v("Model")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("TOYODA")
+                    _c("md-card-content", [
+                      _c("div", { staticClass: "md-title" }, [_vm._v("Brand")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-subhead" }, [
+                        _vm._v(_vm._s(item.brand))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-title" }, [_vm._v("Model")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-subhead" }, [
+                        _vm._v(_vm._s(item.model))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-title" }, [
+                        _vm._v("Plate Number")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-subhead" }, [
+                        _vm._v(_vm._s(item.plate_number))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-title" }, [
+                        _vm._v("Expire Date")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "md-subhead" }, [
+                        _vm._v(_vm._s(item.expire_date))
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "md-title" }, [
-                      _vm._v("Plate Number")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("ABC123456")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-title" }, [
-                      _vm._v("Expire Date")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("08/10/2018")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "md-card-actions",
-                    [
-                      _c(
-                        "md-button",
-                        { staticClass: "md-just-icon md-round md-danger" },
-                        [_c("md-icon", [_vm._v("delete")])],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "md-layout-item md-size-33" },
-            [
-              _c(
-                "md-card",
-                [
-                  _c("md-card-media", [
-                    _c("img", { attrs: { src: _vm.cars[1].image, alt: "car" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("md-card-content", [
-                    _c("div", { staticClass: "md-title md-size-50" }, [
-                      _vm._v("Brand")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead md-size-50" }, [
-                      _vm._v("Subtitle here")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-title" }, [_vm._v("Model")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("TOYODA")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-title" }, [
-                      _vm._v("Plate Number")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("ABC123456")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-title" }, [
-                      _vm._v("Expire Date")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "md-subhead" }, [
-                      _vm._v("08/10/2018")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "md-card-actions",
-                    [
-                      _c(
-                        "md-button",
-                        { staticClass: "md-just-icon md-round md-danger" },
-                        [_c("md-icon", [_vm._v("delete")])],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ])
+                    _c(
+                      "md-card-actions",
+                      [
+                        _c(
+                          "md-button",
+                          {
+                            staticClass: "md-just-icon md-round md-danger",
+                            on: {
+                              click: function($event) {
+                                _vm.removeItem(item.id)
+                              }
+                            }
+                          },
+                          [_c("md-icon", [_vm._v("delete")])],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          })
+        )
       ])
     ])
   ])
@@ -46242,19 +46217,19 @@ if (false) {
 }
 
 /***/ }),
-/* 159 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(160)
+  __webpack_require__(157)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(162)
+var __vue_script__ = __webpack_require__(159)
 /* template */
-var __vue_template__ = __webpack_require__(163)
+var __vue_template__ = __webpack_require__(160)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -46293,13 +46268,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 160 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(161);
+var content = __webpack_require__(158);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -46319,7 +46294,7 @@ if(false) {
 }
 
 /***/ }),
-/* 161 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -46333,7 +46308,7 @@ exports.push([module.i, "\n.md-card-header[data-v-ffbd0bee] {\n  width: fit-cont
 
 
 /***/ }),
-/* 162 */
+/* 159 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46407,6 +46382,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	bodyClass: "vehicle-register",
@@ -46417,37 +46421,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			brand: 'Kia',
 			model: 'Rondo',
 			plate_number: 'BEZ2685',
-			expire_date: new Date()
+			expire_date: new Date(),
+			photo: '',
+
+			touched: {
+				brand: false,
+				model: false
+			}
 		};
 	},
 
 	props: {
 		avatar: {
 			type: String,
-			default: __webpack_require__(20)
+			default: __webpack_require__(21)
 		}
 	},
 	computed: {},
+	watch: {
+		brand: function brand() {
+			this.touched.brand = true;
+		},
+		model: function model() {
+			this.touched.model = true;
+		},
+		plate_number: function plate_number() {
+			this.touched.plate_number = true;
+		}
+	},
 	methods: {
 		onFileChange: function onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
 			if (!files.length) return;
+			this.photo = files[0];
 			this.createImage(files[0]);
 		},
 		createImage: function createImage(file) {
 			var reader = new FileReader();
 			var vm = this;
-
 			reader.onload = function (e) {
 				vm.image = e.target.result;
 			};
 			reader.readAsDataURL(file);
+		},
+		validate: function validate() {
+			var _this = this;
+
+			return this.$validator.validateAll().then(function (res) {
+				if (res) _this.submit();
+				return res;
+			});
+		},
+		submit: function submit() {
+			var _this2 = this;
+
+			var formData = new FormData();
+			formData.append('brand', this.brand);
+			formData.append('model', this.model);
+			formData.append('plate_number', this.plate_number);
+			formData.append('expire_date', this.expire_date.toISOString().substring(0, 10));
+			formData.append('photo', this.photo);
+
+			if (this.photo == '') {
+				return;
+			}
+
+			axios.post('/api/vehicle/register', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(function (response) {
+				_this2.$router.push('/vehicle_profile');
+				_this2.$swal({
+					position: 'top-end',
+					type: 'success',
+					title: 'Your vehicle has been deleted',
+					showConfirmButton: false,
+					timer: 1000
+				});
+			}).catch(function (error) {
+				console.log(error);
+			});
 		}
 	}
+
 });
 
 /***/ }),
-/* 163 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -46512,13 +46569,35 @@ var render = function() {
                       [
                         _c(
                           "md-field",
-                          { staticClass: "md-form-group" },
+                          {
+                            staticClass: "md-form-group",
+                            class: [
+                              {
+                                "md-valid":
+                                  !_vm.errors.has("brand") && _vm.touched.brand
+                              },
+                              { "md-error": _vm.errors.has("brand") }
+                            ]
+                          },
                           [
                             _c("md-icon", [_vm._v("perm_media")]),
                             _vm._v(" "),
                             _c("label", [_vm._v("Brand")]),
                             _vm._v(" "),
                             _c("md-input", {
+                              directives: [
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              attrs: {
+                                "data-vv-name": "brand",
+                                name: "brand",
+                                required: ""
+                              },
                               model: {
                                 value: _vm.brand,
                                 callback: function($$v) {
@@ -46528,22 +46607,75 @@ var render = function() {
                               }
                             }),
                             _vm._v(" "),
-                            _c("md-icon", { staticClass: "error" }, [
-                              _vm._v("close")
-                            ])
+                            _c(
+                              "md-icon",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.errors.has("brand"),
+                                    expression: "errors.has('brand')"
+                                  }
+                                ],
+                                staticClass: "error"
+                              },
+                              [_vm._v("close")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "md-icon",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value:
+                                      !_vm.errors.has("brand") &&
+                                      _vm.touched.brand,
+                                    expression:
+                                      "!errors.has('brand') && touched.brand"
+                                  }
+                                ],
+                                staticClass: "success"
+                              },
+                              [_vm._v("done")]
+                            )
                           ],
                           1
                         ),
                         _vm._v(" "),
                         _c(
                           "md-field",
-                          { staticClass: "md-form-group" },
+                          {
+                            staticClass: "md-form-group",
+                            class: [
+                              {
+                                "md-valid":
+                                  !_vm.errors.has("model") && _vm.touched.model
+                              },
+                              { "md-error": _vm.errors.has("model") }
+                            ]
+                          },
                           [
                             _c("md-icon", [_vm._v("directions_car")]),
                             _vm._v(" "),
                             _c("label", [_vm._v("Model")]),
                             _vm._v(" "),
                             _c("md-input", {
+                              directives: [
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              attrs: {
+                                "data-vv-name": "model",
+                                name: "model",
+                                required: ""
+                              },
                               model: {
                                 value: _vm.model,
                                 callback: function($$v) {
@@ -46551,20 +46683,78 @@ var render = function() {
                                 },
                                 expression: "model"
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "md-icon",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.errors.has("model"),
+                                    expression: "errors.has('model')"
+                                  }
+                                ],
+                                staticClass: "error"
+                              },
+                              [_vm._v("close")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "md-icon",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value:
+                                      !_vm.errors.has("model") &&
+                                      _vm.touched.model,
+                                    expression:
+                                      "!errors.has('model') && touched.model"
+                                  }
+                                ],
+                                staticClass: "success"
+                              },
+                              [_vm._v("done")]
+                            )
                           ],
                           1
                         ),
                         _vm._v(" "),
                         _c(
                           "md-field",
-                          { staticClass: "md-form-group" },
+                          {
+                            staticClass: "md-form-group",
+                            class: [
+                              {
+                                "md-valid":
+                                  !_vm.errors.has("plate_number") &&
+                                  _vm.touched.plate_number
+                              },
+                              { "md-error": _vm.errors.has("plate_number") }
+                            ]
+                          },
                           [
                             _c("md-icon", [_vm._v("crop_7_5")]),
                             _vm._v(" "),
                             _c("label", [_vm._v("Plate Number")]),
                             _vm._v(" "),
                             _c("md-input", {
+                              directives: [
+                                {
+                                  name: "validate",
+                                  rawName: "v-validate",
+                                  value: "required",
+                                  expression: "'required'"
+                                }
+                              ],
+                              attrs: {
+                                required: "",
+                                "data-vv-name": "plate_number",
+                                name: "plate_number"
+                              },
                               model: {
                                 value: _vm.plate_number,
                                 callback: function($$v) {
@@ -46572,7 +46762,42 @@ var render = function() {
                                 },
                                 expression: "plate_number"
                               }
-                            })
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "md-icon",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.errors.has("plate_number"),
+                                    expression: "errors.has('plate_number')"
+                                  }
+                                ],
+                                staticClass: "error"
+                              },
+                              [_vm._v("close")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "md-icon",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value:
+                                      !_vm.errors.has("plate_number") &&
+                                      _vm.touched.plate_number,
+                                    expression:
+                                      "!errors.has('plate_number') && touched.plate_number"
+                                  }
+                                ],
+                                staticClass: "success"
+                              },
+                              [_vm._v("done")]
+                            )
                           ],
                           1
                         ),
@@ -46580,6 +46805,7 @@ var render = function() {
                         _c(
                           "md-datepicker",
                           {
+                            attrs: { format: "yyyy-mm-dd" },
                             model: {
                               value: _vm.expire_date,
                               callback: function($$v) {
@@ -46605,12 +46831,17 @@ var render = function() {
                         staticClass: "md-simple md-danger",
                         attrs: { to: "/vehicle_profile" }
                       },
-                      [_vm._v("\n\t\t\t\t\t\t\t\tcancel\n\t\t\t\t\t\t\t")]
+                      [_vm._v("\n\t\t\t\t\t\t\tcancel\n\t\t\t\t\t\t")]
                     ),
                     _vm._v(" "),
-                    _c("md-button", { staticClass: "md-simple md-success" }, [
-                      _vm._v("\n\t\t\t\t\t\t\t\tregister\n\t\t\t\t\t\t\t")
-                    ])
+                    _c(
+                      "md-button",
+                      {
+                        staticClass: "md-simple md-success",
+                        on: { click: _vm.validate }
+                      },
+                      [_vm._v("\n\t\t\t\t\t\t\tregister\n\t\t\t\t\t\t")]
+                    )
                   ],
                   1
                 )
@@ -46635,15 +46866,15 @@ if (false) {
 }
 
 /***/ }),
-/* 164 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(165)
+var __vue_script__ = __webpack_require__(162)
 /* template */
-var __vue_template__ = __webpack_require__(183)
+var __vue_template__ = __webpack_require__(180)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -46682,16 +46913,16 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 165 */
+/* 162 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wizard_FirstStep_vue__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wizard_FirstStep_vue__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wizard_FirstStep_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__wizard_FirstStep_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wizard_SecondStep_vue__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wizard_SecondStep_vue__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wizard_SecondStep_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__wizard_SecondStep_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wizard_ThirdStep_vue__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wizard_ThirdStep_vue__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wizard_ThirdStep_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__wizard_ThirdStep_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components__ = __webpack_require__(4);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -46737,7 +46968,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
-//   import swal from 'sweetalert2'
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -46760,28 +46990,50 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
     onStepValidated: function onStepValidated(validated, model) {
       this.wizardModel = _extends({}, this.wizardModel, model);
+      console.log(this.wizardModel);
     },
     wizardComplete: function wizardComplete() {
       console.log('good job');
       // swal('Good job!', 'You clicked the finish button!', 'success');
+      var formElement = document.querySelector("form");
+      var data = new FormData(formElement);
+      data.append('lot_type', this.wizardModel.lot_type);
+      data.append('availability', this.wizardModel.type);
+      // data.append('latitude', this.wizardModel.lat);
+      // data.append('longitude', this.wizardModel.lng);
+
+      console.log(this.wizardModel);
+
+      axios.post('/api/parking/register', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(function (response) {
+        // this.$router.push('/vehicle_profile');
+        // this.$swal({
+        // 	position: 'top-end',
+        // 	type: 'success',
+        // 	title: 'Your vehicle has been deleted',
+        // 	showConfirmButton: false,
+        // 	timer: 1000
+        // })
+      }).catch(function (error) {
+        // console.log(error);
+      });
     }
   }
 });
 
 /***/ }),
-/* 166 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(167)
+  __webpack_require__(164)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(169)
+var __vue_script__ = __webpack_require__(166)
 /* template */
-var __vue_template__ = __webpack_require__(171)
+var __vue_template__ = __webpack_require__(168)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -46820,13 +47072,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 167 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(168);
+var content = __webpack_require__(165);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -46846,7 +47098,7 @@ if(false) {
 }
 
 /***/ }),
-/* 168 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -46860,12 +47112,11 @@ exports.push([module.i, "\n.pic-container[data-v-4c075afc] {\n  cursor: pointer;
 
 
 /***/ }),
-/* 169 */
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue2_transitions__ = __webpack_require__(170);
 //
 //
 //
@@ -46958,75 +47209,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        SlideYDownTransition: __WEBPACK_IMPORTED_MODULE_0_vue2_transitions__["a" /* SlideYDownTransition */]
-    },
-    props: {
-        avatar: {
-            type: String,
-            default: __webpack_require__(20)
-        }
-    },
     data: function data() {
         return {
-            image: '',
-            single: null,
-            name: 'sdfsfsfsfsdf',
-            t_name: 'sdfsfsfsfsdf',
-            email: '',
-            zip: '12345678',
-            state: 'sdfsfsfsfsdf',
-            city: 'sdfsfsfsfsdf',
-            touched: {
-                lastName: false,
-                zip: false
-            },
-            modelValidations: {
-                name: {
-                    required: true,
-                    min: 5
-                },
-                city: {
-                    required: true,
-                    min: 2
-                },
-                state: {
-                    required: true,
-                    min: 2
-
-                },
-                t_name: {
-                    required: false,
-                    min: 5
-                },
-                zip: {
-                    numeric: true,
-                    min: 4
-                }
-            }
+            image: __webpack_require__(21),
+            name: 'AAAAA',
+            t_name: '',
+            zip_code: '12345678',
+            state: 'Phoenix',
+            city: 'Hilleman Way',
+            country: 'USA'
         };
     },
 
@@ -47053,544 +47246,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         createImage: function createImage(file) {
             var reader = new FileReader();
             var vm = this;
-
             reader.onload = function (e) {
                 vm.image = e.target.result;
             };
             reader.readAsDataURL(file);
         }
-    },
-    watch: {
-        name: function name() {
-            this.touched.name = true;
-        },
-        email: function email() {
-            this.touched.email = true;
-        },
-        zip: function zip() {
-            this.touched.zip = true;
-        },
-        city: function city() {
-            this.touched.city = true;
-        },
-        state: function state() {
-            this.touched.state = true;
-        }
     }
 });
 
 /***/ }),
-/* 170 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export FadeTransition */
-/* unused harmony export ZoomCenterTransition */
-/* unused harmony export ZoomXTransition */
-/* unused harmony export ZoomYTransition */
-/* unused harmony export CollapseTransition */
-/* unused harmony export ScaleTransition */
-/* unused harmony export SlideYUpTransition */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SlideYDownTransition; });
-/* unused harmony export SlideXLeftTransition */
-/* unused harmony export SlideXRightTransition */
-/*!
- * vue2-transitions v0.2.3
- * (c) 2018-present cristij <joracristi@gmail.com>
- * Released under the MIT License.
- */
-var baseTransition = {
-  inheritAttrs: false,
-  props: {
-    /**
-     * Transition duration. Number for specifying the same duration for enter/leave transitions
-     * Object style {enter: 300, leave: 300} for specifying explicit durations for enter/leave
-     */
-    duration: {
-      type: [Number, Object],
-      default: 300
-    },
-    /**
-     * Whether the component should be a `transition-group` component.
-     */
-    group: Boolean,
-    /**
-     * Transition tag, in case the component is a `transition-group`
-     */
-    tag: {
-      type: String,
-      default: 'span'
-    },
-    /**
-     *  Transform origin property https://tympanus.net/codrops/css_reference/transform-origin/.
-     *  Can be specified with styles as well but it's shorter with this prop
-     */
-    origin: {
-      type: String,
-      default: ''
-    },
-    /**
-     * Element styles that are applied during transition. These styles are applied on @beforeEnter and @beforeLeave hooks
-     */
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'ease-out'
-        };
-      }
-    }
-  },
-  computed: {
-    componentType: function componentType() {
-      return this.group ? 'transition-group' : 'transition';
-    },
-    hooks: function hooks() {
-      return Object.assign({
-        beforeEnter: this.beforeEnter,
-        afterEnter: this.cleanUpStyles,
-        beforeLeave: this.beforeLeave,
-        leave: this.leave,
-        afterLeave: this.cleanUpStyles
-      }, this.$listeners);
-    }
-  },
-  methods: {
-    beforeEnter: function beforeEnter(el) {
-      var enterDuration = this.duration.enter ? this.duration.enter : this.duration;
-      el.style.animationDuration = (enterDuration / 1000) + "s";
-      this.setStyles(el);
-    },
-    cleanUpStyles: function cleanUpStyles(el) {
-      var this$1 = this;
-
-      Object.keys(this.styles).forEach(function (key) {
-        var styleValue = this$1.styles[key];
-        if (styleValue) {
-          el.style[key] = '';
-        }
-      });
-      el.style.animationDuration = '';
-    },
-    beforeLeave: function beforeLeave(el) {
-      var leaveDuration = this.duration.leave ? this.duration.leave : this.duration;
-      el.style.animationDuration = (leaveDuration / 1000) + "s";
-      this.setStyles(el);
-    },
-    leave: function leave(el) {
-      this.setAbsolutePosition(el);
-    },
-    setStyles: function setStyles(el) {
-      var this$1 = this;
-
-      this.setTransformOrigin(el);
-      Object.keys(this.styles).forEach(function (key) {
-        var styleValue = this$1.styles[key];
-        if (styleValue) {
-          el.style[key] = styleValue;
-        }
-      });
-    },
-    setAbsolutePosition: function setAbsolutePosition(el) {
-      if (this.group) {
-        el.style.position = 'absolute';
-      }
-      return this;
-    },
-    setTransformOrigin: function setTransformOrigin(el) {
-      if (this.origin) {
-        el.style.transformOrigin = this.origin;
-      }
-      return this;
-    }
-  }
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = " @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } .fadeIn { animation-name: fadeIn; } @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } } .fadeOut { animation-name: fadeOut; } .fade-move { transition: transform .3s ease-out; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var FadeTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "fadeIn", "move-class": "fade-move", "leave-active-class": "fadeOut" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'fade-transition',
-  mixins: [baseTransition]
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = ".zoom-move { transition: transform .3s ease-out; } @keyframes zoomIn { from { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); } 50% { opacity: 1; } } .zoomIn { animation-name: zoomIn; } @keyframes zoomOut { from { opacity: 1; } 50% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); } to { opacity: 0; } } .zoomOut { animation-name: zoomOut; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var ZoomCenterTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "zoomIn", "move-class": "zoom-move", "leave-active-class": "zoomOut" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'zoom-center-transition',
-  mixins: [baseTransition]
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = ".zoom-move { transition: transform .3s ease-out; } @keyframes zoomInX { from { opacity: 0; transform: scaleX(0); } 50% { opacity: 1; } } .zoomInX { animation-name: zoomInX; } @keyframes zoomOutX { from { opacity: 1; } 50% { opacity: 0; transform: scaleX(0); } to { opacity: 0; } } .zoomOutX { animation-name: zoomOutX; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var ZoomXTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "zoomInX", "move-class": "zoom-move", "leave-active-class": "zoomOutX" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'zoom-x-transition',
-  props: {
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'cubic-bezier(.55,0,.1,1)'
-        };
-      }
-    }
-  },
-  mixins: [baseTransition]
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = ".zoom-move { transition: transform .3s ease-out; } @keyframes zoomInY { from { opacity: 0; transform: scaleY(0); } 50% { opacity: 1; tranform: scaleY(1); } } .zoomInY { animation-name: zoomInY; } @keyframes zoomOutY { from { opacity: 1; } 50% { opacity: 0; transform: scaleY(0); } to { opacity: 0; } } .zoomOutY { animation-name: zoomOutY; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var ZoomYTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "zoomInY", "move-class": "zoom-move", "leave-active-class": "zoomOutY" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'zoom-y-transition',
-  mixins: [baseTransition],
-  props: {
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'cubic-bezier(.55,0,.1,1)'
-        };
-      }
-    }
-  }
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = " .collapse-move { transition: transform .3s ease-in-out; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var CollapseTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "move-class": "collapse-move" }, on: { "before-enter": _vm.beforeEnter, "after-enter": _vm.afterEnter, "enter": _vm.enter, "before-leave": _vm.beforeLeave, "leave": _vm.leave, "after-leave": _vm.afterLeave } }, 'component', _vm.$attrs, false), _vm.$listeners), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'collapse-transition',
-  mixins: [baseTransition],
-  methods: {
-    transitionStyle: function transitionStyle(duration) {
-      if ( duration === void 0 ) duration = 300;
-
-      var durationInSeconds = duration / 1000;
-      var style = durationInSeconds + "s height ease-in-out, " + durationInSeconds + "s padding-top ease-in-out, " + durationInSeconds + "s padding-bottom ease-in-out";
-      return style;
-    },
-    beforeEnter: function beforeEnter(el) {
-      var enterDuration = this.duration.enter ? this.duration.enter : this.duration;
-      el.style.transition = this.transitionStyle(enterDuration);
-      if (!el.dataset) { el.dataset = {}; }
-
-      el.dataset.oldPaddingTop = el.style.paddingTop;
-      el.dataset.oldPaddingBottom = el.style.paddingBottom;
-
-      el.style.height = '0';
-      el.style.paddingTop = 0;
-      el.style.paddingBottom = 0;
-      this.setStyles(el);
-    },
-
-    enter: function enter(el) {
-      el.dataset.oldOverflow = el.style.overflow;
-      if (el.scrollHeight !== 0) {
-        el.style.height = el.scrollHeight + 'px';
-        el.style.paddingTop = el.dataset.oldPaddingTop;
-        el.style.paddingBottom = el.dataset.oldPaddingBottom;
-      } else {
-        el.style.height = '';
-        el.style.paddingTop = el.dataset.oldPaddingTop;
-        el.style.paddingBottom = el.dataset.oldPaddingBottom;
-      }
-
-      el.style.overflow = 'hidden';
-    },
-
-    afterEnter: function afterEnter(el) {
-      // for safari: remove class then reset height is necessary
-      el.style.transition = '';
-      el.style.height = '';
-      el.style.overflow = el.dataset.oldOverflow;
-    },
-
-    beforeLeave: function beforeLeave(el) {
-      if (!el.dataset) { el.dataset = {}; }
-      el.dataset.oldPaddingTop = el.style.paddingTop;
-      el.dataset.oldPaddingBottom = el.style.paddingBottom;
-      el.dataset.oldOverflow = el.style.overflow;
-
-      el.style.height = el.scrollHeight + 'px';
-      el.style.overflow = 'hidden';
-      this.setStyles(el);
-    },
-
-    leave: function leave(el) {
-      var leaveDuration = this.duration.leave ? this.duration.leave : this.duration;
-      if (el.scrollHeight !== 0) {
-        // for safari: add class after set height, or it will jump to zero height suddenly, weired
-        el.style.transition = this.transitionStyle(leaveDuration);
-        el.style.height = 0;
-        el.style.paddingTop = 0;
-        el.style.paddingBottom = 0;
-      }
-      // necessary for transition-group
-      this.setAbsolutePosition(el);
-    },
-
-    afterLeave: function afterLeave(el) {
-      el.style.transition = '';
-      el.style.height = '';
-      el.style.overflow = el.dataset.oldOverflow;
-      el.style.paddingTop = el.dataset.oldPaddingTop;
-      el.style.paddingBottom = el.dataset.oldPaddingBottom;
-    }
-  }
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = " @keyframes scaleIn { from { opacity: 0; transform: scale(0) } to { opacity: 1; } } .scaleIn { animation-name: scaleIn; } @keyframes scaleOut { from { opacity: 1; } to { opacity: 0; transform: scale(0); } } .scaleOut { animation-name: scaleOut; } .scale-move { transition: transform .3s cubic-bezier(.25, .8, .50, 1); } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var ScaleTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "scaleIn", "move-class": "scale-move", "leave-active-class": "scaleOut" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'scale-transition',
-  mixins: [baseTransition],
-  props: {
-    origin: {
-      type: String,
-      default: 'top left'
-    },
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'cubic-bezier(.25,.8,.50,1)'
-        };
-      }
-    }
-  }
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = ".slide-move { transition: transform .3s; } @keyframes slideYIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; } } .slideYIn { animation-name: slideYIn; } @keyframes slideYOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-15px); } } .slideYOut { animation-name: slideYOut; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var SlideYUpTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "type": "animation", "enter-active-class": "slideYIn", "move-class": "slide-move", "leave-active-class": "slideYOut" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'slide-y-up-transition',
-  mixins: [baseTransition],
-  props: {
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'cubic-bezier(.25,.8,.50,1)'
-        };
-      }
-    }
-  }
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = ".slide-move { transition: transform .3s; } @keyframes slideYDownIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; } } .slideYDownIn { animation-name: slideYDownIn; } @keyframes slideYDownOut { from { opacity: 1; } to { opacity: 0; transform: translateY(15px); } } .slideYDownOut { animation-name: slideYDownOut; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var SlideYDownTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "slideYDownIn", "leave-active-class": "slideYDownOut" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'slide-y-down-transition',
-  mixins: [baseTransition],
-  props: {
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'cubic-bezier(.25,.8,.50,1)'
-        };
-      }
-    }
-  }
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = ".slide-move { transition: transform .3s; } @keyframes slideXLeftIn { from { opacity: 0; transform: translateX(-15px); } to { opacity: 1; } } .slideXLeftIn { animation-name: slideXLeftIn; } @keyframes slideXLeftOut { from { opacity: 1; } to { opacity: 0; transform: translateX(-15px); } } .slideXLeftOut { animation-name: slideXLeftOut; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var SlideXLeftTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "slideXLeftIn", "move-class": "slide-move", "leave-active-class": "slideXLeftOut" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'slide-x-left-transition',
-  mixins: [baseTransition],
-  props: {
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'cubic-bezier(.25,.8,.50,1)'
-        };
-      }
-    }
-  }
-};
-
-(function () {
-  if (typeof document !== 'undefined') {
-    var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style'),
-        css = ".slide-move { transition: transform .3s; } @keyframes slideXRightIn { from { opacity: 0; transform: translateX(15px); } to { opacity: 1; } } .slideXRightIn { animation-name: slideXRightIn; } @keyframes slideXRightOut { from { opacity: 1; } to { opacity: 0; transform: translateX(15px); } } .slideXRightOut { animation-name: slideXRightOut; } ";style.type = 'text/css';if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(document.createTextNode(css));
-    }head.appendChild(style);
-  }
-})();
-
-var SlideXRightTransition = { render: function () {
-    var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c(_vm.componentType, _vm._g(_vm._b({ tag: "component", attrs: { "tag": _vm.tag, "enter-active-class": "slideXRightIn", "move-class": "slide-move", "leave-active-class": "slideXRightOut" } }, 'component', _vm.$attrs, false), _vm.hooks), [_vm._t("default")], 2);
-  }, staticRenderFns: [],
-  name: 'slide-x-right-transition',
-  mixins: [baseTransition],
-  props: {
-    styles: {
-      type: Object,
-      default: function () {
-        return {
-          animationFillMode: 'both',
-          animationTimingFunction: 'cubic-bezier(.25,.8,.50,1)'
-        };
-      }
-    }
-  }
-};
-
-var components = {};
-components[FadeTransition.name] = FadeTransition;
-components[ZoomCenterTransition.name] = ZoomCenterTransition;
-components[ZoomXTransition.name] = ZoomXTransition;
-components[ZoomYTransition.name] = ZoomYTransition;
-components[CollapseTransition.name] = CollapseTransition;
-components[ScaleTransition.name] = ScaleTransition;
-components[SlideYUpTransition.name] = SlideYUpTransition;
-components[SlideYDownTransition.name] = SlideYDownTransition;
-components[SlideXLeftTransition.name] = SlideXLeftTransition;
-components[SlideXRightTransition.name] = SlideXRightTransition;
-
-function install(Vue, options) {
-  if (options && options.components) {
-    options.components.forEach(function (c) { return Vue.component(c.name, components[c.name]); });
-  } else {
-    Object.keys(components).forEach(function (key) {
-      Vue.component(key, components[key]);
-    });
-  }
-}
-
-// Automatic installation if Vue has been added to the global scope.
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use({ install: install });
-}
-
-var index = {
-  install: install
-};
-
-
-/* unused harmony default export */ var _unused_webpack_default_export = (index);
-
-
-/***/ }),
-/* 171 */
+/* 167 */,
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47609,17 +47275,10 @@ var render = function() {
         [
           _c("div", { staticClass: "pic-container" }, [
             _c("div", { staticClass: "pic" }, [
-              !_vm.image
-                ? _c("div", [
-                    _c("img", {
-                      staticClass: "pic-src",
-                      attrs: { src: _vm.avatar, title: "" }
-                    })
-                  ])
-                : _c("div", [_c("img", { attrs: { src: _vm.image } })]),
+              _c("div", [_c("img", { attrs: { src: _vm.image } })]),
               _vm._v(" "),
               _c("input", {
-                attrs: { type: "file" },
+                attrs: { type: "file", name: "image" },
                 on: { change: _vm.onFileChange }
               })
             ]),
@@ -47644,9 +47303,7 @@ var render = function() {
                   "md-field",
                   {
                     class: [
-                      {
-                        "md-valid": !_vm.errors.has("name") && _vm.touched.name
-                      },
+                      { "md-valid": !_vm.errors.has("name") },
                       { "md-error": _vm.errors.has("name") }
                     ]
                   },
@@ -47658,8 +47315,8 @@ var render = function() {
                         {
                           name: "validate",
                           rawName: "v-validate",
-                          value: _vm.modelValidations.name,
-                          expression: "modelValidations.name"
+                          value: "required",
+                          expression: "'required'"
                         }
                       ],
                       attrs: {
@@ -47674,39 +47331,7 @@ var render = function() {
                         },
                         expression: "name"
                       }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "md-icon",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.errors.has("name"),
-                            expression: "errors.has('name')"
-                          }
-                        ],
-                        staticClass: "error"
-                      },
-                      [_vm._v("close")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "md-icon",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: !_vm.errors.has("name") && _vm.touched.name,
-                            expression: "!errors.has('name') && touched.name"
-                          }
-                        ],
-                        staticClass: "success"
-                      },
-                      [_vm._v("done")]
-                    )
+                    })
                   ],
                   1
                 )
@@ -47720,21 +47345,8 @@ var render = function() {
               [
                 _c(
                   "md-field",
-                  {
-                    class: [
-                      {
-                        "md-valid":
-                          !_vm.errors.has("t_name") && _vm.touched.t_name
-                      },
-                      { "md-error": _vm.errors.has("t_name") }
-                    ]
-                  },
                   [
-                    _c("label", [
-                      _vm._v(
-                        "Name of legal tenant (IF different from legal owner)"
-                      )
-                    ]),
+                    _c("label", [_vm._v("Name of legal tenant")]),
                     _vm._v(" "),
                     _c("md-input", {
                       attrs: { "data-vv-name": "t_name", name: "t_name" },
@@ -47758,7 +47370,7 @@ var render = function() {
             "md-field",
             {
               class: [
-                { "md-valid": !_vm.errors.has("city") && _vm.touched.city },
+                { "md-valid": !_vm.errors.has("city") },
                 { "md-error": _vm.errors.has("city") }
               ]
             },
@@ -47770,8 +47382,8 @@ var render = function() {
                   {
                     name: "validate",
                     rawName: "v-validate",
-                    value: _vm.modelValidations.city,
-                    expression: "modelValidations.city"
+                    value: "required",
+                    expression: "'required'"
                   }
                 ],
                 attrs: { "data-vv-name": "city", name: "city", required: "" },
@@ -47782,39 +47394,7 @@ var render = function() {
                   },
                   expression: "city"
                 }
-              }),
-              _vm._v(" "),
-              _c(
-                "md-icon",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.errors.has("city"),
-                      expression: "errors.has('city')"
-                    }
-                  ],
-                  staticClass: "error"
-                },
-                [_vm._v("close")]
-              ),
-              _vm._v(" "),
-              _c(
-                "md-icon",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: !_vm.errors.has("city") && _vm.touched.city,
-                      expression: "!errors.has('city') && touched.city"
-                    }
-                  ],
-                  staticClass: "success"
-                },
-                [_vm._v("done")]
-              )
+              })
             ],
             1
           ),
@@ -47823,7 +47403,7 @@ var render = function() {
             "md-field",
             {
               class: [
-                { "md-valid": !_vm.errors.has("state") && _vm.touched.state },
+                { "md-valid": !_vm.errors.has("state") },
                 { "md-error": _vm.errors.has("state") }
               ]
             },
@@ -47835,8 +47415,8 @@ var render = function() {
                   {
                     name: "validate",
                     rawName: "v-validate",
-                    value: _vm.modelValidations.state,
-                    expression: "modelValidations.state"
+                    value: "required",
+                    expression: "'required'"
                   }
                 ],
                 attrs: { "data-vv-name": "state", name: "state", required: "" },
@@ -47847,39 +47427,7 @@ var render = function() {
                   },
                   expression: "state"
                 }
-              }),
-              _vm._v(" "),
-              _c(
-                "md-icon",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.errors.has("state"),
-                      expression: "errors.has('state')"
-                    }
-                  ],
-                  staticClass: "error"
-                },
-                [_vm._v("close")]
-              ),
-              _vm._v(" "),
-              _c(
-                "md-icon",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: !_vm.errors.has("state") && _vm.touched.state,
-                      expression: "!errors.has('state') && touched.state"
-                    }
-                  ],
-                  staticClass: "success"
-                },
-                [_vm._v("done")]
-              )
+              })
             ],
             1
           ),
@@ -47891,65 +47439,19 @@ var render = function() {
               [
                 _c(
                   "md-field",
-                  {
-                    class: [
-                      { "md-valid": !_vm.errors.has("zip") && _vm.touched.zip },
-                      { "md-error": _vm.errors.has("zip") }
-                    ]
-                  },
                   [
                     _c("label", [_vm._v("Zip Code")]),
                     _vm._v(" "),
                     _c("md-input", {
-                      directives: [
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: _vm.modelValidations.zip,
-                          expression: "modelValidations.zip"
-                        }
-                      ],
-                      attrs: { "data-vv-name": "zip", name: "zip" },
+                      attrs: { "data-vv-name": "zip_code", name: "zip_code" },
                       model: {
-                        value: _vm.zip,
+                        value: _vm.zip_code,
                         callback: function($$v) {
-                          _vm.zip = $$v
+                          _vm.zip_code = $$v
                         },
-                        expression: "zip"
+                        expression: "zip_code"
                       }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "md-icon",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.errors.has("zip"),
-                            expression: "errors.has('zip')"
-                          }
-                        ],
-                        staticClass: "error"
-                      },
-                      [_vm._v("close")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "md-icon",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: !_vm.errors.has("zip") && _vm.touched.zip,
-                            expression: "!errors.has('zip') && touched.zip"
-                          }
-                        ],
-                        staticClass: "success"
-                      },
-                      [_vm._v("done")]
-                    )
+                    })
                   ],
                   1
                 )
@@ -47963,35 +47465,32 @@ var render = function() {
               [
                 _c(
                   "md-field",
-                  {
-                    class: [
-                      {
-                        "md-valid": !_vm.errors.has("name") && _vm.touched.name
-                      },
-                      { "md-error": _vm.errors.has("name") }
-                    ]
-                  },
                   [
                     _c("label", [_vm._v("Country")]),
                     _vm._v(" "),
-                    _c("md-input", {
-                      directives: [
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: _vm.modelValidations.name,
-                          expression: "modelValidations.name"
+                    _c(
+                      "md-select",
+                      {
+                        attrs: { name: "country" },
+                        model: {
+                          value: _vm.country,
+                          callback: function($$v) {
+                            _vm.country = $$v
+                          },
+                          expression: "country"
                         }
+                      },
+                      [
+                        _c("md-option", { attrs: { value: "USA" } }, [
+                          _vm._v("USA")
+                        ]),
+                        _vm._v(" "),
+                        _c("md-option", { attrs: { value: "Canada" } }, [
+                          _vm._v("Canada")
+                        ])
                       ],
-                      attrs: { "data-vv-name": "name", name: "name" },
-                      model: {
-                        value: _vm.name,
-                        callback: function($$v) {
-                          _vm.name = $$v
-                        },
-                        expression: "name"
-                      }
-                    })
+                      1
+                    )
                   ],
                   1
                 )
@@ -48016,19 +47515,19 @@ if (false) {
 }
 
 /***/ }),
-/* 172 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(173)
+  __webpack_require__(170)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(175)
+var __vue_script__ = __webpack_require__(172)
 /* template */
-var __vue_template__ = __webpack_require__(176)
+var __vue_template__ = __webpack_require__(173)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48067,13 +47566,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 173 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(174);
+var content = __webpack_require__(171);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -48093,7 +47592,7 @@ if(false) {
 }
 
 /***/ }),
-/* 174 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -48101,13 +47600,13 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 175 */
+/* 172 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48142,7 +47641,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -48151,24 +47706,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	data: function data() {
 		return {
-			model: {
-				design: false,
-				code: true,
-				develop: false
-			}
+			type: 4,
+			from: '08:30:AM',
+			to: '06:30:PM',
+			rate: 1,
+			lot_type: 1,
+			parking_spots: 1,
+			description: 'description'
 		};
 	},
 
 	methods: {
+		// validate() {
+		// 	this.$emit('on-validated', true, this.model)
+		// 	return Promise.resolve(true)
+		// },
 		validate: function validate() {
-			this.$emit('on-validated', true, this.model);
-			return Promise.resolve(true);
+			var _this = this;
+
+			return this.$validator.validateAll().then(function (res) {
+				if (res) {
+					_this.$emit('on-validated', res, { 'lot_type': _this.lot_type, 'type': _this.type });
+				}
+				return res;
+			});
 		}
 	}
 });
 
 /***/ }),
-/* 176 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48177,67 +47744,275 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("h5", { staticClass: "info-text" }, [
-      _vm._v(" What are you doing? (checkboxes) ")
+      _vm._v(" Please park up a Parking Type")
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "md-layout" }, [
-      _c("div", { staticClass: "md-layout-item" }, [
-        _c("div", { staticClass: "md-layout" }, [
+      _c(
+        "div",
+        { staticClass: "md-layout-item md-size-50 md-small-size-100" },
+        [
           _c(
-            "div",
-            { staticClass: "md-layout-item md-size-33 md-small-size-100" },
+            "md-field",
             [
-              _c("icon-checkbox", {
-                attrs: { icon: "fas fa-pencil-alt", title: "Design" },
-                model: {
-                  value: _vm.model.design,
-                  callback: function($$v) {
-                    _vm.$set(_vm.model, "design", $$v)
-                  },
-                  expression: "model.design"
-                }
-              })
+              _c("label", [_vm._v("Lot Type")]),
+              _vm._v(" "),
+              _c(
+                "md-select",
+                {
+                  model: {
+                    value: _vm.lot_type,
+                    callback: function($$v) {
+                      _vm.lot_type = $$v
+                    },
+                    expression: "lot_type"
+                  }
+                },
+                [
+                  _c("md-option", { attrs: { value: "1" } }, [
+                    _vm._v("Commericial")
+                  ]),
+                  _vm._v(" "),
+                  _c("md-option", { attrs: { value: "3" } }, [_vm._v("House")]),
+                  _vm._v(" "),
+                  _c("md-option", { attrs: { value: "4" } }, [
+                    _vm._v("Condo/Apartment")
+                  ]),
+                  _vm._v(" "),
+                  _c("md-option", { attrs: { value: "5" } }, [
+                    _vm._v("Empty Lot")
+                  ])
+                ],
+                1
+              )
             ],
             1
           ),
           _vm._v(" "),
           _c(
-            "div",
-            { staticClass: "md-layout-item md-size-33 md-small-size-100" },
+            "md-field",
             [
-              _c("icon-checkbox", {
-                attrs: { icon: "fas fa-terminal", title: "Code" },
-                model: {
-                  value: _vm.model.code,
-                  callback: function($$v) {
-                    _vm.$set(_vm.model, "code", $$v)
-                  },
-                  expression: "model.code"
-                }
-              })
+              _c("label", [_vm._v("Types")]),
+              _vm._v(" "),
+              _c(
+                "md-select",
+                {
+                  model: {
+                    value: _vm.type,
+                    callback: function($$v) {
+                      _vm.type = $$v
+                    },
+                    expression: "type"
+                  }
+                },
+                [
+                  _c("md-option", { attrs: { value: "2" } }, [
+                    _vm._v("Monthly-24 hours")
+                  ]),
+                  _vm._v(" "),
+                  _c("md-option", { attrs: { value: "3" } }, [
+                    _vm._v("Monthly-Daylight hours only")
+                  ]),
+                  _vm._v(" "),
+                  _c("md-divider"),
+                  _vm._v(" "),
+                  _c("md-option", { attrs: { value: "4" } }, [_vm._v("Daily")]),
+                  _vm._v(" "),
+                  _c("md-divider"),
+                  _vm._v(" "),
+                  _c("md-option", { attrs: { value: "5" } }, [_vm._v("Hourly")])
+                ],
+                1
+              )
             ],
             1
           ),
           _vm._v(" "),
+          _c("div", { staticClass: "md-layout" }, [
+            _c(
+              "div",
+              { staticClass: "md-layout-item md-size-50" },
+              [
+                _c(
+                  "md-field",
+                  { staticClass: "md-form-group" },
+                  [
+                    _c("md-icon", [_vm._v("access_time")]),
+                    _vm._v(" "),
+                    _c("label", [_vm._v("From Time(08:30:AM)")]),
+                    _vm._v(" "),
+                    _c("md-input", {
+                      attrs: { name: "from_time" },
+                      model: {
+                        value: _vm.from,
+                        callback: function($$v) {
+                          _vm.from = $$v
+                        },
+                        expression: "from"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "md-layout-item md-size-50" },
+              [
+                _c(
+                  "md-field",
+                  { staticClass: "md-form-group" },
+                  [
+                    _c("md-icon", [_vm._v("access_time")]),
+                    _vm._v(" "),
+                    _c("label", [_vm._v("To Time(06:30:PM)")]),
+                    _vm._v(" "),
+                    _c("md-input", {
+                      attrs: { name: "to_time" },
+                      model: {
+                        value: _vm.to,
+                        callback: function($$v) {
+                          _vm.to = $$v
+                        },
+                        expression: "to"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
           _c(
-            "div",
-            { staticClass: "md-layout-item md-size-33 md-small-size-100" },
+            "md-field",
+            {
+              class: [
+                { "md-valid": !_vm.errors.has("rate") },
+                { "md-error": _vm.errors.has("rate") }
+              ]
+            },
             [
-              _c("icon-checkbox", {
-                attrs: { icon: "fas fa-laptop", title: "Develop" },
+              _c("label", [_vm._v("Rate")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "md-prefix" }, [_vm._v("$")]),
+              _vm._v(" "),
+              _c("md-input", {
+                directives: [
+                  {
+                    name: "validate",
+                    rawName: "v-validate",
+                    value: "required|min_value:1",
+                    expression: "'required|min_value:1'"
+                  }
+                ],
+                attrs: {
+                  "data-vv-name": "rate",
+                  name: "rate",
+                  type: "number",
+                  required: ""
+                },
                 model: {
-                  value: _vm.model.develop,
+                  value: _vm.rate,
                   callback: function($$v) {
-                    _vm.$set(_vm.model, "develop", $$v)
+                    _vm.rate = $$v
                   },
-                  expression: "model.develop"
+                  expression: "rate"
                 }
               })
             ],
             1
           )
-        ])
-      ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "md-layout-item md-size-50 md-small-size-100" },
+        [
+          _c(
+            "md-field",
+            {
+              class: [
+                { "md-valid": !_vm.errors.has("parking_spots") },
+                { "md-error": _vm.errors.has("parking_spots") }
+              ]
+            },
+            [
+              _c("label", [_vm._v("Parking Spots")]),
+              _vm._v(" "),
+              _c("md-input", {
+                directives: [
+                  {
+                    name: "validate",
+                    rawName: "v-validate",
+                    value: "required|min_value:1",
+                    expression: "'required|min_value:1'"
+                  }
+                ],
+                attrs: {
+                  "data-vv-name": "parking_spots",
+                  name: "parking_spots",
+                  type: "number",
+                  required: ""
+                },
+                model: {
+                  value: _vm.parking_spots,
+                  callback: function($$v) {
+                    _vm.parking_spots = $$v
+                  },
+                  expression: "parking_spots"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "md-field",
+            {
+              class: [
+                { "md-valid": !_vm.errors.has("description") },
+                { "md-error": _vm.errors.has("description") }
+              ]
+            },
+            [
+              _c("label", [_vm._v("Description")]),
+              _vm._v(" "),
+              _c("md-textarea", {
+                directives: [
+                  {
+                    name: "validate",
+                    rawName: "v-validate",
+                    value: "required",
+                    expression: "'required'"
+                  }
+                ],
+                attrs: {
+                  "data-vv-name": "description",
+                  name: "description",
+                  required: "",
+                  rows: "6"
+                },
+                model: {
+                  value: _vm.description,
+                  callback: function($$v) {
+                    _vm.description = $$v
+                  },
+                  expression: "description"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
     ])
   ])
 }
@@ -48252,19 +48027,19 @@ if (false) {
 }
 
 /***/ }),
-/* 177 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(178)
+  __webpack_require__(175)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(180)
+var __vue_script__ = __webpack_require__(177)
 /* template */
-var __vue_template__ = __webpack_require__(182)
+var __vue_template__ = __webpack_require__(179)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48303,13 +48078,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 178 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(179);
+var content = __webpack_require__(176);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -48329,7 +48104,7 @@ if(false) {
 }
 
 /***/ }),
-/* 179 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -48337,19 +48112,35 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n#map {\n\theight: 400px;\n}\n", ""]);
+exports.push([module.i, "\n#map {\n\theight: 400px;\n}\n.google-map {\n\theight: 400px;\n\twidth: 100%;\n\tmargin-bottom: 30px;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 180 */
+/* 177 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_google_maps__ = __webpack_require__(181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_google_maps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_google_maps__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -48378,309 +48169,250 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	methods: {
-		initMap: function initMap(google) {
-			var myLatlng = new google.maps.LatLng(40.748817, -73.985428);
-			var mapOptions = {
-				zoom: 13,
-				center: myLatlng,
-				scrollwheel: false
-			};
-			var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-			var marker = new google.maps.Marker({
-				position: myLatlng,
-				title: 'Hello World!'
-			});
-			marker.setMap(map);
-		}
+	data: function data() {
+		return {
+			center: { lat: 45.508, lng: -73.587 },
+			marker: { lat: 45.508, lng: -73.587 },
+			address: '',
+			touched: {
+				address: false
+			}
+		};
 	},
 	mounted: function mounted() {
 		var _this = this;
 
-		__WEBPACK_IMPORTED_MODULE_0_google_maps___default.a.KEY = 'AIzaSyAUfciCLFycnIUlrUUwjApQyhRyNr01o7g';
-		__WEBPACK_IMPORTED_MODULE_0_google_maps___default.a.load(function (google) {
-			_this.initMap(google);
+		this.$refs.mapRef.$mapPromise.then(function (map) {
+			_this.geocoder = new google.maps.Geocoder();
 		});
-	}
-});
+	},
 
-/***/ }),
-/* 181 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
-
-	if (root === null) {
-		throw new Error('Google-maps package can be used only in browser');
-	}
-
-	if (true) {
-		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else if (typeof exports === 'object') {
-		module.exports = factory();
-	} else {
-		root.GoogleMapsLoader = factory();
-	}
-
-})(typeof window !== 'undefined' ? window : null, function() {
-
-
-	'use strict';
-
-
-	var googleVersion = '3.18';
-
-	var script = null;
-
-	var google = null;
-
-	var loading = false;
-
-	var callbacks = [];
-
-	var onLoadEvents = [];
-
-	var originalCreateLoaderMethod = null;
-
-
-	var GoogleMapsLoader = {};
-
-
-	GoogleMapsLoader.URL = 'https://maps.googleapis.com/maps/api/js';
-
-	GoogleMapsLoader.KEY = null;
-
-	GoogleMapsLoader.LIBRARIES = [];
-
-	GoogleMapsLoader.CLIENT = null;
-
-	GoogleMapsLoader.CHANNEL = null;
-
-	GoogleMapsLoader.LANGUAGE = null;
-
-	GoogleMapsLoader.REGION = null;
-
-	GoogleMapsLoader.VERSION = googleVersion;
-
-	GoogleMapsLoader.WINDOW_CALLBACK_NAME = '__google_maps_api_provider_initializator__';
-
-
-	GoogleMapsLoader._googleMockApiObject = {};
-
-
-	GoogleMapsLoader.load = function(fn) {
-		if (google === null) {
-			if (loading === true) {
-				if (fn) {
-					callbacks.push(fn);
+	methods: {
+		setPlace: function setPlace(place) {
+			this.currentPlace = place;
+			this.center = this.currentPlace.geometry.location;
+		},
+		mapChange: function mapChange(a) {
+			this.address = '';
+			var centObj = this.$refs.mapRef.$mapObject.getCenter();
+			this.marker = {
+				lat: centObj.lat(),
+				lng: centObj.lng()
+			};
+		},
+		getAddress: function getAddress() {
+			var obj = this;
+			this.geocoder.geocode({ 'latLng': this.marker }, function (results, status) {
+				if (status) {
+					if (results != null) {
+						obj.address = results[0].formatted_address;
+					}
 				}
-			} else {
-				loading = true;
-
-				window[GoogleMapsLoader.WINDOW_CALLBACK_NAME] = function() {
-					ready(fn);
-				};
-
-				GoogleMapsLoader.createLoader();
-			}
-		} else if (fn) {
-			fn(google);
-		}
-	};
-
-
-	GoogleMapsLoader.createLoader = function() {
-		script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.src = GoogleMapsLoader.createUrl();
-
-		document.body.appendChild(script);
-	};
-
-
-	GoogleMapsLoader.isLoaded = function() {
-		return google !== null;
-	};
-
-
-	GoogleMapsLoader.createUrl = function() {
-		var url = GoogleMapsLoader.URL;
-
-		url += '?callback=' + GoogleMapsLoader.WINDOW_CALLBACK_NAME;
-
-		if (GoogleMapsLoader.KEY) {
-			url += '&key=' + GoogleMapsLoader.KEY;
-		}
-
-		if (GoogleMapsLoader.LIBRARIES.length > 0) {
-			url += '&libraries=' + GoogleMapsLoader.LIBRARIES.join(',');
-		}
-
-		if (GoogleMapsLoader.CLIENT) {
-			url += '&client=' + GoogleMapsLoader.CLIENT + '&v=' + GoogleMapsLoader.VERSION;
-		}
-
-		if (GoogleMapsLoader.CHANNEL) {
-			url += '&channel=' + GoogleMapsLoader.CHANNEL;
-		}
-
-		if (GoogleMapsLoader.LANGUAGE) {
-			url += '&language=' + GoogleMapsLoader.LANGUAGE;
-		}
-
-		if (GoogleMapsLoader.REGION) {
-			url += '&region=' + GoogleMapsLoader.REGION;
-		}
-
-		return url;
-	};
-
-
-	GoogleMapsLoader.release = function(fn) {
-		var release = function() {
-			GoogleMapsLoader.KEY = null;
-			GoogleMapsLoader.LIBRARIES = [];
-			GoogleMapsLoader.CLIENT = null;
-			GoogleMapsLoader.CHANNEL = null;
-			GoogleMapsLoader.LANGUAGE = null;
-			GoogleMapsLoader.REGION = null;
-			GoogleMapsLoader.VERSION = googleVersion;
-
-			google = null;
-			loading = false;
-			callbacks = [];
-			onLoadEvents = [];
-
-			if (typeof window.google !== 'undefined') {
-				delete window.google;
-			}
-
-			if (typeof window[GoogleMapsLoader.WINDOW_CALLBACK_NAME] !== 'undefined') {
-				delete window[GoogleMapsLoader.WINDOW_CALLBACK_NAME];
-			}
-
-			if (originalCreateLoaderMethod !== null) {
-				GoogleMapsLoader.createLoader = originalCreateLoaderMethod;
-				originalCreateLoaderMethod = null;
-			}
-
-			if (script !== null) {
-				script.parentElement.removeChild(script);
-				script = null;
-			}
-
-			if (fn) {
-				fn();
-			}
-		};
-
-		if (loading) {
-			GoogleMapsLoader.load(function() {
-				release();
 			});
-		} else {
-			release();
+		},
+		validate: function validate() {
+			var _this2 = this;
+
+			return this.$validator.validateAll().then(function (res) {
+				if (res) {
+					console.log(res);
+					console.log(_this2.marker);
+					_this2.$emit('on-validated', res, _this2.marker);
+				}
+				return res;
+			});
 		}
-	};
-
-
-	GoogleMapsLoader.onLoad = function(fn) {
-		onLoadEvents.push(fn);
-	};
-
-
-	GoogleMapsLoader.makeMock = function() {
-		originalCreateLoaderMethod = GoogleMapsLoader.createLoader;
-
-		GoogleMapsLoader.createLoader = function() {
-			window.google = GoogleMapsLoader._googleMockApiObject;
-			window[GoogleMapsLoader.WINDOW_CALLBACK_NAME]();
-		};
-	};
-
-
-	var ready = function(fn) {
-		var i;
-
-		loading = false;
-
-		if (google === null) {
-			google = window.google;
+	},
+	watch: {
+		address: function address() {
+			this.touched.address = true;
 		}
-
-		for (i = 0; i < onLoadEvents.length; i++) {
-			onLoadEvents[i](google);
-		}
-
-		if (fn) {
-			fn(google);
-		}
-
-		for (i = 0; i < callbacks.length; i++) {
-			callbacks[i](google);
-		}
-
-		callbacks = [];
-	};
-
-
-	return GoogleMapsLoader;
-
+	}
 });
 
-
 /***/ }),
-/* 182 */
+/* 178 */,
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "md-layout" }, [
-    _c(
-      "div",
-      { staticClass: "md-layout-item md-size-70" },
-      [
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "md-layout" }, [
         _c(
-          "md-field",
+          "div",
+          { staticClass: "md-layout-item md-size-80" },
           [
-            _c("label", [_vm._v("Search")]),
-            _vm._v(" "),
-            _c("md-input", { attrs: { id: "input-location" } })
+            _c(
+              "md-field",
+              { staticClass: "md-form-group" },
+              [
+                _c("md-icon", [_vm._v("search")]),
+                _vm._v(" "),
+                _c("gmap-autocomplete", {
+                  staticClass: "md-input",
+                  on: { place_changed: _vm.setPlace }
+                })
+              ],
+              1
+            )
           ],
           1
         ),
         _vm._v(" "),
-        _c("div", { attrs: { id: "map" } })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "md-layout-item" },
-      [
         _c(
-          "md-field",
-          [_c("label", [_vm._v("Location")]), _vm._v(" "), _c("md-input")],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "md-field",
-          [_c("label", [_vm._v("Spots")]), _vm._v(" "), _c("md-input")],
+          "div",
+          { staticClass: "md-layout-item md-size-20" },
+          [
+            _c(
+              "md-button",
+              { staticClass: "md-success", on: { click: _vm.getAddress } },
+              [_vm._v("set location")]
+            )
+          ],
           1
         )
-      ],
-      1
-    )
-  ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "gmap-map",
+        {
+          ref: "mapRef",
+          staticClass: "google-map",
+          attrs: { center: _vm.center, zoom: 13 },
+          on: { bounds_changed: _vm.mapChange }
+        },
+        [
+          _c("gmap-marker", {
+            attrs: { position: _vm.marker, clickable: true },
+            on: {
+              click: function($event) {
+                _vm.center = _vm.marker
+              }
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "md-field",
+        {
+          class: [
+            { "md-valid": !_vm.errors.has("address") && _vm.touched.address },
+            { "md-error": _vm.errors.has("address") }
+          ]
+        },
+        [
+          _c("label", [_vm._v("Address")]),
+          _vm._v(" "),
+          _c("md-input", {
+            directives: [
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required",
+                expression: "'required'"
+              }
+            ],
+            attrs: {
+              required: "",
+              "data-vv-name": "address",
+              name: "address",
+              readonly: ""
+            },
+            model: {
+              value: _vm.address,
+              callback: function($$v) {
+                _vm.address = $$v
+              },
+              expression: "address"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "md-icon",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.errors.has("address"),
+                  expression: "errors.has('address')"
+                }
+              ],
+              staticClass: "error"
+            },
+            [_vm._v("close")]
+          ),
+          _vm._v(" "),
+          _c(
+            "md-icon",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: !_vm.errors.has("address") && _vm.touched.address,
+                  expression: "!errors.has('address') && touched.address"
+                }
+              ],
+              staticClass: "success"
+            },
+            [_vm._v("done")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.marker.lat,
+            expression: "marker.lat"
+          }
+        ],
+        attrs: { type: "hidden", name: "latitude" },
+        domProps: { value: _vm.marker.lat },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.marker, "lat", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.marker.lng,
+            expression: "marker.lng"
+          }
+        ],
+        attrs: { type: "hidden", name: "longitude" },
+        domProps: { value: _vm.marker.lng },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.marker, "lng", $event.target.value)
+          }
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48693,7 +48425,7 @@ if (false) {
 }
 
 /***/ }),
-/* 183 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48765,7 +48497,7 @@ var render = function() {
                   [
                     _c("template", { slot: "label" }, [
                       _vm._v(
-                        "\n                        Authorization\n                    "
+                        "\n                        Parking Type\n                    "
                       )
                     ]),
                     _vm._v(" "),
@@ -48793,7 +48525,10 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("third-step", { ref: "step3" })
+                    _c("third-step", {
+                      ref: "step3",
+                      on: { "on-validated": _vm.wizardComplete }
+                    })
                   ],
                   2
                 )
@@ -48818,28 +48553,173 @@ if (false) {
 }
 
 /***/ }),
+/* 181 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(182)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(184)
+/* template */
+var __vue_template__ = __webpack_require__(185)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-6c0a33b2"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/Home.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6c0a33b2", Component.options)
+  } else {
+    hotAPI.reload("data-v-6c0a33b2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(183);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("2d3ba7d6", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c0a33b2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c0a33b2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.section[data-v-6c0a33b2] {\n  padding: 0;\n}\n.container[data-v-6c0a33b2] {\n  padding-top: 84px;\n}\n.md-subhead[data-v-6c0a33b2] {\n  margin-left: 20px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
 /* 184 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_material__ = __webpack_require__(185);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "wrapper" }, [
+      _c("div", { staticClass: "section" }, [
+        _c("div", { staticClass: "container" }, [
+          _c("h3", [_vm._v("Home Page")])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6c0a33b2", module.exports)
+  }
+}
+
+/***/ }),
+/* 186 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_material__ = __webpack_require__(187);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_material___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_material__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_material_dist_vue_material_min_css__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_material_dist_vue_material_min_css__ = __webpack_require__(188);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_material_dist_vue_material_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_material_dist_vue_material_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_material_kit_scss__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_material_kit_scss__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_material_kit_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__scss_material_kit_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__globalDirectives__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__globalMixins__ = __webpack_require__(193);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__globalComponents__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_lazyload__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_lazyload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vue_lazyload__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_carousel__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_carousel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue_carousel__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vee_validate__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_css__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__common_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__globalDirectives__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__globalMixins__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__globalComponents__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_lazyload__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_lazyload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue_lazyload__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_carousel__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vue_carousel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vue_carousel__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vee_validate__ = __webpack_require__(202);
 
 
 
-// import "@/../demo.css";
+
 
 
 
@@ -48850,12 +48730,12 @@ if (false) {
 /* harmony default export */ __webpack_exports__["a"] = ({
   install: function install(Vue) {
     Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_material___default.a);
-    Vue.use(__WEBPACK_IMPORTED_MODULE_3__globalDirectives__["a" /* default */]);
-    Vue.use(__WEBPACK_IMPORTED_MODULE_4__globalMixins__["a" /* default */]);
-    Vue.use(__WEBPACK_IMPORTED_MODULE_5__globalComponents__["a" /* default */]);
-    Vue.use(__WEBPACK_IMPORTED_MODULE_7_vue_carousel___default.a);
-    Vue.use(__WEBPACK_IMPORTED_MODULE_8_vee_validate__["a" /* default */], { fieldsBagName: 'veeFields' });
-    Vue.use(__WEBPACK_IMPORTED_MODULE_6_vue_lazyload___default.a, {
+    Vue.use(__WEBPACK_IMPORTED_MODULE_4__globalDirectives__["a" /* default */]);
+    Vue.use(__WEBPACK_IMPORTED_MODULE_5__globalMixins__["a" /* default */]);
+    Vue.use(__WEBPACK_IMPORTED_MODULE_6__globalComponents__["a" /* default */]);
+    Vue.use(__WEBPACK_IMPORTED_MODULE_8_vue_carousel___default.a);
+    Vue.use(__WEBPACK_IMPORTED_MODULE_9_vee_validate__["a" /* default */], { fieldsBagName: 'veeFields' });
+    Vue.use(__WEBPACK_IMPORTED_MODULE_7_vue_lazyload___default.a, {
       observer: true,
       // optional
       observerOptions: {
@@ -48867,7 +48747,7 @@ if (false) {
 });
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -79177,13 +79057,13 @@ if (false) {
 });
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(187);
+var content = __webpack_require__(189);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -79191,7 +79071,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(21)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -79208,7 +79088,7 @@ if(false) {
 }
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -79222,7 +79102,7 @@ exports.push([module.i, "/*!\n * vue-material v1.0.0-beta-10.2\n * Made with <3 
 
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports) {
 
 
@@ -79317,13 +79197,13 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(190);
+var content = __webpack_require__(192);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -79331,7 +79211,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(21)(content, options);
+var update = __webpack_require__(7)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -79348,7 +79228,7 @@ if(false) {
 }
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -79356,17 +79236,62 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n/*!\r\n\r\n =========================================================\r\n * Vue Material Kit - v1.0.0\r\n =========================================================\r\n\r\n * Product Page: http://www.creative-tim.com/product/vue-material-kit\r\n * Copyright 2018 Creative Tim (http://www.creative-tim.com)\r\n * Licensed under MIT (https://github.com/creativetimofficial/vue-material-kit/blob/master/LICENSE.md)\r\n\r\n =========================================================\r\n\r\n * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\r\n\r\n */\n/**\n * The complete material palette\n * ---\n * @access public\n * @type map\n * @group themes\n */\n/**\n * Theme any css property based on the current palette, accepting a themable\n * value that will give an contrasted\n * ---\n * Usage example:\n *\n * $foo-palette: (\n *   primary: md-get-palette-color(indigo, 500),\n *   accent: md-get-palette-color(pink, 500),\n *   theme: \"light\"\n * );\n *\n * ---\n * @access public\n * ---\n * @param {color} $type —  The desired color based on material palette\n * @param {string} $type —  A valid hue\n */\n/**\n * Get the current theme mode from the current theme\n * ---\n * Usage example:\n *\n * $theme-mode: md-get-theme-mode()\n *\n * ---\n * @access private\n */\n/**\n * Theme any css property based on the current palette, accepting a themable\n * value that will give an contrasted\n * ---\n * Usage example:\n *\n * .md-foo {\n *   min-width: 88px;\n *   height: 40px;\n *   background: md-theme(primary);\n * }\n *\n * ---\n * @access public\n * ---\n * @param {string} $type —  The themable value\n */\n/**\n * Get a color based on type by theme\n * ---\n * Usage example:\n *\n * $color: md-get-color-by-theme(dark, primary)\n *\n * ---\n * @access public\n * ---\n * @param {string} $color-theme —  The theme color | Accepts dark or light\n * @param {string} $type —  The color type\n */\n/**\n * Get a color based on type only\n * ---\n * Usage example:\n *\n * $color1: md-get-color-by-type(background, dark)\n * $color1: md-get-color-by-type(accent)\n *\n * ---\n * @access public\n * ---\n * @param {string} $type —  The color type\n * @param {string} $theme —  The fallback theme\n */\n/**\n * The default theme palette\n * primary: indigo 500 #3f51b5\n * accent: pink 500 #e91e63\n * theme: light\n *\n * It can be used just before importing the Vue Material stylesheet\n *\n * ---\n * @access public\n * @type colormap\n * @group themes\n */\n/**\n * Temporary variable to store all themable values\n * ---\n * @access private\n * @type map\n * @group themes\n */\n/**\n * Map variable to store all themes to be processed by each component\n * ---\n * @access private\n * @type map\n * @group themes\n */\n/**\n * Store the current theme name\n * ---\n * @access private\n * @type string\n * @group themes\n */\n/**\n * The color contrast values\n * ---\n * @access private\n * @type map\n * @group themes\n */\n/**\n * Hightly based on: \"Using Sass to automatically pick text colors\"\n * https://medium.com/dev-channel/using-sass-to-automatically-pick-text-colors-4ba7645d2796\n */\n/**\n * Precomputed linear color channel values, for use in contrast calculations.\n * See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests\n * ---\n *\n *  Algorithm, for c in 0 to 255:\n *  f(c) {\n *    c = c / 255;\n *    return c < 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);\n *  }\n *\n *  This lookup table is needed since there is no `pow` in SASS.\n *\n * ---\n * @access private\n * @type Map\n * @group themes\n */\n/**\n * Calculate the luminance for a color.\n * ---\n * @access private\n * ---\n * @param {string} $color —  The color to be analysed\n */\n/**\n * Calculate the contrast ratio between two colors.\n * ---\n * @access private\n * ---\n * @param {string} $bg —  The bg color\n * @param {string} $fg —  The fg color to be compared\n */\n/**\n * Determine whether to use dark or light text on top of given color.\n * Returns dark or light depending on the contrast ratio.\n * ---\n * @access private\n * ---\n * @param {string} $color —  The desired color to be compared\n */\n/**\n * Override extending the default palette giving new values. It will extend\n * the default values of the palette if has a property missing.\n * ---\n * Usage example:\n *\n * @include md-override-palette ((\n *   accent: blue,\n *   theme: \"dark\"\n * ))\n *\n * ---\n * @access public\n * @param {map} $palette —  The new palette\n */\n/**\n * Create a new theme based on a given palette. It will extend the default\n * values of the palette if has a property missing.\n * ---\n * Usage example:\n *\n * @include md-register-theme(\"alternative\", (\n *   primary: #212121,\n *   accent: #CDDC39,\n *   theme: dark\n * ));\n *\n * ---\n * @access public\n * @param {string} $name —  The theme name to be used with the Vue Material\n * @param {map} $palette [$md-default-palette] —  The theme palette\n */\n/**\n * Theme pieces of a given scss code for all pre registered themes.\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     background: md-theme(primary);\n *     color: md-theme(text-primary);\n *   }\n *\n *   &.md-accent {\n *     @include md-theme-component() {\n *       background: md-theme(accent);\n *       color: md-theme(text-accent);\n *     };\n *   }\n * }\n */\n/**\n * Theme pieces of a given scss code for all pre registered themes based on parent.\n * ---\n * Usage example:\n *\n * .md-foo {\n *   @include md-theme-component-relative() {\n *     @include md-theme-property(background, primary);\n *   }\n * }\n */\n/**\n * Theme a single css property\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     @include md-theme-property(background, primary);\n *     @include md-theme-property(color, text-primary, primary);\n *   }\n *\n *   &.md-accent {\n *     @include md-theme-component() {\n *       @include md-theme-property(background, accent);\n *       @include md-theme-property(color, text-primary, accent);\n *     }\n *   }\n * }\n *\n * ---\n * @access public\n * @param {string} $property —  The css property\n * @param {string} $type —  A palette type\n * @param {string} $background —  The background color to analyse contrast\n * @param {number} $opacity —  The opacity amount\n */\n/**\n * Theme a single css property darkening the color by a certain amount\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     @include md-theme-property-darken(background, primary, background, 10%);\n *     @include md-theme-property(color, text-primary, primary);\n *   }\n * }\n *\n * ---\n * @access public\n * @param {string} $property —  The css property\n * @param {string} $type —  A palette type\n * @param {string} $background —  The background color to analyse contrast\n * @param {string} $darken —  The darken amount to apply to the color\n */\n/**\n * Theme a single css property by\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     @include md-theme-property-by-hue(background, grey, 100, toolbar, background);\n *     @include md-theme-property(color, text-primary, background);\n *   }\n * }\n *\n * ---\n * @access public\n * @param {string} $property —  The css property\n * @param {string} $color —  A valid material palette color name\n * @param {string} $hue —  The hue amount to get the hex color\n * @param {string} $type —  The type of variable\n * @param {string} $variant —  The type of constrasted variable\n */\n:root {\n  --md-theme-selection-black-primary: #448aff\n    ;\n  --md-theme-selection-black-accent: #000\n    ;\n  --md-theme-selection-black-theme: light\n    ; }\n\n.md-theme-selection-black :not(input):not(textarea)::selection {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000);\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-theme-selection-black a:not(.md-button) {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-theme-selection-black a:not(.md-button):hover {\n    color: rgba(68, 138, 255, 0.8);\n    color: var(--md-theme-selection-black-primary-on-background, rgba(68, 138, 255, 0.8)); }\n  .md-theme-selection-black a:not(.md-button).md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-theme-selection-black a:not(.md-button).md-accent:hover {\n      color: rgba(0, 0, 0, 0.8);\n      color: var(--md-theme-selection-black-accent-on-background, rgba(0, 0, 0, 0.8)); }\n\nhtml.md-theme-selection-black {\n  background-color: #fafafa;\n  background-color: var(--md-theme-selection-black-background-variant, #fafafa);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n\n.md-theme-selection-black .md-caption, .md-theme-selection-black\n.md-display-1, .md-theme-selection-black\n.md-display-2, .md-theme-selection-black\n.md-display-3, .md-theme-selection-black\n.md-display-4 {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background-variant, rgba(0, 0, 0, 0.54)); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-corner, .md-scrollbar.md-theme-selection-black::-webkit-scrollbar-track {\n  background: #e1e1e1;\n  background: var(--md-theme-selection-black-scrollbar-background-on-background-variant, #e1e1e1); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-thumb {\n  background: #757575;\n  background: var(--md-theme-selection-black-scrollbar-on-background-variant, #757575); }\n\n:root {\n  --md-theme-default-primary: #9c27b0\n    ;\n  --md-theme-default-accent: #ff5252\n    ;\n  --md-theme-default-theme: light\n    ; }\n\n.md-theme-selection-black :not(input):not(textarea)::selection {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000);\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-theme-default :not(input):not(textarea)::selection {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent-on-background, #ff5252);\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-theme-selection-black a:not(.md-button) {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-theme-selection-black a:not(.md-button):hover {\n    color: rgba(68, 138, 255, 0.8);\n    color: var(--md-theme-selection-black-primary-on-background, rgba(68, 138, 255, 0.8)); }\n  .md-theme-selection-black a:not(.md-button).md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-theme-selection-black a:not(.md-button).md-accent:hover {\n      color: rgba(0, 0, 0, 0.8);\n      color: var(--md-theme-selection-black-accent-on-background, rgba(0, 0, 0, 0.8)); }\n\n.md-theme-default a:not(.md-button) {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-theme-default a:not(.md-button):hover {\n    color: rgba(156, 39, 176, 0.8);\n    color: var(--md-theme-default-primary-on-background, rgba(156, 39, 176, 0.8)); }\n  .md-theme-default a:not(.md-button).md-accent {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-theme-default a:not(.md-button).md-accent:hover {\n      color: rgba(255, 82, 82, 0.8);\n      color: var(--md-theme-default-accent-on-background, rgba(255, 82, 82, 0.8)); }\n\nhtml.md-theme-selection-black {\n  background-color: #fafafa;\n  background-color: var(--md-theme-selection-black-background-variant, #fafafa);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n\nhtml.md-theme-default {\n  background-color: #fafafa;\n  background-color: var(--md-theme-default-background-variant, #fafafa);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n\n.md-theme-selection-black .md-caption, .md-theme-selection-black\n.md-display-1, .md-theme-selection-black\n.md-display-2, .md-theme-selection-black\n.md-display-3, .md-theme-selection-black\n.md-display-4 {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background-variant, rgba(0, 0, 0, 0.54)); }\n\n.md-theme-default .md-caption, .md-theme-default\n.md-display-1, .md-theme-default\n.md-display-2, .md-theme-default\n.md-display-3, .md-theme-default\n.md-display-4 {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-text-accent-on-background-variant, rgba(0, 0, 0, 0.54)); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-corner, .md-scrollbar.md-theme-selection-black::-webkit-scrollbar-track {\n  background: #e1e1e1;\n  background: var(--md-theme-selection-black-scrollbar-background-on-background-variant, #e1e1e1); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-thumb {\n  background: #757575;\n  background: var(--md-theme-selection-black-scrollbar-on-background-variant, #757575); }\n\n.md-scrollbar.md-theme-default::-webkit-scrollbar-corner, .md-scrollbar.md-theme-default::-webkit-scrollbar-track {\n  background: #e1e1e1;\n  background: var(--md-theme-default-scrollbar-background-on-background-variant, #e1e1e1); }\n\n.md-scrollbar.md-theme-default::-webkit-scrollbar-thumb {\n  background: #757575;\n  background: var(--md-theme-default-scrollbar-on-background-variant, #757575); }\n\n.md-app:not(.md-overlap).md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n\n.md-app:not(.md-overlap).md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n\n.md-list.md-theme-selection-black .md-autocomplete-items .md-highlight-text-match {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-list.md-theme-selection-black .md-autocomplete-loading {\n  background-color: rgba(255, 255, 255, 0.54);\n  background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.54)); }\n\n.md-list.md-theme-default .md-autocomplete-items .md-highlight-text-match {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-list.md-theme-default .md-autocomplete-loading {\n  background-color: rgba(255, 255, 255, 0.54);\n  background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.54)); }\n\n.md-autocomplete.md-theme-selection-black.md-autocomplete-box {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused label {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n  .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box {\n    background-color: rgba(255, 255, 255, 0.12);\n    background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.12)); }\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box label,\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box input {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      -webkit-text-fill-color: #fff;\n      -webkit-text-fill-color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box svg {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused {\n      background-color: #fff;\n      background-color: var(--md-theme-selection-black-background, #fff); }\n      .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused label,\n      .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused input {\n        color: rgba(0, 0, 0, 0.38);\n        color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38));\n        -webkit-text-fill-color: rgba(0, 0, 0, 0.38);\n        -webkit-text-fill-color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n      .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused svg {\n        fill: rgba(0, 0, 0, 0.38);\n        fill: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-autocomplete.md-theme-default.md-autocomplete-box {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n  .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused label {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n  .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box {\n    background-color: rgba(255, 255, 255, 0.12);\n    background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.12)); }\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box label,\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box input {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      -webkit-text-fill-color: #fff;\n      -webkit-text-fill-color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box svg {\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused {\n      background-color: #fff;\n      background-color: var(--md-theme-default-background, #fff); }\n      .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused label,\n      .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused input {\n        color: rgba(0, 0, 0, 0.38);\n        color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38));\n        -webkit-text-fill-color: rgba(0, 0, 0, 0.38);\n        -webkit-text-fill-color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n      .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused svg {\n        fill: rgba(0, 0, 0, 0.38);\n        fill: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-autocomplete-box-content.md-theme-selection-black:after {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-selection-black-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-autocomplete-box-content.md-theme-default:after {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-default-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-avatar.md-theme-selection-black.md-avatar-icon {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-selection-black-icon-disabled, rgba(0, 0, 0, 0.38));\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-icon-disabled, #fff); }\n  .md-avatar.md-theme-selection-black.md-avatar-icon .md-icon {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-icon-disabled, #fff);\n    fill: #fff;\n    fill: var(--md-theme-selection-black-text-primary-on-icon-disabled, #fff); }\n\n.md-avatar.md-theme-selection-black.md-primary {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-avatar.md-theme-selection-black.md-primary.md-avatar-icon {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-avatar.md-theme-selection-black.md-primary.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-avatar.md-theme-selection-black.md-accent {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n  .md-avatar.md-theme-selection-black.md-accent.md-avatar-icon {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-avatar.md-theme-selection-black.md-accent.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-avatar.md-theme-default.md-avatar-icon {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-default-icon-disabled, rgba(0, 0, 0, 0.38));\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-icon-disabled, #fff); }\n  .md-avatar.md-theme-default.md-avatar-icon .md-icon {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-icon-disabled, #fff);\n    fill: #fff;\n    fill: var(--md-theme-default-text-primary-on-icon-disabled, #fff); }\n\n.md-avatar.md-theme-default.md-primary {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-avatar.md-theme-default.md-primary.md-avatar-icon {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-avatar.md-theme-default.md-primary.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-avatar.md-theme-default.md-accent {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n  .md-avatar.md-theme-default.md-accent.md-avatar-icon {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-avatar.md-theme-default.md-accent.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-bottom-bar.md-theme-selection-black.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n    .md-bottom-bar.md-theme-selection-black.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n      .md-bottom-bar.md-theme-selection-black.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #448aff;\n        fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-bottom-bar.md-theme-selection-black.md-type-shift {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-selection-black.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: #116aff;\n    background-color: var(--md-theme-selection-black-primary-on-primary, #116aff); }\n  .md-bottom-bar.md-theme-selection-black.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-selection-black-icon-on-primary, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-icon-on-primary, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-bottom-bar.md-theme-selection-black.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #000;\n      color: var(--md-theme-selection-black-accent-on-background, #000); }\n      .md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #000;\n        fill: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: black;\n    background-color: var(--md-theme-selection-black-accent-on-accent, black); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-selection-black-icon-on-accent, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-icon-on-accent, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-bottom-bar.md-theme-default.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n  .md-bottom-bar.md-theme-default.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n    .md-bottom-bar.md-theme-default.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n      .md-bottom-bar.md-theme-default.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #9c27b0;\n        fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-bottom-bar.md-theme-default.md-type-shift {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-default.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: #771e86;\n    background-color: var(--md-theme-default-primary-on-primary, #771e86); }\n  .md-bottom-bar.md-theme-default.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-default-icon-on-primary, #fff); }\n    .md-bottom-bar.md-theme-default.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-default-icon-on-primary, #fff); }\n  .md-bottom-bar.md-theme-default.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-bottom-bar.md-theme-default.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-bottom-bar.md-theme-default.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-bottom-bar.md-theme-default.md-accent.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-bottom-bar.md-theme-default.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #ff5252;\n      color: var(--md-theme-default-accent-on-background, #ff5252); }\n      .md-bottom-bar.md-theme-default.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #ff5252;\n        fill: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-bottom-bar.md-theme-default.md-accent.md-type-shift {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: #ff1f1f;\n    background-color: var(--md-theme-default-accent-on-accent, #ff1f1f); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-default-icon-on-accent, #fff); }\n    .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-default-icon-on-accent, #fff); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-button.md-theme-selection-black {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-button.md-theme-selection-black.md-primary {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n    .md-button.md-theme-selection-black.md-primary .md-icon-font {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n    .md-button.md-theme-selection-black.md-primary .md-icon-image {\n      fill: #448aff;\n      fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-button.md-theme-selection-black.md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-button.md-theme-selection-black.md-accent .md-icon-font {\n      color: #000;\n      color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-button.md-theme-selection-black.md-accent .md-icon-image {\n      fill: #000;\n      fill: var(--md-theme-selection-black-accent-on-background, #000); }\n  .md-button.md-theme-selection-black.md-raised[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-disabled-background-on-background, rgba(0, 0, 0, 0.12));\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.26)); }\n  .md-button.md-theme-selection-black.md-raised:not([disabled]) {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-button.md-theme-selection-black.md-raised:not([disabled]).md-primary {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      background-color: #448aff;\n      background-color: var(--md-theme-selection-black-primary, #448aff); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-button.md-theme-selection-black.md-raised:not([disabled]).md-accent {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff);\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-accent .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-accent .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n  .md-button.md-theme-selection-black.md-fab[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-disabled-background-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-button.md-theme-selection-black.md-fab:not([disabled]) {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000); }\n    .md-button.md-theme-selection-black.md-fab:not([disabled]) .md-icon-font {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-button.md-theme-selection-black.md-fab:not([disabled]) .md-icon-image {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-button.md-theme-selection-black.md-fab:not([disabled]).md-primary {\n      background-color: #448aff;\n      background-color: var(--md-theme-selection-black-primary, #448aff); }\n      .md-button.md-theme-selection-black.md-fab:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-button.md-theme-selection-black.md-fab:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-button.md-theme-selection-black[disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n    .md-button.md-theme-selection-black[disabled] .md-icon-font {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-selection-black-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-button.md-theme-selection-black[disabled] .md-icon-image {\n      fill: rgba(0, 0, 0, 0.38);\n      fill: var(--md-theme-selection-black-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-button.md-theme-default {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-button.md-theme-default.md-primary {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n    .md-button.md-theme-default.md-primary .md-icon-font {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n    .md-button.md-theme-default.md-primary .md-icon-image {\n      fill: #9c27b0;\n      fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-button.md-theme-default.md-accent {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-button.md-theme-default.md-accent .md-icon-font {\n      color: #ff5252;\n      color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-button.md-theme-default.md-accent .md-icon-image {\n      fill: #ff5252;\n      fill: var(--md-theme-default-accent-on-background, #ff5252); }\n  .md-button.md-theme-default.md-raised[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-disabled-background-on-background, rgba(0, 0, 0, 0.12));\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.26)); }\n  .md-button.md-theme-default.md-raised:not([disabled]) {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-button.md-theme-default.md-raised:not([disabled]).md-primary {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      background-color: #9c27b0;\n      background-color: var(--md-theme-default-primary, #9c27b0); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-button.md-theme-default.md-raised:not([disabled]).md-accent {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff);\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-accent .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-accent .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n  .md-button.md-theme-default.md-fab[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-disabled-background-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-button.md-theme-default.md-fab:not([disabled]) {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252); }\n    .md-button.md-theme-default.md-fab:not([disabled]) .md-icon-font {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-button.md-theme-default.md-fab:not([disabled]) .md-icon-image {\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-button.md-theme-default.md-fab:not([disabled]).md-primary {\n      background-color: #9c27b0;\n      background-color: var(--md-theme-default-primary, #9c27b0); }\n      .md-button.md-theme-default.md-fab:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-button.md-theme-default.md-fab:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-button.md-theme-default[disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n    .md-button.md-theme-default[disabled] .md-icon-font {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-default-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-button.md-theme-default[disabled] .md-icon-image {\n      fill: rgba(0, 0, 0, 0.38);\n      fill: var(--md-theme-default-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-card.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-card.md-theme-selection-black .md-card-expand .md-card-actions {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-card.md-theme-selection-black .md-card-header .md-button:not(.md-primary):not(.md-accent),\n  .md-card.md-theme-selection-black .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-card.md-theme-selection-black .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n    .md-card.md-theme-selection-black .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.54));\n      fill: rgba(0, 0, 0, 0.54);\n      fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-card.md-theme-selection-black > .md-card-area:after {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-card.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-card.md-theme-selection-black.md-primary .md-card-expand .md-card-actions {\n      background-color: #448aff;\n      background-color: var(--md-theme-selection-black-primary, #448aff); }\n    .md-card.md-theme-selection-black.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-selection-black.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-card.md-theme-selection-black.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-selection-black.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-selection-black.md-primary > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-primary, rgba(255, 255, 255, 0.12)); }\n  .md-card.md-theme-selection-black.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-card.md-theme-selection-black.md-accent .md-card-expand .md-card-actions {\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n    .md-card.md-theme-selection-black.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-selection-black.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-card.md-theme-selection-black.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-selection-black.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-selection-black.md-accent > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-accent, rgba(255, 255, 255, 0.12)); }\n\n.md-card.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-card.md-theme-default .md-card-expand .md-card-actions {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff); }\n  .md-card.md-theme-default .md-card-header .md-button:not(.md-primary):not(.md-accent),\n  .md-card.md-theme-default .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-card.md-theme-default .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n    .md-card.md-theme-default .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.54));\n      fill: rgba(0, 0, 0, 0.54);\n      fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-card.md-theme-default > .md-card-area:after {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-card.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-card.md-theme-default.md-primary .md-card-expand .md-card-actions {\n      background-color: #9c27b0;\n      background-color: var(--md-theme-default-primary, #9c27b0); }\n    .md-card.md-theme-default.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-default.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-card.md-theme-default.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-default.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-default.md-primary > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-default-divider-on-primary, rgba(255, 255, 255, 0.12)); }\n  .md-card.md-theme-default.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-card.md-theme-default.md-accent .md-card-expand .md-card-actions {\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n    .md-card.md-theme-default.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-default.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-card.md-theme-default.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-default.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-default.md-accent > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-default-divider-on-accent, rgba(255, 255, 255, 0.12)); }\n\n.md-checkbox.md-theme-selection-black.md-checked .md-checkbox-container {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000);\n  border-color: #000;\n  border-color: var(--md-theme-selection-black-accent, #000); }\n  .md-checkbox.md-theme-selection-black.md-checked .md-checkbox-container:after {\n    border-color: #fff;\n    border-color: var(--md-theme-selection-black-background, #fff); }\n\n.md-checkbox.md-theme-selection-black.md-checked .md-ripple {\n  color: #000;\n  color: var(--md-theme-selection-black-accent, #000); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: rgba(255, 255, 255, 0.3); }\n  .md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-checked.md-primary .md-checkbox-container {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff);\n  border-color: #448aff;\n  border-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-checkbox.md-theme-selection-black.md-checked.md-primary .md-ripple {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: transparent; }\n  .md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-disabled .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-checkbox.md-theme-selection-black.md-disabled.md-checked .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26);\n  background-color: rgba(0, 0, 0, 0.26); }\n\n.md-checkbox.md-theme-default.md-checked .md-checkbox-container {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252);\n  border-color: #ff5252;\n  border-color: var(--md-theme-default-accent, #ff5252); }\n  .md-checkbox.md-theme-default.md-checked .md-checkbox-container:after {\n    border-color: #fff;\n    border-color: var(--md-theme-default-background, #fff); }\n\n.md-checkbox.md-theme-default.md-checked .md-ripple {\n  color: #ff5252;\n  color: var(--md-theme-default-accent, #ff5252); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: rgba(255, 255, 255, 0.3); }\n  .md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-checked.md-primary .md-checkbox-container {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0);\n  border-color: #9c27b0;\n  border-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-checkbox.md-theme-default.md-checked.md-primary .md-ripple {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: transparent; }\n  .md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-disabled .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-checkbox.md-theme-default.md-disabled.md-checked .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26);\n  background-color: rgba(0, 0, 0, 0.26); }\n\n.md-chip.md-theme-selection-black {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-selection-black-highlight, rgba(0, 0, 0, 0.12));\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary, rgba(0, 0, 0, 0.87)); }\n  .md-chip.md-theme-selection-black .md-icon.md-icon-image svg {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-text-primary, #fff);\n    fill: #fff;\n    fill: var(--md-theme-selection-black-text-primary-on-text-primary, #fff); }\n  .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover {\n    background-color: rgba(0, 0, 0, 0.54);\n    background-color: var(--md-theme-selection-black-icon, rgba(0, 0, 0, 0.54));\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover .md-icon, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover .md-icon {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover .md-input-action {\n      background-color: rgba(255, 255, 255, 0.87);\n      background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.87));\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover .md-input-action .md-icon svg, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover .md-input-action .md-icon svg {\n        fill: rgba(0, 0, 0, 0.54);\n        fill: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54));\n        color: rgba(0, 0, 0, 0.54);\n        color: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-chip.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-chip.md-theme-selection-black.md-primary .md-input-action {\n      color: #fff;\n      color: var(--md-theme-selection-black-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-selection-black.md-primary.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-primary.md-clickable:not(.md-disabled):hover {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-icon, #fff);\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-selection-black-icon, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-selection-black.md-primary.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-primary.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-selection-black.md-accent, .md-chip.md-theme-selection-black.md-duplicated {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-chip.md-theme-selection-black.md-accent .md-input-action, .md-chip.md-theme-selection-black.md-duplicated .md-input-action {\n      color: #fff;\n      color: var(--md-theme-selection-black-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-selection-black.md-accent.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-accent.md-clickable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-duplicated.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-duplicated.md-clickable:not(.md-disabled):hover {\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-selection-black-icon, rgba(0, 0, 0, 0.54));\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-icon, #fff); }\n      .md-chip.md-theme-selection-black.md-accent.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-accent.md-clickable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-duplicated.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-duplicated.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-selection-black.md-disabled {\n    background-color: rgba(0, 0, 0, 0.1);\n    background-color: var(--md-theme-selection-black-highlight, rgba(0, 0, 0, 0.1));\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent, rgba(0, 0, 0, 0.54)); }\n\n.md-chip.md-theme-default {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-default-highlight, rgba(0, 0, 0, 0.12));\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary, rgba(0, 0, 0, 0.87)); }\n  .md-chip.md-theme-default .md-icon.md-icon-image svg {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-text-primary, #fff);\n    fill: #fff;\n    fill: var(--md-theme-default-text-primary-on-text-primary, #fff); }\n  .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover {\n    background-color: rgba(0, 0, 0, 0.54);\n    background-color: var(--md-theme-default-icon, rgba(0, 0, 0, 0.54));\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover .md-icon, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover .md-icon {\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover .md-input-action {\n      background-color: rgba(255, 255, 255, 0.87);\n      background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.87));\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover .md-input-action .md-icon svg, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover .md-input-action .md-icon svg {\n        fill: rgba(0, 0, 0, 0.54);\n        fill: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54));\n        color: rgba(0, 0, 0, 0.54);\n        color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-chip.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-chip.md-theme-default.md-primary .md-input-action {\n      color: #fff;\n      color: var(--md-theme-default-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-default.md-primary.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-primary.md-clickable:not(.md-disabled):hover {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-icon, #fff);\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-default-icon, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-default.md-primary.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-primary.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-default.md-accent, .md-chip.md-theme-default.md-duplicated {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-chip.md-theme-default.md-accent .md-input-action, .md-chip.md-theme-default.md-duplicated .md-input-action {\n      color: #fff;\n      color: var(--md-theme-default-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-default.md-accent.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-accent.md-clickable:not(.md-disabled):hover, .md-chip.md-theme-default.md-duplicated.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-duplicated.md-clickable:not(.md-disabled):hover {\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-default-icon, rgba(0, 0, 0, 0.54));\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-icon, #fff); }\n      .md-chip.md-theme-default.md-accent.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-accent.md-clickable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-duplicated.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-duplicated.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-default.md-disabled {\n    background-color: rgba(0, 0, 0, 0.1);\n    background-color: var(--md-theme-default-highlight, rgba(0, 0, 0, 0.1));\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent, rgba(0, 0, 0, 0.54)); }\n\n.md-chips.md-theme-selection-black .md-clear {\n  background-color: rgba(0, 0, 0, 0.2); }\n\n.md-chips.md-theme-default .md-clear {\n  background-color: rgba(0, 0, 0, 0.2); }\n\n.md-content.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-content.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-content.md-theme-selection-black.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n  .md-app .md-content.md-theme-selection-black {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12));\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-content.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-content.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-content.md-theme-default.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n  .md-app .md-content.md-theme-default {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12));\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-datepicker-dialog.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-header {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-body-header:after, .md-datepicker-dialog.md-theme-selection-black .md-datepicker-body-header:before {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-body-footer {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-week {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-disabled {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-today {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-day-button:hover,\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-month-button:hover,\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-year-button:hover {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider, rgba(0, 0, 0, 0.12)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-day-button.md-datepicker-selected {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-month-button.md-datepicker-selected,\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-year-button.md-datepicker-selected {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-year-selector {\n    border-bottom-color: rgba(0, 0, 0, 0.12);\n    border-bottom-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-datepicker-dialog.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-header {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-body-header:after, .md-datepicker-dialog.md-theme-default .md-datepicker-body-header:before {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-body-footer {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-week {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-disabled {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-today {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-day-button:hover,\n  .md-datepicker-dialog.md-theme-default .md-datepicker-month-button:hover,\n  .md-datepicker-dialog.md-theme-default .md-datepicker-year-button:hover {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider, rgba(0, 0, 0, 0.12)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-day-button.md-datepicker-selected {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-month-button.md-datepicker-selected,\n  .md-datepicker-dialog.md-theme-default .md-datepicker-year-button.md-datepicker-selected {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-year-selector {\n    border-bottom-color: rgba(0, 0, 0, 0.12);\n    border-bottom-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-dialog.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-dialog.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-divider.md-theme-selection-black {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-selection-black-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-divider.md-theme-default {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-default-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-drawer.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-drawer.md-theme-selection-black.md-persistent-mini.md-left {\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-drawer.md-theme-selection-black.md-persistent-mini.md-right {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-drawer.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-drawer.md-theme-default.md-persistent-mini.md-left {\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-drawer.md-theme-default.md-persistent-mini.md-right {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-empty-state.md-theme-selection-black .md-empty-state-icon.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-selection-black .md-empty-state-icon.md-icon-font {\n  color: rgba(0, 0, 0, 0.26);\n  color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-selection-black.md-rounded {\n  background-color: rgba(0, 0, 0, 0.06);\n  background-color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.06)); }\n\n.md-empty-state.md-theme-selection-black.md-primary .md-empty-state-icon.md-icon-image svg {\n  fill: #448aff;\n  fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-empty-state.md-theme-selection-black.md-primary .md-empty-state-icon.md-icon-font {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-empty-state.md-theme-selection-black.md-accent .md-empty-state-icon.md-icon-image svg {\n  fill: #000;\n  fill: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-empty-state.md-theme-selection-black.md-accent .md-empty-state-icon.md-icon-font {\n  color: #000;\n  color: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-empty-state.md-theme-default .md-empty-state-icon.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-default .md-empty-state-icon.md-icon-font {\n  color: rgba(0, 0, 0, 0.26);\n  color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-default.md-rounded {\n  background-color: rgba(0, 0, 0, 0.06);\n  background-color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.06)); }\n\n.md-empty-state.md-theme-default.md-primary .md-empty-state-icon.md-icon-image svg {\n  fill: #9c27b0;\n  fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-empty-state.md-theme-default.md-primary .md-empty-state-icon.md-icon-font {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-empty-state.md-theme-default.md-accent .md-empty-state-icon.md-icon-image svg {\n  fill: #ff5252;\n  fill: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-empty-state.md-theme-default.md-accent .md-empty-state-icon.md-icon-font {\n  color: #ff5252;\n  color: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-field.md-theme-selection-black:after {\n  background-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-selection-black:before {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-field.md-theme-selection-black .md-helper-text,\n.md-field.md-theme-selection-black .md-count,\n.md-field.md-theme-selection-black label {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-selection-black .md-suffix, .md-field.md-theme-selection-black .md-prefix {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-selection-black .md-input::-webkit-input-placeholder,\n.md-field.md-theme-selection-black .md-textarea::-webkit-input-placeholder {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-selection-black.md-focused .md-input,\n.md-field.md-theme-selection-black.md-focused .md-textarea, .md-field.md-theme-selection-black.md-has-value .md-input,\n.md-field.md-theme-selection-black.md-has-value .md-textarea {\n  -webkit-text-fill-color: rgba(0, 0, 0, 0.87); }\n\n.md-field.md-theme-selection-black.md-has-textarea:not(.md-autogrow):after {\n  border-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-selection-black.md-has-textarea:not(.md-autogrow):before {\n  border-color: #448aff;\n  border-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-field.md-theme-selection-black.md-disabled:after {\n  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.38) 0%, rgba(0, 0, 0, 0.38) 33%, transparent 0%); }\n\n.md-field.md-theme-selection-black.md-disabled label,\n.md-field.md-theme-selection-black.md-disabled .md-input,\n.md-field.md-theme-selection-black.md-disabled .md-textarea {\n  color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-selection-black > .md-icon:after {\n  background-color: #fafafa;\n  background-color: var(--md-theme-selection-black-background-variant, #fafafa); }\n\n.md-field.md-theme-selection-black.md-invalid:after {\n  background-color: #ff1744;\n  background-color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid.md-has-textarea:not(.md-autogrow):before {\n  border-color: #ff1744;\n  border-color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid label {\n  color: #ff1744;\n  color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid .md-error {\n  color: #ff1744;\n  color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid .md-date-icon,\n.md-field.md-theme-selection-black.md-invalid .md-date-icon svg {\n  color: #ff1744;\n  color: var(--md-theme-selection-black-fieldvariant, #ff1744);\n  fill: #ff1744;\n  fill: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-focused .md-input,\n.md-field.md-theme-selection-black.md-focused .md-textarea, .md-field.md-theme-selection-black.md-highlight .md-input,\n.md-field.md-theme-selection-black.md-highlight .md-textarea {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-field.md-theme-selection-black.md-focused > .md-icon, .md-field.md-theme-selection-black.md-highlight > .md-icon {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff);\n  fill: #448aff;\n  fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-field.md-theme-selection-black.md-focused label {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-field.md-theme-selection-black.md-disabled .md-icon svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-field.md-theme-default:after {\n  background-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-default:before {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-field.md-theme-default .md-helper-text,\n.md-field.md-theme-default .md-count,\n.md-field.md-theme-default label {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-default .md-suffix, .md-field.md-theme-default .md-prefix {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-default .md-input::-webkit-input-placeholder,\n.md-field.md-theme-default .md-textarea::-webkit-input-placeholder {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-default.md-focused .md-input,\n.md-field.md-theme-default.md-focused .md-textarea, .md-field.md-theme-default.md-has-value .md-input,\n.md-field.md-theme-default.md-has-value .md-textarea {\n  -webkit-text-fill-color: rgba(0, 0, 0, 0.87); }\n\n.md-field.md-theme-default.md-has-textarea:not(.md-autogrow):after {\n  border-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-default.md-has-textarea:not(.md-autogrow):before {\n  border-color: #9c27b0;\n  border-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-field.md-theme-default.md-disabled:after {\n  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.38) 0%, rgba(0, 0, 0, 0.38) 33%, transparent 0%); }\n\n.md-field.md-theme-default.md-disabled label,\n.md-field.md-theme-default.md-disabled .md-input,\n.md-field.md-theme-default.md-disabled .md-textarea {\n  color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-default > .md-icon:after {\n  background-color: #fafafa;\n  background-color: var(--md-theme-default-background-variant, #fafafa); }\n\n.md-field.md-theme-default.md-invalid:after {\n  background-color: #ff1744;\n  background-color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid.md-has-textarea:not(.md-autogrow):before {\n  border-color: #ff1744;\n  border-color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid label {\n  color: #ff1744;\n  color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid .md-error {\n  color: #ff1744;\n  color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid .md-date-icon,\n.md-field.md-theme-default.md-invalid .md-date-icon svg {\n  color: #ff1744;\n  color: var(--md-theme-default-fieldvariant, #ff1744);\n  fill: #ff1744;\n  fill: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-focused .md-input,\n.md-field.md-theme-default.md-focused .md-textarea, .md-field.md-theme-default.md-highlight .md-input,\n.md-field.md-theme-default.md-highlight .md-textarea {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-field.md-theme-default.md-focused > .md-icon, .md-field.md-theme-default.md-highlight > .md-icon {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0);\n  fill: #9c27b0;\n  fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-field.md-theme-default.md-focused label {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-field.md-theme-default.md-disabled .md-icon svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-icon.md-theme-selection-black.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.54);\n  fill: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-selection-black.md-icon-image svg.md-primary {\n    fill: #448aff;\n    fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-icon.md-theme-selection-black.md-icon-image svg.md-accent {\n    fill: #000;\n    fill: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-icon.md-theme-selection-black.md-icon-font {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-selection-black.md-icon-font.md-primary {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-icon.md-theme-selection-black.md-icon-font.md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-icon.md-theme-default.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.54);\n  fill: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-default.md-icon-image svg.md-primary {\n    fill: #9c27b0;\n    fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-icon.md-theme-default.md-icon-image svg.md-accent {\n    fill: #ff5252;\n    fill: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-icon.md-theme-default.md-icon-font {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-default.md-icon-font.md-primary {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-icon.md-theme-default.md-icon-font.md-accent {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-list.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-selection-black.md-double-line .md-list-item-text :nth-child(2) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-selection-black.md-triple-line .md-list-item-text :nth-child(3) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-selection-black .md-highlight .md-list-item-container {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-list.md-theme-selection-black .md-list-item-container {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-list.md-theme-selection-black .md-list-item-container:not(.md-list-item-default):not([disabled]):hover {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12));\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-selection-black [disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-list.md-theme-selection-black .md-selected .md-list-item-content,\n  .md-list.md-theme-selection-black .router-link-exact-active .md-list-item-content {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-list.md-theme-selection-black .md-list-item-expand.md-active {\n    border-color: rgba(0, 0, 0, 0.12);\n    border-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-list.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-default.md-double-line .md-list-item-text :nth-child(2) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-default.md-triple-line .md-list-item-text :nth-child(3) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-default .md-highlight .md-list-item-container {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-list.md-theme-default .md-list-item-container {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-list.md-theme-default .md-list-item-container:not(.md-list-item-default):not([disabled]):hover {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12));\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-default [disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-list.md-theme-default .md-selected .md-list-item-content,\n  .md-list.md-theme-default .router-link-exact-active .md-list-item-content {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-list.md-theme-default .md-list-item-expand.md-active {\n    border-color: rgba(0, 0, 0, 0.12);\n    border-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-menu-item.md-theme-selection-black.md-primary .md-list-item-link,\n.md-menu-item.md-theme-selection-black.md-primary .md-list-item-router,\n.md-menu-item.md-theme-selection-black.md-primary .md-list-item-button {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-menu-item.md-theme-selection-black.md-accent .md-list-item-link,\n.md-menu-item.md-theme-selection-black.md-accent .md-list-item-router,\n.md-menu-item.md-theme-selection-black.md-accent .md-list-item-button {\n  color: #000;\n  color: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-menu-item.md-theme-default.md-primary .md-list-item-link,\n.md-menu-item.md-theme-default.md-primary .md-list-item-router,\n.md-menu-item.md-theme-default.md-primary .md-list-item-button {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-menu-item.md-theme-default.md-accent .md-list-item-link,\n.md-menu-item.md-theme-default.md-accent .md-list-item-router,\n.md-menu-item.md-theme-default.md-accent .md-list-item-button {\n  color: #ff5252;\n  color: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-progress-bar.md-theme-selection-black.md-indeterminate, .md-progress-bar.md-theme-selection-black.md-query {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n  .md-progress-bar.md-theme-selection-black.md-indeterminate .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-selection-black.md-indeterminate .md-progress-bar-fill:after, .md-progress-bar.md-theme-selection-black.md-query .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-selection-black.md-query .md-progress-bar-fill:after {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-progress-bar.md-theme-selection-black.md-indeterminate.md-accent, .md-progress-bar.md-theme-selection-black.md-query.md-accent {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n    .md-progress-bar.md-theme-selection-black.md-indeterminate.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-selection-black.md-indeterminate.md-accent .md-progress-bar-fill:after, .md-progress-bar.md-theme-selection-black.md-query.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-selection-black.md-query.md-accent .md-progress-bar-fill:after {\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-bar.md-theme-selection-black.md-determinate {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n  .md-progress-bar.md-theme-selection-black.md-determinate .md-progress-bar-fill {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-progress-bar.md-theme-selection-black.md-determinate.md-accent {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n    .md-progress-bar.md-theme-selection-black.md-determinate.md-accent .md-progress-bar-fill {\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer .md-progress-bar-fill {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer .md-progress-bar-track {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer .md-progress-bar-buffer {\n  border-color: rgba(68, 138, 255, 0.38);\n  border-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer.md-accent .md-progress-bar-fill {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer.md-accent .md-progress-bar-track {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer.md-accent .md-progress-bar-buffer {\n  border-color: rgba(0, 0, 0, 0.38);\n  border-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-indeterminate, .md-progress-bar.md-theme-default.md-query {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n  .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after, .md-progress-bar.md-theme-default.md-query .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-default.md-query .md-progress-bar-fill:after {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-progress-bar.md-theme-default.md-indeterminate.md-accent, .md-progress-bar.md-theme-default.md-query.md-accent {\n    background-color: rgba(255, 82, 82, 0.38);\n    background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n    .md-progress-bar.md-theme-default.md-indeterminate.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-default.md-indeterminate.md-accent .md-progress-bar-fill:after, .md-progress-bar.md-theme-default.md-query.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-default.md-query.md-accent .md-progress-bar-fill:after {\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-progress-bar.md-theme-default.md-determinate {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n  .md-progress-bar.md-theme-default.md-determinate .md-progress-bar-fill {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-progress-bar.md-theme-default.md-determinate.md-accent {\n    background-color: rgba(255, 82, 82, 0.38);\n    background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n    .md-progress-bar.md-theme-default.md-determinate.md-accent .md-progress-bar-fill {\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-progress-bar.md-theme-default.md-buffer .md-progress-bar-fill {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-progress-bar.md-theme-default.md-buffer .md-progress-bar-track {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-buffer .md-progress-bar-buffer {\n  border-color: rgba(156, 39, 176, 0.38);\n  border-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-buffer.md-accent .md-progress-bar-fill {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-progress-bar.md-theme-default.md-buffer.md-accent .md-progress-bar-track {\n  background-color: rgba(255, 82, 82, 0.38);\n  background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-buffer.md-accent .md-progress-bar-buffer {\n  border-color: rgba(255, 82, 82, 0.38);\n  border-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n\n.md-progress-spinner.md-theme-selection-black .md-progress-spinner-circle {\n  stroke: #448aff;\n  stroke: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-progress-spinner.md-theme-selection-black.md-accent .md-progress-spinner-circle {\n  stroke: #000;\n  stroke: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-spinner.md-theme-default .md-progress-spinner-circle {\n  stroke: #9c27b0;\n  stroke: var(--md-theme-default-primary, #9c27b0); }\n\n.md-progress-spinner.md-theme-default.md-accent .md-progress-spinner-circle {\n  stroke: #ff5252;\n  stroke: var(--md-theme-default-accent, #ff5252); }\n\n.md-radio.md-theme-selection-black.md-checked .md-radio-container {\n  border-color: #000;\n  border-color: var(--md-theme-selection-black-accent, #000); }\n  .md-radio.md-theme-selection-black.md-checked .md-radio-container:after {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-radio.md-theme-selection-black.md-checked .md-ripple {\n  color: #000;\n  color: var(--md-theme-selection-black-accent, #000); }\n\n.md-radio.md-theme-selection-black.md-checked.md-primary .md-radio-container {\n  border-color: #448aff;\n  border-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-radio.md-theme-selection-black.md-checked.md-primary .md-radio-container:after {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-radio.md-theme-selection-black.md-checked.md-primary .md-ripple {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-radio.md-theme-selection-black .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-radio.md-theme-selection-black.md-disabled .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-radio.md-theme-selection-black.md-disabled.md-checked .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n  .md-radio.md-theme-selection-black.md-disabled.md-checked .md-radio-container:after {\n    background-color: rgba(0, 0, 0, 0.26); }\n\n.md-radio.md-theme-default.md-checked .md-radio-container {\n  border-color: #ff5252;\n  border-color: var(--md-theme-default-accent, #ff5252); }\n  .md-radio.md-theme-default.md-checked .md-radio-container:after {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-radio.md-theme-default.md-checked .md-ripple {\n  color: #ff5252;\n  color: var(--md-theme-default-accent, #ff5252); }\n\n.md-radio.md-theme-default.md-checked.md-primary .md-radio-container {\n  border-color: #9c27b0;\n  border-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-radio.md-theme-default.md-checked.md-primary .md-radio-container:after {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-radio.md-theme-default.md-checked.md-primary .md-ripple {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-radio.md-theme-default .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-radio.md-theme-default.md-disabled .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-radio.md-theme-default.md-disabled.md-checked .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n  .md-radio.md-theme-default.md-disabled.md-checked .md-radio-container:after {\n    background-color: rgba(0, 0, 0, 0.26); }\n\n.md-snackbar.md-theme-selection-black {\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-text-primary, #fff);\n  background-color: #323232; }\n\n.md-snackbar.md-theme-default {\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-text-primary, #fff);\n  background-color: #323232; }\n\n.md-steppers.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-selection-black .md-stepper-icon:after, .md-steppers.md-theme-selection-black .md-stepper-icon:before,\n  .md-steppers.md-theme-selection-black .md-stepper-number:after,\n  .md-steppers.md-theme-selection-black .md-stepper-number:before,\n  .md-steppers.md-theme-selection-black .md-stepper:after,\n  .md-steppers.md-theme-selection-black .md-stepper:before {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-selection-black .md-stepper-number {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38));\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-text-hint, #fff); }\n    .md-steppers.md-theme-selection-black .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-text-hint, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-text-hint, #fff); }\n  .md-steppers.md-theme-selection-black .md-stepper-header .md-button-content {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-steppers.md-theme-selection-black .md-stepper-header .md-button-content:after, .md-steppers.md-theme-selection-black .md-stepper-header .md-button-content:before {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-active .md-button-content, .md-steppers.md-theme-selection-black .md-stepper-header.md-done .md-button-content {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-active .md-stepper-number, .md-steppers.md-theme-selection-black .md-stepper-header.md-done .md-stepper-number {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary-on-background, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-steppers.md-theme-selection-black .md-stepper-header.md-active .md-stepper-number svg, .md-steppers.md-theme-selection-black .md-stepper-header.md-done .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-error .md-button-content {\n    color: #ff1744;\n    color: var(--md-theme-selection-black-steppervariant, #ff1744); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-error .md-icon svg {\n    color: #ff1744;\n    color: var(--md-theme-selection-black-steppervariant, #ff1744);\n    fill: #ff1744;\n    fill: var(--md-theme-selection-black-steppervariant, #ff1744); }\n\n.md-steppers.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-default .md-stepper-icon:after, .md-steppers.md-theme-default .md-stepper-icon:before,\n  .md-steppers.md-theme-default .md-stepper-number:after,\n  .md-steppers.md-theme-default .md-stepper-number:before,\n  .md-steppers.md-theme-default .md-stepper:after,\n  .md-steppers.md-theme-default .md-stepper:before {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-default .md-stepper-number {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38));\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-text-hint, #fff); }\n    .md-steppers.md-theme-default .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-text-hint, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-text-hint, #fff); }\n  .md-steppers.md-theme-default .md-stepper-header .md-button-content {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-steppers.md-theme-default .md-stepper-header .md-button-content:after, .md-steppers.md-theme-default .md-stepper-header .md-button-content:before {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-default .md-stepper-header.md-active .md-button-content, .md-steppers.md-theme-default .md-stepper-header.md-done .md-button-content {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-default .md-stepper-header.md-active .md-stepper-number, .md-steppers.md-theme-default .md-stepper-header.md-done .md-stepper-number {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary-on-background, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-steppers.md-theme-default .md-stepper-header.md-active .md-stepper-number svg, .md-steppers.md-theme-default .md-stepper-header.md-done .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-steppers.md-theme-default .md-stepper-header.md-error .md-button-content {\n    color: #ff1744;\n    color: var(--md-theme-default-steppervariant, #ff1744); }\n  .md-steppers.md-theme-default .md-stepper-header.md-error .md-icon svg {\n    color: #ff1744;\n    color: var(--md-theme-default-steppervariant, #ff1744);\n    fill: #ff1744;\n    fill: var(--md-theme-default-steppervariant, #ff1744); }\n\n.md-subheader.md-theme-selection-black {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-subheader.md-theme-selection-black.md-primary {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-subheader.md-theme-default {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-subheader.md-theme-default.md-primary {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-switch.md-theme-selection-black.md-checked .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n\n.md-switch.md-theme-selection-black.md-checked .md-switch-thumb {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-switch.md-theme-selection-black.md-checked .md-ripple {\n  color: #000;\n  color: var(--md-theme-selection-black-accent, #000); }\n\n.md-switch.md-theme-selection-black.md-checked.md-primary .md-switch-container {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n\n.md-switch.md-theme-selection-black.md-checked.md-primary .md-switch-thumb {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-switch.md-theme-selection-black.md-checked.md-primary .md-ripple {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-switch.md-theme-selection-black .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.38); }\n\n.md-switch.md-theme-selection-black .md-switch-thumb {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-selection-black-switchvariant, #f5f5f5); }\n\n.md-switch.md-theme-selection-black.md-disabled .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.12); }\n\n.md-switch.md-theme-selection-black.md-disabled .md-switch-thumb {\n  background-color: #bdbdbd;\n  background-color: var(--md-theme-selection-black-switchvariant, #bdbdbd); }\n\n.md-switch.md-theme-default.md-checked .md-switch-container {\n  background-color: rgba(255, 82, 82, 0.38);\n  background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n\n.md-switch.md-theme-default.md-checked .md-switch-thumb {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-switch.md-theme-default.md-checked .md-ripple {\n  color: #ff5252;\n  color: var(--md-theme-default-accent, #ff5252); }\n\n.md-switch.md-theme-default.md-checked.md-primary .md-switch-container {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n\n.md-switch.md-theme-default.md-checked.md-primary .md-switch-thumb {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-switch.md-theme-default.md-checked.md-primary .md-ripple {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-switch.md-theme-default .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.38); }\n\n.md-switch.md-theme-default .md-switch-thumb {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-default-switchvariant, #f5f5f5); }\n\n.md-switch.md-theme-default.md-disabled .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.12); }\n\n.md-switch.md-theme-default.md-disabled .md-switch-thumb {\n  background-color: #bdbdbd;\n  background-color: var(--md-theme-default-switchvariant, #bdbdbd); }\n\n.md-table.md-theme-selection-black .md-table-content,\n.md-table.md-theme-selection-black .md-table-alternate-header {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n\n.md-table.md-theme-selection-black .md-table-alternate-header .md-table-toolbar {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87));\n  background-color: rgba(0, 0, 0, 0.2);\n  background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.2)); }\n\n.md-table.md-theme-selection-black .md-table-row:hover:not(.md-header-row) .md-table-cell {\n  background-color: rgba(0, 0, 0, 0.08);\n  background-color: var(--md-theme-selection-black-highlight-on-background, rgba(0, 0, 0, 0.08)); }\n\n.md-table.md-theme-selection-black .md-table-row.md-selected, .md-table.md-theme-selection-black .md-table-row.md-selected-single {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-selection-black-rowvariant, #f5f5f5); }\n  .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary-on-background, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary .md-ripple, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary .md-checkbox-container, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary .md-checkbox-container:after, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary .md-checkbox-container:after {\n        border-color: #448aff;\n        border-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent-on-background, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent .md-ripple, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent .md-checkbox-container, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent .md-checkbox-container:after, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent .md-checkbox-container:after {\n        border-color: #000;\n        border-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-table.md-theme-selection-black .md-table-row td {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-selection-black .md-table-head {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n\n.md-table.md-theme-selection-black .md-table-fixed-header-active {\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-selection-black .md-sortable:hover, .md-table.md-theme-selection-black .md-sortable.md-sorted {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-table.md-theme-selection-black .md-sortable:hover svg, .md-table.md-theme-selection-black .md-sortable.md-sorted svg {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87));\n    fill: rgba(0, 0, 0, 0.87);\n    fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-table.md-theme-selection-black .md-table-pagination {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-default .md-table-content,\n.md-table.md-theme-default .md-table-alternate-header {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n\n.md-table.md-theme-default .md-table-alternate-header .md-table-toolbar {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87));\n  background-color: rgba(255, 82, 82, 0.2);\n  background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.2)); }\n\n.md-table.md-theme-default .md-table-row:hover:not(.md-header-row) .md-table-cell {\n  background-color: rgba(0, 0, 0, 0.08);\n  background-color: var(--md-theme-default-highlight-on-background, rgba(0, 0, 0, 0.08)); }\n\n.md-table.md-theme-default .md-table-row.md-selected, .md-table.md-theme-default .md-table-row.md-selected-single {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-default-rowvariant, #f5f5f5); }\n  .md-table.md-theme-default .md-table-row.md-selected.md-primary, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary-on-background, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-table.md-theme-default .md-table-row.md-selected.md-primary .md-ripple, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-default .md-table-row.md-selected.md-primary .md-checkbox-container, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-default .md-table-row.md-selected.md-primary .md-checkbox-container:after, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary .md-checkbox-container:after {\n        border-color: #9c27b0;\n        border-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-table.md-theme-default .md-table-row.md-selected.md-accent, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent-on-background, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-table.md-theme-default .md-table-row.md-selected.md-accent .md-ripple, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-default .md-table-row.md-selected.md-accent .md-checkbox-container, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-default .md-table-row.md-selected.md-accent .md-checkbox-container:after, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent .md-checkbox-container:after {\n        border-color: #ff5252;\n        border-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-table.md-theme-default .md-table-row td {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-default .md-table-head {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n\n.md-table.md-theme-default .md-table-fixed-header-active {\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-default .md-sortable:hover, .md-table.md-theme-default .md-sortable.md-sorted {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-table.md-theme-default .md-sortable:hover svg, .md-table.md-theme-default .md-sortable.md-sorted svg {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87));\n    fill: rgba(0, 0, 0, 0.87);\n    fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-table.md-theme-default .md-table-pagination {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-tabs.md-theme-selection-black .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background-on-background, #fff); }\n  .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #448aff;\n        color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n        .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #448aff;\n          fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black .md-tabs-indicator {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000); }\n  .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background-on-background, #fff); }\n  .md-tabs.md-theme-default .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #9c27b0;\n        color: var(--md-theme-default-primary-on-background, #9c27b0); }\n        .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #9c27b0;\n          fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default .md-tabs-indicator {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-navigation {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-navigation {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent-on-background, #ff5252); }\n  .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-selection-black .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background-on-background, #fff); }\n  .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #448aff;\n        color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n        .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #448aff;\n          fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black .md-tabs-indicator {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000); }\n  .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background-on-background, #fff); }\n  .md-tabs.md-theme-default .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #9c27b0;\n        color: var(--md-theme-default-primary-on-background, #9c27b0); }\n        .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #9c27b0;\n          fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default .md-tabs-indicator {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-navigation {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-navigation {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent-on-background, #ff5252); }\n  .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-toolbar.md-theme-selection-black {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87));\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-selection-black-toolbarvariant, #f5f5f5); }\n  .md-toolbar.md-theme-selection-black .md-icon {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-selection-black .md-icon svg {\n      fill: rgba(0, 0, 0, 0.87);\n      fill: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-selection-black .md-title,\n  .md-toolbar.md-theme-selection-black .md-display-1,\n  .md-toolbar.md-theme-selection-black .md-display-2 {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-selection-black.md-primary .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-toolbar.md-theme-selection-black.md-primary .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-selection-black.md-primary .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-selection-black.md-primary .md-title,\n    .md-toolbar.md-theme-selection-black.md-primary .md-display-1,\n    .md-toolbar.md-theme-selection-black.md-primary .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-toolbar.md-theme-selection-black.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-selection-black.md-accent .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-toolbar.md-theme-selection-black.md-accent .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-selection-black.md-accent .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-selection-black.md-accent .md-title,\n    .md-toolbar.md-theme-selection-black.md-accent .md-display-1,\n    .md-toolbar.md-theme-selection-black.md-accent .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n  .md-toolbar.md-theme-selection-black.md-transparent {\n    background-color: transparent;\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-selection-black.md-transparent .md-icon {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n      .md-toolbar.md-theme-selection-black.md-transparent .md-icon svg {\n        fill: rgba(0, 0, 0, 0.87);\n        fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-selection-black.md-transparent .md-title,\n    .md-toolbar.md-theme-selection-black.md-transparent .md-display-1,\n    .md-toolbar.md-theme-selection-black.md-transparent .md-display-2 {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-toolbar.md-theme-default {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87));\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-default-toolbarvariant, #f5f5f5); }\n  .md-toolbar.md-theme-default .md-icon {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-default .md-icon svg {\n      fill: rgba(0, 0, 0, 0.87);\n      fill: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-default .md-title,\n  .md-toolbar.md-theme-default .md-display-1,\n  .md-toolbar.md-theme-default .md-display-2 {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-default.md-primary .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-toolbar.md-theme-default.md-primary .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-default.md-primary .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-default.md-primary .md-title,\n    .md-toolbar.md-theme-default.md-primary .md-display-1,\n    .md-toolbar.md-theme-default.md-primary .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-toolbar.md-theme-default.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-default.md-accent .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-toolbar.md-theme-default.md-accent .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-default.md-accent .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-default.md-accent .md-title,\n    .md-toolbar.md-theme-default.md-accent .md-display-1,\n    .md-toolbar.md-theme-default.md-accent .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n  .md-toolbar.md-theme-default.md-transparent {\n    background-color: transparent;\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-default.md-transparent .md-icon {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n      .md-toolbar.md-theme-default.md-transparent .md-icon svg {\n        fill: rgba(0, 0, 0, 0.87);\n        fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-default.md-transparent .md-title,\n    .md-toolbar.md-theme-default.md-transparent .md-display-1,\n    .md-toolbar.md-theme-default.md-transparent .md-display-2 {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-tooltip.md-theme-selection-black {\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-tooltip, #fff);\n  background-color: rgba(97, 97, 97, 0.9);\n  background-color: var(--md-theme-selection-black-tooltip-on-background, rgba(97, 97, 97, 0.9)); }\n\n.md-tooltip.md-theme-default {\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-tooltip, #fff);\n  background-color: rgba(97, 97, 97, 0.9);\n  background-color: var(--md-theme-default-tooltip-on-background, rgba(97, 97, 97, 0.9)); }\n\n.md-badge.md-theme-selection-black {\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-accent, #fff);\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n  .md-badge.md-theme-selection-black.md-primary {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-badge.md-theme-default {\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-accent, #fff);\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n  .md-badge.md-theme-default.md-primary {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff);\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n\n/* ANIMATION */\n/* SHADOWS */\n/* Shadows (from mdl http://www.getmdl.io/) */\n/* perfect-scrollbar v0.6.13 */\n.ps-container {\n  -ms-touch-action: auto;\n  touch-action: auto;\n  overflow: hidden !important;\n  -ms-overflow-style: none; }\n\n@supports (-ms-overflow-style: none) {\n  .ps-container {\n    overflow: auto !important; } }\n\n@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {\n  .ps-container {\n    overflow: auto !important; } }\n\n.ps-container.ps-active-x > .ps-scrollbar-x-rail,\n.ps-container.ps-active-y > .ps-scrollbar-y-rail {\n  display: block;\n  background-color: transparent; }\n\n.ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {\n  background-color: #999;\n  height: 11px; }\n\n.ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {\n  background-color: #999;\n  width: 11px; }\n\n.ps-container > .ps-scrollbar-x-rail {\n  display: none;\n  position: absolute;\n  /* please don't change 'position' */\n  opacity: 0;\n  -webkit-transition: background-color .2s linear, opacity .2s linear;\n  -o-transition: background-color .2s linear, opacity .2s linear;\n  -moz-transition: background-color .2s linear, opacity .2s linear;\n  transition: background-color .2s linear, opacity .2s linear;\n  bottom: 0px;\n  /* there must be 'bottom' for ps-scrollbar-x-rail */\n  height: 15px; }\n\n.ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {\n  position: absolute;\n  /* please don't change 'position' */\n  background-color: #aaa;\n  -webkit-border-radius: 6px;\n  -moz-border-radius: 6px;\n  border-radius: 6px;\n  -webkit-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  -o-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  -moz-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -webkit-border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  bottom: 2px;\n  /* there must be 'bottom' for ps-scrollbar-x */\n  height: 6px; }\n\n.ps-container > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x, .ps-container > .ps-scrollbar-x-rail:active > .ps-scrollbar-x {\n  height: 11px; }\n\n.ps-container > .ps-scrollbar-y-rail {\n  display: none;\n  position: absolute;\n  /* please don't change 'position' */\n  opacity: 0;\n  -webkit-transition: background-color .2s linear, opacity .2s linear;\n  -o-transition: background-color .2s linear, opacity .2s linear;\n  -moz-transition: background-color .2s linear, opacity .2s linear;\n  transition: background-color .2s linear, opacity .2s linear;\n  right: 0;\n  /* there must be 'right' for ps-scrollbar-y-rail */\n  width: 15px; }\n\n.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {\n  position: absolute;\n  /* please don't change 'position' */\n  background-color: #aaa;\n  -webkit-border-radius: 6px;\n  -moz-border-radius: 6px;\n  border-radius: 6px;\n  -webkit-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  -o-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  -moz-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -webkit-border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  right: 2px;\n  /* there must be 'right' for ps-scrollbar-y */\n  width: 6px; }\n\n.ps-container > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container > .ps-scrollbar-y-rail:active > .ps-scrollbar-y {\n  width: 11px; }\n\n.ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {\n  background-color: #999;\n  height: 11px; }\n\n.ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {\n  background-color: #999;\n  width: 11px; }\n\n.ps-container:hover > .ps-scrollbar-x-rail,\n.ps-container:hover > .ps-scrollbar-y-rail {\n  opacity: 0.6; }\n\n.ps-container:hover > .ps-scrollbar-x-rail:hover {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {\n  background-color: #999; }\n\n.ps-container:hover > .ps-scrollbar-y-rail:hover {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y {\n  background-color: #999; }\n\n/*! nouislider - 11.1.0 - 2018-04-02 11:18:13 */\n/* Functional styling;\r\n * These styles are required for noUiSlider to function.\r\n * You don't need to change these rules to apply your design.\r\n */\n.noUi-target,\n.noUi-target * {\n  -webkit-touch-callout: none;\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n  -webkit-user-select: none;\n  -ms-touch-action: none;\n  touch-action: none;\n  -ms-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box; }\n\n.noUi-target {\n  position: relative;\n  direction: ltr; }\n\n.noUi-base,\n.noUi-connects {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  z-index: 1; }\n\n/* Wrapper for all connect elements.\r\n */\n.noUi-connects {\n  overflow: hidden;\n  z-index: 0; }\n\n.noUi-connect,\n.noUi-origin {\n  will-change: transform;\n  position: absolute;\n  z-index: 1;\n  top: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  -ms-transform-origin: 0 0;\n  -webkit-transform-origin: 0 0;\n  transform-origin: 0 0; }\n\n/* Offset direction\r\n */\nhtml:not([dir=\"rtl\"]) .noUi-horizontal .noUi-origin {\n  left: auto;\n  right: 0; }\n\n/* Give origins 0 height/width so they don't interfere with clicking the\r\n * connect elements.\r\n */\n.noUi-vertical .noUi-origin {\n  width: 0; }\n\n.noUi-horizontal .noUi-origin {\n  height: 0; }\n\n.noUi-handle {\n  position: absolute; }\n\n.noUi-state-tap .noUi-connect,\n.noUi-state-tap .noUi-origin {\n  -webkit-transition: transform 0.3s;\n  transition: transform 0.3s; }\n\n.noUi-state-drag * {\n  cursor: inherit !important; }\n\n/* Slider size and handle placement;\r\n */\n.noUi-horizontal {\n  height: 2px;\n  margin: 15px 0; }\n\n.noUi-vertical {\n  width: 18px; }\n\nhtml:not([dir=\"rtl\"]) .noUi-horizontal .noUi-handle {\n  right: -14px;\n  left: auto; }\n\n/* Styling;\r\n * Giving the connect element a border radius causes issues with using transform: scale\r\n */\n.noUi-target {\n  background: #FAFAFA;\n  border-radius: 4px; }\n\n.noUi-connects {\n  border-radius: 3px; }\n\n.noUi-connect {\n  background: #3FB8AF; }\n\n/* Handles and cursors;\r\n */\n.noUi-draggable {\n  cursor: ew-resize; }\n\n.noUi-vertical .noUi-draggable {\n  cursor: ns-resize; }\n\n.noUi-handle {\n  box-sizing: border-box;\n  width: 14px;\n  height: 14px;\n  left: -10px;\n  top: -6px;\n  cursor: pointer;\n  border-radius: 100%;\n  transition: all 0.2s ease-out;\n  border: 1px solid;\n  background: #FFFFFF;\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n  .noUi-handle.noUi-active {\n    transform: scale3d(1.5, 1.5, 1); }\n\n/* Handle stripes;\r\n */\n/* Disabled state;\r\n */\n[disabled] .noUi-connect {\n  background: #B8B8B8; }\n\n[disabled].noUi-target,\n[disabled].noUi-handle,\n[disabled] .noUi-handle {\n  cursor: not-allowed; }\n\n/* Base;\r\n *\r\n */\n.noUi-pips,\n.noUi-pips * {\n  -moz-box-sizing: border-box;\n  box-sizing: border-box; }\n\n.noUi-pips {\n  position: absolute;\n  color: #999; }\n\n/* Values;\r\n *\r\n */\n.noUi-value {\n  position: absolute;\n  white-space: nowrap;\n  text-align: center; }\n\n.noUi-value-sub {\n  color: #ccc;\n  font-size: 10px; }\n\n/* Markings;\r\n *\r\n */\n.noUi-marker {\n  position: absolute;\n  background: #CCC; }\n\n.noUi-marker-sub {\n  background: #AAA; }\n\n.noUi-marker-large {\n  background: #AAA; }\n\n/* Horizontal layout;\r\n *\r\n */\n.noUi-pips-horizontal {\n  padding: 10px 0;\n  height: 80px;\n  top: 100%;\n  left: 0;\n  width: 100%; }\n\n.noUi-value-horizontal {\n  -webkit-transform: translate(-50%, 50%);\n  transform: translate(-50%, 50%); }\n\n.noUi-rtl .noUi-value-horizontal {\n  -webkit-transform: translate(50%, 50%);\n  transform: translate(50%, 50%); }\n\n.noUi-marker-horizontal.noUi-marker {\n  margin-left: -1px;\n  width: 2px;\n  height: 5px; }\n\n.noUi-marker-horizontal.noUi-marker-sub {\n  height: 10px; }\n\n.noUi-marker-horizontal.noUi-marker-large {\n  height: 15px; }\n\n/* Vertical layout;\r\n *\r\n */\n.noUi-pips-vertical {\n  padding: 0 10px;\n  height: 100%;\n  top: 0;\n  left: 100%; }\n\n.noUi-value-vertical {\n  -webkit-transform: translate(0, -50%);\n  transform: translate(0, -50%, 0);\n  padding-left: 25px; }\n\n.noUi-rtl .noUi-value-vertical {\n  -webkit-transform: translate(0, 50%);\n  transform: translate(0, 50%); }\n\n.noUi-marker-vertical.noUi-marker {\n  width: 5px;\n  height: 2px;\n  margin-top: -1px; }\n\n.noUi-marker-vertical.noUi-marker-sub {\n  width: 10px; }\n\n.noUi-marker-vertical.noUi-marker-large {\n  width: 15px; }\n\n.noUi-tooltip {\n  display: block;\n  position: absolute;\n  border: 1px solid #D9D9D9;\n  border-radius: 3px;\n  background: #fff;\n  color: #000;\n  padding: 5px;\n  text-align: center;\n  white-space: nowrap; }\n\n.noUi-horizontal .noUi-tooltip {\n  -webkit-transform: translate(-50%, 0);\n  transform: translate(-50%, 0);\n  left: 50%;\n  bottom: 120%; }\n\n.noUi-vertical .noUi-tooltip {\n  -webkit-transform: translate(0, -50%);\n  transform: translate(0, -50%);\n  top: 50%;\n  right: 120%; }\n\n.slider {\n  background: #c8c8c8; }\n  .slider .noUi-connect {\n    background-color: #9c27b0;\n    border-radius: 4px; }\n  .slider .noUi-handle {\n    border-color: #9c27b0; }\n  .slider.slider-info .noUi-connect {\n    background-color: #00bcd4; }\n  .slider.slider-info .noUi-handle {\n    border-color: #00bcd4; }\n  .slider.slider-success .noUi-connect {\n    background-color: #4caf50; }\n  .slider.slider-success .noUi-handle {\n    border-color: #4caf50; }\n  .slider.slider-warning .noUi-connect {\n    background-color: #ff9800; }\n  .slider.slider-warning .noUi-handle {\n    border-color: #ff9800; }\n  .slider.slider-danger .noUi-connect {\n    background-color: #f44336; }\n  .slider.slider-danger .noUi-handle {\n    border-color: #f44336; }\n  .slider.slider-rose .noUi-connect {\n    background-color: #e91e63; }\n  .slider.slider-rose .noUi-handle {\n    border-color: #e91e63; }\n\nbody, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {\n  font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\n  font-weight: 300; }\n\nh1, h2, h3, .h1, .h2, .h3 {\n  margin-top: 20px;\n  margin-bottom: 10px; }\n\nh4, h5, h6, .h4, .h5, .h6 {\n  margin-top: 10px;\n  margin-bottom: 10px; }\n\nh1, .h1 {\n  font-size: 3.3125rem;\n  line-height: 1.15em; }\n\nh2, .h2 {\n  font-size: 2.25rem;\n  line-height: 1.5em; }\n\nh3, .h3 {\n  font-size: 1.5625rem;\n  line-height: 1.4em; }\n\nh4, .h4 {\n  font-size: 1.125rem;\n  line-height: 1.5em; }\n\nh5, .h5 {\n  font-size: 1.0625rem;\n  line-height: 1.55em;\n  margin-bottom: 15px; }\n\nh6, .h6 {\n  font-size: 0.75rem;\n  text-transform: uppercase;\n  font-weight: 500; }\n\np {\n  font-size: 14px;\n  margin: 0 0 10px; }\n\nh2.title {\n  margin-bottom: 30px; }\n\n.title,\n.card-title,\n.info-title,\n.footer-brand,\n.footer-big h5,\n.footer-big h4,\n.media .media-heading {\n  font-weight: 700;\n  font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif; }\n  .title,\n  .title a,\n  .card-title,\n  .card-title a,\n  .info-title,\n  .info-title a,\n  .footer-brand,\n  .footer-brand a,\n  .footer-big h5,\n  .footer-big h5 a,\n  .footer-big h4,\n  .footer-big h4 a,\n  .media .media-heading,\n  .media .media-heading a {\n    color: #3C4858;\n    text-decoration: none; }\n\n.description,\n.card-description,\n.footer-big p {\n  color: #999999; }\n\n.text-warning {\n  color: #ff9800 !important; }\n\n.text-primary {\n  color: #9c27b0 !important; }\n\n.text-danger {\n  color: #f44336 !important; }\n\n.text-success {\n  color: #4caf50 !important; }\n\n.text-info {\n  color: #00bcd4 !important; }\n\n.text-gray {\n  color: #999999 !important; }\n\n.text-muted {\n  color: #6c757d !important; }\n\n.md-button {\n  border: none;\n  border-radius: 3px;\n  position: relative;\n  margin: .3125rem 1px;\n  height: auto;\n  line-height: 1.42857;\n  font-size: 12px;\n  font-weight: 400;\n  text-transform: uppercase;\n  letter-spacing: 0;\n  will-change: box-shadow, transform;\n  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); }\n  .md-button.md-facebook {\n    background-color: #3b5998 !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(59, 89, 152, 0.14), 0 3px 1px -2px rgba(59, 89, 152, 0.2), 0 1px 5px 0 rgba(59, 89, 152, 0.12); }\n    .md-button.md-facebook:hover, .md-button.md-facebook:focus, .md-button.md-facebook:active, .md-button.md-facebook.active, .md-button.md-facebook:active:focus, .md-button.md-facebook:active:hover, .md-button.md-facebook.active:focus, .md-button.md-facebook.active:hover {\n      background-color: #3b5998 !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(59, 89, 152, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(59, 89, 152, 0.2); }\n    .md-button.md-facebook.btn-simple {\n      color: #3b5998;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button.md-twitter {\n    background-color: #55acee !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(85, 172, 238, 0.14), 0 3px 1px -2px rgba(85, 172, 238, 0.2), 0 1px 5px 0 rgba(85, 172, 238, 0.12); }\n    .md-button.md-twitter:hover, .md-button.md-twitter:focus, .md-button.md-twitter:active, .md-button.md-twitter.active, .md-button.md-twitter:active:focus, .md-button.md-twitter:active:hover, .md-button.md-twitter.active:focus, .md-button.md-twitter.active:hover {\n      background-color: #55acee !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(85, 172, 238, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(85, 172, 238, 0.2); }\n    .md-button.md-twitter.btn-simple {\n      color: #55acee;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button.md-google {\n    background-color: #dd4b39 !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(221, 75, 57, 0.14), 0 3px 1px -2px rgba(221, 75, 57, 0.2), 0 1px 5px 0 rgba(221, 75, 57, 0.12); }\n    .md-button.md-google:hover, .md-button.md-google:focus, .md-button.md-google:active, .md-button.md-google.active, .md-button.md-google:active:focus, .md-button.md-google:active:hover, .md-button.md-google.active:focus, .md-button.md-google.active:hover {\n      background-color: #dd4b39 !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(221, 75, 57, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(221, 75, 57, 0.2); }\n    .md-button.md-google.btn-simple {\n      color: #dd4b39;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button.md-github {\n    background-color: #333333 !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(51, 51, 51, 0.14), 0 3px 1px -2px rgba(51, 51, 51, 0.2), 0 1px 5px 0 rgba(51, 51, 51, 0.12); }\n    .md-button.md-github:hover, .md-button.md-github:focus, .md-button.md-github:active, .md-button.md-github.active, .md-button.md-github:active:focus, .md-button.md-github:active:hover, .md-button.md-github.active:focus, .md-button.md-github.active:hover {\n      background-color: #333333 !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(51, 51, 51, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(51, 51, 51, 0.2); }\n    .md-button.md-github.btn-simple {\n      color: #333333;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple {\n    padding: 12px 30px;\n    display: flex; }\n  .md-button:not(.md-just-icon) .md-button-content i:not(.md-tab-icon) {\n    font-size: 1.1rem !important;\n    height: 17px; }\n  .md-button.md-wd {\n    min-width: 140px; }\n  .md-button.md-block {\n    width: 100%; }\n  .md-button:before {\n    display: none; }\n  .md-button i {\n    width: 24px;\n    min-width: 24px; }\n  .md-button.md-white {\n    box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12);\n    box-shadow: none; }\n    .md-button.md-white.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12); }\n    .md-button.md-white, .md-button.md-white:hover, .md-button.md-white:focus, .md-button.md-white:active, .md-button.md-white.active, .md-button.md-white:active:focus, .md-button.md-white:active:hover, .md-button.md-white.active:focus, .md-button.md-white.active:hover,\n    .open > .md-button.md-white.dropdown-toggle,\n    .open > .md-button.md-white.dropdown-toggle:focus,\n    .open > .md-button.md-white.dropdown-toggle:hover {\n      background-color: #FFFFFF !important; }\n      .md-button.md-white,\n      .md-button.md-white i, .md-button.md-white:hover,\n      .md-button.md-white:hover i, .md-button.md-white:focus,\n      .md-button.md-white:focus i, .md-button.md-white:active,\n      .md-button.md-white:active i, .md-button.md-white.active,\n      .md-button.md-white.active i, .md-button.md-white:active:focus,\n      .md-button.md-white:active:focus i, .md-button.md-white:active:hover,\n      .md-button.md-white:active:hover i, .md-button.md-white.active:focus,\n      .md-button.md-white.active:focus i, .md-button.md-white.active:hover,\n      .md-button.md-white.active:hover i,\n      .open > .md-button.md-white.dropdown-toggle,\n      .open > .md-button.md-white.dropdown-toggle i,\n      .open > .md-button.md-white.dropdown-toggle:focus,\n      .open > .md-button.md-white.dropdown-toggle:focus i,\n      .open > .md-button.md-white.dropdown-toggle:hover,\n      .open > .md-button.md-white.dropdown-toggle:hover i {\n        color: #999999 !important; }\n    .md-button.md-white:focus, .md-button.md-white:active, .md-button.md-white:hover {\n      box-shadow: 0 14px 26px -12px rgba(255, 255, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 255, 255, 0.2);\n      background-color: #f7f7f7 !important; }\n    .md-button.md-white.disabled, .md-button.md-white.disabled:hover, .md-button.md-white.disabled:focus, .md-button.md-white.disabled.focus, .md-button.md-white.disabled:active, .md-button.md-white.disabled.active, .md-button.md-white:disabled, .md-button.md-white:disabled:hover, .md-button.md-white:disabled:focus, .md-button.md-white:disabled.focus, .md-button.md-white:disabled:active, .md-button.md-white:disabled.active, .md-button.md-white[disabled], .md-button.md-white[disabled]:hover, .md-button.md-white[disabled]:focus, .md-button.md-white[disabled].focus, .md-button.md-white[disabled]:active, .md-button.md-white[disabled].active,\n    fieldset[disabled] .md-button.md-white,\n    fieldset[disabled] .md-button.md-white:hover,\n    fieldset[disabled] .md-button.md-white:focus,\n    fieldset[disabled] .md-button.md-white.focus,\n    fieldset[disabled] .md-button.md-white:active,\n    fieldset[disabled] .md-button.md-white.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-white.md-simple, .md-button.md-white.md-simple:hover, .md-button.md-white.md-simple:focus, .md-button.md-white.md-simple:active, .md-button.md-white.md-simple.active, .md-button.md-white.md-simple:active:focus, .md-button.md-white.md-simple:active:hover, .md-button.md-white.md-simple.active:focus, .md-button.md-white.md-simple.active:hover,\n    .open > .md-button.md-white.md-simple.dropdown-toggle,\n    .open > .md-button.md-white.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-white.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #FFFFFF !important;\n      box-shadow: none; }\n      .md-button.md-white.md-simple i, .md-button.md-white.md-simple:hover i, .md-button.md-white.md-simple:focus i, .md-button.md-white.md-simple:active i, .md-button.md-white.md-simple.active i, .md-button.md-white.md-simple:active:focus i, .md-button.md-white.md-simple:active:hover i, .md-button.md-white.md-simple.active:focus i, .md-button.md-white.md-simple.active:hover i,\n      .open > .md-button.md-white.md-simple.dropdown-toggle i,\n      .open > .md-button.md-white.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-white.md-simple.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n  .md-button, .md-button.md-default {\n    box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12); }\n    .md-button.md-raised, .md-button.md-default.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12); }\n    .md-button, .md-button:hover, .md-button:focus, .md-button:active, .md-button.active, .md-button:active:focus, .md-button:active:hover, .md-button.active:focus, .md-button.active:hover,\n    .open > .md-button.dropdown-toggle,\n    .open > .md-button.dropdown-toggle:focus,\n    .open > .md-button.dropdown-toggle:hover, .md-button.md-default, .md-button.md-default:hover, .md-button.md-default:focus, .md-button.md-default:active, .md-button.md-default.active, .md-button.md-default:active:focus, .md-button.md-default:active:hover, .md-button.md-default.active:focus, .md-button.md-default.active:hover,\n    .open > .md-button.md-default.dropdown-toggle,\n    .open > .md-button.md-default.dropdown-toggle:focus,\n    .open > .md-button.md-default.dropdown-toggle:hover {\n      background-color: #999999 !important; }\n      .md-button,\n      .md-button i, .md-button:hover,\n      .md-button:hover i, .md-button:focus,\n      .md-button:focus i, .md-button:active,\n      .md-button:active i, .md-button.active,\n      .md-button.active i, .md-button:active:focus,\n      .md-button:active:focus i, .md-button:active:hover,\n      .md-button:active:hover i, .md-button.active:focus,\n      .md-button.active:focus i, .md-button.active:hover,\n      .md-button.active:hover i,\n      .open > .md-button.dropdown-toggle,\n      .open > .md-button.dropdown-toggle i,\n      .open > .md-button.dropdown-toggle:focus,\n      .open > .md-button.dropdown-toggle:focus i,\n      .open > .md-button.dropdown-toggle:hover,\n      .open > .md-button.dropdown-toggle:hover i, .md-button.md-default,\n      .md-button.md-default i, .md-button.md-default:hover,\n      .md-button.md-default:hover i, .md-button.md-default:focus,\n      .md-button.md-default:focus i, .md-button.md-default:active,\n      .md-button.md-default:active i, .md-button.md-default.active,\n      .md-button.md-default.active i, .md-button.md-default:active:focus,\n      .md-button.md-default:active:focus i, .md-button.md-default:active:hover,\n      .md-button.md-default:active:hover i, .md-button.md-default.active:focus,\n      .md-button.md-default.active:focus i, .md-button.md-default.active:hover,\n      .md-button.md-default.active:hover i,\n      .open > .md-button.md-default.dropdown-toggle,\n      .open > .md-button.md-default.dropdown-toggle i,\n      .open > .md-button.md-default.dropdown-toggle:focus,\n      .open > .md-button.md-default.dropdown-toggle:focus i,\n      .open > .md-button.md-default.dropdown-toggle:hover,\n      .open > .md-button.md-default.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button:focus, .md-button:active, .md-button:hover, .md-button.md-default:focus, .md-button.md-default:active, .md-button.md-default:hover {\n      box-shadow: 0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2);\n      background-color: #919191 !important; }\n    .md-button.disabled, .md-button.disabled:hover, .md-button.disabled:focus, .md-button.disabled.focus, .md-button.disabled:active, .md-button.disabled.active, .md-button:disabled, .md-button:disabled:hover, .md-button:disabled:focus, .md-button:disabled.focus, .md-button:disabled:active, .md-button:disabled.active, .md-button[disabled], .md-button[disabled]:hover, .md-button[disabled]:focus, .md-button[disabled].focus, .md-button[disabled]:active, .md-button[disabled].active,\n    fieldset[disabled] .md-button,\n    fieldset[disabled] .md-button:hover,\n    fieldset[disabled] .md-button:focus,\n    fieldset[disabled] .md-button.focus,\n    fieldset[disabled] .md-button:active,\n    fieldset[disabled] .md-button.active, .md-button.md-default.disabled, .md-button.md-default.disabled:hover, .md-button.md-default.disabled:focus, .md-button.md-default.disabled.focus, .md-button.md-default.disabled:active, .md-button.md-default.disabled.active, .md-button.md-default:disabled, .md-button.md-default:disabled:hover, .md-button.md-default:disabled:focus, .md-button.md-default:disabled.focus, .md-button.md-default:disabled:active, .md-button.md-default:disabled.active, .md-button.md-default[disabled], .md-button.md-default[disabled]:hover, .md-button.md-default[disabled]:focus, .md-button.md-default[disabled].focus, .md-button.md-default[disabled]:active, .md-button.md-default[disabled].active,\n    fieldset[disabled] .md-button.md-default,\n    fieldset[disabled] .md-button.md-default:hover,\n    fieldset[disabled] .md-button.md-default:focus,\n    fieldset[disabled] .md-button.md-default.focus,\n    fieldset[disabled] .md-button.md-default:active,\n    fieldset[disabled] .md-button.md-default.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-simple, .md-button.md-simple:hover, .md-button.md-simple:focus, .md-button.md-simple:active, .md-button.md-simple.active, .md-button.md-simple:active:focus, .md-button.md-simple:active:hover, .md-button.md-simple.active:focus, .md-button.md-simple.active:hover,\n    .open > .md-button.md-simple.dropdown-toggle,\n    .open > .md-button.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-simple.dropdown-toggle:hover, .md-button.md-default.md-simple, .md-button.md-default.md-simple:hover, .md-button.md-default.md-simple:focus, .md-button.md-default.md-simple:active, .md-button.md-default.md-simple.active, .md-button.md-default.md-simple:active:focus, .md-button.md-default.md-simple:active:hover, .md-button.md-default.md-simple.active:focus, .md-button.md-default.md-simple.active:hover,\n    .open > .md-button.md-default.md-simple.dropdown-toggle,\n    .open > .md-button.md-default.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-default.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #999999 !important;\n      box-shadow: none; }\n      .md-button.md-simple i, .md-button.md-simple:hover i, .md-button.md-simple:focus i, .md-button.md-simple:active i, .md-button.md-simple.active i, .md-button.md-simple:active:focus i, .md-button.md-simple:active:hover i, .md-button.md-simple.active:focus i, .md-button.md-simple.active:hover i,\n      .open > .md-button.md-simple.dropdown-toggle i,\n      .open > .md-button.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-simple.dropdown-toggle:hover i, .md-button.md-default.md-simple i, .md-button.md-default.md-simple:hover i, .md-button.md-default.md-simple:focus i, .md-button.md-default.md-simple:active i, .md-button.md-default.md-simple.active i, .md-button.md-default.md-simple:active:focus i, .md-button.md-default.md-simple:active:hover i, .md-button.md-default.md-simple.active:focus i, .md-button.md-default.md-simple.active:hover i,\n      .open > .md-button.md-default.md-simple.dropdown-toggle i,\n      .open > .md-button.md-default.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-default.md-simple.dropdown-toggle:hover i {\n        color: #999999 !important; }\n  .md-button.md-primary {\n    box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12); }\n    .md-button.md-primary.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12); }\n    .md-button.md-primary, .md-button.md-primary:hover, .md-button.md-primary:focus, .md-button.md-primary:active, .md-button.md-primary.active, .md-button.md-primary:active:focus, .md-button.md-primary:active:hover, .md-button.md-primary.active:focus, .md-button.md-primary.active:hover,\n    .open > .md-button.md-primary.dropdown-toggle,\n    .open > .md-button.md-primary.dropdown-toggle:focus,\n    .open > .md-button.md-primary.dropdown-toggle:hover {\n      background-color: #9c27b0 !important; }\n      .md-button.md-primary,\n      .md-button.md-primary i, .md-button.md-primary:hover,\n      .md-button.md-primary:hover i, .md-button.md-primary:focus,\n      .md-button.md-primary:focus i, .md-button.md-primary:active,\n      .md-button.md-primary:active i, .md-button.md-primary.active,\n      .md-button.md-primary.active i, .md-button.md-primary:active:focus,\n      .md-button.md-primary:active:focus i, .md-button.md-primary:active:hover,\n      .md-button.md-primary:active:hover i, .md-button.md-primary.active:focus,\n      .md-button.md-primary.active:focus i, .md-button.md-primary.active:hover,\n      .md-button.md-primary.active:hover i,\n      .open > .md-button.md-primary.dropdown-toggle,\n      .open > .md-button.md-primary.dropdown-toggle i,\n      .open > .md-button.md-primary.dropdown-toggle:focus,\n      .open > .md-button.md-primary.dropdown-toggle:focus i,\n      .open > .md-button.md-primary.dropdown-toggle:hover,\n      .open > .md-button.md-primary.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-primary:focus, .md-button.md-primary:active, .md-button.md-primary:hover {\n      box-shadow: 0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);\n      background-color: #9124a3 !important; }\n    .md-button.md-primary.disabled, .md-button.md-primary.disabled:hover, .md-button.md-primary.disabled:focus, .md-button.md-primary.disabled.focus, .md-button.md-primary.disabled:active, .md-button.md-primary.disabled.active, .md-button.md-primary:disabled, .md-button.md-primary:disabled:hover, .md-button.md-primary:disabled:focus, .md-button.md-primary:disabled.focus, .md-button.md-primary:disabled:active, .md-button.md-primary:disabled.active, .md-button.md-primary[disabled], .md-button.md-primary[disabled]:hover, .md-button.md-primary[disabled]:focus, .md-button.md-primary[disabled].focus, .md-button.md-primary[disabled]:active, .md-button.md-primary[disabled].active,\n    fieldset[disabled] .md-button.md-primary,\n    fieldset[disabled] .md-button.md-primary:hover,\n    fieldset[disabled] .md-button.md-primary:focus,\n    fieldset[disabled] .md-button.md-primary.focus,\n    fieldset[disabled] .md-button.md-primary:active,\n    fieldset[disabled] .md-button.md-primary.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-primary.md-simple, .md-button.md-primary.md-simple:hover, .md-button.md-primary.md-simple:focus, .md-button.md-primary.md-simple:active, .md-button.md-primary.md-simple.active, .md-button.md-primary.md-simple:active:focus, .md-button.md-primary.md-simple:active:hover, .md-button.md-primary.md-simple.active:focus, .md-button.md-primary.md-simple.active:hover,\n    .open > .md-button.md-primary.md-simple.dropdown-toggle,\n    .open > .md-button.md-primary.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-primary.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #9c27b0 !important;\n      box-shadow: none; }\n      .md-button.md-primary.md-simple i, .md-button.md-primary.md-simple:hover i, .md-button.md-primary.md-simple:focus i, .md-button.md-primary.md-simple:active i, .md-button.md-primary.md-simple.active i, .md-button.md-primary.md-simple:active:focus i, .md-button.md-primary.md-simple:active:hover i, .md-button.md-primary.md-simple.active:focus i, .md-button.md-primary.md-simple.active:hover i,\n      .open > .md-button.md-primary.md-simple.dropdown-toggle i,\n      .open > .md-button.md-primary.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-primary.md-simple.dropdown-toggle:hover i {\n        color: #9c27b0 !important; }\n  .md-button.md-info {\n    box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12); }\n    .md-button.md-info.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12); }\n    .md-button.md-info, .md-button.md-info:hover, .md-button.md-info:focus, .md-button.md-info:active, .md-button.md-info.active, .md-button.md-info:active:focus, .md-button.md-info:active:hover, .md-button.md-info.active:focus, .md-button.md-info.active:hover,\n    .open > .md-button.md-info.dropdown-toggle,\n    .open > .md-button.md-info.dropdown-toggle:focus,\n    .open > .md-button.md-info.dropdown-toggle:hover {\n      background-color: #00bcd4 !important; }\n      .md-button.md-info,\n      .md-button.md-info i, .md-button.md-info:hover,\n      .md-button.md-info:hover i, .md-button.md-info:focus,\n      .md-button.md-info:focus i, .md-button.md-info:active,\n      .md-button.md-info:active i, .md-button.md-info.active,\n      .md-button.md-info.active i, .md-button.md-info:active:focus,\n      .md-button.md-info:active:focus i, .md-button.md-info:active:hover,\n      .md-button.md-info:active:hover i, .md-button.md-info.active:focus,\n      .md-button.md-info.active:focus i, .md-button.md-info.active:hover,\n      .md-button.md-info.active:hover i,\n      .open > .md-button.md-info.dropdown-toggle,\n      .open > .md-button.md-info.dropdown-toggle i,\n      .open > .md-button.md-info.dropdown-toggle:focus,\n      .open > .md-button.md-info.dropdown-toggle:focus i,\n      .open > .md-button.md-info.dropdown-toggle:hover,\n      .open > .md-button.md-info.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-info:focus, .md-button.md-info:active, .md-button.md-info:hover {\n      box-shadow: 0 14px 26px -12px rgba(0, 188, 212, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 188, 212, 0.2);\n      background-color: #00aec5 !important; }\n    .md-button.md-info.disabled, .md-button.md-info.disabled:hover, .md-button.md-info.disabled:focus, .md-button.md-info.disabled.focus, .md-button.md-info.disabled:active, .md-button.md-info.disabled.active, .md-button.md-info:disabled, .md-button.md-info:disabled:hover, .md-button.md-info:disabled:focus, .md-button.md-info:disabled.focus, .md-button.md-info:disabled:active, .md-button.md-info:disabled.active, .md-button.md-info[disabled], .md-button.md-info[disabled]:hover, .md-button.md-info[disabled]:focus, .md-button.md-info[disabled].focus, .md-button.md-info[disabled]:active, .md-button.md-info[disabled].active,\n    fieldset[disabled] .md-button.md-info,\n    fieldset[disabled] .md-button.md-info:hover,\n    fieldset[disabled] .md-button.md-info:focus,\n    fieldset[disabled] .md-button.md-info.focus,\n    fieldset[disabled] .md-button.md-info:active,\n    fieldset[disabled] .md-button.md-info.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-info.md-simple, .md-button.md-info.md-simple:hover, .md-button.md-info.md-simple:focus, .md-button.md-info.md-simple:active, .md-button.md-info.md-simple.active, .md-button.md-info.md-simple:active:focus, .md-button.md-info.md-simple:active:hover, .md-button.md-info.md-simple.active:focus, .md-button.md-info.md-simple.active:hover,\n    .open > .md-button.md-info.md-simple.dropdown-toggle,\n    .open > .md-button.md-info.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-info.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #00bcd4 !important;\n      box-shadow: none; }\n      .md-button.md-info.md-simple i, .md-button.md-info.md-simple:hover i, .md-button.md-info.md-simple:focus i, .md-button.md-info.md-simple:active i, .md-button.md-info.md-simple.active i, .md-button.md-info.md-simple:active:focus i, .md-button.md-info.md-simple:active:hover i, .md-button.md-info.md-simple.active:focus i, .md-button.md-info.md-simple.active:hover i,\n      .open > .md-button.md-info.md-simple.dropdown-toggle i,\n      .open > .md-button.md-info.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-info.md-simple.dropdown-toggle:hover i {\n        color: #00bcd4 !important; }\n  .md-button.md-success {\n    box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12); }\n    .md-button.md-success.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12); }\n    .md-button.md-success, .md-button.md-success:hover, .md-button.md-success:focus, .md-button.md-success:active, .md-button.md-success.active, .md-button.md-success:active:focus, .md-button.md-success:active:hover, .md-button.md-success.active:focus, .md-button.md-success.active:hover,\n    .open > .md-button.md-success.dropdown-toggle,\n    .open > .md-button.md-success.dropdown-toggle:focus,\n    .open > .md-button.md-success.dropdown-toggle:hover {\n      background-color: #4caf50 !important; }\n      .md-button.md-success,\n      .md-button.md-success i, .md-button.md-success:hover,\n      .md-button.md-success:hover i, .md-button.md-success:focus,\n      .md-button.md-success:focus i, .md-button.md-success:active,\n      .md-button.md-success:active i, .md-button.md-success.active,\n      .md-button.md-success.active i, .md-button.md-success:active:focus,\n      .md-button.md-success:active:focus i, .md-button.md-success:active:hover,\n      .md-button.md-success:active:hover i, .md-button.md-success.active:focus,\n      .md-button.md-success.active:focus i, .md-button.md-success.active:hover,\n      .md-button.md-success.active:hover i,\n      .open > .md-button.md-success.dropdown-toggle,\n      .open > .md-button.md-success.dropdown-toggle i,\n      .open > .md-button.md-success.dropdown-toggle:focus,\n      .open > .md-button.md-success.dropdown-toggle:focus i,\n      .open > .md-button.md-success.dropdown-toggle:hover,\n      .open > .md-button.md-success.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-success:focus, .md-button.md-success:active, .md-button.md-success:hover {\n      box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2);\n      background-color: #47a44b !important; }\n    .md-button.md-success.disabled, .md-button.md-success.disabled:hover, .md-button.md-success.disabled:focus, .md-button.md-success.disabled.focus, .md-button.md-success.disabled:active, .md-button.md-success.disabled.active, .md-button.md-success:disabled, .md-button.md-success:disabled:hover, .md-button.md-success:disabled:focus, .md-button.md-success:disabled.focus, .md-button.md-success:disabled:active, .md-button.md-success:disabled.active, .md-button.md-success[disabled], .md-button.md-success[disabled]:hover, .md-button.md-success[disabled]:focus, .md-button.md-success[disabled].focus, .md-button.md-success[disabled]:active, .md-button.md-success[disabled].active,\n    fieldset[disabled] .md-button.md-success,\n    fieldset[disabled] .md-button.md-success:hover,\n    fieldset[disabled] .md-button.md-success:focus,\n    fieldset[disabled] .md-button.md-success.focus,\n    fieldset[disabled] .md-button.md-success:active,\n    fieldset[disabled] .md-button.md-success.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-success.md-simple, .md-button.md-success.md-simple:hover, .md-button.md-success.md-simple:focus, .md-button.md-success.md-simple:active, .md-button.md-success.md-simple.active, .md-button.md-success.md-simple:active:focus, .md-button.md-success.md-simple:active:hover, .md-button.md-success.md-simple.active:focus, .md-button.md-success.md-simple.active:hover,\n    .open > .md-button.md-success.md-simple.dropdown-toggle,\n    .open > .md-button.md-success.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-success.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #4caf50 !important;\n      box-shadow: none; }\n      .md-button.md-success.md-simple i, .md-button.md-success.md-simple:hover i, .md-button.md-success.md-simple:focus i, .md-button.md-success.md-simple:active i, .md-button.md-success.md-simple.active i, .md-button.md-success.md-simple:active:focus i, .md-button.md-success.md-simple:active:hover i, .md-button.md-success.md-simple.active:focus i, .md-button.md-success.md-simple.active:hover i,\n      .open > .md-button.md-success.md-simple.dropdown-toggle i,\n      .open > .md-button.md-success.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-success.md-simple.dropdown-toggle:hover i {\n        color: #4caf50 !important; }\n  .md-button.md-warning {\n    box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12); }\n    .md-button.md-warning.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12); }\n    .md-button.md-warning, .md-button.md-warning:hover, .md-button.md-warning:focus, .md-button.md-warning:active, .md-button.md-warning.active, .md-button.md-warning:active:focus, .md-button.md-warning:active:hover, .md-button.md-warning.active:focus, .md-button.md-warning.active:hover,\n    .open > .md-button.md-warning.dropdown-toggle,\n    .open > .md-button.md-warning.dropdown-toggle:focus,\n    .open > .md-button.md-warning.dropdown-toggle:hover {\n      background-color: #ff9800 !important; }\n      .md-button.md-warning,\n      .md-button.md-warning i, .md-button.md-warning:hover,\n      .md-button.md-warning:hover i, .md-button.md-warning:focus,\n      .md-button.md-warning:focus i, .md-button.md-warning:active,\n      .md-button.md-warning:active i, .md-button.md-warning.active,\n      .md-button.md-warning.active i, .md-button.md-warning:active:focus,\n      .md-button.md-warning:active:focus i, .md-button.md-warning:active:hover,\n      .md-button.md-warning:active:hover i, .md-button.md-warning.active:focus,\n      .md-button.md-warning.active:focus i, .md-button.md-warning.active:hover,\n      .md-button.md-warning.active:hover i,\n      .open > .md-button.md-warning.dropdown-toggle,\n      .open > .md-button.md-warning.dropdown-toggle i,\n      .open > .md-button.md-warning.dropdown-toggle:focus,\n      .open > .md-button.md-warning.dropdown-toggle:focus i,\n      .open > .md-button.md-warning.dropdown-toggle:hover,\n      .open > .md-button.md-warning.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-warning:focus, .md-button.md-warning:active, .md-button.md-warning:hover {\n      box-shadow: 0 14px 26px -12px rgba(255, 152, 0, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 152, 0, 0.2);\n      background-color: #f08f00 !important; }\n    .md-button.md-warning.disabled, .md-button.md-warning.disabled:hover, .md-button.md-warning.disabled:focus, .md-button.md-warning.disabled.focus, .md-button.md-warning.disabled:active, .md-button.md-warning.disabled.active, .md-button.md-warning:disabled, .md-button.md-warning:disabled:hover, .md-button.md-warning:disabled:focus, .md-button.md-warning:disabled.focus, .md-button.md-warning:disabled:active, .md-button.md-warning:disabled.active, .md-button.md-warning[disabled], .md-button.md-warning[disabled]:hover, .md-button.md-warning[disabled]:focus, .md-button.md-warning[disabled].focus, .md-button.md-warning[disabled]:active, .md-button.md-warning[disabled].active,\n    fieldset[disabled] .md-button.md-warning,\n    fieldset[disabled] .md-button.md-warning:hover,\n    fieldset[disabled] .md-button.md-warning:focus,\n    fieldset[disabled] .md-button.md-warning.focus,\n    fieldset[disabled] .md-button.md-warning:active,\n    fieldset[disabled] .md-button.md-warning.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-warning.md-simple, .md-button.md-warning.md-simple:hover, .md-button.md-warning.md-simple:focus, .md-button.md-warning.md-simple:active, .md-button.md-warning.md-simple.active, .md-button.md-warning.md-simple:active:focus, .md-button.md-warning.md-simple:active:hover, .md-button.md-warning.md-simple.active:focus, .md-button.md-warning.md-simple.active:hover,\n    .open > .md-button.md-warning.md-simple.dropdown-toggle,\n    .open > .md-button.md-warning.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-warning.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #ff9800 !important;\n      box-shadow: none; }\n      .md-button.md-warning.md-simple i, .md-button.md-warning.md-simple:hover i, .md-button.md-warning.md-simple:focus i, .md-button.md-warning.md-simple:active i, .md-button.md-warning.md-simple.active i, .md-button.md-warning.md-simple:active:focus i, .md-button.md-warning.md-simple:active:hover i, .md-button.md-warning.md-simple.active:focus i, .md-button.md-warning.md-simple.active:hover i,\n      .open > .md-button.md-warning.md-simple.dropdown-toggle i,\n      .open > .md-button.md-warning.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-warning.md-simple.dropdown-toggle:hover i {\n        color: #ff9800 !important; }\n  .md-button.md-danger {\n    box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12); }\n    .md-button.md-danger.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12); }\n    .md-button.md-danger, .md-button.md-danger:hover, .md-button.md-danger:focus, .md-button.md-danger:active, .md-button.md-danger.active, .md-button.md-danger:active:focus, .md-button.md-danger:active:hover, .md-button.md-danger.active:focus, .md-button.md-danger.active:hover,\n    .open > .md-button.md-danger.dropdown-toggle,\n    .open > .md-button.md-danger.dropdown-toggle:focus,\n    .open > .md-button.md-danger.dropdown-toggle:hover {\n      background-color: #f44336 !important; }\n      .md-button.md-danger,\n      .md-button.md-danger i, .md-button.md-danger:hover,\n      .md-button.md-danger:hover i, .md-button.md-danger:focus,\n      .md-button.md-danger:focus i, .md-button.md-danger:active,\n      .md-button.md-danger:active i, .md-button.md-danger.active,\n      .md-button.md-danger.active i, .md-button.md-danger:active:focus,\n      .md-button.md-danger:active:focus i, .md-button.md-danger:active:hover,\n      .md-button.md-danger:active:hover i, .md-button.md-danger.active:focus,\n      .md-button.md-danger.active:focus i, .md-button.md-danger.active:hover,\n      .md-button.md-danger.active:hover i,\n      .open > .md-button.md-danger.dropdown-toggle,\n      .open > .md-button.md-danger.dropdown-toggle i,\n      .open > .md-button.md-danger.dropdown-toggle:focus,\n      .open > .md-button.md-danger.dropdown-toggle:focus i,\n      .open > .md-button.md-danger.dropdown-toggle:hover,\n      .open > .md-button.md-danger.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-danger:focus, .md-button.md-danger:active, .md-button.md-danger:hover {\n      box-shadow: 0 14px 26px -12px rgba(244, 67, 54, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(244, 67, 54, 0.2);\n      background-color: #f33527 !important; }\n    .md-button.md-danger.disabled, .md-button.md-danger.disabled:hover, .md-button.md-danger.disabled:focus, .md-button.md-danger.disabled.focus, .md-button.md-danger.disabled:active, .md-button.md-danger.disabled.active, .md-button.md-danger:disabled, .md-button.md-danger:disabled:hover, .md-button.md-danger:disabled:focus, .md-button.md-danger:disabled.focus, .md-button.md-danger:disabled:active, .md-button.md-danger:disabled.active, .md-button.md-danger[disabled], .md-button.md-danger[disabled]:hover, .md-button.md-danger[disabled]:focus, .md-button.md-danger[disabled].focus, .md-button.md-danger[disabled]:active, .md-button.md-danger[disabled].active,\n    fieldset[disabled] .md-button.md-danger,\n    fieldset[disabled] .md-button.md-danger:hover,\n    fieldset[disabled] .md-button.md-danger:focus,\n    fieldset[disabled] .md-button.md-danger.focus,\n    fieldset[disabled] .md-button.md-danger:active,\n    fieldset[disabled] .md-button.md-danger.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-danger.md-simple, .md-button.md-danger.md-simple:hover, .md-button.md-danger.md-simple:focus, .md-button.md-danger.md-simple:active, .md-button.md-danger.md-simple.active, .md-button.md-danger.md-simple:active:focus, .md-button.md-danger.md-simple:active:hover, .md-button.md-danger.md-simple.active:focus, .md-button.md-danger.md-simple.active:hover,\n    .open > .md-button.md-danger.md-simple.dropdown-toggle,\n    .open > .md-button.md-danger.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-danger.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #f44336 !important;\n      box-shadow: none; }\n      .md-button.md-danger.md-simple i, .md-button.md-danger.md-simple:hover i, .md-button.md-danger.md-simple:focus i, .md-button.md-danger.md-simple:active i, .md-button.md-danger.md-simple.active i, .md-button.md-danger.md-simple:active:focus i, .md-button.md-danger.md-simple:active:hover i, .md-button.md-danger.md-simple.active:focus i, .md-button.md-danger.md-simple.active:hover i,\n      .open > .md-button.md-danger.md-simple.dropdown-toggle i,\n      .open > .md-button.md-danger.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-danger.md-simple.dropdown-toggle:hover i {\n        color: #f44336 !important; }\n  .md-button.md-rose {\n    box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12); }\n    .md-button.md-rose.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12); }\n    .md-button.md-rose, .md-button.md-rose:hover, .md-button.md-rose:focus, .md-button.md-rose:active, .md-button.md-rose.active, .md-button.md-rose:active:focus, .md-button.md-rose:active:hover, .md-button.md-rose.active:focus, .md-button.md-rose.active:hover,\n    .open > .md-button.md-rose.dropdown-toggle,\n    .open > .md-button.md-rose.dropdown-toggle:focus,\n    .open > .md-button.md-rose.dropdown-toggle:hover {\n      background-color: #e91e63 !important; }\n      .md-button.md-rose,\n      .md-button.md-rose i, .md-button.md-rose:hover,\n      .md-button.md-rose:hover i, .md-button.md-rose:focus,\n      .md-button.md-rose:focus i, .md-button.md-rose:active,\n      .md-button.md-rose:active i, .md-button.md-rose.active,\n      .md-button.md-rose.active i, .md-button.md-rose:active:focus,\n      .md-button.md-rose:active:focus i, .md-button.md-rose:active:hover,\n      .md-button.md-rose:active:hover i, .md-button.md-rose.active:focus,\n      .md-button.md-rose.active:focus i, .md-button.md-rose.active:hover,\n      .md-button.md-rose.active:hover i,\n      .open > .md-button.md-rose.dropdown-toggle,\n      .open > .md-button.md-rose.dropdown-toggle i,\n      .open > .md-button.md-rose.dropdown-toggle:focus,\n      .open > .md-button.md-rose.dropdown-toggle:focus i,\n      .open > .md-button.md-rose.dropdown-toggle:hover,\n      .open > .md-button.md-rose.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-rose:focus, .md-button.md-rose:active, .md-button.md-rose:hover {\n      box-shadow: 0 14px 26px -12px rgba(233, 30, 99, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(233, 30, 99, 0.2);\n      background-color: #e2165b !important; }\n    .md-button.md-rose.disabled, .md-button.md-rose.disabled:hover, .md-button.md-rose.disabled:focus, .md-button.md-rose.disabled.focus, .md-button.md-rose.disabled:active, .md-button.md-rose.disabled.active, .md-button.md-rose:disabled, .md-button.md-rose:disabled:hover, .md-button.md-rose:disabled:focus, .md-button.md-rose:disabled.focus, .md-button.md-rose:disabled:active, .md-button.md-rose:disabled.active, .md-button.md-rose[disabled], .md-button.md-rose[disabled]:hover, .md-button.md-rose[disabled]:focus, .md-button.md-rose[disabled].focus, .md-button.md-rose[disabled]:active, .md-button.md-rose[disabled].active,\n    fieldset[disabled] .md-button.md-rose,\n    fieldset[disabled] .md-button.md-rose:hover,\n    fieldset[disabled] .md-button.md-rose:focus,\n    fieldset[disabled] .md-button.md-rose.focus,\n    fieldset[disabled] .md-button.md-rose:active,\n    fieldset[disabled] .md-button.md-rose.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-rose.md-simple, .md-button.md-rose.md-simple:hover, .md-button.md-rose.md-simple:focus, .md-button.md-rose.md-simple:active, .md-button.md-rose.md-simple.active, .md-button.md-rose.md-simple:active:focus, .md-button.md-rose.md-simple:active:hover, .md-button.md-rose.md-simple.active:focus, .md-button.md-rose.md-simple.active:hover,\n    .open > .md-button.md-rose.md-simple.dropdown-toggle,\n    .open > .md-button.md-rose.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-rose.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #e91e63 !important;\n      box-shadow: none; }\n      .md-button.md-rose.md-simple i, .md-button.md-rose.md-simple:hover i, .md-button.md-rose.md-simple:focus i, .md-button.md-rose.md-simple:active i, .md-button.md-rose.md-simple.active i, .md-button.md-rose.md-simple:active:focus i, .md-button.md-rose.md-simple:active:hover i, .md-button.md-rose.md-simple.active:focus i, .md-button.md-rose.md-simple.active:hover i,\n      .open > .md-button.md-rose.md-simple.dropdown-toggle i,\n      .open > .md-button.md-rose.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-rose.md-simple.dropdown-toggle:hover i {\n        color: #e91e63 !important; }\n  .md-button:focus, .md-button:active, .md-button:active:focus {\n    outline: 0; }\n  .md-button.md-round, .md-button.md-round.md-fab, .md-button.md-round.md-just-icon {\n    border-radius: 30px; }\n  .md-button:not(.btn-just-icon):not(.btn-fab) .fa {\n    font-size: 18px;\n    margin-top: -2px;\n    position: relative;\n    top: 0; }\n  .md-button.btn-fab {\n    border-radius: 50%;\n    font-size: 24px;\n    height: 56px;\n    margin: auto;\n    min-width: 56px;\n    width: 56px;\n    padding: 0;\n    overflow: hidden;\n    position: relative;\n    line-height: normal; }\n    .md-button.btn-fab .ripple-container {\n      border-radius: 50%; }\n    .md-button.btn-fab.btn-fab-mini,\n    .btn-group-sm .md-button.btn-fab {\n      height: 40px;\n      min-width: 40px;\n      width: 40px; }\n      .md-button.btn-fab.btn-fab-mini.material-icons,\n      .btn-group-sm .md-button.btn-fab.material-icons {\n        top: -3.5px;\n        left: -3.5px; }\n      .md-button.btn-fab.btn-fab-mini .material-icons,\n      .btn-group-sm .md-button.btn-fab .material-icons {\n        font-size: 17px; }\n    .md-button.btn-fab i.material-icons {\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-12px, -12px);\n      line-height: 24px;\n      width: 24px;\n      font-size: 24px; }\n  .md-button.md-lg .md-ripple {\n    font-size: 14px;\n    padding: 1.125rem 2.25rem !important;\n    line-height: 1.333333; }\n  .md-button.md-sm .md-ripple {\n    padding: 0.40625rem 1.25rem !important;\n    font-size: 11px; }\n  .md-button.md-fab, .md-button.md-just-icon {\n    height: 41px;\n    min-width: 41px;\n    width: 41px;\n    padding: 0;\n    overflow: hidden;\n    position: relative;\n    line-height: 41px; }\n    .md-button.md-fab i, .md-button.md-fab, .md-button.md-just-icon i, .md-button.md-just-icon {\n      font-size: 20px !important; }\n  .md-button .md-button-content {\n    display: flex;\n    align-items: center; }\n\n.btn .material-icons {\n  vertical-align: middle;\n  font-size: 17px;\n  top: -1px;\n  position: relative; }\n\n.navbar .navbar-nav > li > a.btn {\n  margin-top: 2px;\n  margin-bottom: 2px; }\n  .navbar .navbar-nav > li > a.btn.btn-fab {\n    margin: 5px 2px; }\n\n.navbar .navbar-nav > li > a:not(.btn) .material-icons {\n  margin-top: -3px;\n  top: 0px;\n  position: relative;\n  margin-right: 3px; }\n\n.navbar .navbar-nav > li > .profile-photo {\n  margin: 5px 2px; }\n\n.navbar-default:not(.navbar-transparent) .navbar-nav > li > a.btn.btn-white.btn-simple {\n  color: #555555; }\n\n.button-container {\n  display: flex;\n  align-items: center; }\n\n.md-group > .md-group:not(:last-child) > .md-button, .md-group > .md-button:not(:last-child):not(.dropdown-toggle) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0; }\n\n.md-group > .md-group:not(:first-child) > .md-button,\n.md-group > .md-button:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0; }\n\n.md-group {\n  display: inline-flex;\n  vertical-align: middle; }\n  .md-group .md-button {\n    min-width: auto !important;\n    width: auto !important;\n    margin-left: 0;\n    margin-right: 0; }\n\n.VueCarousel-pagination {\n  position: absolute;\n  bottom: 5px;\n  margin-bottom: 15px; }\n\n.VueCarousel-wrapper {\n  border-radius: 6px; }\n\n.VueCarousel-dot-button {\n  display: inline-block;\n  width: 10px !important;\n  height: 10px !important;\n  border: 1px solid #fff !important;\n  background: #FFF !important;\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);\n  border-radius: 2px !important;\n  transition: all .3s linear; }\n  .VueCarousel-dot-button:focus {\n    outline: 0 !important; }\n\n.VueCarousel-dot--active .VueCarousel-dot-button {\n  margin-top: 10px;\n  transform: scale(1.5);\n  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2); }\n\n.carousel-caption {\n  position: absolute;\n  bottom: 25px;\n  left: 0;\n  right: 0;\n  text-align: center;\n  padding-top: 20px;\n  padding-bottom: 45px; }\n  .carousel-caption,\n  .carousel-caption .md-icon,\n  .carousel-caption .fa,\n  .carousel-caption .fab,\n  .carousel-caption .fas {\n    color: #FFFFFF !important; }\n\n.VueCarousel-navigation-prev {\n  left: 95px !important; }\n\n.VueCarousel-navigation-next {\n  right: 95px !important; }\n\n.VueCarousel-navigation-prev i,\n.VueCarousel-navigation-next i {\n  font-size: 50px;\n  color: #FFFFFF !important;\n  opacity: .5; }\n  .VueCarousel-navigation-prev i:hover,\n  .VueCarousel-navigation-next i:hover {\n    opacity: 1; }\n\n.VueCarousel-slide {\n  position: relative; }\n\n.md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item {\n  margin: 0 .3125rem; }\n  .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item:not(:last-child) {\n    margin-bottom: 5px; }\n  .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button {\n    background-color: transparent;\n    color: #333333 !important;\n    border-radius: 3px; }\n    .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button:hover {\n      background-color: #9c27b0 !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6);\n      color: #FFF !important; }\n    .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button .md-list-item-content {\n      min-height: 38px;\n      font-size: 13px; }\n      .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button .md-list-item-content span {\n        top: auto;\n        left: auto;\n        right: 0;\n        padding-left: 15px;\n        padding-right: 15px; }\n\nbody {\n  background-color: #EEEEEE;\n  letter-spacing: unset;\n  font-size: 1rem;\n  color: #3C4858;\n  line-height: 1.5em; }\n\n.main {\n  background: #FFFFFF;\n  position: relative;\n  z-index: 3; }\n\n.main-raised {\n  margin: -60px 30px 0px;\n  border-radius: 6px;\n  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.wrapper.wrapper-full-page {\n  height: auto;\n  min-height: 100vh; }\n\nblockquote p {\n  font-style: italic; }\n\n.life-of-material-dashboard {\n  background: #FFFFFF; }\n\na {\n  color: #9c27b0; }\n  a:hover, a:focus {\n    color: #89229b !important;\n    text-decoration: none !important; }\n  a.text-info:hover, a.text-info:focus {\n    color: #00a5bb; }\n  a .material-icons {\n    vertical-align: middle; }\n\n.dropdown.open .dropdown-toggle .md-ripple:after {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  -webkit-transform: rotate(180deg);\n  -ms-transform: rotate(180deg);\n  transform: rotate(180deg); }\n\n.caret,\n.md-toolbar {\n  -webkit-transition: all 150ms ease-in;\n  -moz-transition: all 150ms ease-in;\n  -o-transition: all 150ms ease-in;\n  -ms-transition: all 150ms ease-in;\n  transition: all 150ms ease-in; }\n\n/*           Animations              */\n.animation-transition-general {\n  -webkit-transition: all 300ms linear;\n  -moz-transition: all 300ms linear;\n  -o-transition: all 300ms linear;\n  -ms-transition: all 300ms linear;\n  transition: all 300ms linear; }\n\n.animation-transition-slow {\n  -webkit-transition: all 370ms linear;\n  -moz-transition: all 370ms linear;\n  -o-transition: all 370ms linear;\n  -ms-transition: all 370ms linear;\n  transition: all 370ms linear; }\n\n.animation-transition-fast {\n  -webkit-transition: all 150ms ease 0s;\n  -moz-transition: all 150ms ease 0s;\n  -o-transition: all 150ms ease 0s;\n  -ms-transition: all 150ms ease 0s;\n  transition: all 150ms ease 0s; }\n\nlegend {\n  border-bottom: 0; }\n\n.pull-left {\n  float: left; }\n\n.pull-right {\n  float: right; }\n\n* {\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n  -webkit-tap-highlight-color: transparent; }\n  *:focus {\n    outline: 0; }\n\n.text-center {\n  text-align: center; }\n\n.text-left {\n  text-align: left; }\n\n.text-right {\n  text-align: right; }\n\n.places-buttons .md-button {\n  width: 30%;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n.md-theme-default :not(input):not(textarea)::selection {\n  background-color: #c8c8c8 !important; }\n\n.container,\n.container-fluid {\n  padding-right: 15px;\n  padding-left: 15px;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  position: relative; }\n  .section .container, .section\n  .container-fluid {\n    flex-direction: column; }\n\n.md-ripple .md-ripple-wave {\n  border-radius: 50% !important; }\n\n.small, small {\n  font-size: 75%;\n  color: #777;\n  font-weight: 400; }\n\n.ml-auto,\n.mx-auto {\n  margin-left: auto !important; }\n\n.mr-auto,\n.mx-auto {\n  margin-right: auto !important; }\n\n.md-layout {\n  margin-right: -15px;\n  margin-left: -15px; }\n\n.img-thumbnail {\n  border-radius: 16px; }\n\n.img-raised {\n  box-shadow: 0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.rounded {\n  border-radius: 6px !important; }\n\n.rounded-circle {\n  border-radius: 50% !important; }\n\n.responsive-image {\n  max-width: 50%;\n  margin: 0 auto; }\n\n.info {\n  max-width: 360px;\n  margin: 0 auto;\n  padding: 70px 0 30px; }\n  .info .icon {\n    color: #999999; }\n    .info .icon > i {\n      font-size: 3.85rem !important;\n      min-width: auto;\n      width: auto;\n      height: auto;\n      vertical-align: unset; }\n  .info .info-title {\n    color: #3C4858;\n    margin: 1.75rem 0 0.875rem; }\n  .info p {\n    color: #999999; }\n\n.info-horizontal .icon {\n  float: left;\n  margin-top: 24px;\n  margin-right: 10px; }\n  .info-horizontal .icon > i {\n    font-size: 2.25rem; }\n\n.info-horizontal .description {\n  overflow: hidden; }\n\n.icon.icon-primary i {\n  color: #9c27b0 !important; }\n\n.icon.icon-info i {\n  color: #00bcd4 !important; }\n\n.icon.icon-success i {\n  color: #4caf50 !important; }\n\n.icon.icon-warning i {\n  color: #ff9800 !important; }\n\n.icon.icon-danger i {\n  color: #f44336 !important; }\n\n.icon.icon-rose i {\n  color: #e91e63 !important; }\n\n.md-datepicker-body-header .md-icon-button {\n  background-color: transparent !important;\n  box-shadow: none !important;\n  font-weight: 500; }\n  .md-datepicker-body-header .md-icon-button:hover, .md-datepicker-body-header .md-icon-button:focus {\n    background-color: #eee !important; }\n  .md-datepicker-body-header .md-icon-button .md-button-content svg {\n    fill: #212529 !important; }\n\n.md-dialog-actions .md-button, .md-dialog-actions .md-button:hover, .md-dialog-actions .md-button:focus, .md-dialog-actions .md-button:active, .md-dialog-actions .md-button.active, .md-dialog-actions .md-button:active:focus, .md-dialog-actions .md-button:active:hover, .md-dialog-actions .md-button.active:focus, .md-dialog-actions .md-button.active:hover,\n.open > .md-dialog-actions .md-button.dropdown-toggle,\n.open > .md-dialog-actions .md-button.dropdown-toggle:focus,\n.open > .md-dialog-actions .md-button.dropdown-toggle:hover {\n  background-color: #4caf50 !important; }\n\n.md-dialog-actions .md-button:focus, .md-dialog-actions .md-button:active, .md-dialog-actions .md-button:hover {\n  box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2); }\n\n.md-datepicker-header .md-datepicker-date-select {\n  font-size: 30px; }\n\n.md-button[class*=\"md-datepicker-\"] {\n  background-color: transparent !important;\n  box-shadow: none !important;\n  font-weight: 500;\n  border-radius: 3px;\n  margin-left: 48px;\n  margin-right: 48px; }\n  .md-button[class*=\"md-datepicker-\"]:hover, .md-button[class*=\"md-datepicker-\"]:focus {\n    background-color: #eee !important; }\n  .md-button[class*=\"md-datepicker-\"] .md-button-content {\n    color: #212529 !important; }\n\n.md-datepicker-day-button {\n  font-size: 0.875rem; }\n  .md-datepicker-day-button:hover, .md-datepicker-day-button:focus {\n    background-color: #eee !important; }\n\n.md-datepicker-today,\n.md-datepicker-selected {\n  box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);\n  font-weight: lighter !important; }\n  .md-datepicker-today, .md-datepicker-today:hover, .md-datepicker-today:focus,\n  .md-datepicker-selected,\n  .md-datepicker-selected:hover,\n  .md-datepicker-selected:focus {\n    background-color: #4caf50 !important;\n    color: #FFFFFF !important; }\n\n.md-datepicker-month-button,\n.md-datepicker-year-button {\n  font-weight: 300; }\n\n.md-datepicker-dayname,\n.md-datepicker-monthname,\n.md-datepicker-day {\n  font-weight: 300 !important; }\n\n.md-datepicker-dialog .md-datepicker-header {\n  background: linear-gradient(60deg, #66bb6a, #43a047) !important; }\n\n.md-datepicker-overlay,\n.md-datepicker-dialog {\n  z-index: 9999; }\n\n.md-field .md-input,\n.md-field .md-textarea {\n  height: 36px;\n  padding: 7px 0;\n  font-size: 14px !important;\n  -webkit-text-fill-color: #3C4858 !important;\n  appearance: none; }\n\n.md-field > .fas ~ .md-input,\n.md-field > .fab ~ .md-input,\n.md-field > .fa ~ .md-input {\n  margin-left: 12px; }\n\n.md-field > .fas,\n.md-field > .fab,\n.md-field > .fa {\n  width: 24px;\n  min-width: 24px;\n  height: 24px;\n  position: relative;\n  top: 5px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }\n\n.md-field.has-white:not(.md-disabled):after, .md-field.has-white:before {\n  background-color: #FFFFFF !important; }\n\n.md-field.has-white label {\n  color: #FFFFFF !important; }\n\n.md-field.has-white .md-input {\n  -webkit-text-fill-color: #FFFFFF !important;\n  color: #FFFFFF !important; }\n\n.md-field.has-green:before {\n  background-color: #4caf50 !important; }\n\n.md-field.has-green.md-focused .md-icon {\n  color: #4caf50 !important; }\n\n.md-field.has-danger:before {\n  background-color: #f44336 !important; }\n\n.md-field.has-danger.md-focused .md-icon {\n  color: #f44336 !important; }\n\n.md-field.has-warning:before {\n  background-color: #ff9800 !important; }\n\n.md-field.has-warning.md-focused .md-icon {\n  color: #ff9800 !important; }\n\n.md-field.has-rose:before {\n  background-color: #e91e63 !important; }\n\n.md-field.has-rose.md-focused .md-icon {\n  color: #e91e63 !important; }\n\n.md-field.has-info:before {\n  background-color: #00bcd4 !important; }\n\n.md-field.has-info.md-focused .md-icon {\n  color: #00bcd4 !important; }\n\n.md-field.has-primary:before {\n  background-color: #9c27b0 !important; }\n\n.md-field.has-primary.md-focused .md-icon {\n  color: #9c27b0 !important; }\n\n.md-field.md-has-textarea:not(.md-autogrow).md-focused .md-textarea, .md-field.md-has-textarea:not(.md-autogrow).md-has-value .md-textarea {\n  margin-top: 20px;\n  padding-top: 0; }\n\n.md-field.md-valid label {\n  color: #4caf50 !important; }\n\n.md-field.md-valid:before {\n  background-color: #4caf50 !important; }\n\n.md-field.md-valid .md-icon {\n  color: #4caf50 !important; }\n\n.md-field.md-error label {\n  color: #f44336 !important; }\n\n.md-field.md-error:before {\n  background-color: #f44336 !important; }\n\n.md-field.md-error .md-icon {\n  color: #f44336 !important; }\n\n.md-field.md-has-textarea:not(.md-autogrow) .md-textarea {\n  min-height: 85px; }\n\n.md-field.md-has-textarea:not(.md-autogrow) label {\n  left: 0; }\n\n.md-field.md-focused label,\n.md-field.md-has-value label {\n  top: -1rem; }\n\n.md-field .md-helper-text {\n  color: #6c757d !important;\n  bottom: 18px;\n  opacity: 0;\n  font-size: .75rem;\n  visibility: hidden; }\n\n.md-field .md-input::-moz-placeholder {\n  font-size: 14px;\n  color: #aaa !important; }\n\n.md-field .md-input:-ms-input-placeholder {\n  font-size: 14px;\n  color: #aaa !important; }\n\n.md-field .md-input::-webkit-input-placeholder {\n  font-size: 14px;\n  color: #aaa !important; }\n\n.md-field.md-focused .md-helper-text {\n  opacity: 1;\n  bottom: -10px;\n  visibility: visible; }\n\n.sidebar .md-field.md-theme-default.md-focused .md-input {\n  color: #FFFFFF !important;\n  -webkit-text-fill-color: #FFFFFF !important; }\n\n.md-field label {\n  font-size: 14px;\n  font-weight: 400;\n  color: #AAAAAA !important;\n  line-height: 1.4;\n  top: 26px; }\n\n.md-field.md-disabled .md-input {\n  cursor: not-allowed; }\n\n.md-field.md-disabled:after {\n  border-bottom: 1px dotted #d2d2d2;\n  background-color: transparent !important;\n  background-image: none !important; }\n\n.md-field:not(.md-disabled):after {\n  background-color: #d2d2d2 !important; }\n\n.md-field:before {\n  background-color: #9c27b0 !important; }\n\n.md-field.md-focused label,\n.md-field.md-has-value label,\n.md-field.md-focused.md-has-value label {\n  font-size: .6875rem; }\n\n.md-field.md-has-textarea:not(.md-autogrow):after, .md-field.md-has-textarea:not(.md-autogrow):before {\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid transparent;\n  border-color: #d2d2d2 !important; }\n\n.md-field.md-has-textarea:not(.md-autogrow):before {\n  border-bottom: 2px solid transparent;\n  border-color: #4caf50 !important;\n  transform: scaleX(0.12); }\n\n.md-field.md-has-textarea:not(.md-autogrow).md-focused label,\n.md-field.md-has-textarea:not(.md-autogrow).md-has-value label {\n  top: 0; }\n\n.md-field.md-focused.md-has-textarea:not(.md-autogrow):before {\n  transform: scaleX(1); }\n\n.md-field .md-input-action {\n  top: 0;\n  border-radius: 50%;\n  width: 32px !important;\n  height: 32px !important;\n  background-color: #FFFFFF !important; }\n  .md-field .md-input-action .md-button-content i {\n    width: 18px;\n    height: 18px; }\n    .md-field .md-input-action .md-button-content i svg {\n      fill: #999999 !important; }\n\n.md-field {\n  padding-bottom: 10px;\n  padding-top: 0;\n  margin: 13px 0 0;\n  min-height: auto; }\n  .md-field.md-focused label,\n  .md-field.md-field.md-has-value label {\n    top: -.8rem; }\n  .md-field.md-focused > .fa,\n  .md-field.md-focused > .md-icon,\n  .md-field.md-focused > .fas,\n  .md-field.md-focused > .fab {\n    color: #9c27b0 !important; }\n  .md-field .success.md-icon,\n  .md-field .error.md-icon {\n    transition: none;\n    position: absolute;\n    right: 0;\n    top: 3px;\n    font-size: 20px !important; }\n    .md-field .success.md-icon:after,\n    .md-field .error.md-icon:after {\n      display: none; }\n  .md-field:after, .md-field:before {\n    bottom: 10px; }\n  .md-field label {\n    top: 9px; }\n  .md-field.md-form-group > .md-icon, .md-field.md-datepicker > .md-icon {\n    margin: 6px 0; }\n    .md-field.md-form-group > .md-icon:after, .md-field.md-datepicker > .md-icon:after {\n      display: none; }\n  .md-field.md-form-group:after, .md-field.md-form-group:before, .md-field.md-datepicker:after, .md-field.md-datepicker:before {\n    width: calc(100% - 36px);\n    margin-left: auto; }\n\n.form-control-static {\n  margin: 0; }\n\n.form-category {\n  color: #333; }\n\n.md-label-on-right {\n  padding: 20px 5px 0 0;\n  text-align: left; }\n  .md-label-on-right code {\n    padding: 2px 4px;\n    font-size: 90%;\n    color: #c7254e;\n    background-color: #f9f2f4;\n    border-radius: 4px; }\n\ntextarea {\n  resize: none; }\n\n.badge {\n  display: inline-block;\n  border-radius: 12px;\n  padding: 5px 12px;\n  text-transform: uppercase;\n  font-size: 10px;\n  color: #FFFFFF;\n  font-weight: 500;\n  line-height: 1;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: baseline; }\n  .badge:not(:last-child) {\n    margin-right: 5px; }\n  .badge.badge-primary {\n    background-color: #9c27b0; }\n  .badge.badge-info {\n    background-color: #00bcd4; }\n  .badge.badge-success {\n    background-color: #4caf50; }\n  .badge.badge-warning {\n    background-color: #ff9800; }\n  .badge.badge-danger {\n    background-color: #f44336; }\n  .badge.badge-rose {\n    background-color: #e91e63; }\n  .badge.badge-default {\n    background-color: #999999; }\n\n.badge-default[href]:hover,\n.badge-default[href]:focus {\n  background-color: #8c8c8c; }\n\n.badge-primary[href]:hover,\n.badge-primary[href]:focus {\n  background-color: #89229b; }\n\n.badge-info[href]:hover,\n.badge-info[href]:focus {\n  background-color: #00a5bb; }\n\n.badge-success[href]:hover,\n.badge-success[href]:focus {\n  background-color: #449d48; }\n\n.badge-warning[href]:hover,\n.badge-warning[href]:focus {\n  background-color: #e68900;\n  color: #FFFFFF; }\n\n.badge-danger[href]:hover,\n.badge-danger[href]:focus {\n  background-color: #f32c1e; }\n\n.badge-rose[href]:hover,\n.badge-rose[href]:focus {\n  background-color: #d81558; }\n\n.md-progress-bar {\n  height: 4px;\n  margin-bottom: 20px; }\n  .md-progress-bar.md-rose:not(.md-buffer) {\n    background: rgba(233, 30, 99, 0.2); }\n  .md-progress-bar.md-rose .md-progress-bar-fill {\n    background-color: #e91e63 !important; }\n  .md-progress-bar.md-rose.md-buffer .md-progress-bar-fill {\n    background-color: #e91e63; }\n  .md-progress-bar.md-rose.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(233, 30, 99, 0.2); }\n  .md-progress-bar.md-danger:not(.md-buffer) {\n    background: rgba(244, 67, 54, 0.2); }\n  .md-progress-bar.md-danger .md-progress-bar-fill {\n    background-color: #f44336 !important; }\n  .md-progress-bar.md-danger.md-buffer .md-progress-bar-fill {\n    background-color: #f44336; }\n  .md-progress-bar.md-danger.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(244, 67, 54, 0.2); }\n  .md-progress-bar.md-primary:not(.md-buffer) {\n    background: rgba(156, 39, 176, 0.2); }\n  .md-progress-bar.md-primary .md-progress-bar-fill {\n    background-color: #9c27b0 !important; }\n  .md-progress-bar.md-primary.md-buffer .md-progress-bar-fill {\n    background-color: #9c27b0; }\n  .md-progress-bar.md-primary.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(156, 39, 176, 0.2); }\n  .md-progress-bar.md-info:not(.md-buffer) {\n    background: rgba(0, 188, 212, 0.2); }\n  .md-progress-bar.md-info .md-progress-bar-fill {\n    background-color: #00bcd4 !important; }\n  .md-progress-bar.md-info.md-buffer .md-progress-bar-fill {\n    background-color: #00bcd4; }\n  .md-progress-bar.md-info.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(0, 188, 212, 0.2); }\n  .md-progress-bar.md-success:not(.md-buffer) {\n    background: rgba(76, 175, 80, 0.2); }\n  .md-progress-bar.md-success .md-progress-bar-fill {\n    background-color: #4caf50 !important; }\n  .md-progress-bar.md-success.md-buffer .md-progress-bar-fill {\n    background-color: #4caf50; }\n  .md-progress-bar.md-success.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(76, 175, 80, 0.2); }\n  .md-progress-bar.md-warning:not(.md-buffer) {\n    background: rgba(255, 152, 0, 0.2); }\n  .md-progress-bar.md-warning .md-progress-bar-fill {\n    background-color: #ff9800 !important; }\n  .md-progress-bar.md-warning.md-buffer .md-progress-bar-fill {\n    background-color: #ff9800; }\n  .md-progress-bar.md-warning.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(255, 152, 0, 0.2); }\n\n.alert {\n  border: 0;\n  border-radius: 0;\n  position: relative;\n  padding: 20px 15px;\n  line-height: 20px;\n  margin-bottom: 20px;\n  background-color: #999999;\n  color: #FFFFFF;\n  border-radius: 3px;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(153, 153, 153, 0.6); }\n  .notifications .alert {\n    margin-bottom: 0; }\n  .alert .container {\n    flex-direction: unset;\n    display: flow-root;\n    padding: 0 31px;\n    line-height: 1.7; }\n  .alert b {\n    font-weight: 500;\n    text-transform: uppercase;\n    font-size: 12px; }\n  .alert.alert-info {\n    background-color: #00cae3;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 202, 227, 0.6); }\n  .alert.alert-danger {\n    background-color: #f55145;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(245, 81, 69, 0.6); }\n  .alert.alert-primary {\n    background-color: #a72abd;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(167, 42, 189, 0.6); }\n  .alert.alert-warning {\n    background-color: #ff9e0f;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 158, 15, 0.6); }\n  .alert.alert-success {\n    background-color: #55b559;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(85, 181, 89, 0.6); }\n  .alert-info, .alert-danger, .alert-warning, .alert-success {\n    color: #ffffff; }\n  .alert-default a, .alert-default .alert-link {\n    color: rgba(0,0,0, 0.87); }\n  .alert .close {\n    position: absolute;\n    right: 0;\n    font-size: inherit;\n    font-weight: 700;\n    line-height: 1;\n    color: #FFFFFF;\n    opacity: .9;\n    background-color: transparent;\n    border: 0;\n    cursor: pointer;\n    top: 0;\n    bottom: 0; }\n    .alert .close i {\n      font-size: 20px !important;\n      color: #FFFFFF !important;\n      font-weight: normal; }\n  .alert i[data-notify=\"icon\"] {\n    font-size: 30px;\n    display: block;\n    left: 15px;\n    position: absolute;\n    top: 50%;\n    margin-top: -15px; }\n  .alert .alert-icon {\n    display: inline-block;\n    margin-right: 15px; }\n    .alert .alert-icon i {\n      color: #FFFFFF !important;\n      height: 22px; }\n\n.alert.alert-with-icon {\n  padding-left: 65px; }\n\n.md-table-cell-container {\n  padding: 0; }\n  .md-table-cell:last-child .md-table-cell-container {\n    padding-right: 0;\n    text-align: right;\n    display: flex; }\n\n.md-table-head-container {\n  height: auto;\n  padding: 0; }\n\n.md-tabs-content table thead {\n  display: none; }\n\n.md-tabs-container tbody .md-table-row:first-child td {\n  border: 0; }\n\n.md-table-cell {\n  padding: 12px 8px;\n  font-size: 14px; }\n\n.md-table-head-label {\n  font-size: 1.0625rem;\n  padding-left: 8px;\n  font-weight: 300; }\n\n.md-table .md-table-row:hover .md-table-cell {\n  background-color: transparent !important; }\n\n.md-table .md-table-row:hover {\n  background: #f5f5f5 !important; }\n\n.md-card-plain .md-card-content > div .md-table .md-table-content,\n.md-card-plain .md-card-content > div .md-table {\n  background-color: transparent !important; }\n\n.md-table[table-header-color=\"orange\"] .md-table-head {\n  color: #ff9800 !important; }\n\n.md-table[table-header-color=\"purple\"] .md-table-head {\n  color: #9c27b0 !important; }\n\n.md-table[table-header-color=\"blue\"] .md-table-head {\n  color: #00bcd4 !important; }\n\n.md-table[table-header-color=\"red\"] .md-table-head {\n  color: #f44336 !important; }\n\n.md-table[table-header-color=\"green\"] .md-table-head {\n  color: #4caf50 !important; }\n\n.md-table .md-table-row td {\n  border-top-color: rgba(0, 0, 0, 0.06) !important; }\n\n.md-layout-item {\n  padding-right: 15px;\n  padding-left: 15px; }\n\n.page-header {\n  height: 100vh;\n  background-position: center center;\n  background-size: cover;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .page-header .carousel .carousel-indicators {\n    bottom: 60px; }\n  .page-header > .container {\n    color: #FFFFFF; }\n  .page-header .title {\n    color: #FFFFFF; }\n  .page-header.header-small {\n    height: 65vh;\n    min-height: 65vh; }\n  .page-header .iframe-container iframe {\n    width: 100%;\n    box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.header-filter {\n  position: relative; }\n  .header-filter:before, .header-filter:after {\n    position: absolute;\n    z-index: 1;\n    width: 100%;\n    height: 100%;\n    display: block;\n    left: 0;\n    top: 0;\n    content: \"\"; }\n  .header-filter .md-layout {\n    z-index: 2;\n    position: relative; }\n\n.clear-filter::before {\n  background: none; }\n\n.purple-filter:after {\n  background: rgba(101, 47, 142, 0.64);\n  background: linear-gradient(45deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);\n  background: -moz-linear-gradient(135deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);\n  background: -webkit-linear-gradient(135deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%); }\n\n.index-page .section-components h6.description {\n  margin-top: 5px;\n  margin-bottom: 30px; }\n\n.index-page .page-header {\n  height: 10vh;\n  overflow: hidden; }\n\n.index-page .brand {\n  color: #FFFFFF;\n  text-align: center; }\n  .index-page .brand h1 {\n    font-size: 6rem;\n    font-weight: 600;\n    display: inline-block;\n    position: relative;\n    line-height: 1.15em;\n    text-shadow: 0px 15px 102.86px rgba(0, 0, 0, 0.7), 0px 15px 40.02px rgba(0, 0, 0, 0.21); }\n  .index-page .brand h3 {\n    font-size: 2.23rem;\n    margin: 10px auto 0;\n    line-height: 0;\n    font-weight: 400;\n    text-shadow: 0px 15px 102.86px rgba(0, 0, 0, 0.9), 0px 15px 40.02px rgba(0, 0, 0, 0.51); }\n\n.index-page h4.description {\n  font-size: 1.5em; }\n\n.section {\n  padding: 70px 0; }\n\n.profile-page .page-header {\n  height: 380px;\n  background-position: center center; }\n  .profile-page .page-header::before {\n    background: rgba(0, 0, 0, 0.2); }\n\n.profile-page .profile {\n  text-align: center; }\n  .profile-page .profile img {\n    max-width: 160px;\n    width: 100%;\n    margin: 0 auto;\n    -webkit-transform: translate3d(0, -50%, 0);\n    -moz-transform: translate3d(0, -50%, 0);\n    -o-transform: translate3d(0, -50%, 0);\n    -ms-transform: translate3d(0, -50%, 0);\n    transform: translate3d(0, -50%, 0); }\n  .profile-page .profile .name {\n    margin-top: -80px; }\n\n.profile-page .follow {\n  position: absolute;\n  top: 0;\n  right: 0; }\n\n.profile-page .description {\n  margin: 15px auto 0;\n  max-width: 600px; }\n\n.profile-page .profile-tabs {\n  margin-top: 60px; }\n\n.profile-page .gallery {\n  margin-top: 45px;\n  padding-bottom: 50px; }\n  .profile-page .gallery img {\n    width: 100%;\n    margin-bottom: 30px; }\n\n.profile-page .follow .btn-fab {\n  margin-top: -28px; }\n\n.profile-page .card-background .content {\n  padding: 30% 0;\n  min-width: 160px; }\n\n.profile-page .work {\n  padding: 40px 0px; }\n  .profile-page .work .collections {\n    margin-top: 20px; }\n  .profile-page .work .stats ul > li {\n    padding: 5px 0px;\n    font-size: 1em; }\n    .profile-page .work .stats ul > li b {\n      font-size: 1.2em; }\n\n.profile-page .connections {\n  padding: 40px 0px; }\n  .profile-page .connections .card-profile {\n    text-align: left; }\n\n.profile-page .tab-content .collections .card .card-body {\n  display: flex;\n  flex-direction: column;\n  justify-content: center; }\n  .profile-page .tab-content .collections .card .card-body .badge {\n    display: inline-table;\n    margin: 0 auto; }\n\n.landing-page .page-header::before {\n  background: rgba(0, 0, 0, 0.2); }\n\n.login-page .footer {\n  position: absolute;\n  width: 100%;\n  background: transparent;\n  bottom: 0;\n  color: #FFFFFF;\n  z-index: 1; }\n  .login-page .footer .copyright a {\n    color: #FFFFFF; }\n\n.login-page .page-header {\n  height: 100%;\n  min-height: -webkit-fill-available; }\n  .login-page .page-header::before {\n    background: rgba(0, 0, 0, 0.2); }\n  .login-page .page-header > .container {\n    padding-top: 100px;\n    padding-bottom: 150px; }\n\n.md-checkbox .md-checkbox-container {\n  border: 1px solid rgba(0, 0, 0, 0.54);\n  border-radius: 3px; }\n  .md-checkbox .md-checkbox-container .md-ripple {\n    overflow: hidden; }\n\n.md-checkbox.md-checked .md-checkbox-container:after {\n  border-color: #9c27b0 !important;\n  top: 1px;\n  left: 6px; }\n\n.md-checkbox .md-checkbox-label {\n  font-weight: 400;\n  font-size: .875rem;\n  color: #aaa;\n  padding-left: 10px; }\n\n.md-checkbox.md-theme-default.md-checked .md-checkbox-container {\n  background-color: transparent !important;\n  border-color: inherit; }\n\n.md-checkbox.md-theme-default.md-checked .md-ripple {\n  color: inherit; }\n\n.md-checkbox.md-disabled .md-checkbox-label,\n.md-checkbox.md-disabled .md-checkbox-container {\n  opacity: .26;\n  border-color: rgba(0, 0, 0, 0.54) !important; }\n\n.md-checkbox.md-checked.md-disabled .md-checkbox-container {\n  background-color: transparent !important;\n  border-color: rgba(0, 0, 0, 0.54) !important;\n  opacity: .26; }\n  .md-checkbox.md-checked.md-disabled .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54) !important; }\n\n.md-switch .md-switch-thumb .md-ripple,\n.md-switch .md-switch-thumb:before {\n  overflow: hidden; }\n\n.md-switch {\n  display: flex;\n  margin: 0; }\n  .md-switch .md-switch-label {\n    color: rgba(0, 0, 0, 0.26);\n    font-size: 14px;\n    line-height: 1.42857;\n    font-weight: 400;\n    margin-bottom: .5rem; }\n  .md-switch .md-switch-container {\n    background-color: rgba(80, 80, 80, 0.7) !important; }\n  .md-switch .md-switch-thumb {\n    background-color: #FFFFFF !important;\n    border: 1px solid rgba(0, 0, 0, 0.54);\n    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4); }\n    .md-switch .md-switch-thumb .md-ripple .md-ripple-wave {\n      background-color: rgba(0, 0, 0, 0.54) !important; }\n  .md-switch.md-checked .md-switch-thumb {\n    border: 1px solid #9c27b0; }\n    .md-switch.md-checked .md-switch-thumb .md-ripple .md-ripple-wave {\n      background-color: rgba(156, 39, 176, 0.7) !important; }\n  .md-switch.md-checked .md-switch-container {\n    background-color: rgba(156, 39, 176, 0.7) !important; }\n\n.page-link {\n  position: relative;\n  display: block;\n  padding: .5rem .75rem;\n  margin-left: 0;\n  line-height: 1.25;\n  color: #2196f3;\n  background-color: transparent;\n  border: 0 solid #dee2e6; }\n\n.no-arrows {\n  display: none; }\n\n.pagination {\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem; }\n  .pagination > .page-item > .page-link,\n  .pagination > .page-item > span {\n    border: 0;\n    border-radius: 30px !important;\n    transition: all .3s;\n    margin: 0 3px;\n    padding: 0;\n    min-width: 30px;\n    height: 30px;\n    line-height: 30px;\n    color: #999999;\n    font-weight: 400;\n    font-size: 12px;\n    text-transform: uppercase;\n    background: transparent;\n    text-align: center;\n    cursor: pointer; }\n    .pagination > .page-item > .page-link:hover, .pagination > .page-item > .page-link:focus,\n    .pagination > .page-item > span:hover,\n    .pagination > .page-item > span:focus {\n      color: #999999 !important; }\n  .pagination > .page-item.active > a,\n  .pagination > .page-item.active > span {\n    color: #999999; }\n    .pagination > .page-item.active > a, .pagination > .page-item.active > a:focus, .pagination > .page-item.active > a:hover,\n    .pagination > .page-item.active > span,\n    .pagination > .page-item.active > span:focus,\n    .pagination > .page-item.active > span:hover {\n      background-color: #9c27b0;\n      border-color: #9c27b0;\n      color: #FFFFFF !important;\n      box-shadow: 0 4px 5px 0 rgba(156, 39, 176, 0.14), 0 1px 10px 0 rgba(156, 39, 176, 0.12), 0 2px 4px -1px rgba(156, 39, 176, 0.2); }\n  .pagination.pagination-info > .page-item.active > a, .pagination.pagination-info > .page-item.active > a:focus, .pagination.pagination-info > .page-item.active > a:hover,\n  .pagination.pagination-info > .page-item.active > span,\n  .pagination.pagination-info > .page-item.active > span:focus,\n  .pagination.pagination-info > .page-item.active > span:hover {\n    background-color: #00bcd4;\n    border-color: #00bcd4;\n    box-shadow: 0 4px 5px 0 rgba(0, 188, 212, 0.14), 0 1px 10px 0 rgba(0, 188, 212, 0.12), 0 2px 4px -1px rgba(0, 188, 212, 0.2); }\n  .pagination.pagination-success > .page-item.active > a, .pagination.pagination-success > .page-item.active > a:focus, .pagination.pagination-success > .page-item.active > a:hover,\n  .pagination.pagination-success > .page-item.active > span,\n  .pagination.pagination-success > .page-item.active > span:focus,\n  .pagination.pagination-success > .page-item.active > span:hover {\n    background-color: #4caf50;\n    border-color: #4caf50;\n    box-shadow: 0 4px 5px 0 rgba(76, 175, 80, 0.14), 0 1px 10px 0 rgba(76, 175, 80, 0.12), 0 2px 4px -1px rgba(76, 175, 80, 0.2); }\n  .pagination.pagination-rose > .page-item.active > a, .pagination.pagination-rose > .page-item.active > a:focus, .pagination.pagination-rose > .page-item.active > a:hover,\n  .pagination.pagination-rose > .page-item.active > span,\n  .pagination.pagination-rose > .page-item.active > span:focus,\n  .pagination.pagination-rose > .page-item.active > span:hover {\n    background-color: #e91e63;\n    border-color: #e91e63;\n    box-shadow: 0 4px 5px 0 rgba(233, 30, 99, 0.14), 0 1px 10px 0 rgba(233, 30, 99, 0.12), 0 2px 4px -1px rgba(233, 30, 99, 0.2); }\n  .pagination.pagination-warning > .page-item.active > a, .pagination.pagination-warning > .page-item.active > a:focus, .pagination.pagination-warning > .page-item.active > a:hover,\n  .pagination.pagination-warning > .page-item.active > span,\n  .pagination.pagination-warning > .page-item.active > span:focus,\n  .pagination.pagination-warning > .page-item.active > span:hover {\n    background-color: #ff9800;\n    border-color: #ff9800;\n    box-shadow: 0 4px 5px 0 rgba(255, 152, 0, 0.14), 0 1px 10px 0 rgba(255, 152, 0, 0.12), 0 2px 4px -1px rgba(255, 152, 0, 0.2); }\n  .pagination.pagination-danger > .page-item.active > a, .pagination.pagination-danger > .page-item.active > a:focus, .pagination.pagination-danger > .page-item.active > a:hover,\n  .pagination.pagination-danger > .page-item.active > span,\n  .pagination.pagination-danger > .page-item.active > span:focus,\n  .pagination.pagination-danger > .page-item.active > span:hover {\n    background-color: #f44336;\n    border-color: #f44336;\n    box-shadow: 0 4px 5px 0 rgba(244, 67, 54, 0.14), 0 1px 10px 0 rgba(244, 67, 54, 0.12), 0 2px 4px -1px rgba(244, 67, 54, 0.2); }\n\n.md-radio .md-radio-label {\n  padding-left: 10px;\n  color: #aaa;\n  font-size: .875rem;\n  font-weight: 400; }\n\n.md-radio .md-radio-container {\n  border: 1px solid rgba(0, 0, 0, 0.54) !important;\n  width: 15px;\n  min-width: 15px;\n  height: 15px;\n  top: 2px;\n  transition: .2s !important; }\n  .md-radio .md-radio-container:after {\n    transform: scale3D(0, 0, 0);\n    transition: .2s !important;\n    right: 2px;\n    bottom: 2px;\n    top: 2px;\n    left: 2px;\n    border-radius: 100%; }\n  .md-radio .md-radio-container .md-ripple {\n    overflow: hidden; }\n    .md-radio .md-radio-container .md-ripple .md-ripple-wave {\n      background-color: #9c27b0; }\n\n.md-radio.md-checked .md-radio-container {\n  border-color: #9c27b0 !important; }\n  .md-radio.md-checked .md-radio-container:after {\n    background-color: #9c27b0 !important; }\n\n.md-radio.md-disabled .md-radio-label,\n.md-radio.md-disabled .md-radio-container {\n  opacity: .26;\n  border-color: rgba(0, 0, 0, 0.54) !important; }\n\n.md-radio.md-checked.md-disabled .md-radio-container {\n  background-color: transparent !important;\n  border-color: rgba(0, 0, 0, 0.54) !important;\n  opacity: .26; }\n  .md-radio.md-checked.md-disabled .md-radio-container:after {\n    background-color: rgba(0, 0, 0, 0.54) !important; }\n\n.section-dark .nav-pills > li > a,\n.section-image .nav-pills > li > a {\n  color: #999999; }\n\n.section-dark .nav-pills > li > a:hover,\n.section-dark .nav-pills > li > a:focus,\n.section-image .nav-pills > li > a:hover,\n.section-image .nav-pills > li > a:focus {\n  background-color: #EEEEEE; }\n\n.nav-pills > li > a {\n  line-height: 24px;\n  text-transform: uppercase;\n  font-size: 12px;\n  font-weight: 500;\n  min-width: 100px;\n  text-align: center;\n  color: #555555;\n  transition: all .3s; }\n  .nav-pills > li > a:hover {\n    background-color: rgba(200, 200, 200, 0.2); }\n\n.nav-pills > li i {\n  display: block;\n  font-size: 30px;\n  padding: 15px 0; }\n\n.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {\n  background-color: #9c27b0;\n  color: #FFFFFF;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n\n.nav-pills:not(.nav-pills-icons) > li > a {\n  border-radius: 30px; }\n\n.nav-pills.nav-stacked > li + li {\n  margin-top: 5px; }\n\n.nav-pills.nav-pills-info > li.active > a, .nav-pills.nav-pills-info > li.active > a:focus, .nav-pills.nav-pills-info > li.active > a:hover {\n  background-color: #00bcd4;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n\n.nav-pills.nav-pills-success > li.active > a, .nav-pills.nav-pills-success > li.active > a:focus, .nav-pills.nav-pills-success > li.active > a:hover {\n  background-color: #4caf50;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n\n.nav-pills.nav-pills-warning > li.active > a, .nav-pills.nav-pills-warning > li.active > a:focus, .nav-pills.nav-pills-warning > li.active > a:hover {\n  background-color: #ff9800;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n\n.nav-pills.nav-pills-danger > li.active > a, .nav-pills.nav-pills-danger > li.active > a:focus, .nav-pills.nav-pills-danger > li.active > a:hover {\n  background-color: #f44336;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n\n.tab-space {\n  padding: 20px 0 50px 0px; }\n\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.2);\n  display: table;\n  transition: opacity .15s ease; }\n\n.modal-wrapper {\n  display: table-cell;\n  vertical-align: middle; }\n\n.picture {\n  max-width: 150px; }\n  .picture img {\n    border-radius: 6px; }\n\n.modal-title {\n  margin: 0;\n  line-height: 1.5; }\n\n.modal-body {\n  padding: 24px 24px 16px; }\n  .modal-body p {\n    margin-top: 0; }\n\n.modal-container {\n  max-width: 500px;\n  margin: 0px auto;\n  position: relative;\n  background-color: #fff;\n  transition: all .3s ease;\n  box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22);\n  border-radius: 6px;\n  border: none; }\n\n.modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 24px 0;\n  border-top-left-radius: .3rem;\n  border-top-right-radius: .3rem; }\n  .modal-header .md-button .md-button-content i {\n    font-size: 16px !important;\n    opacity: .5; }\n    .modal-header .md-button .md-button-content i:hover, .modal-header .md-button .md-button-content i:focus {\n      opacity: 1; }\n\n.modal-footer {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  padding: 24px;\n  padding-top: 0; }\n  .modal-footer .md-button {\n    margin: 0; }\n    .modal-footer .md-button .md-ripple {\n      padding-left: 16px !important;\n      padding-right: 16px !important;\n      width: auto; }\n\n.notice-modal + .modal-mask .modal-footer,\n.small-alert-modal + .modal-mask .modal-footer {\n  justify-content: center; }\n\n.instruction {\n  margin-bottom: 25px; }\n\n.small-alert-modal + .modal-mask .modal-container {\n  width: 300px;\n  margin: 0 auto; }\n  .small-alert-modal + .modal-mask .modal-container .modal-body {\n    margin-top: 20px; }\n\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n.modal-default-button {\n  position: absolute !important;\n  right: 9px;\n  top: 12px; }\n\n.md-toolbar {\n  min-height: 56px;\n  padding: 10px 15px;\n  justify-content: center;\n  border-radius: 3px;\n  margin-bottom: 20px;\n  background-color: #999999 !important;\n  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(153, 153, 153, 0.46); }\n  .md-toolbar.md-transparent {\n    background-color: transparent !important;\n    box-shadow: none;\n    padding-top: 25px; }\n    .md-toolbar.md-transparent .md-title,\n    .md-toolbar.md-transparent .md-list .md-list-item-content,\n    .md-toolbar.md-transparent .md-list-item-container .md-icon, .md-toolbar.md-transparent, .md-toolbar.md-transparent:hover, .md-toolbar.md-transparent:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar .md-toolbar-section-end .md-list {\n    justify-content: flex-end; }\n  .md-toolbar .md-toolbar-section-start .md-list {\n    justify-content: flex-start; }\n  .md-toolbar.md-absolute {\n    position: fixed;\n    z-index: 1030;\n    left: 0;\n    right: 0;\n    border-radius: 0; }\n  .md-toolbar .md-list-item-content .fab,\n  .md-toolbar .md-list-item-content .fa {\n    font-size: 1.25rem;\n    max-width: 24px;\n    width: 24px;\n    text-align: center;\n    margin-right: 4px; }\n  .md-toolbar .notification {\n    position: absolute;\n    top: 5px;\n    border: 1px solid #FFF;\n    right: 10px;\n    font-size: 9px;\n    background: #f44336;\n    color: #FFFFFF;\n    min-width: 20px;\n    padding: 0px 5px;\n    height: 20px;\n    border-radius: 10px;\n    text-align: center;\n    line-height: 19px;\n    vertical-align: middle;\n    display: block; }\n  .md-toolbar .navbar-nav > li > .dropdown-menu {\n    margin-top: -20px; }\n  .md-toolbar .navbar-nav > li.open > .dropdown-menu {\n    margin-top: 0; }\n  .md-toolbar .navbar-nav > .active > a, .md-toolbar .navbar-nav > .active > a:hover, .md-toolbar .navbar-nav > .active > a:focus {\n    color: inherit;\n    background-color: rgba(255, 255, 255, 0.1); }\n  .md-toolbar .navbar-nav > .disabled > a, .md-toolbar .navbar-nav > .disabled > a:hover, .md-toolbar .navbar-nav > .disabled > a:focus {\n    color: inherit;\n    background-color: transparent;\n    opacity: 0.9; }\n  .md-toolbar .navbar-nav .profile-photo {\n    padding: 0 5px 0; }\n    .md-toolbar .navbar-nav .profile-photo .profile-photo-small {\n      height: 40px;\n      width: 40px; }\n  .md-toolbar .dropdown-menu {\n    border-radius: 3px !important; }\n    .md-toolbar .dropdown-menu li > a:hover, .md-toolbar .dropdown-menu li > a:focus {\n      color: #FFFFFF !important;\n      background-color: #4caf50 !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n    .md-toolbar .dropdown-menu .active > a {\n      background-color: #4caf50 !important;\n      color: #FFFFFF !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n      .md-toolbar .dropdown-menu .active > a:hover, .md-toolbar .dropdown-menu .active > a:focus {\n        color: #FFFFFF !important; }\n  .md-toolbar .md-title,\n  .md-toolbar .md-list .md-list-item-content,\n  .md-toolbar .md-toolbar-toggle .icon-bar, .md-toolbar, .md-toolbar:hover, .md-toolbar:focus {\n    color: #FFFFFF !important; }\n  .md-toolbar.md-white {\n    background-color: #FFFFFF !important;\n    box-shadow: 0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15); }\n    .md-toolbar.md-white .md-title,\n    .md-toolbar.md-white .md-list .md-list-item-content,\n    .md-toolbar.md-white .md-toolbar-toggle .icon-bar, .md-toolbar.md-white, .md-toolbar.md-white:hover, .md-toolbar.md-white:focus {\n      color: #555 !important; }\n    .md-toolbar.md-white .md-list-item .md-button.md-simple i, .md-toolbar.md-white .md-list-item .md-button.md-simple, .md-toolbar.md-white .md-list-item .md-button.md-simple:hover i, .md-toolbar.md-white .md-list-item .md-button.md-simple:hover, .md-toolbar.md-white .md-list-item .md-button.md-simple:focus i, .md-toolbar.md-white .md-list-item .md-button.md-simple:focus, .md-toolbar.md-white .md-list-item .md-button.md-simple:active i, .md-toolbar.md-white .md-list-item .md-button.md-simple:active, .md-toolbar.md-white .md-list-item .md-button.md-simple.active i, .md-toolbar.md-white .md-list-item .md-button.md-simple.active, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:focus i, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:focus, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:hover i, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:hover, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:focus i, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:focus, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:hover i, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:hover,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle i,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:focus i,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:focus,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:hover i,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:hover {\n      color: #555 !important; }\n  .md-toolbar.md-primary {\n    background-color: #9c27b0 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(156, 39, 176, 0.46); }\n    .md-toolbar.md-primary .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-primary .dropdown-menu li > a:hover, .md-toolbar.md-primary .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #9c27b0 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n      .md-toolbar.md-primary .dropdown-menu .active > a {\n        background-color: #9c27b0 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n        .md-toolbar.md-primary .dropdown-menu .active > a:hover, .md-toolbar.md-primary .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-primary .md-title,\n    .md-toolbar.md-primary .md-list .md-list-item-content,\n    .md-toolbar.md-primary .md-toolbar-toggle .icon-bar, .md-toolbar.md-primary, .md-toolbar.md-primary:hover, .md-toolbar.md-primary:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-danger {\n    background-color: #f44336 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(244, 67, 54, 0.46); }\n    .md-toolbar.md-danger .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-danger .dropdown-menu li > a:hover, .md-toolbar.md-danger .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #f44336 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n      .md-toolbar.md-danger .dropdown-menu .active > a {\n        background-color: #f44336 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n        .md-toolbar.md-danger .dropdown-menu .active > a:hover, .md-toolbar.md-danger .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-danger .md-title,\n    .md-toolbar.md-danger .md-list .md-list-item-content,\n    .md-toolbar.md-danger .md-toolbar-toggle .icon-bar, .md-toolbar.md-danger, .md-toolbar.md-danger:hover, .md-toolbar.md-danger:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-warning {\n    background-color: #ff9800 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(255, 152, 0, 0.46); }\n    .md-toolbar.md-warning .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-warning .dropdown-menu li > a:hover, .md-toolbar.md-warning .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #ff9800 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n      .md-toolbar.md-warning .dropdown-menu .active > a {\n        background-color: #ff9800 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n        .md-toolbar.md-warning .dropdown-menu .active > a:hover, .md-toolbar.md-warning .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-warning .md-title,\n    .md-toolbar.md-warning .md-list .md-list-item-content,\n    .md-toolbar.md-warning .md-toolbar-toggle .icon-bar, .md-toolbar.md-warning, .md-toolbar.md-warning:hover, .md-toolbar.md-warning:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-info {\n    background-color: #00bcd4 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(0, 188, 212, 0.46); }\n    .md-toolbar.md-info .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-info .dropdown-menu li > a:hover, .md-toolbar.md-info .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #00bcd4 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n      .md-toolbar.md-info .dropdown-menu .active > a {\n        background-color: #00bcd4 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n        .md-toolbar.md-info .dropdown-menu .active > a:hover, .md-toolbar.md-info .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-info .md-title,\n    .md-toolbar.md-info .md-list .md-list-item-content,\n    .md-toolbar.md-info .md-toolbar-toggle .icon-bar, .md-toolbar.md-info, .md-toolbar.md-info:hover, .md-toolbar.md-info:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-success {\n    background-color: #4caf50 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(76, 175, 80, 0.46); }\n    .md-toolbar.md-success .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-success .dropdown-menu li > a:hover, .md-toolbar.md-success .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #4caf50 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n      .md-toolbar.md-success .dropdown-menu .active > a {\n        background-color: #4caf50 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n        .md-toolbar.md-success .dropdown-menu .active > a:hover, .md-toolbar.md-success .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-success .md-title,\n    .md-toolbar.md-success .md-list .md-list-item-content,\n    .md-toolbar.md-success .md-toolbar-toggle .icon-bar, .md-toolbar.md-success, .md-toolbar.md-success:hover, .md-toolbar.md-success:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-rose {\n    background-color: #e91e63 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(233, 30, 99, 0.46); }\n    .md-toolbar.md-rose .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-rose .dropdown-menu li > a:hover, .md-toolbar.md-rose .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #e91e63 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n      .md-toolbar.md-rose .dropdown-menu .active > a {\n        background-color: #e91e63 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n        .md-toolbar.md-rose .dropdown-menu .active > a:hover, .md-toolbar.md-rose .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-rose .md-title,\n    .md-toolbar.md-rose .md-list .md-list-item-content,\n    .md-toolbar.md-rose .md-toolbar-toggle .icon-bar, .md-toolbar.md-rose, .md-toolbar.md-rose:hover, .md-toolbar.md-rose:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-dark {\n    background-color: #212121 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(33, 33, 33, 0.46); }\n    .md-toolbar.md-dark .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-dark .dropdown-menu li > a:hover, .md-toolbar.md-dark .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #212121 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(33, 33, 33, 0.6); }\n      .md-toolbar.md-dark .dropdown-menu .active > a {\n        background-color: #212121 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(33, 33, 33, 0.6); }\n        .md-toolbar.md-dark .dropdown-menu .active > a:hover, .md-toolbar.md-dark .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-dark .md-title,\n    .md-toolbar.md-dark .md-list .md-list-item-content,\n    .md-toolbar.md-dark .md-toolbar-toggle .icon-bar, .md-toolbar.md-dark, .md-toolbar.md-dark:hover, .md-toolbar.md-dark:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.navbar-transparent {\n    background-color: transparent;\n    box-shadow: none;\n    border-bottom: 0; }\n    .md-toolbar.navbar-transparent .logo-container .brand {\n      color: #FFFFFF; }\n  .md-toolbar .md-toolbar-row {\n    min-height: auto;\n    padding-left: 15px;\n    padding-right: 15px; }\n  .md-toolbar .md-button {\n    margin: 0; }\n  .md-toolbar .profile-photo {\n    padding: 0;\n    margin: 0 3px; }\n  .md-toolbar .profile-photo-small {\n    height: 40px;\n    width: 40px;\n    overflow: hidden;\n    border-radius: 50%; }\n  .md-toolbar .dropdown .md-button:not(.md-round).md-just-icon {\n    height: unset;\n    width: unset; }\n  .md-toolbar .md-toolbar-toggle .md-button-content {\n    display: block;\n    align-items: unset; }\n  .md-toolbar .notification {\n    position: absolute;\n    top: 0px;\n    border: 1px solid #FFF;\n    right: 7px;\n    font-size: 9px;\n    background: #f44336;\n    color: #FFFFFF;\n    min-width: 20px;\n    padding: 0px 5px;\n    height: 20px;\n    border-radius: 10px;\n    text-align: center;\n    line-height: 19px;\n    vertical-align: middle;\n    display: block; }\n  .md-toolbar.md-theme-default.md-transparent, .md-toolbar.md-theme-default,\n  .md-toolbar.md-theme-default .md-title,\n  .md-toolbar.md-theme-default.md-transparent .md-title {\n    color: #555555; }\n  .md-toolbar .md-title {\n    height: 50px;\n    min-width: 50px;\n    display: flex;\n    align-items: center;\n    font-size: 18px;\n    margin-left: 0;\n    margin-right: 15px;\n    padding: 10px 0;\n    font-weight: 300;\n    letter-spacing: normal; }\n  .md-toolbar .md-toolbar-toggle {\n    width: 40px; }\n    .md-toolbar .md-toolbar-toggle .icon-bar {\n      position: relative;\n      display: block;\n      width: 22px;\n      height: 2px;\n      background-color: inherit;\n      border: 1px solid;\n      border-radius: 1px; }\n      .md-toolbar .md-toolbar-toggle .icon-bar + .icon-bar {\n        margin-top: 4px; }\n  .md-toolbar .md-list {\n    flex-flow: row;\n    padding-top: 0;\n    padding-bottom: 0;\n    color: inherit !important;\n    background-color: transparent !important; }\n    .md-toolbar .md-list:hover .md-list-item > a,\n    .md-toolbar .md-list:focus .md-list-item > a,\n    .md-toolbar .md-list > a:hover {\n      background-color: transparent !important; }\n    .md-toolbar .md-list .md-list-item > a:not(:last-child) {\n      margin-right: 5px; }\n  .md-toolbar .md-field {\n    padding: 0;\n    margin: 0; }\n    .md-toolbar .md-field:after, .md-toolbar .md-field:before {\n      bottom: 5px; }\n    .md-toolbar .md-field .md-input {\n      margin-top: 6px; }\n    .md-toolbar .md-field label {\n      top: 15px; }\n    .md-toolbar .md-field.md-focused label,\n    .md-toolbar .md-field.md-has-value label {\n      top: -4px; }\n  .md-toolbar .md-collapse {\n    display: flex;\n    width: 100%;\n    justify-content: flex-end; }\n\n.md-menu-content {\n  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);\n  border-radius: 3px !important;\n  overflow: hidden; }\n  .md-menu-content .md-list .md-list-item a {\n    font-size: 10px; }\n\n.md-list-item {\n  list-style: none; }\n  .md-list-item .router-link-active .md-ripple {\n    background-color: rgba(255, 255, 255, 0.1); }\n  .md-list-item a {\n    color: inherit !important;\n    padding-top: 15px;\n    padding-bottom: 15px;\n    font-weight: 400;\n    font-size: 12px;\n    text-transform: uppercase;\n    overflow: visible;\n    border-radius: 3px;\n    position: relative;\n    display: flex;\n    align-items: center;\n    padding: 0;\n    text-decoration: none; }\n    .md-list-item a:hover, .md-list-item a:focus {\n      color: inherit;\n      background-color: transparent; }\n    .md-list-item a .material-icons,\n    .md-list-item a .md-icon,\n    .md-list-item a .fab,\n    .md-list-item a .fa {\n      font-size: 20px !important;\n      margin: 0 !important;\n      width: 24px;\n      min-width: 24px;\n      text-align: center; }\n    .md-list-item a i + p {\n      margin: 0;\n      margin-left: 5px !important; }\n    .md-list-item a .md-ripple {\n      padding: 10px 15px;\n      border-radius: 3px; }\n      .md-list-item a .md-ripple p {\n        font-weight: 400;\n        font-size: 12px;\n        margin: 0; }\n      .md-list-item a .md-ripple .md-icon {\n        transition: none;\n        color: inherit !important; }\n      .md-list-item a .md-ripple > span {\n        border-radius: 3px; }\n  .md-list-item .md-list-item-content:not(.md-ripple) {\n    padding: 0; }\n  .md-list-item .md-list-item-container .md-just-icon .md-ripple .md-icon {\n    margin: 0; }\n  .md-list-item .md-button.md-button-link:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple {\n    padding: 12px 15px;\n    min-height: 48px; }\n    .md-list-item .md-button.md-button-link:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple .md-button-content i {\n      font-size: 20px !important;\n      justify-content: center;\n      display: flex;\n      align-items: center;\n      width: 24px;\n      min-width: 24px; }\n\n.md-tooltip,\n.popover {\n  padding: 10px 15px;\n  min-width: 140px;\n  max-width: 200px;\n  height: auto;\n  text-align: center;\n  border-radius: 3px;\n  background-color: #FFFFFF !important;\n  color: #555555 !important;\n  font-size: 0.875rem;\n  font-weight: 400;\n  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2); }\n  .md-tooltip:after,\n  .popover:after {\n    position: absolute;\n    bottom: -5px;\n    height: 0;\n    left: 0;\n    right: 0;\n    width: 5px;\n    margin-left: auto;\n    margin-right: auto;\n    vertical-align: .255em;\n    content: \"\"; }\n  .md-tooltip.popover,\n  .popover.popover {\n    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n    max-width: 276px;\n    padding: 0;\n    opacity: 0;\n    z-index: 10; }\n    .md-tooltip.popover:after,\n    .popover.popover:after {\n      width: 8px; }\n  .md-tooltip.open,\n  .popover.open {\n    opacity: 1; }\n  .md-tooltip[x-placement=\"top\"]:after,\n  .popover[x-placement=\"top\"]:after {\n    border-top: 6px solid #FFFFFF;\n    border-right: 6px solid transparent;\n    border-bottom: 0;\n    border-left: 6px solid transparent;\n    bottom: -6px; }\n  .md-tooltip.popover[x-placement=\"top\"]:after,\n  .popover.popover[x-placement=\"top\"]:after {\n    margin-left: auto;\n    margin-right: auto;\n    left: 0;\n    right: 0;\n    bottom: -6px;\n    transform: none;\n    top: unset;\n    border-top: 6px solid #FFFFFF;\n    border-right: 6px solid transparent;\n    border-bottom: 0;\n    border-left: 6px solid transparent; }\n  .md-tooltip[x-placement=\"bottom\"]:after,\n  .popover[x-placement=\"bottom\"]:after {\n    border-top: 0;\n    top: -6px;\n    border-right: 6px solid transparent;\n    border-bottom: 6px solid #FFFFFF;\n    border-left: 6px solid transparent; }\n  .md-tooltip.popover[x-placement=\"bottom\"]:after,\n  .popover.popover[x-placement=\"bottom\"]:after {\n    border-top: 0;\n    top: -6px;\n    transform: none;\n    margin-left: auto;\n    margin-right: auto;\n    left: 0;\n    right: 0;\n    border-right: 6px solid transparent;\n    border-bottom: 6px solid #FFFFFF;\n    border-left: 6px solid transparent; }\n  .md-tooltip[x-placement=\"left\"]:after,\n  .popover[x-placement=\"left\"]:after {\n    right: -6px;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-left: 6px solid #FFFFFF;\n    margin-left: unset;\n    margin-right: unset;\n    left: auto;\n    top: 50%;\n    transform: translateY(-50%);\n    -webkit-transform: translateY(-50%); }\n  .md-tooltip.popover[x-placement=\"left\"]:after,\n  .popover.popover[x-placement=\"left\"]:after {\n    right: -8px;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-left: 6px solid #FFFFFF; }\n  .md-tooltip[x-placement=\"right\"]:after,\n  .popover[x-placement=\"right\"]:after {\n    top: 50%;\n    left: auto;\n    margin-left: unset;\n    margin-right: unset;\n    transform: translateY(-50%);\n    -webkit-transform: translateY(-50%);\n    left: -6px;\n    right: auto;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-right: 6px solid #FFFFFF; }\n  .md-tooltip.popover[x-placement=\"right\"]:after,\n  .popover.popover[x-placement=\"right\"]:after {\n    left: -8px;\n    right: auto;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-right: 6px solid #FFFFFF; }\n\n.popover {\n  will-change: opacity, visibility;\n  transition: opacity .15s linear, visibility .15s linear; }\n  .popover:after {\n    top: 50%;\n    left: auto;\n    margin-left: unset;\n    margin-right: unset;\n    transform: translateY(-50%);\n    -webkit-transform: translateY(-50%); }\n\n.popover-header {\n  background-color: #fff;\n  border: none;\n  padding: 15px 15px 5px;\n  font-size: 1.125rem;\n  margin: 0;\n  color: #555;\n  text-align: left; }\n\n.popover-body {\n  padding: 10px 15px 15px;\n  line-height: 1.4;\n  color: #555;\n  text-align: left; }\n\n.v-popover {\n  display: inline-block;\n  margin-left: 5px; }\n\nfooter {\n  padding: 15px 0; }\n  footer nav,\n  footer .copyright {\n    display: inline-block; }\n  footer ul {\n    padding: 0;\n    margin: 0;\n    list-style: none; }\n    footer ul li {\n      display: inline-block; }\n      footer ul li a {\n        color: inherit !important;\n        padding: 15px;\n        font-weight: 500;\n        font-size: 12px;\n        text-transform: uppercase;\n        border-radius: 3px;\n        text-decoration: none;\n        position: relative;\n        display: block; }\n        footer ul li a:hover {\n          text-decoration: none; }\n      footer ul li:first-child a {\n        margin-left: -15px; }\n  footer .copyright {\n    padding: 15px 0;\n    margin: 0; }\n    footer .copyright .md-icon {\n      font-size: 18px !important;\n      color: inherit !important;\n      width: auto !important;\n      min-width: auto !important; }\n\n.dropdown-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  font-size: 14px;\n  text-align: left;\n  list-style: none;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 0;\n  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }\n  .dropdown-menu li > a {\n    font-size: 13px;\n    padding: .625rem 1.5rem;\n    margin: 0 5px;\n    text-transform: none;\n    line-height: 1.428571;\n    color: #333333 !important;\n    border-radius: 2px;\n    -webkit-transition: all 150ms linear;\n    -moz-transition: all 150ms linear;\n    -o-transition: all 150ms linear;\n    -ms-transition: all 150ms linear;\n    transition: all 150ms linear; }\n    .dropdown-menu li > a:hover, .dropdown-menu li > a:focus {\n      box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2); }\n  .dropdown-menu.dropdown-with-icons li > a {\n    padding: 12px 20px 12px 12px; }\n    .dropdown-menu.dropdown-with-icons li > a .material-icons {\n      vertical-align: middle;\n      font-size: 24px;\n      position: relative;\n      margin-top: -4px;\n      top: 1px;\n      margin-right: 12px;\n      opacity: .5; }\n  .dropdown-menu li {\n    position: relative; }\n    .dropdown-menu li a:hover,\n    .dropdown-menu li a:focus,\n    .dropdown-menu li a:active {\n      background-color: #4caf50 !important;\n      color: #FFFFFF !important; }\n\n.dropdown-divider {\n  height: 0;\n  margin: .5rem 0;\n  overflow: hidden;\n  border-top: 1px solid #e9ecef; }\n\n.dropdown-header {\n  font-size: .75rem;\n  padding-top: .1875rem;\n  padding-bottom: .1875rem;\n  text-transform: none;\n  color: #777;\n  line-height: 1.428571;\n  font-weight: 300;\n  display: block;\n  padding: .5rem 1.25rem; }\n\n.dropdown-toggle:not(.md-button):after,\n.dropdown-toggle .md-ripple:after {\n  width: 0;\n  height: 0;\n  vertical-align: .255em;\n  content: \"\";\n  border-right: .3em solid transparent;\n  border-left: .3em solid transparent;\n  display: inline-block;\n  margin-left: .555em;\n  border-top: .3em solid;\n  border-bottom: 0;\n  margin-top: -1px;\n  will-change: transform;\n  transition: transform 150ms linear; }\n\n.navbar-nav > li > .dropdown-menu,\n.dropdown .dropdown-menu,\n.dropdown-menu.bootstrap-datetimepicker-widget {\n  -webkit-transition: all 150ms linear;\n  -moz-transition: all 150ms linear;\n  -o-transition: all 150ms linear;\n  -ms-transition: all 150ms linear;\n  transition: all 150ms linear;\n  display: block;\n  transform: scale(0);\n  transform-origin: 0 0;\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.navbar-nav > li.open > .dropdown-menu,\n.dropdown.open .dropdown-menu,\n.dropdown-menu.bootstrap-datetimepicker-widget.open {\n  opacity: 1;\n  filter: alpha(opacity=100);\n  transform: scale(1); }\n\n.dropdown .dropdown-menu.dropdown-menu-right {\n  transform-origin: 100% 0; }\n\n.dropdown-menu-right {\n  right: 0;\n  left: auto; }\n\n.md-list-item.dropdown .md-list-item-container a[data-toggle=\"dropdown\"] {\n  padding: 10px 15px; }\n\n.md-list-item.dropdown .md-list-item-container .md-ripple {\n  padding: 0; }\n\n.md-ripple {\n  -webkit-mask-image: none;\n  overflow: hidden; }\n  .md-ripple > span {\n    width: 100%;\n    height: 100%;\n    overflow: hidden;\n    position: absolute;\n    left: 0;\n    z-index: -1; }\n\n.md-card {\n  display: inline-block;\n  position: relative;\n  width: 100%;\n  margin: 30px 0;\n  overflow: unset;\n  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  border-radius: 6px;\n  color: rgba(0,0,0, 0.87);\n  background: #fff; }\n  .md-card.row-space .header {\n    padding: 15px 20px 0; }\n  .md-card .title {\n    margin-top: 0;\n    margin-bottom: 5px; }\n  .md-card .card-image {\n    height: 60%;\n    position: relative;\n    overflow: hidden;\n    margin-left: 15px;\n    margin-right: 15px;\n    margin-top: -30px;\n    border-radius: 6px; }\n    .md-card .card-image img {\n      width: 100%;\n      height: 100%;\n      border-radius: 6px;\n      pointer-events: none; }\n    .md-card .card-image .card-title {\n      position: absolute;\n      bottom: 15px;\n      left: 15px;\n      color: #fff;\n      font-size: 1.125rem;\n      text-shadow: 0 2px 5px rgba(33, 33, 33, 0.5); }\n  .md-card .category:not([class*=\"text-\"]) {\n    color: #999999; }\n  .md-card .md-card-content {\n    padding: .9375rem 1.875rem;\n    line-height: inherit; }\n    .md-card .md-card-content .category {\n      margin: 0; }\n  .md-card .md-card-header {\n    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n    margin: -40px 20px 15px;\n    border-radius: 3px;\n    padding: 20px 0;\n    background-color: #999999; }\n    .md-card .md-card-header .title,\n    .md-card .md-card-header .card-title {\n      color: #FFFFFF; }\n    .md-card .md-card-header .category {\n      margin: 0;\n      color: rgba(255, 255, 255, 0.62); }\n    .md-card .md-card-header a {\n      color: #FFFFFF !important; }\n    .md-card .md-card-header.card-chart {\n      padding: 0;\n      min-height: 160px; }\n      .md-card .md-card-header.card-chart + .content h4 {\n        margin-top: 0; }\n    .md-card .md-card-header .ct-label {\n      color: rgba(255, 255, 255, 0.7); }\n    .md-card .md-card-header .ct-grid {\n      stroke: rgba(255, 255, 255, 0.2); }\n    .md-card .md-card-header .ct-series-a .ct-point,\n    .md-card .md-card-header .ct-series-a .ct-line,\n    .md-card .md-card-header .ct-series-a .ct-bar,\n    .md-card .md-card-header .ct-series-a .ct-slice-donut {\n      stroke: rgba(255, 255, 255, 0.8); }\n    .md-card .md-card-header .ct-series-a .ct-slice-pie,\n    .md-card .md-card-header .ct-series-a .ct-area {\n      fill: rgba(255, 255, 255, 0.4); }\n  .md-card .chart-title {\n    position: absolute;\n    top: 25px;\n    width: 100%;\n    text-align: center; }\n    .md-card .chart-title h3 {\n      margin: 0;\n      color: #FFFFFF; }\n    .md-card .chart-title h6 {\n      margin: 0;\n      color: rgba(255, 255, 255, 0.4); }\n  .md-card .md-card-actions {\n    margin: 0 20px 10px;\n    padding: 10px 0 0 0;\n    border-top: 1px solid #eeeeee; }\n    .md-card .md-card-actions .content {\n      display: block; }\n    .md-card .md-card-actions div {\n      display: inline-block; }\n    .md-card .md-card-actions .author {\n      color: #999999; }\n    .md-card .md-card-actions .stats {\n      line-height: 22px;\n      color: #999999;\n      font-size: 12px; }\n      .md-card .md-card-actions .stats .md-icon.md-theme-default.md-icon-font {\n        position: relative;\n        top: -1px;\n        font-size: 16px !important;\n        color: #999999; }\n    .md-card .md-card-actions h6 {\n      color: #999999; }\n  .md-card img {\n    width: 100%;\n    height: auto; }\n  .md-card .category .md-icon {\n    position: relative;\n    top: 6px;\n    line-height: 0; }\n  .md-card .category-social .fa {\n    font-size: 24px;\n    position: relative;\n    margin-top: -4px;\n    top: 2px;\n    margin-right: 5px; }\n  .md-card .author .avatar {\n    width: 30px;\n    height: 30px;\n    overflow: hidden;\n    border-radius: 50%;\n    margin-right: 5px; }\n  .md-card .author a {\n    color: #3C4858;\n    text-decoration: none; }\n    .md-card .author a .ripple-container {\n      display: none; }\n  .md-card .table {\n    margin-bottom: 0; }\n    .md-card .table tr:first-child td {\n      border-top: none; }\n  .md-card [data-background-color=\"purple\"],\n  .md-card .md-card-header-primary,\n  .md-card .md-tabs.md-primary .md-tabs-navigation {\n    background: linear-gradient(60deg, #ab47bc, #7b1fa2);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n  .md-card [data-background-color=\"blue\"],\n  .md-card .md-card-header-info,\n  .md-card .md-tabs.md-info .md-tabs-navigation {\n    background: linear-gradient(60deg, #26c6da, #0097a7);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n  .md-card [data-background-color=\"green\"],\n  .md-card .md-card-header-green,\n  .md-card .md-tabs.md-success .md-tabs-navigation {\n    background: linear-gradient(60deg, #66bb6a, #388e3c);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n  .md-card [data-background-color=\"orange\"],\n  .md-card .md-card-header-orange,\n  .md-card .md-tabs.md-warning .md-tabs-navigation {\n    background: linear-gradient(60deg, #ffa726, #f57c00);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n  .md-card [data-background-color=\"red\"],\n  .md-card .md-card-header-red,\n  .md-card .md-tabs.md-danger .md-tabs-navigation {\n    background: linear-gradient(60deg, #ef5350, #d32f2f);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n  .md-card [data-background-color=\"rose\"],\n  .md-card .md-card-header-rose,\n  .md-card .md-tabs.md-rose .md-tabs-navigation {\n    background: linear-gradient(60deg, #ec407a, #c2185b);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n  .md-card [data-background-color] {\n    color: #FFFFFF; }\n    .md-card [data-background-color] a {\n      color: #FFFFFF; }\n\n.md-card-stats .title {\n  margin: 0; }\n  .md-card-stats .title small {\n    color: #999999;\n    font-size: 65%;\n    line-height: 1;\n    font-weight: 400; }\n\n.md-card-stats .md-card-header {\n  float: left;\n  text-align: center; }\n  .md-card-stats .md-card-header i {\n    font-size: 36px !important;\n    line-height: 56px;\n    width: 56px;\n    height: 56px;\n    color: #FFFFFF !important; }\n\n.md-card-stats .md-card-content {\n  text-align: right;\n  padding-top: 10px; }\n\n.card-nav-tabs .header-raised {\n  margin-top: -30px; }\n\n.card-nav-tabs .nav-tabs {\n  background: transparent;\n  padding: 0; }\n\n.card-nav-tabs .nav-tabs-title {\n  float: left;\n  padding: 10px 10px 10px 0;\n  line-height: 24px; }\n\n.md-card-plain {\n  background: transparent !important;\n  box-shadow: none !important; }\n  .md-card-plain .md-card-header {\n    margin-left: 0;\n    margin-right: 0; }\n  .md-card-plain .md-card-content {\n    padding-left: 5px;\n    padding-right: 5px; }\n  .md-card-plain .card-image {\n    margin: 0;\n    border-radius: 3px; }\n    .md-card-plain .card-image img {\n      border-radius: 3px; }\n\n.iframe-container {\n  margin: 0 -20px 0; }\n  .iframe-container iframe {\n    width: 100%;\n    height: 500px;\n    border: 0;\n    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.md-card-profile,\n.card-testimonial {\n  margin-top: 30px;\n  text-align: center; }\n  .md-card-profile .btn-just-icon.btn-raised,\n  .card-testimonial .btn-just-icon.btn-raised {\n    margin-left: 6px;\n    margin-right: 6px; }\n  .md-card-profile .md-card-avatar,\n  .card-testimonial .md-card-avatar {\n    max-width: 130px;\n    max-height: 130px;\n    margin: -50px auto 0;\n    border-radius: 50%;\n    overflow: hidden;\n    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n    .md-card-profile .md-card-avatar + .md-card-content,\n    .card-testimonial .md-card-avatar + .md-card-content {\n      margin-top: 15px; }\n  .md-card-profile.md-card-plain .card-avatar,\n  .card-testimonial.md-card-plain .card-avatar {\n    margin-top: 0; }\n\n.md-card-tabs {\n  margin-top: 0; }\n  .md-card-tabs .md-list {\n    flex-flow: initial;\n    padding: 0 15px; }\n  .md-card-tabs.page-subcategories > .md-card-header .title {\n    margin-top: 30px !important;\n    margin-bottom: 25px !important;\n    min-height: 32px; }\n  .md-card-tabs .tab-content {\n    padding: 20px 0 9px; }\n  .md-card-tabs .md-list-item + .md-list-item {\n    margin-left: 5px; }\n  .md-card-tabs .md-list .md-list-item .md-list-item-button {\n    line-height: 24px;\n    text-transform: uppercase;\n    font-size: 12px;\n    font-weight: 500;\n    min-width: 100px;\n    color: #3C4858 !important;\n    transition: all .3s;\n    border-radius: 30px;\n    padding: 0; }\n    .md-card-tabs .md-list .md-list-item .md-list-item-button .md-icon {\n      display: flex;\n      width: auto;\n      height: auto;\n      margin: 0;\n      font-size: 30px !important;\n      padding: 15px 0;\n      color: #555; }\n    .md-card-tabs .md-list .md-list-item .md-list-item-button .md-list-item-content {\n      min-height: auto;\n      padding: 10px 15px;\n      justify-content: center;\n      display: flex; }\n    .md-card-tabs .md-list .md-list-item .md-list-item-button:hover, .md-card-tabs .md-list .md-list-item .md-list-item-button:focus {\n      background-color: rgba(199, 199, 199, 0.2) !important; }\n  .md-card-tabs .md-list .md-list-item:not(.active) .md-list-item-button .md-list-item-content {\n    color: #555; }\n  .md-card-tabs .active.md-list-item .md-list-item-button {\n    color: #FFFFFF !important; }\n    .md-card-tabs .active.md-list-item .md-list-item-button, .md-card-tabs .active.md-list-item .md-list-item-button:hover, .md-card-tabs .active.md-list-item .md-list-item-button:focus {\n      background-color: #999999 !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(153, 153, 153, 0.6); }\n    .md-card-tabs .active.md-list-item .md-list-item-button .md-list-item-content .md-icon, .md-card-tabs .active.md-list-item .md-list-item-button {\n      color: #FFFFFF !important; }\n  .md-card-tabs .active.md-list-item.md-rose .md-list-item-button, .md-card-tabs .active.md-list-item.md-rose .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-rose .md-list-item-button:focus {\n    background-color: #e91e63 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n  .md-card-tabs .active.md-list-item.md-primary .md-list-item-button, .md-card-tabs .active.md-list-item.md-primary .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-primary .md-list-item-button:focus {\n    background-color: #9c27b0 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n  .md-card-tabs .active.md-list-item.md-warning .md-list-item-button, .md-card-tabs .active.md-list-item.md-warning .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-warning .md-list-item-button:focus {\n    background-color: #ff9800 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n  .md-card-tabs .active.md-list-item.md-info .md-list-item-button, .md-card-tabs .active.md-list-item.md-info .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-info .md-list-item-button:focus {\n    background-color: #00bcd4 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n  .md-card-tabs .active.md-list-item.md-success .md-list-item-button, .md-card-tabs .active.md-list-item.md-success .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-success .md-list-item-button:focus {\n    background-color: #4caf50 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n  .md-card-tabs .active.md-list-item.md-danger .md-list-item-button, .md-card-tabs .active.md-list-item.md-danger .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-danger .md-list-item-button:focus {\n    background-color: #f44336 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n  .md-card-tabs.md-card-plain .md-card-header,\n  .md-card-tabs.md-card-plain .md-list {\n    background-color: transparent !important; }\n  .md-card-tabs.md-card-plain .title {\n    justify-content: center; }\n\n.flex-column .md-card-content {\n  display: flex;\n  flex-flow: initial; }\n\n.flex-column .md-list {\n  flex-direction: column;\n  min-width: 148px; }\n  .flex-column .md-list .md-list-item + .md-list-item {\n    margin: 0;\n    margin-top: 5px; }\n\n.flex-column .tab-content {\n  padding: 0;\n  padding-left: 30px; }\n\n.nav-pills-icons .md-list .md-list-item .md-list-item-button {\n  border-radius: 4px; }\n  .nav-pills-icons .md-list .md-list-item .md-list-item-button .md-list-item-content {\n    flex-direction: column-reverse; }\n\n.md-card-login {\n  margin: 0 auto; }\n  .md-card-login .md-button {\n    margin: .3125rem 1px; }\n  .md-card-login .social-line {\n    margin-top: 1rem; }\n  .md-card-login .md-card-header,\n  .md-card-login .description {\n    text-align: center; }\n  .md-card-login.md-card-hidden {\n    opacity: 0;\n    transform: translate3d(0, -60px, 0); }\n  .md-card-login .md-card-content {\n    padding-top: 0; }\n  .md-card-login .description {\n    margin-top: 0; }\n  .md-card-login .md-card-actions {\n    border: 0;\n    justify-content: center; }\n\n.team-player .md-card-actions {\n  border: 0; }\n\n.md-tabs-navigation {\n  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n  margin: -50px -15px 0 -15px;\n  border-radius: 3px;\n  padding: 16px 15px 16px 75px;\n  background-color: #999999;\n  overflow: auto; }\n  .md-tabs-navigation .md-icon-label .md-button-content {\n    flex-direction: row; }\n  .md-tabs-navigation + .md-tabs-content .md-checkbox.md-checked .md-checkbox-container:after {\n    top: 0px;\n    left: 5px; }\n  .md-tabs-navigation + .md-tabs-content .md-tab {\n    text-align: center; }\n  .no-label .md-tabs-navigation {\n    padding-left: 15px; }\n  .md-tabs-navigation .md-button,\n  .md-tabs-navigation .md-button:hover,\n  .md-tabs-navigation .md-button:focus,\n  .md-tabs-navigation .md-button:active {\n    background-color: transparent !important;\n    box-shadow: none; }\n  .md-tabs-navigation .md-active,\n  .md-tabs-navigation .md-active:hover,\n  .md-tabs-navigation .md-active:focus {\n    background-color: rgba(255, 255, 255, 0.2) !important;\n    box-shadow: none; }\n  .md-tabs-navigation .md-button {\n    height: auto;\n    border-radius: 3px;\n    font-weight: 500;\n    line-height: 24px;\n    text-transform: uppercase;\n    font-size: 12px; }\n    .md-tabs-navigation .md-button:not(:last-child) {\n      margin-right: 5px; }\n    .md-tabs-navigation .md-button .md-tab-icon + .md-tab-label {\n      margin-top: 0px;\n      margin-left: 7px; }\n    .md-tabs-navigation .md-button .md-ripple {\n      padding: 10px 15px !important; }\n\n.md-tabs-indicator {\n  display: none; }\n\n.md-nav-tabs-title {\n  position: absolute;\n  z-index: 9999;\n  top: 6px;\n  color: white;\n  font-size: initial;\n  margin-left: 15px; }\n\n.md-tab {\n  padding: 15px 0 0 0; }\n\n.md-card-nav-tabs.md-card-plain .md-content.md-theme-default {\n  background-color: transparent; }\n\n@media (min-width: 992px) {\n  .md-toolbar-toggle {\n    display: none; }\n  .footer:not(.footer-big) nav > ul li:first-child {\n    margin-left: 0; } }\n\n/*          Changes for small display      */\n@media (max-width: 991px) {\n  .navbar-transparent {\n    padding-top: 15px;\n    background-color: rgba(0, 0, 0, 0.45); }\n  .md-toolbar-section-start .md-list {\n    display: none; }\n  .footer .container {\n    flex-direction: column;\n    text-align: center; }\n  .md-toolbar-row {\n    will-change: auto;\n    transition-property: none; }\n  .md-toolbar-row:not(.md-collapse-lateral) .md-collapse {\n    display: none; }\n  .md-toolbar.md-transparent .md-list .md-list-item-content {\n    color: #3C4858 !important; }\n  .md-collapse-lateral .md-collapse {\n    position: fixed;\n    display: block;\n    top: 0;\n    height: 100vh;\n    width: 230px !important;\n    right: 0;\n    left: auto;\n    z-index: 1032;\n    visibility: visible;\n    background-color: #9A9A9A;\n    overflow-y: visible;\n    border-top: none;\n    text-align: left;\n    padding-right: 0px;\n    padding-left: 0;\n    -webkit-transform: translate3d(230px, 0, 0);\n    -moz-transform: translate3d(230px, 0, 0);\n    -o-transform: translate3d(230px, 0, 0);\n    -ms-transform: translate3d(230px, 0, 0);\n    transform: translate3d(230px, 0, 0);\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); }\n    .md-collapse-lateral .md-collapse .md-list {\n      flex-flow: column; }\n    .md-collapse-lateral .md-collapse .md-collapse-wrapper {\n      height: calc(100vh - 61px); }\n    .md-collapse-lateral .md-collapse .dropdown-toggle:not(.md-button):after,\n    .md-collapse-lateral .md-collapse .dropdown-toggle .md-ripple:after,\n    .md-collapse-lateral .md-collapse .md-list-item .md-button.md-button-link:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple .md-button-content i,\n    .md-collapse-lateral .md-collapse .md-list-item a .md-ripple p,\n    .md-collapse-lateral .md-collapse .md-list-item-content i {\n      color: #3C4858 !important; }\n    .md-collapse-lateral .md-collapse .dropdown-toggle:not(.md-button):after,\n    .md-collapse-lateral .md-collapse .dropdown-toggle .md-ripple:after {\n      position: absolute;\n      right: 16px; }\n    .md-collapse-lateral .md-collapse .dropdown .dropdown-menu {\n      background-color: transparent;\n      position: static;\n      border: 0;\n      padding-bottom: 20px;\n      transition: none;\n      -webkit-box-shadow: none;\n      box-shadow: none;\n      transform: none !important;\n      width: 100%;\n      margin-bottom: 15px;\n      padding-top: 0;\n      animation: none;\n      opacity: 1;\n      overflow-y: scroll;\n      display: none; }\n      .md-collapse-lateral .md-collapse .dropdown .dropdown-menu li > a {\n        margin-left: 15px;\n        margin-right: 15px; }\n    .md-collapse-lateral .md-collapse .dropdown-menu.dropdown-with-icons li > a:hover i,\n    .md-collapse-lateral .md-collapse .dropdown-menu.dropdown-with-icons li > a:focus i {\n      color: #FFFFFF !important; }\n    .md-collapse-lateral .md-collapse .dropdown.open .dropdown-menu {\n      display: block; }\n    .md-collapse-lateral .md-collapse .md-list-item > a {\n      margin: 5px 15px; }\n    .md-collapse-lateral .md-collapse .md-list-item .dropdown .dropdown,\n    .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content,\n    .md-collapse-lateral .md-collapse .md-list-item .md-button {\n      width: 100%; }\n    .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content .md-button, .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content .md-button:focus, .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content .md-button:hover {\n      color: #3C4858 !important; }\n    .md-collapse-lateral .md-collapse .md-list-item .md-button .md-ripple {\n      justify-content: flex-start; }\n    .md-collapse-lateral .md-collapse .md-list-item:last-child:after {\n      display: none; }\n    .md-collapse-lateral .md-collapse .nav-mobile-section-start .md-list-item:last-child:after,\n    .md-collapse-lateral .md-collapse .md-list-item:after {\n      width: calc(100% - 30px);\n      content: \"\";\n      display: block;\n      height: 1px;\n      margin-left: 15px;\n      background-color: #e5e5e5; }\n    .md-collapse-lateral .md-collapse .md-list-item-container {\n      width: auto; }\n    .md-collapse-lateral .md-collapse .md-list-item-content {\n      justify-content: flex-start;\n      color: #3C4858 !important; }\n    .md-collapse-lateral .md-collapse > ul {\n      position: relative;\n      z-index: 4;\n      overflow-y: scroll;\n      width: 100%; }\n    .md-collapse-lateral .md-collapse::before {\n      top: 0;\n      left: 0;\n      height: 100%;\n      width: 100%;\n      position: absolute;\n      display: block;\n      background-color: #FFFFFF;\n      content: \"\";\n      z-index: 1; }\n    .md-collapse-lateral .md-collapse .logo {\n      position: relative;\n      z-index: 4; }\n    .md-collapse-lateral .md-collapse .navbar-form {\n      margin: 10px 15px;\n      float: none !important;\n      padding-top: 1px;\n      padding-bottom: 1px; }\n    .md-collapse-lateral .md-collapse .table-responsive {\n      width: 100%;\n      margin-bottom: 15px;\n      overflow-x: scroll;\n      overflow-y: hidden;\n      -ms-overflow-style: -ms-autohiding-scrollbar;\n      -webkit-overflow-scrolling: touch; }\n  .md-collapse-lateral .md-toolbar-toggle,\n  .md-collapse-lateral .md-title {\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); }\n    .nav-open .md-collapse-lateral .md-toolbar-toggle, .nav-open\n    .md-collapse-lateral .md-title {\n      -webkit-transform: translate3d(-230px, 0, 0);\n      -moz-transform: translate3d(-230px, 0, 0);\n      -o-transform: translate3d(-230px, 0, 0);\n      -ms-transform: translate3d(-230px, 0, 0);\n      transform: translate3d(-230px, 0, 0); }\n  .nav-open .md-collapse-lateral .md-collapse {\n    -webkit-transform: translate3d(0px, 0, 0);\n    -moz-transform: translate3d(0px, 0, 0);\n    -o-transform: translate3d(0px, 0, 0);\n    -ms-transform: translate3d(0px, 0, 0);\n    transform: translate3d(0px, 0, 0); }\n  .close-layer {\n    height: 100%;\n    width: 100%;\n    position: absolute;\n    opacity: 0;\n    top: 0;\n    left: auto;\n    content: \"\";\n    z-index: 9999;\n    overflow-x: hidden;\n    -webkit-transition: all 370ms ease-in;\n    -moz-transition: all 370ms ease-in;\n    -o-transition: all 370ms ease-in;\n    -ms-transition: all 370ms ease-in;\n    transition: all 370ms ease-in; }\n    .close-layer.visible {\n      opacity: 1; }\n  .navbar-toggle .icon-bar {\n    display: block;\n    position: relative;\n    background: #fff;\n    width: 24px;\n    height: 2px;\n    border-radius: 1px;\n    margin: 0 auto; }\n  .navbar-header .navbar-toggle {\n    margin: 10px 15px 10px 0;\n    width: 40px;\n    height: 40px; }\n  .bar1,\n  .bar2,\n  .bar3 {\n    outline: 1px solid transparent; }\n  @keyframes topbar-x {\n    0% {\n      top: 0px;\n      transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      transform: rotate(145deg); }\n    75% {\n      transform: rotate(130deg); }\n    100% {\n      transform: rotate(135deg); } }\n  @-webkit-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -webkit-transform: rotate(145deg); }\n    75% {\n      -webkit-transform: rotate(130deg); }\n    100% {\n      -webkit-transform: rotate(135deg); } }\n  @-moz-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -moz-transform: rotate(145deg); }\n    75% {\n      -moz-transform: rotate(130deg); }\n    100% {\n      -moz-transform: rotate(135deg); } }\n  @keyframes topbar-back {\n    0% {\n      top: 6px;\n      transform: rotate(135deg); }\n    45% {\n      transform: rotate(-10deg); }\n    75% {\n      transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -webkit-transform: rotate(135deg); }\n    45% {\n      -webkit-transform: rotate(-10deg); }\n    75% {\n      -webkit-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -moz-transform: rotate(135deg); }\n    45% {\n      -moz-transform: rotate(-10deg); }\n    75% {\n      -moz-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -moz-transform: rotate(0); } }\n  @keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      transform: rotate(-145deg); }\n    75% {\n      transform: rotate(-130deg); }\n    100% {\n      transform: rotate(-135deg); } }\n  @-webkit-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -webkit-transform: rotate(-145deg); }\n    75% {\n      -webkit-transform: rotate(-130deg); }\n    100% {\n      -webkit-transform: rotate(-135deg); } }\n  @-moz-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -moz-transform: rotate(-145deg); }\n    75% {\n      -moz-transform: rotate(-130deg); }\n    100% {\n      -moz-transform: rotate(-135deg); } }\n  @keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      transform: rotate(-135deg); }\n    45% {\n      transform: rotate(10deg); }\n    75% {\n      transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -webkit-transform: rotate(-135deg); }\n    45% {\n      -webkit-transform: rotate(10deg); }\n    75% {\n      -webkit-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -moz-transform: rotate(-135deg); }\n    45% {\n      -moz-transform: rotate(10deg); }\n    75% {\n      -moz-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -moz-transform: rotate(0); } }\n  .md-toolbar-toggle .icon-bar:nth-child(2) {\n    top: 0px;\n    -webkit-animation: topbar-back 500ms linear 0s;\n    -moz-animation: topbar-back 500ms linear 0s;\n    animation: topbar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .md-toolbar-toggle .icon-bar:nth-child(3) {\n    opacity: 1; }\n  .md-toolbar-toggle .icon-bar:nth-child(4) {\n    bottom: 0px;\n    -webkit-animation: bottombar-back 500ms linear 0s;\n    -moz-animation: bottombar-back 500ms linear 0s;\n    animation: bottombar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .md-toolbar-toggle.toggled .icon-bar:nth-child(1) {\n    top: 6px;\n    -webkit-animation: topbar-x 500ms linear 0s;\n    -moz-animation: topbar-x 500ms linear 0s;\n    animation: topbar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .md-toolbar-toggle.toggled .icon-bar:nth-child(2) {\n    opacity: 0; }\n  .md-toolbar-toggle.toggled .icon-bar:nth-child(3) {\n    bottom: 6px;\n    -webkit-animation: bottombar-x 500ms linear 0s;\n    -moz-animation: bottombar-x 500ms linear 0s;\n    animation: bottombar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  @-webkit-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @-moz-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  .dropdown-menu .divider {\n    background-color: rgba(229, 229, 229, 0.15); }\n  .dropdown-menu {\n    display: none; }\n  .navbar-fixed-top {\n    -webkit-backface-visibility: hidden; }\n  #bodyClick {\n    height: 100%;\n    width: 100%;\n    position: fixed;\n    opacity: 0;\n    top: 0;\n    left: auto;\n    right: 230px;\n    content: \"\";\n    z-index: 9999;\n    overflow-x: hidden; }\n  .social-line .btn {\n    margin: 0 0 10px 0; }\n  .social-line.pull-right {\n    float: none; }\n  .footer:not(.footer-big) nav > ul li {\n    float: none; }\n  .social-area.pull-right {\n    float: none !important; }\n  .navbar-toggle:hover, .navbar-toggle:focus {\n    background-color: transparent !important; } }\n\n@media (max-width: 768px) {\n  .footer nav {\n    display: block; }\n  .index-page .brand h1 {\n    font-size: 4.3rem; }\n  .index-page .brand h3 {\n    max-width: 500px;\n    line-height: normal;\n    font-size: 1.7rem; }\n  .nav-tabs {\n    overflow: auto; }\n  .hidden-sm {\n    display: none !important; } }\n\n@media (min-width: 768px) {\n  .hidden-md {\n    display: none !important; } }\n\n@media screen and (min-width: 768px) {\n  .block-md {\n    display: block !important; } }\n\n@media screen and (max-width: 576px) {\n  .tim-typo {\n    padding-left: 11% !important; }\n    .tim-typo .tim-note {\n      bottom: -25px !important; }\n  .main-raised {\n    margin-left: 15px;\n    margin-right: 15px; }\n  .md-tabs-navigation {\n    flex-direction: column; }\n    .md-tabs-navigation .md-button {\n      max-width: none;\n      margin: 0 !important; }\n  .modal-wrapper .modal-container {\n    max-width: 380px; } }\n\n@media (min-width: 576px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 540px; } }\n\n@media (min-width: 768px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 720px; } }\n\n@media (min-width: 992px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 960px; }\n  .md-list.nav-mobile-menu {\n    display: none; }\n  .hidden-lg {\n    display: none !important; } }\n\n@media (min-width: 1200px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 1140px; } }\n\n@media screen and (max-width: 450px) {\n  .index-page .brand {\n    max-width: 300px; } }\n\n.md-card-wizard {\n  -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n  min-height: 410px;\n  opacity: 0; }\n  .md-card-wizard .nav-pills {\n    -ms-flex-wrap: wrap;\n    border: 0;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    flex-wrap: wrap;\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    background-color: rgba(200, 200, 200, 0.2); }\n    .md-card-wizard .nav-pills > li {\n      text-align: center; }\n      .md-card-wizard .nav-pills > li > a {\n        border: 0 !important;\n        border-radius: 0;\n        color: #555 !important;\n        display: block;\n        font-size: 12px;\n        font-weight: 500;\n        line-height: 24px;\n        min-width: 100px;\n        padding: 6px 15px !important;\n        text-align: center;\n        text-transform: uppercase; }\n        .md-card-wizard .nav-pills > li > a:focus {\n          -webkit-box-shadow: none;\n          background-color: inherit;\n          box-shadow: none; }\n        .md-card-wizard .nav-pills > li > a:hover {\n          -webkit-box-shadow: none;\n          background-color: inherit;\n          box-shadow: none; }\n      .md-card-wizard .nav-pills > li i {\n        display: block;\n        font-size: 30px;\n        padding: 15px 0; }\n    .md-card-wizard .nav-pills > li + li {\n      margin-left: 0; }\n    .md-card-wizard .nav-pills > li.active > a {\n      -webkit-box-shadow: none;\n      background-color: inherit;\n      box-shadow: none; }\n      .md-card-wizard .nav-pills > li.active > a:focus {\n        -webkit-box-shadow: none;\n        background-color: inherit;\n        box-shadow: none; }\n      .md-card-wizard .nav-pills > li.active > a:hover {\n        -webkit-box-shadow: none;\n        background-color: inherit;\n        box-shadow: none; }\n  .md-card-wizard .md-card-actions {\n    border: 0; }\n  .md-card-wizard .picture-container {\n    cursor: pointer;\n    position: relative;\n    text-align: center; }\n    .md-card-wizard .picture-container .description {\n      margin: 0 0 .5rem; }\n  .md-card-wizard .wizard-navigation {\n    position: relative; }\n  .md-card-wizard .md-card-header {\n    text-align: center; }\n  .md-card-wizard .category {\n    margin-top: 0; }\n  .md-card-wizard .picture {\n    -webkit-transition: all .2s;\n    background-color: #999;\n    border: 4px solid #ccc;\n    border-radius: 50%;\n    color: #fff;\n    height: 106px;\n    margin: 5px auto;\n    overflow: hidden;\n    transition: all .2s;\n    width: 106px; }\n    .md-card-wizard .picture:hover {\n      border-color: #2ca8ff; }\n    .md-card-wizard .picture input[type=file] {\n      cursor: pointer;\n      display: block;\n      height: 100%;\n      left: 0;\n      opacity: 0 !important;\n      position: absolute;\n      top: 0;\n      width: 100%; }\n  .md-card-wizard .moving-tab {\n    -webkit-font-smoothing: subpixel-antialiased;\n    border-radius: 4px;\n    color: #fff;\n    cursor: pointer;\n    font-size: 12px;\n    font-weight: 500;\n    left: 0;\n    padding: 12px;\n    position: absolute;\n    text-align: center;\n    text-transform: uppercase;\n    top: -6px; }\n  .md-card-wizard .picture-src {\n    width: 100%; }\n  .md-card-wizard .tab-content {\n    min-height: 340px;\n    padding: 20px 15px; }\n  .md-card-wizard .wizard-footer {\n    padding: 0 15px; }\n    .md-card-wizard .wizard-footer .checkbox {\n      margin-top: 16px; }\n  .md-card-wizard .disabled {\n    display: none; }\n  .md-card-wizard .wizard-header {\n    padding: 25px 0 35px;\n    text-align: center; }\n    .md-card-wizard .wizard-header h5 {\n      margin: 5px 0 0; }\n  .md-card-wizard .btn {\n    text-transform: uppercase; }\n  .md-card-wizard .info-text {\n    font-weight: 300;\n    margin: 10px 0 30px;\n    text-align: center; }\n  .md-card-wizard .choice {\n    cursor: pointer;\n    margin-top: 20px;\n    text-align: center; }\n    .md-card-wizard .choice .icon {\n      -webkit-transition: all .2s;\n      border: 4px solid #ccc;\n      border-radius: 50%;\n      color: #999;\n      height: 116px;\n      margin: 0 auto 20px;\n      text-align: center;\n      transition: all .2s;\n      vertical-align: middle;\n      width: 116px; }\n    .md-card-wizard .choice i {\n      font-size: 32px;\n      line-height: 111px; }\n    .md-card-wizard .choice:hover .icon {\n      border-color: #2ca8ff; }\n    .md-card-wizard .choice input[type=checkbox] {\n      left: -10000px;\n      position: absolute;\n      z-index: -1; }\n    .md-card-wizard .choice input[type=radio] {\n      left: -10000px;\n      position: absolute;\n      z-index: -1; }\n  .md-card-wizard .choice[disabled] {\n    cursor: not-allowed;\n    opacity: .26;\n    pointer-events: none; }\n  .md-card-wizard .choice.active .icon {\n    border-color: #2ca8ff; }\n  .md-card-wizard .btn-finish {\n    display: none; }\n  .md-card-wizard .description {\n    color: #999;\n    font-size: 14px; }\n  .md-card-wizard .wizard-title {\n    margin: 0; }\n\n.md-card-wizard.active {\n  opacity: 1; }\n\n.md-card-wizard[data-color=purple] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);\n  background-color: #9c27b0;\n  box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2); }\n\n.md-card-wizard[data-color=purple] .picture:hover {\n  border-color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .choice.active .icon {\n  border-color: #9c27b0;\n  color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .choice:hover .icon {\n  border-color: #9c27b0;\n  color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .radio input[type=radio]:checked ~ .check {\n  background-color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .radio input[type=radio]:checked ~ .circle {\n  border-color: #9c27b0; }\n\n.md-card-wizard[data-color=green] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2);\n  background-color: #4caf50;\n  box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2); }\n\n.md-card-wizard[data-color=green] .picture:hover {\n  border-color: #4caf50; }\n\n.md-card-wizard[data-color=green] .choice.active .icon {\n  border-color: #4caf50;\n  color: #4caf50; }\n\n.md-card-wizard[data-color=green] .choice:hover .icon {\n  border-color: #4caf50;\n  color: #4caf50; }\n\n.md-card-wizard[data-color=green] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #4caf50; }\n\n.md-card-wizard[data-color=green] .radio input[type=radio]:checked ~ .check {\n  background-color: #4caf50; }\n\n.md-card-wizard[data-color=green] .radio input[type=radio]:checked ~ .circle {\n  border-color: #4caf50; }\n\n.md-card-wizard[data-color=blue] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);\n  background-color: #00bcd4;\n  box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2); }\n\n.md-card-wizard[data-color=blue] .picture:hover {\n  border-color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .choice.active .icon {\n  border-color: #00bcd4;\n  color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .choice:hover .icon {\n  border-color: #00bcd4;\n  color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .radio input[type=radio]:checked ~ .check {\n  background-color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .radio input[type=radio]:checked ~ .circle {\n  border-color: #00bcd4; }\n\n.md-card-wizard[data-color=orange] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2);\n  background-color: #ff9800;\n  box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2); }\n\n.md-card-wizard[data-color=orange] .picture:hover {\n  border-color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .choice.active .icon {\n  border-color: #ff9800;\n  color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .choice:hover .icon {\n  border-color: #ff9800;\n  color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .radio input[type=radio]:checked ~ .check {\n  background-color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .radio input[type=radio]:checked ~ .circle {\n  border-color: #ff9800; }\n\n.md-card-wizard[data-color=red] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);\n  background-color: #f44336;\n  box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2); }\n\n.md-card-wizard[data-color=red] .picture:hover {\n  border-color: #f44336; }\n\n.md-card-wizard[data-color=red] .choice.active .icon {\n  border-color: #f44336;\n  color: #f44336; }\n\n.md-card-wizard[data-color=red] .choice:hover .icon {\n  border-color: #f44336;\n  color: #f44336; }\n\n.md-card-wizard[data-color=red] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #f44336; }\n\n.md-card-wizard[data-color=red] .radio input[type=radio]:checked ~ .check {\n  background-color: #f44336; }\n\n.md-card-wizard[data-color=red] .radio input[type=radio]:checked ~ .circle {\n  border-color: #f44336; }\n\n.md-card-wizard[data-color=rose] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(233, 30, 99, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(233, 30, 99, 0.2);\n  background-color: #e91e63;\n  box-shadow: 0 12px 20px -10px rgba(233, 30, 99, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(233, 30, 99, 0.2); }\n\n.md-card-wizard[data-color=rose] .picture:hover {\n  border-color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .choice.active .icon {\n  border-color: #e91e63;\n  color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .choice:hover .icon {\n  border-color: #e91e63;\n  color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .radio input[type=radio]:checked ~ .check {\n  background-color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .radio input[type=radio]:checked ~ .circle {\n  border-color: #e91e63; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n/*!\r\n\r\n =========================================================\r\n * Vue Material Kit - v1.0.0\r\n =========================================================\r\n\r\n * Product Page: http://www.creative-tim.com/product/vue-material-kit\r\n * Copyright 2018 Creative Tim (http://www.creative-tim.com)\r\n * Licensed under MIT (https://github.com/creativetimofficial/vue-material-kit/blob/master/LICENSE.md)\r\n\r\n =========================================================\r\n\r\n * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\r\n\r\n */\n/**\n * The complete material palette\n * ---\n * @access public\n * @type map\n * @group themes\n */\n/**\n * Theme any css property based on the current palette, accepting a themable\n * value that will give an contrasted\n * ---\n * Usage example:\n *\n * $foo-palette: (\n *   primary: md-get-palette-color(indigo, 500),\n *   accent: md-get-palette-color(pink, 500),\n *   theme: \"light\"\n * );\n *\n * ---\n * @access public\n * ---\n * @param {color} $type —  The desired color based on material palette\n * @param {string} $type —  A valid hue\n */\n/**\n * Get the current theme mode from the current theme\n * ---\n * Usage example:\n *\n * $theme-mode: md-get-theme-mode()\n *\n * ---\n * @access private\n */\n/**\n * Theme any css property based on the current palette, accepting a themable\n * value that will give an contrasted\n * ---\n * Usage example:\n *\n * .md-foo {\n *   min-width: 88px;\n *   height: 40px;\n *   background: md-theme(primary);\n * }\n *\n * ---\n * @access public\n * ---\n * @param {string} $type —  The themable value\n */\n/**\n * Get a color based on type by theme\n * ---\n * Usage example:\n *\n * $color: md-get-color-by-theme(dark, primary)\n *\n * ---\n * @access public\n * ---\n * @param {string} $color-theme —  The theme color | Accepts dark or light\n * @param {string} $type —  The color type\n */\n/**\n * Get a color based on type only\n * ---\n * Usage example:\n *\n * $color1: md-get-color-by-type(background, dark)\n * $color1: md-get-color-by-type(accent)\n *\n * ---\n * @access public\n * ---\n * @param {string} $type —  The color type\n * @param {string} $theme —  The fallback theme\n */\n/**\n * The default theme palette\n * primary: indigo 500 #3f51b5\n * accent: pink 500 #e91e63\n * theme: light\n *\n * It can be used just before importing the Vue Material stylesheet\n *\n * ---\n * @access public\n * @type colormap\n * @group themes\n */\n/**\n * Temporary variable to store all themable values\n * ---\n * @access private\n * @type map\n * @group themes\n */\n/**\n * Map variable to store all themes to be processed by each component\n * ---\n * @access private\n * @type map\n * @group themes\n */\n/**\n * Store the current theme name\n * ---\n * @access private\n * @type string\n * @group themes\n */\n/**\n * The color contrast values\n * ---\n * @access private\n * @type map\n * @group themes\n */\n/**\n * Hightly based on: \"Using Sass to automatically pick text colors\"\n * https://medium.com/dev-channel/using-sass-to-automatically-pick-text-colors-4ba7645d2796\n */\n/**\n * Precomputed linear color channel values, for use in contrast calculations.\n * See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests\n * ---\n *\n *  Algorithm, for c in 0 to 255:\n *  f(c) {\n *    c = c / 255;\n *    return c < 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);\n *  }\n *\n *  This lookup table is needed since there is no `pow` in SASS.\n *\n * ---\n * @access private\n * @type Map\n * @group themes\n */\n/**\n * Calculate the luminance for a color.\n * ---\n * @access private\n * ---\n * @param {string} $color —  The color to be analysed\n */\n/**\n * Calculate the contrast ratio between two colors.\n * ---\n * @access private\n * ---\n * @param {string} $bg —  The bg color\n * @param {string} $fg —  The fg color to be compared\n */\n/**\n * Determine whether to use dark or light text on top of given color.\n * Returns dark or light depending on the contrast ratio.\n * ---\n * @access private\n * ---\n * @param {string} $color —  The desired color to be compared\n */\n/**\n * Override extending the default palette giving new values. It will extend\n * the default values of the palette if has a property missing.\n * ---\n * Usage example:\n *\n * @include md-override-palette ((\n *   accent: blue,\n *   theme: \"dark\"\n * ))\n *\n * ---\n * @access public\n * @param {map} $palette —  The new palette\n */\n/**\n * Create a new theme based on a given palette. It will extend the default\n * values of the palette if has a property missing.\n * ---\n * Usage example:\n *\n * @include md-register-theme(\"alternative\", (\n *   primary: #212121,\n *   accent: #CDDC39,\n *   theme: dark\n * ));\n *\n * ---\n * @access public\n * @param {string} $name —  The theme name to be used with the Vue Material\n * @param {map} $palette [$md-default-palette] —  The theme palette\n */\n/**\n * Theme pieces of a given scss code for all pre registered themes.\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     background: md-theme(primary);\n *     color: md-theme(text-primary);\n *   }\n *\n *   &.md-accent {\n *     @include md-theme-component() {\n *       background: md-theme(accent);\n *       color: md-theme(text-accent);\n *     };\n *   }\n * }\n */\n/**\n * Theme pieces of a given scss code for all pre registered themes based on parent.\n * ---\n * Usage example:\n *\n * .md-foo {\n *   @include md-theme-component-relative() {\n *     @include md-theme-property(background, primary);\n *   }\n * }\n */\n/**\n * Theme a single css property\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     @include md-theme-property(background, primary);\n *     @include md-theme-property(color, text-primary, primary);\n *   }\n *\n *   &.md-accent {\n *     @include md-theme-component() {\n *       @include md-theme-property(background, accent);\n *       @include md-theme-property(color, text-primary, accent);\n *     }\n *   }\n * }\n *\n * ---\n * @access public\n * @param {string} $property —  The css property\n * @param {string} $type —  A palette type\n * @param {string} $background —  The background color to analyse contrast\n * @param {number} $opacity —  The opacity amount\n */\n/**\n * Theme a single css property darkening the color by a certain amount\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     @include md-theme-property-darken(background, primary, background, 10%);\n *     @include md-theme-property(color, text-primary, primary);\n *   }\n * }\n *\n * ---\n * @access public\n * @param {string} $property —  The css property\n * @param {string} $type —  A palette type\n * @param {string} $background —  The background color to analyse contrast\n * @param {string} $darken —  The darken amount to apply to the color\n */\n/**\n * Theme a single css property by\n * ---\n * Usage example:\n *\n * .md-button {\n *   min-width: 88px;\n *   height: 40px;\n *   display: inline-block;\n *   border-radius: 2px;\n *   transition: .3s ease;\n *\n *   @include md-theme-component() {\n *     @include md-theme-property-by-hue(background, grey, 100, toolbar, background);\n *     @include md-theme-property(color, text-primary, background);\n *   }\n * }\n *\n * ---\n * @access public\n * @param {string} $property —  The css property\n * @param {string} $color —  A valid material palette color name\n * @param {string} $hue —  The hue amount to get the hex color\n * @param {string} $type —  The type of variable\n * @param {string} $variant —  The type of constrasted variable\n */\n:root {\n  --md-theme-selection-black-primary: #448aff\n    ;\n  --md-theme-selection-black-accent: #000\n    ;\n  --md-theme-selection-black-theme: light\n    ; }\n\n.md-theme-selection-black :not(input):not(textarea)::selection {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000);\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-theme-selection-black a:not(.md-button) {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-theme-selection-black a:not(.md-button):hover {\n    color: rgba(68, 138, 255, 0.8);\n    color: var(--md-theme-selection-black-primary-on-background, rgba(68, 138, 255, 0.8)); }\n  .md-theme-selection-black a:not(.md-button).md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-theme-selection-black a:not(.md-button).md-accent:hover {\n      color: rgba(0, 0, 0, 0.8);\n      color: var(--md-theme-selection-black-accent-on-background, rgba(0, 0, 0, 0.8)); }\n\nhtml.md-theme-selection-black {\n  background-color: #fafafa;\n  background-color: var(--md-theme-selection-black-background-variant, #fafafa);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n\n.md-theme-selection-black .md-caption, .md-theme-selection-black\n.md-display-1, .md-theme-selection-black\n.md-display-2, .md-theme-selection-black\n.md-display-3, .md-theme-selection-black\n.md-display-4 {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background-variant, rgba(0, 0, 0, 0.54)); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-corner, .md-scrollbar.md-theme-selection-black::-webkit-scrollbar-track {\n  background: #e1e1e1;\n  background: var(--md-theme-selection-black-scrollbar-background-on-background-variant, #e1e1e1); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-thumb {\n  background: #757575;\n  background: var(--md-theme-selection-black-scrollbar-on-background-variant, #757575); }\n\n:root {\n  --md-theme-default-primary: #9c27b0\n    ;\n  --md-theme-default-accent: #ff5252\n    ;\n  --md-theme-default-theme: light\n    ; }\n\n.md-theme-selection-black :not(input):not(textarea)::selection {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000);\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-theme-default :not(input):not(textarea)::selection {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent-on-background, #ff5252);\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-theme-selection-black a:not(.md-button) {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-theme-selection-black a:not(.md-button):hover {\n    color: rgba(68, 138, 255, 0.8);\n    color: var(--md-theme-selection-black-primary-on-background, rgba(68, 138, 255, 0.8)); }\n  .md-theme-selection-black a:not(.md-button).md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-theme-selection-black a:not(.md-button).md-accent:hover {\n      color: rgba(0, 0, 0, 0.8);\n      color: var(--md-theme-selection-black-accent-on-background, rgba(0, 0, 0, 0.8)); }\n\n.md-theme-default a:not(.md-button) {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-theme-default a:not(.md-button):hover {\n    color: rgba(156, 39, 176, 0.8);\n    color: var(--md-theme-default-primary-on-background, rgba(156, 39, 176, 0.8)); }\n  .md-theme-default a:not(.md-button).md-accent {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-theme-default a:not(.md-button).md-accent:hover {\n      color: rgba(255, 82, 82, 0.8);\n      color: var(--md-theme-default-accent-on-background, rgba(255, 82, 82, 0.8)); }\n\nhtml.md-theme-selection-black {\n  background-color: #fafafa;\n  background-color: var(--md-theme-selection-black-background-variant, #fafafa);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n\nhtml.md-theme-default {\n  background-color: #fafafa;\n  background-color: var(--md-theme-default-background-variant, #fafafa);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n\n.md-theme-selection-black .md-caption, .md-theme-selection-black\n.md-display-1, .md-theme-selection-black\n.md-display-2, .md-theme-selection-black\n.md-display-3, .md-theme-selection-black\n.md-display-4 {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background-variant, rgba(0, 0, 0, 0.54)); }\n\n.md-theme-default .md-caption, .md-theme-default\n.md-display-1, .md-theme-default\n.md-display-2, .md-theme-default\n.md-display-3, .md-theme-default\n.md-display-4 {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-text-accent-on-background-variant, rgba(0, 0, 0, 0.54)); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-corner, .md-scrollbar.md-theme-selection-black::-webkit-scrollbar-track {\n  background: #e1e1e1;\n  background: var(--md-theme-selection-black-scrollbar-background-on-background-variant, #e1e1e1); }\n\n.md-scrollbar.md-theme-selection-black::-webkit-scrollbar-thumb {\n  background: #757575;\n  background: var(--md-theme-selection-black-scrollbar-on-background-variant, #757575); }\n\n.md-scrollbar.md-theme-default::-webkit-scrollbar-corner, .md-scrollbar.md-theme-default::-webkit-scrollbar-track {\n  background: #e1e1e1;\n  background: var(--md-theme-default-scrollbar-background-on-background-variant, #e1e1e1); }\n\n.md-scrollbar.md-theme-default::-webkit-scrollbar-thumb {\n  background: #757575;\n  background: var(--md-theme-default-scrollbar-on-background-variant, #757575); }\n\n.md-app:not(.md-overlap).md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n\n.md-app:not(.md-overlap).md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n\n.md-list.md-theme-selection-black .md-autocomplete-items .md-highlight-text-match {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-list.md-theme-selection-black .md-autocomplete-loading {\n  background-color: rgba(255, 255, 255, 0.54);\n  background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.54)); }\n\n.md-list.md-theme-default .md-autocomplete-items .md-highlight-text-match {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-list.md-theme-default .md-autocomplete-loading {\n  background-color: rgba(255, 255, 255, 0.54);\n  background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.54)); }\n\n.md-autocomplete.md-theme-selection-black.md-autocomplete-box {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused label {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n  .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box {\n    background-color: rgba(255, 255, 255, 0.12);\n    background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.12)); }\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box label,\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box input {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      -webkit-text-fill-color: #fff;\n      -webkit-text-fill-color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box svg {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused {\n      background-color: #fff;\n      background-color: var(--md-theme-selection-black-background, #fff); }\n      .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused label,\n      .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused input {\n        color: rgba(0, 0, 0, 0.38);\n        color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38));\n        -webkit-text-fill-color: rgba(0, 0, 0, 0.38);\n        -webkit-text-fill-color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n      .md-toolbar .md-autocomplete.md-theme-selection-black.md-autocomplete-box.md-focused svg {\n        fill: rgba(0, 0, 0, 0.38);\n        fill: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-autocomplete.md-theme-default.md-autocomplete-box {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n  .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused label {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n  .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box {\n    background-color: rgba(255, 255, 255, 0.12);\n    background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.12)); }\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box label,\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box input {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      -webkit-text-fill-color: #fff;\n      -webkit-text-fill-color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box svg {\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused {\n      background-color: #fff;\n      background-color: var(--md-theme-default-background, #fff); }\n      .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused label,\n      .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused input {\n        color: rgba(0, 0, 0, 0.38);\n        color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38));\n        -webkit-text-fill-color: rgba(0, 0, 0, 0.38);\n        -webkit-text-fill-color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n      .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box.md-focused svg {\n        fill: rgba(0, 0, 0, 0.38);\n        fill: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-autocomplete-box-content.md-theme-selection-black:after {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-selection-black-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-autocomplete-box-content.md-theme-default:after {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-default-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-avatar.md-theme-selection-black.md-avatar-icon {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-selection-black-icon-disabled, rgba(0, 0, 0, 0.38));\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-icon-disabled, #fff); }\n  .md-avatar.md-theme-selection-black.md-avatar-icon .md-icon {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-icon-disabled, #fff);\n    fill: #fff;\n    fill: var(--md-theme-selection-black-text-primary-on-icon-disabled, #fff); }\n\n.md-avatar.md-theme-selection-black.md-primary {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-avatar.md-theme-selection-black.md-primary.md-avatar-icon {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-avatar.md-theme-selection-black.md-primary.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-avatar.md-theme-selection-black.md-accent {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n  .md-avatar.md-theme-selection-black.md-accent.md-avatar-icon {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-avatar.md-theme-selection-black.md-accent.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-avatar.md-theme-default.md-avatar-icon {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-default-icon-disabled, rgba(0, 0, 0, 0.38));\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-icon-disabled, #fff); }\n  .md-avatar.md-theme-default.md-avatar-icon .md-icon {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-icon-disabled, #fff);\n    fill: #fff;\n    fill: var(--md-theme-default-text-primary-on-icon-disabled, #fff); }\n\n.md-avatar.md-theme-default.md-primary {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-avatar.md-theme-default.md-primary.md-avatar-icon {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-avatar.md-theme-default.md-primary.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-avatar.md-theme-default.md-accent {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n  .md-avatar.md-theme-default.md-accent.md-avatar-icon {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-avatar.md-theme-default.md-accent.md-avatar-icon .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-bottom-bar.md-theme-selection-black.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n    .md-bottom-bar.md-theme-selection-black.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n      .md-bottom-bar.md-theme-selection-black.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #448aff;\n        fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-bottom-bar.md-theme-selection-black.md-type-shift {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-selection-black.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: #116aff;\n    background-color: var(--md-theme-selection-black-primary-on-primary, #116aff); }\n  .md-bottom-bar.md-theme-selection-black.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-selection-black-icon-on-primary, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-icon-on-primary, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-bottom-bar.md-theme-selection-black.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #000;\n      color: var(--md-theme-selection-black-accent-on-background, #000); }\n      .md-bottom-bar.md-theme-selection-black.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #000;\n        fill: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: black;\n    background-color: var(--md-theme-selection-black-accent-on-accent, black); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-selection-black-icon-on-accent, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-icon-on-accent, #fff); }\n  .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-bottom-bar.md-theme-selection-black.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-bottom-bar.md-theme-default.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n  .md-bottom-bar.md-theme-default.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n    .md-bottom-bar.md-theme-default.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n      .md-bottom-bar.md-theme-default.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #9c27b0;\n        fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-bottom-bar.md-theme-default.md-type-shift {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-default.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: #771e86;\n    background-color: var(--md-theme-default-primary-on-primary, #771e86); }\n  .md-bottom-bar.md-theme-default.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-default-icon-on-primary, #fff); }\n    .md-bottom-bar.md-theme-default.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-default-icon-on-primary, #fff); }\n  .md-bottom-bar.md-theme-default.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-bottom-bar.md-theme-default.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-bottom-bar.md-theme-default.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-bottom-bar.md-theme-default.md-accent.md-type-fixed {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-fixed .md-bottom-bar-item.md-active {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-bottom-bar.md-theme-default.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon {\n      color: #ff5252;\n      color: var(--md-theme-default-accent-on-background, #ff5252); }\n      .md-bottom-bar.md-theme-default.md-accent.md-type-fixed .md-bottom-bar-item.md-active .md-icon svg {\n        fill: #ff5252;\n        fill: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-bottom-bar.md-theme-default.md-accent.md-type-shift {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252);\n  color: rgba(255, 255, 255, 0.7);\n  color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-shift > .md-ripple .md-ripple-wave {\n    background-color: #ff1f1f;\n    background-color: var(--md-theme-default-accent-on-accent, #ff1f1f); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-icon {\n    color: #fff;\n    color: var(--md-theme-default-icon-on-accent, #fff); }\n    .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-icon svg {\n      fill: #fff;\n      fill: var(--md-theme-default-icon-on-accent, #fff); }\n  .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-bottom-bar-item {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-bottom-bar.md-theme-default.md-accent.md-type-shift .md-bottom-bar-item .md-active .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-button.md-theme-selection-black {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-button.md-theme-selection-black.md-primary {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n    .md-button.md-theme-selection-black.md-primary .md-icon-font {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n    .md-button.md-theme-selection-black.md-primary .md-icon-image {\n      fill: #448aff;\n      fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-button.md-theme-selection-black.md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-button.md-theme-selection-black.md-accent .md-icon-font {\n      color: #000;\n      color: var(--md-theme-selection-black-accent-on-background, #000); }\n    .md-button.md-theme-selection-black.md-accent .md-icon-image {\n      fill: #000;\n      fill: var(--md-theme-selection-black-accent-on-background, #000); }\n  .md-button.md-theme-selection-black.md-raised[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-disabled-background-on-background, rgba(0, 0, 0, 0.12));\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.26)); }\n  .md-button.md-theme-selection-black.md-raised:not([disabled]) {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-button.md-theme-selection-black.md-raised:not([disabled]).md-primary {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      background-color: #448aff;\n      background-color: var(--md-theme-selection-black-primary, #448aff); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-button.md-theme-selection-black.md-raised:not([disabled]).md-accent {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff);\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-accent .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-button.md-theme-selection-black.md-raised:not([disabled]).md-accent .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n  .md-button.md-theme-selection-black.md-fab[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-disabled-background-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-button.md-theme-selection-black.md-fab:not([disabled]) {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000); }\n    .md-button.md-theme-selection-black.md-fab:not([disabled]) .md-icon-font {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-button.md-theme-selection-black.md-fab:not([disabled]) .md-icon-image {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-button.md-theme-selection-black.md-fab:not([disabled]).md-primary {\n      background-color: #448aff;\n      background-color: var(--md-theme-selection-black-primary, #448aff); }\n      .md-button.md-theme-selection-black.md-fab:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-button.md-theme-selection-black.md-fab:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-button.md-theme-selection-black[disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n    .md-button.md-theme-selection-black[disabled] .md-icon-font {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-selection-black-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-button.md-theme-selection-black[disabled] .md-icon-image {\n      fill: rgba(0, 0, 0, 0.38);\n      fill: var(--md-theme-selection-black-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-button.md-theme-default {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-button.md-theme-default.md-primary {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n    .md-button.md-theme-default.md-primary .md-icon-font {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n    .md-button.md-theme-default.md-primary .md-icon-image {\n      fill: #9c27b0;\n      fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-button.md-theme-default.md-accent {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-button.md-theme-default.md-accent .md-icon-font {\n      color: #ff5252;\n      color: var(--md-theme-default-accent-on-background, #ff5252); }\n    .md-button.md-theme-default.md-accent .md-icon-image {\n      fill: #ff5252;\n      fill: var(--md-theme-default-accent-on-background, #ff5252); }\n  .md-button.md-theme-default.md-raised[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-disabled-background-on-background, rgba(0, 0, 0, 0.12));\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.26)); }\n  .md-button.md-theme-default.md-raised:not([disabled]) {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-button.md-theme-default.md-raised:not([disabled]).md-primary {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      background-color: #9c27b0;\n      background-color: var(--md-theme-default-primary, #9c27b0); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-button.md-theme-default.md-raised:not([disabled]).md-accent {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff);\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-accent .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-button.md-theme-default.md-raised:not([disabled]).md-accent .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n  .md-button.md-theme-default.md-fab[disabled] {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-disabled-background-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-button.md-theme-default.md-fab:not([disabled]) {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252); }\n    .md-button.md-theme-default.md-fab:not([disabled]) .md-icon-font {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-button.md-theme-default.md-fab:not([disabled]) .md-icon-image {\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-button.md-theme-default.md-fab:not([disabled]).md-primary {\n      background-color: #9c27b0;\n      background-color: var(--md-theme-default-primary, #9c27b0); }\n      .md-button.md-theme-default.md-fab:not([disabled]).md-primary .md-icon-font {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-button.md-theme-default.md-fab:not([disabled]).md-primary .md-icon-image {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-button.md-theme-default[disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n    .md-button.md-theme-default[disabled] .md-icon-font {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-default-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-button.md-theme-default[disabled] .md-icon-image {\n      fill: rgba(0, 0, 0, 0.38);\n      fill: var(--md-theme-default-icon-disabled-on-background, rgba(0, 0, 0, 0.38)); }\n\n.md-card.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-card.md-theme-selection-black .md-card-expand .md-card-actions {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-card.md-theme-selection-black .md-card-header .md-button:not(.md-primary):not(.md-accent),\n  .md-card.md-theme-selection-black .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-card.md-theme-selection-black .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n    .md-card.md-theme-selection-black .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.54));\n      fill: rgba(0, 0, 0, 0.54);\n      fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-card.md-theme-selection-black > .md-card-area:after {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-card.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-card.md-theme-selection-black.md-primary .md-card-expand .md-card-actions {\n      background-color: #448aff;\n      background-color: var(--md-theme-selection-black-primary, #448aff); }\n    .md-card.md-theme-selection-black.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-selection-black.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-card.md-theme-selection-black.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-selection-black.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-selection-black.md-primary > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-primary, rgba(255, 255, 255, 0.12)); }\n  .md-card.md-theme-selection-black.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-card.md-theme-selection-black.md-accent .md-card-expand .md-card-actions {\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n    .md-card.md-theme-selection-black.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-selection-black.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-card.md-theme-selection-black.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-selection-black.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-selection-black.md-accent > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-accent, rgba(255, 255, 255, 0.12)); }\n\n.md-card.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-card.md-theme-default .md-card-expand .md-card-actions {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff); }\n  .md-card.md-theme-default .md-card-header .md-button:not(.md-primary):not(.md-accent),\n  .md-card.md-theme-default .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-card.md-theme-default .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n    .md-card.md-theme-default .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.54));\n      fill: rgba(0, 0, 0, 0.54);\n      fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-card.md-theme-default > .md-card-area:after {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-card.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-card.md-theme-default.md-primary .md-card-expand .md-card-actions {\n      background-color: #9c27b0;\n      background-color: var(--md-theme-default-primary, #9c27b0); }\n    .md-card.md-theme-default.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-default.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-card.md-theme-default.md-primary .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-default.md-primary .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-default.md-primary > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-default-divider-on-primary, rgba(255, 255, 255, 0.12)); }\n  .md-card.md-theme-default.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-card.md-theme-default.md-accent .md-card-expand .md-card-actions {\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n    .md-card.md-theme-default.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent),\n    .md-card.md-theme-default.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-card.md-theme-default.md-accent .md-card-header .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon,\n      .md-card.md-theme-default.md-accent .md-card-actions .md-button:not(.md-primary):not(.md-accent).md-icon-button .md-icon {\n        color: rgba(255, 255, 255, 0.54);\n        color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.54));\n        fill: rgba(255, 255, 255, 0.54);\n        fill: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.54)); }\n    .md-card.md-theme-default.md-accent > .md-card-area:after {\n      background-color: rgba(255, 255, 255, 0.12);\n      background-color: var(--md-theme-default-divider-on-accent, rgba(255, 255, 255, 0.12)); }\n\n.md-checkbox.md-theme-selection-black.md-checked .md-checkbox-container {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000);\n  border-color: #000;\n  border-color: var(--md-theme-selection-black-accent, #000); }\n  .md-checkbox.md-theme-selection-black.md-checked .md-checkbox-container:after {\n    border-color: #fff;\n    border-color: var(--md-theme-selection-black-background, #fff); }\n\n.md-checkbox.md-theme-selection-black.md-checked .md-ripple {\n  color: #000;\n  color: var(--md-theme-selection-black-accent, #000); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: rgba(255, 255, 255, 0.3); }\n  .md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-checked.md-primary .md-checkbox-container {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff);\n  border-color: #448aff;\n  border-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-checkbox.md-theme-selection-black.md-checked.md-primary .md-ripple {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: transparent; }\n  .md-checkbox.md-theme-selection-black.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-selection-black.md-disabled .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-checkbox.md-theme-selection-black.md-disabled.md-checked .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26);\n  background-color: rgba(0, 0, 0, 0.26); }\n\n.md-checkbox.md-theme-default.md-checked .md-checkbox-container {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252);\n  border-color: #ff5252;\n  border-color: var(--md-theme-default-accent, #ff5252); }\n  .md-checkbox.md-theme-default.md-checked .md-checkbox-container:after {\n    border-color: #fff;\n    border-color: var(--md-theme-default-background, #fff); }\n\n.md-checkbox.md-theme-default.md-checked .md-ripple {\n  color: #ff5252;\n  color: var(--md-theme-default-accent, #ff5252); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: rgba(255, 255, 255, 0.3); }\n  .md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-checked.md-primary .md-checkbox-container {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0);\n  border-color: #9c27b0;\n  border-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-checkbox.md-theme-default.md-checked.md-primary .md-ripple {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54);\n  background-color: transparent; }\n  .md-checkbox.md-theme-default.md-indeterminate .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-indeterminate .md-ripple {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-checkbox.md-theme-default.md-disabled .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-checkbox.md-theme-default.md-disabled.md-checked .md-checkbox-container {\n  border-color: rgba(0, 0, 0, 0.26);\n  background-color: rgba(0, 0, 0, 0.26); }\n\n.md-chip.md-theme-selection-black {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-selection-black-highlight, rgba(0, 0, 0, 0.12));\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary, rgba(0, 0, 0, 0.87)); }\n  .md-chip.md-theme-selection-black .md-icon.md-icon-image svg {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-text-primary, #fff);\n    fill: #fff;\n    fill: var(--md-theme-selection-black-text-primary-on-text-primary, #fff); }\n  .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover {\n    background-color: rgba(0, 0, 0, 0.54);\n    background-color: var(--md-theme-selection-black-icon, rgba(0, 0, 0, 0.54));\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover .md-icon, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover .md-icon {\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover .md-input-action {\n      background-color: rgba(255, 255, 255, 0.87);\n      background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.87));\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-selection-black.md-deletable:not(.md-disabled):hover .md-input-action .md-icon svg, .md-chip.md-theme-selection-black.md-clickable:not(.md-disabled):hover .md-input-action .md-icon svg {\n        fill: rgba(0, 0, 0, 0.54);\n        fill: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54));\n        color: rgba(0, 0, 0, 0.54);\n        color: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-chip.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-chip.md-theme-selection-black.md-primary .md-input-action {\n      color: #fff;\n      color: var(--md-theme-selection-black-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-selection-black.md-primary.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-primary.md-clickable:not(.md-disabled):hover {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-icon, #fff);\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-selection-black-icon, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-selection-black.md-primary.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-primary.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-selection-black.md-accent, .md-chip.md-theme-selection-black.md-duplicated {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-chip.md-theme-selection-black.md-accent .md-input-action, .md-chip.md-theme-selection-black.md-duplicated .md-input-action {\n      color: #fff;\n      color: var(--md-theme-selection-black-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-selection-black.md-accent.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-accent.md-clickable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-duplicated.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-selection-black.md-duplicated.md-clickable:not(.md-disabled):hover {\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-selection-black-icon, rgba(0, 0, 0, 0.54));\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-icon, #fff); }\n      .md-chip.md-theme-selection-black.md-accent.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-accent.md-clickable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-duplicated.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-selection-black.md-duplicated.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-selection-black-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-selection-black.md-disabled {\n    background-color: rgba(0, 0, 0, 0.1);\n    background-color: var(--md-theme-selection-black-highlight, rgba(0, 0, 0, 0.1));\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent, rgba(0, 0, 0, 0.54)); }\n\n.md-chip.md-theme-default {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-default-highlight, rgba(0, 0, 0, 0.12));\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary, rgba(0, 0, 0, 0.87)); }\n  .md-chip.md-theme-default .md-icon.md-icon-image svg {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-text-primary, #fff);\n    fill: #fff;\n    fill: var(--md-theme-default-text-primary-on-text-primary, #fff); }\n  .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover {\n    background-color: rgba(0, 0, 0, 0.54);\n    background-color: var(--md-theme-default-icon, rgba(0, 0, 0, 0.54));\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover .md-icon, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover .md-icon {\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-icon, #fff); }\n    .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover .md-input-action {\n      background-color: rgba(255, 255, 255, 0.87);\n      background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.87));\n      color: rgba(0, 0, 0, 0.54);\n      color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-default.md-deletable:not(.md-disabled):hover .md-input-action .md-icon svg, .md-chip.md-theme-default.md-clickable:not(.md-disabled):hover .md-input-action .md-icon svg {\n        fill: rgba(0, 0, 0, 0.54);\n        fill: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54));\n        color: rgba(0, 0, 0, 0.54);\n        color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-chip.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-chip.md-theme-default.md-primary .md-input-action {\n      color: #fff;\n      color: var(--md-theme-default-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-default.md-primary.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-primary.md-clickable:not(.md-disabled):hover {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-icon, #fff);\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-default-icon, rgba(0, 0, 0, 0.54)); }\n      .md-chip.md-theme-default.md-primary.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-primary.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-default.md-accent, .md-chip.md-theme-default.md-duplicated {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-chip.md-theme-default.md-accent .md-input-action, .md-chip.md-theme-default.md-duplicated .md-input-action {\n      color: #fff;\n      color: var(--md-theme-default-icon-on-disabled, #fff);\n      background-color: rgba(0, 0, 0, 0.26);\n      background-color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.26)); }\n    .md-chip.md-theme-default.md-accent.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-accent.md-clickable:not(.md-disabled):hover, .md-chip.md-theme-default.md-duplicated.md-deletable:not(.md-disabled):hover, .md-chip.md-theme-default.md-duplicated.md-clickable:not(.md-disabled):hover {\n      background-color: rgba(0, 0, 0, 0.54);\n      background-color: var(--md-theme-default-icon, rgba(0, 0, 0, 0.54));\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-icon, #fff); }\n      .md-chip.md-theme-default.md-accent.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-accent.md-clickable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-duplicated.md-deletable:not(.md-disabled):hover .md-input-action, .md-chip.md-theme-default.md-duplicated.md-clickable:not(.md-disabled):hover .md-input-action {\n        background-color: rgba(255, 255, 255, 0.87);\n        background-color: var(--md-theme-default-background, rgba(255, 255, 255, 0.87)); }\n  .md-chip.md-theme-default.md-disabled {\n    background-color: rgba(0, 0, 0, 0.1);\n    background-color: var(--md-theme-default-highlight, rgba(0, 0, 0, 0.1));\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent, rgba(0, 0, 0, 0.54)); }\n\n.md-chips.md-theme-selection-black .md-clear {\n  background-color: rgba(0, 0, 0, 0.2); }\n\n.md-chips.md-theme-default .md-clear {\n  background-color: rgba(0, 0, 0, 0.2); }\n\n.md-content.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-content.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-content.md-theme-selection-black.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n  .md-app .md-content.md-theme-selection-black {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12));\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-content.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-content.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-content.md-theme-default.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n  .md-app .md-content.md-theme-default {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12));\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-datepicker-dialog.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-header {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-body-header:after, .md-datepicker-dialog.md-theme-selection-black .md-datepicker-body-header:before {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-body-footer {\n    background-color: #fff;\n    background-color: var(--md-theme-selection-black-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-week {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-disabled {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-today {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-day-button:hover,\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-month-button:hover,\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-year-button:hover {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider, rgba(0, 0, 0, 0.12)); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-day-button.md-datepicker-selected {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-month-button.md-datepicker-selected,\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-year-button.md-datepicker-selected {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-datepicker-dialog.md-theme-selection-black .md-datepicker-year-selector {\n    border-bottom-color: rgba(0, 0, 0, 0.12);\n    border-bottom-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-datepicker-dialog.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-header {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-body-header:after, .md-datepicker-dialog.md-theme-default .md-datepicker-body-header:before {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-body-footer {\n    background-color: #fff;\n    background-color: var(--md-theme-default-background, #fff);\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-week {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-disabled {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-today {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-day-button:hover,\n  .md-datepicker-dialog.md-theme-default .md-datepicker-month-button:hover,\n  .md-datepicker-dialog.md-theme-default .md-datepicker-year-button:hover {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider, rgba(0, 0, 0, 0.12)); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-day-button.md-datepicker-selected {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-month-button.md-datepicker-selected,\n  .md-datepicker-dialog.md-theme-default .md-datepicker-year-button.md-datepicker-selected {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-datepicker-dialog.md-theme-default .md-datepicker-year-selector {\n    border-bottom-color: rgba(0, 0, 0, 0.12);\n    border-bottom-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-dialog.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-dialog.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-divider.md-theme-selection-black {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-selection-black-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-divider.md-theme-default {\n  background-color: rgba(0, 0, 0, 0.12);\n  background-color: var(--md-theme-default-divider, rgba(0, 0, 0, 0.12)); }\n\n.md-drawer.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-drawer.md-theme-selection-black.md-persistent-mini.md-left {\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-drawer.md-theme-selection-black.md-persistent-mini.md-right {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-drawer.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-drawer.md-theme-default.md-persistent-mini.md-left {\n    border-right-color: rgba(0, 0, 0, 0.12);\n    border-right-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-drawer.md-theme-default.md-persistent-mini.md-right {\n    border-left-color: rgba(0, 0, 0, 0.12);\n    border-left-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-empty-state.md-theme-selection-black .md-empty-state-icon.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-selection-black .md-empty-state-icon.md-icon-font {\n  color: rgba(0, 0, 0, 0.26);\n  color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-selection-black.md-rounded {\n  background-color: rgba(0, 0, 0, 0.06);\n  background-color: var(--md-theme-selection-black-disabled, rgba(0, 0, 0, 0.06)); }\n\n.md-empty-state.md-theme-selection-black.md-primary .md-empty-state-icon.md-icon-image svg {\n  fill: #448aff;\n  fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-empty-state.md-theme-selection-black.md-primary .md-empty-state-icon.md-icon-font {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-empty-state.md-theme-selection-black.md-accent .md-empty-state-icon.md-icon-image svg {\n  fill: #000;\n  fill: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-empty-state.md-theme-selection-black.md-accent .md-empty-state-icon.md-icon-font {\n  color: #000;\n  color: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-empty-state.md-theme-default .md-empty-state-icon.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-default .md-empty-state-icon.md-icon-font {\n  color: rgba(0, 0, 0, 0.26);\n  color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-empty-state.md-theme-default.md-rounded {\n  background-color: rgba(0, 0, 0, 0.06);\n  background-color: var(--md-theme-default-disabled, rgba(0, 0, 0, 0.06)); }\n\n.md-empty-state.md-theme-default.md-primary .md-empty-state-icon.md-icon-image svg {\n  fill: #9c27b0;\n  fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-empty-state.md-theme-default.md-primary .md-empty-state-icon.md-icon-font {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-empty-state.md-theme-default.md-accent .md-empty-state-icon.md-icon-image svg {\n  fill: #ff5252;\n  fill: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-empty-state.md-theme-default.md-accent .md-empty-state-icon.md-icon-font {\n  color: #ff5252;\n  color: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-field.md-theme-selection-black:after {\n  background-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-selection-black:before {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-field.md-theme-selection-black .md-helper-text,\n.md-field.md-theme-selection-black .md-count,\n.md-field.md-theme-selection-black label {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-selection-black .md-suffix, .md-field.md-theme-selection-black .md-prefix {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-selection-black .md-input::-webkit-input-placeholder,\n.md-field.md-theme-selection-black .md-textarea::-webkit-input-placeholder {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-selection-black.md-focused .md-input,\n.md-field.md-theme-selection-black.md-focused .md-textarea, .md-field.md-theme-selection-black.md-has-value .md-input,\n.md-field.md-theme-selection-black.md-has-value .md-textarea {\n  -webkit-text-fill-color: rgba(0, 0, 0, 0.87); }\n\n.md-field.md-theme-selection-black.md-has-textarea:not(.md-autogrow):after {\n  border-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-selection-black.md-has-textarea:not(.md-autogrow):before {\n  border-color: #448aff;\n  border-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-field.md-theme-selection-black.md-disabled:after {\n  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.38) 0%, rgba(0, 0, 0, 0.38) 33%, transparent 0%); }\n\n.md-field.md-theme-selection-black.md-disabled label,\n.md-field.md-theme-selection-black.md-disabled .md-input,\n.md-field.md-theme-selection-black.md-disabled .md-textarea {\n  color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-selection-black > .md-icon:after {\n  background-color: #fafafa;\n  background-color: var(--md-theme-selection-black-background-variant, #fafafa); }\n\n.md-field.md-theme-selection-black.md-invalid:after {\n  background-color: #ff1744;\n  background-color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid.md-has-textarea:not(.md-autogrow):before {\n  border-color: #ff1744;\n  border-color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid label {\n  color: #ff1744;\n  color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid .md-error {\n  color: #ff1744;\n  color: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-invalid .md-date-icon,\n.md-field.md-theme-selection-black.md-invalid .md-date-icon svg {\n  color: #ff1744;\n  color: var(--md-theme-selection-black-fieldvariant, #ff1744);\n  fill: #ff1744;\n  fill: var(--md-theme-selection-black-fieldvariant, #ff1744); }\n\n.md-field.md-theme-selection-black.md-focused .md-input,\n.md-field.md-theme-selection-black.md-focused .md-textarea, .md-field.md-theme-selection-black.md-highlight .md-input,\n.md-field.md-theme-selection-black.md-highlight .md-textarea {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-field.md-theme-selection-black.md-focused > .md-icon, .md-field.md-theme-selection-black.md-highlight > .md-icon {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff);\n  fill: #448aff;\n  fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-field.md-theme-selection-black.md-focused label {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-field.md-theme-selection-black.md-disabled .md-icon svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-field.md-theme-default:after {\n  background-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-default:before {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-field.md-theme-default .md-helper-text,\n.md-field.md-theme-default .md-count,\n.md-field.md-theme-default label {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-default .md-suffix, .md-field.md-theme-default .md-prefix {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-default .md-input::-webkit-input-placeholder,\n.md-field.md-theme-default .md-textarea::-webkit-input-placeholder {\n  color: rgba(0, 0, 0, 0.54); }\n\n.md-field.md-theme-default.md-focused .md-input,\n.md-field.md-theme-default.md-focused .md-textarea, .md-field.md-theme-default.md-has-value .md-input,\n.md-field.md-theme-default.md-has-value .md-textarea {\n  -webkit-text-fill-color: rgba(0, 0, 0, 0.87); }\n\n.md-field.md-theme-default.md-has-textarea:not(.md-autogrow):after {\n  border-color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-default.md-has-textarea:not(.md-autogrow):before {\n  border-color: #9c27b0;\n  border-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-field.md-theme-default.md-disabled:after {\n  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.38) 0%, rgba(0, 0, 0, 0.38) 33%, transparent 0%); }\n\n.md-field.md-theme-default.md-disabled label,\n.md-field.md-theme-default.md-disabled .md-input,\n.md-field.md-theme-default.md-disabled .md-textarea {\n  color: rgba(0, 0, 0, 0.42); }\n\n.md-field.md-theme-default > .md-icon:after {\n  background-color: #fafafa;\n  background-color: var(--md-theme-default-background-variant, #fafafa); }\n\n.md-field.md-theme-default.md-invalid:after {\n  background-color: #ff1744;\n  background-color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid.md-has-textarea:not(.md-autogrow):before {\n  border-color: #ff1744;\n  border-color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid label {\n  color: #ff1744;\n  color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid .md-error {\n  color: #ff1744;\n  color: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-invalid .md-date-icon,\n.md-field.md-theme-default.md-invalid .md-date-icon svg {\n  color: #ff1744;\n  color: var(--md-theme-default-fieldvariant, #ff1744);\n  fill: #ff1744;\n  fill: var(--md-theme-default-fieldvariant, #ff1744); }\n\n.md-field.md-theme-default.md-focused .md-input,\n.md-field.md-theme-default.md-focused .md-textarea, .md-field.md-theme-default.md-highlight .md-input,\n.md-field.md-theme-default.md-highlight .md-textarea {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-field.md-theme-default.md-focused > .md-icon, .md-field.md-theme-default.md-highlight > .md-icon {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0);\n  fill: #9c27b0;\n  fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-field.md-theme-default.md-focused label {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-field.md-theme-default.md-disabled .md-icon svg {\n  fill: rgba(0, 0, 0, 0.26);\n  fill: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n\n.md-icon.md-theme-selection-black.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.54);\n  fill: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-selection-black.md-icon-image svg.md-primary {\n    fill: #448aff;\n    fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-icon.md-theme-selection-black.md-icon-image svg.md-accent {\n    fill: #000;\n    fill: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-icon.md-theme-selection-black.md-icon-font {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-selection-black.md-icon-font.md-primary {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-icon.md-theme-selection-black.md-icon-font.md-accent {\n    color: #000;\n    color: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-icon.md-theme-default.md-icon-image svg {\n  fill: rgba(0, 0, 0, 0.54);\n  fill: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-default.md-icon-image svg.md-primary {\n    fill: #9c27b0;\n    fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-icon.md-theme-default.md-icon-image svg.md-accent {\n    fill: #ff5252;\n    fill: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-icon.md-theme-default.md-icon-font {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-icon.md-theme-default.md-icon-font.md-primary {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-icon.md-theme-default.md-icon-font.md-accent {\n    color: #ff5252;\n    color: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-list.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-selection-black.md-double-line .md-list-item-text :nth-child(2) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-selection-black.md-triple-line .md-list-item-text :nth-child(3) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-selection-black .md-highlight .md-list-item-container {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-list.md-theme-selection-black .md-list-item-container {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-list.md-theme-selection-black .md-list-item-container:not(.md-list-item-default):not([disabled]):hover {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12));\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-selection-black [disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-selection-black-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-list.md-theme-selection-black .md-selected .md-list-item-content,\n  .md-list.md-theme-selection-black .router-link-exact-active .md-list-item-content {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-list.md-theme-selection-black .md-list-item-expand.md-active {\n    border-color: rgba(0, 0, 0, 0.12);\n    border-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-list.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-default.md-double-line .md-list-item-text :nth-child(2) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-default.md-triple-line .md-list-item-text :nth-child(3) {\n    color: rgba(0, 0, 0, 0.54);\n    color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-list.md-theme-default .md-highlight .md-list-item-container {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-list.md-theme-default .md-list-item-container {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-list.md-theme-default .md-list-item-container:not(.md-list-item-default):not([disabled]):hover {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12));\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-list.md-theme-default [disabled] {\n    color: rgba(0, 0, 0, 0.26);\n    color: var(--md-theme-default-disabled-on-background, rgba(0, 0, 0, 0.26)); }\n  .md-list.md-theme-default .md-selected .md-list-item-content,\n  .md-list.md-theme-default .router-link-exact-active .md-list-item-content {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-list.md-theme-default .md-list-item-expand.md-active {\n    border-color: rgba(0, 0, 0, 0.12);\n    border-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-menu-item.md-theme-selection-black.md-primary .md-list-item-link,\n.md-menu-item.md-theme-selection-black.md-primary .md-list-item-router,\n.md-menu-item.md-theme-selection-black.md-primary .md-list-item-button {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-menu-item.md-theme-selection-black.md-accent .md-list-item-link,\n.md-menu-item.md-theme-selection-black.md-accent .md-list-item-router,\n.md-menu-item.md-theme-selection-black.md-accent .md-list-item-button {\n  color: #000;\n  color: var(--md-theme-selection-black-accent-on-background, #000); }\n\n.md-menu-item.md-theme-default.md-primary .md-list-item-link,\n.md-menu-item.md-theme-default.md-primary .md-list-item-router,\n.md-menu-item.md-theme-default.md-primary .md-list-item-button {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-menu-item.md-theme-default.md-accent .md-list-item-link,\n.md-menu-item.md-theme-default.md-accent .md-list-item-router,\n.md-menu-item.md-theme-default.md-accent .md-list-item-button {\n  color: #ff5252;\n  color: var(--md-theme-default-accent-on-background, #ff5252); }\n\n.md-progress-bar.md-theme-selection-black.md-indeterminate, .md-progress-bar.md-theme-selection-black.md-query {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n  .md-progress-bar.md-theme-selection-black.md-indeterminate .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-selection-black.md-indeterminate .md-progress-bar-fill:after, .md-progress-bar.md-theme-selection-black.md-query .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-selection-black.md-query .md-progress-bar-fill:after {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-progress-bar.md-theme-selection-black.md-indeterminate.md-accent, .md-progress-bar.md-theme-selection-black.md-query.md-accent {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n    .md-progress-bar.md-theme-selection-black.md-indeterminate.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-selection-black.md-indeterminate.md-accent .md-progress-bar-fill:after, .md-progress-bar.md-theme-selection-black.md-query.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-selection-black.md-query.md-accent .md-progress-bar-fill:after {\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-bar.md-theme-selection-black.md-determinate {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n  .md-progress-bar.md-theme-selection-black.md-determinate .md-progress-bar-fill {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-progress-bar.md-theme-selection-black.md-determinate.md-accent {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n    .md-progress-bar.md-theme-selection-black.md-determinate.md-accent .md-progress-bar-fill {\n      background-color: #000;\n      background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer .md-progress-bar-fill {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer .md-progress-bar-track {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer .md-progress-bar-buffer {\n  border-color: rgba(68, 138, 255, 0.38);\n  border-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer.md-accent .md-progress-bar-fill {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer.md-accent .md-progress-bar-track {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n\n.md-progress-bar.md-theme-selection-black.md-buffer.md-accent .md-progress-bar-buffer {\n  border-color: rgba(0, 0, 0, 0.38);\n  border-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-indeterminate, .md-progress-bar.md-theme-default.md-query {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n  .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after, .md-progress-bar.md-theme-default.md-query .md-progress-bar-track:after,\n  .md-progress-bar.md-theme-default.md-query .md-progress-bar-fill:after {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-progress-bar.md-theme-default.md-indeterminate.md-accent, .md-progress-bar.md-theme-default.md-query.md-accent {\n    background-color: rgba(255, 82, 82, 0.38);\n    background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n    .md-progress-bar.md-theme-default.md-indeterminate.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-default.md-indeterminate.md-accent .md-progress-bar-fill:after, .md-progress-bar.md-theme-default.md-query.md-accent .md-progress-bar-track:after,\n    .md-progress-bar.md-theme-default.md-query.md-accent .md-progress-bar-fill:after {\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-progress-bar.md-theme-default.md-determinate {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n  .md-progress-bar.md-theme-default.md-determinate .md-progress-bar-fill {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-progress-bar.md-theme-default.md-determinate.md-accent {\n    background-color: rgba(255, 82, 82, 0.38);\n    background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n    .md-progress-bar.md-theme-default.md-determinate.md-accent .md-progress-bar-fill {\n      background-color: #ff5252;\n      background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-progress-bar.md-theme-default.md-buffer .md-progress-bar-fill {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-progress-bar.md-theme-default.md-buffer .md-progress-bar-track {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-buffer .md-progress-bar-buffer {\n  border-color: rgba(156, 39, 176, 0.38);\n  border-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-buffer.md-accent .md-progress-bar-fill {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-progress-bar.md-theme-default.md-buffer.md-accent .md-progress-bar-track {\n  background-color: rgba(255, 82, 82, 0.38);\n  background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n\n.md-progress-bar.md-theme-default.md-buffer.md-accent .md-progress-bar-buffer {\n  border-color: rgba(255, 82, 82, 0.38);\n  border-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n\n.md-progress-spinner.md-theme-selection-black .md-progress-spinner-circle {\n  stroke: #448aff;\n  stroke: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-progress-spinner.md-theme-selection-black.md-accent .md-progress-spinner-circle {\n  stroke: #000;\n  stroke: var(--md-theme-selection-black-accent, #000); }\n\n.md-progress-spinner.md-theme-default .md-progress-spinner-circle {\n  stroke: #9c27b0;\n  stroke: var(--md-theme-default-primary, #9c27b0); }\n\n.md-progress-spinner.md-theme-default.md-accent .md-progress-spinner-circle {\n  stroke: #ff5252;\n  stroke: var(--md-theme-default-accent, #ff5252); }\n\n.md-radio.md-theme-selection-black.md-checked .md-radio-container {\n  border-color: #000;\n  border-color: var(--md-theme-selection-black-accent, #000); }\n  .md-radio.md-theme-selection-black.md-checked .md-radio-container:after {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-radio.md-theme-selection-black.md-checked .md-ripple {\n  color: #000;\n  color: var(--md-theme-selection-black-accent, #000); }\n\n.md-radio.md-theme-selection-black.md-checked.md-primary .md-radio-container {\n  border-color: #448aff;\n  border-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-radio.md-theme-selection-black.md-checked.md-primary .md-radio-container:after {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-radio.md-theme-selection-black.md-checked.md-primary .md-ripple {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-radio.md-theme-selection-black .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-radio.md-theme-selection-black.md-disabled .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-radio.md-theme-selection-black.md-disabled.md-checked .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n  .md-radio.md-theme-selection-black.md-disabled.md-checked .md-radio-container:after {\n    background-color: rgba(0, 0, 0, 0.26); }\n\n.md-radio.md-theme-default.md-checked .md-radio-container {\n  border-color: #ff5252;\n  border-color: var(--md-theme-default-accent, #ff5252); }\n  .md-radio.md-theme-default.md-checked .md-radio-container:after {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-radio.md-theme-default.md-checked .md-ripple {\n  color: #ff5252;\n  color: var(--md-theme-default-accent, #ff5252); }\n\n.md-radio.md-theme-default.md-checked.md-primary .md-radio-container {\n  border-color: #9c27b0;\n  border-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-radio.md-theme-default.md-checked.md-primary .md-radio-container:after {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-radio.md-theme-default.md-checked.md-primary .md-ripple {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-radio.md-theme-default .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.54); }\n\n.md-radio.md-theme-default.md-disabled .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n\n.md-radio.md-theme-default.md-disabled.md-checked .md-radio-container {\n  border-color: rgba(0, 0, 0, 0.26); }\n  .md-radio.md-theme-default.md-disabled.md-checked .md-radio-container:after {\n    background-color: rgba(0, 0, 0, 0.26); }\n\n.md-snackbar.md-theme-selection-black {\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-text-primary, #fff);\n  background-color: #323232; }\n\n.md-snackbar.md-theme-default {\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-text-primary, #fff);\n  background-color: #323232; }\n\n.md-steppers.md-theme-selection-black {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-selection-black .md-stepper-icon:after, .md-steppers.md-theme-selection-black .md-stepper-icon:before,\n  .md-steppers.md-theme-selection-black .md-stepper-number:after,\n  .md-steppers.md-theme-selection-black .md-stepper-number:before,\n  .md-steppers.md-theme-selection-black .md-stepper:after,\n  .md-steppers.md-theme-selection-black .md-stepper:before {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-selection-black .md-stepper-number {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38));\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-text-hint, #fff); }\n    .md-steppers.md-theme-selection-black .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-text-hint, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-text-hint, #fff); }\n  .md-steppers.md-theme-selection-black .md-stepper-header .md-button-content {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-selection-black-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-steppers.md-theme-selection-black .md-stepper-header .md-button-content:after, .md-steppers.md-theme-selection-black .md-stepper-header .md-button-content:before {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-active .md-button-content, .md-steppers.md-theme-selection-black .md-stepper-header.md-done .md-button-content {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-active .md-stepper-number, .md-steppers.md-theme-selection-black .md-stepper-header.md-done .md-stepper-number {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary-on-background, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-steppers.md-theme-selection-black .md-stepper-header.md-active .md-stepper-number svg, .md-steppers.md-theme-selection-black .md-stepper-header.md-done .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-error .md-button-content {\n    color: #ff1744;\n    color: var(--md-theme-selection-black-steppervariant, #ff1744); }\n  .md-steppers.md-theme-selection-black .md-stepper-header.md-error .md-icon svg {\n    color: #ff1744;\n    color: var(--md-theme-selection-black-steppervariant, #ff1744);\n    fill: #ff1744;\n    fill: var(--md-theme-selection-black-steppervariant, #ff1744); }\n\n.md-steppers.md-theme-default {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff);\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-default .md-stepper-icon:after, .md-steppers.md-theme-default .md-stepper-icon:before,\n  .md-steppers.md-theme-default .md-stepper-number:after,\n  .md-steppers.md-theme-default .md-stepper-number:before,\n  .md-steppers.md-theme-default .md-stepper:after,\n  .md-steppers.md-theme-default .md-stepper:before {\n    background-color: rgba(0, 0, 0, 0.12);\n    background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-default .md-stepper-number {\n    background-color: rgba(0, 0, 0, 0.38);\n    background-color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38));\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-text-hint, #fff); }\n    .md-steppers.md-theme-default .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-text-hint, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-text-hint, #fff); }\n  .md-steppers.md-theme-default .md-stepper-header .md-button-content {\n    color: rgba(0, 0, 0, 0.38);\n    color: var(--md-theme-default-text-hint-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-steppers.md-theme-default .md-stepper-header .md-button-content:after, .md-steppers.md-theme-default .md-stepper-header .md-button-content:before {\n      background-color: rgba(0, 0, 0, 0.12);\n      background-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n  .md-steppers.md-theme-default .md-stepper-header.md-active .md-button-content, .md-steppers.md-theme-default .md-stepper-header.md-done .md-button-content {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-steppers.md-theme-default .md-stepper-header.md-active .md-stepper-number, .md-steppers.md-theme-default .md-stepper-header.md-done .md-stepper-number {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary-on-background, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-steppers.md-theme-default .md-stepper-header.md-active .md-stepper-number svg, .md-steppers.md-theme-default .md-stepper-header.md-done .md-stepper-number svg {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff);\n      fill: #fff;\n      fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-steppers.md-theme-default .md-stepper-header.md-error .md-button-content {\n    color: #ff1744;\n    color: var(--md-theme-default-steppervariant, #ff1744); }\n  .md-steppers.md-theme-default .md-stepper-header.md-error .md-icon svg {\n    color: #ff1744;\n    color: var(--md-theme-default-steppervariant, #ff1744);\n    fill: #ff1744;\n    fill: var(--md-theme-default-steppervariant, #ff1744); }\n\n.md-subheader.md-theme-selection-black {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-subheader.md-theme-selection-black.md-primary {\n    color: #448aff;\n    color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-subheader.md-theme-default {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n  .md-subheader.md-theme-default.md-primary {\n    color: #9c27b0;\n    color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-switch.md-theme-selection-black.md-checked .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.38);\n  background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.38)); }\n\n.md-switch.md-theme-selection-black.md-checked .md-switch-thumb {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-switch.md-theme-selection-black.md-checked .md-ripple {\n  color: #000;\n  color: var(--md-theme-selection-black-accent, #000); }\n\n.md-switch.md-theme-selection-black.md-checked.md-primary .md-switch-container {\n  background-color: rgba(68, 138, 255, 0.38);\n  background-color: var(--md-theme-selection-black-primary-on-, rgba(68, 138, 255, 0.38)); }\n\n.md-switch.md-theme-selection-black.md-checked.md-primary .md-switch-thumb {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-switch.md-theme-selection-black.md-checked.md-primary .md-ripple {\n  color: #448aff;\n  color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-switch.md-theme-selection-black .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.38); }\n\n.md-switch.md-theme-selection-black .md-switch-thumb {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-selection-black-switchvariant, #f5f5f5); }\n\n.md-switch.md-theme-selection-black.md-disabled .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.12); }\n\n.md-switch.md-theme-selection-black.md-disabled .md-switch-thumb {\n  background-color: #bdbdbd;\n  background-color: var(--md-theme-selection-black-switchvariant, #bdbdbd); }\n\n.md-switch.md-theme-default.md-checked .md-switch-container {\n  background-color: rgba(255, 82, 82, 0.38);\n  background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.38)); }\n\n.md-switch.md-theme-default.md-checked .md-switch-thumb {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-switch.md-theme-default.md-checked .md-ripple {\n  color: #ff5252;\n  color: var(--md-theme-default-accent, #ff5252); }\n\n.md-switch.md-theme-default.md-checked.md-primary .md-switch-container {\n  background-color: rgba(156, 39, 176, 0.38);\n  background-color: var(--md-theme-default-primary-on-, rgba(156, 39, 176, 0.38)); }\n\n.md-switch.md-theme-default.md-checked.md-primary .md-switch-thumb {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-switch.md-theme-default.md-checked.md-primary .md-ripple {\n  color: #9c27b0;\n  color: var(--md-theme-default-primary, #9c27b0); }\n\n.md-switch.md-theme-default .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.38); }\n\n.md-switch.md-theme-default .md-switch-thumb {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-default-switchvariant, #f5f5f5); }\n\n.md-switch.md-theme-default.md-disabled .md-switch-container {\n  background-color: rgba(0, 0, 0, 0.12); }\n\n.md-switch.md-theme-default.md-disabled .md-switch-thumb {\n  background-color: #bdbdbd;\n  background-color: var(--md-theme-default-switchvariant, #bdbdbd); }\n\n.md-table.md-theme-selection-black .md-table-content,\n.md-table.md-theme-selection-black .md-table-alternate-header {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background, #fff); }\n\n.md-table.md-theme-selection-black .md-table-alternate-header .md-table-toolbar {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87));\n  background-color: rgba(0, 0, 0, 0.2);\n  background-color: var(--md-theme-selection-black-accent-on-, rgba(0, 0, 0, 0.2)); }\n\n.md-table.md-theme-selection-black .md-table-row:hover:not(.md-header-row) .md-table-cell {\n  background-color: rgba(0, 0, 0, 0.08);\n  background-color: var(--md-theme-selection-black-highlight-on-background, rgba(0, 0, 0, 0.08)); }\n\n.md-table.md-theme-selection-black .md-table-row.md-selected, .md-table.md-theme-selection-black .md-table-row.md-selected-single {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-selection-black-rowvariant, #f5f5f5); }\n  .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary-on-background, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary .md-ripple, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary .md-checkbox-container, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-selection-black .md-table-row.md-selected.md-primary .md-checkbox-container:after, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-primary .md-checkbox-container:after {\n        border-color: #448aff;\n        border-color: var(--md-theme-selection-black-primary, #448aff); }\n  .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent-on-background, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent .md-ripple, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent .md-checkbox-container, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-selection-black .md-table-row.md-selected.md-accent .md-checkbox-container:after, .md-table.md-theme-selection-black .md-table-row.md-selected-single.md-accent .md-checkbox-container:after {\n        border-color: #000;\n        border-color: var(--md-theme-selection-black-accent, #000); }\n\n.md-table.md-theme-selection-black .md-table-row td {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-selection-black .md-table-head {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-selection-black-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n\n.md-table.md-theme-selection-black .md-table-fixed-header-active {\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-selection-black .md-sortable:hover, .md-table.md-theme-selection-black .md-sortable.md-sorted {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-table.md-theme-selection-black .md-sortable:hover svg, .md-table.md-theme-selection-black .md-sortable.md-sorted svg {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87));\n    fill: rgba(0, 0, 0, 0.87);\n    fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-table.md-theme-selection-black .md-table-pagination {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-selection-black-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-default .md-table-content,\n.md-table.md-theme-default .md-table-alternate-header {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background, #fff); }\n\n.md-table.md-theme-default .md-table-alternate-header .md-table-toolbar {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87));\n  background-color: rgba(255, 82, 82, 0.2);\n  background-color: var(--md-theme-default-accent-on-, rgba(255, 82, 82, 0.2)); }\n\n.md-table.md-theme-default .md-table-row:hover:not(.md-header-row) .md-table-cell {\n  background-color: rgba(0, 0, 0, 0.08);\n  background-color: var(--md-theme-default-highlight-on-background, rgba(0, 0, 0, 0.08)); }\n\n.md-table.md-theme-default .md-table-row.md-selected, .md-table.md-theme-default .md-table-row.md-selected-single {\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-default-rowvariant, #f5f5f5); }\n  .md-table.md-theme-default .md-table-row.md-selected.md-primary, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary-on-background, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-table.md-theme-default .md-table-row.md-selected.md-primary .md-ripple, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-default .md-table-row.md-selected.md-primary .md-checkbox-container, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-default .md-table-row.md-selected.md-primary .md-checkbox-container:after, .md-table.md-theme-default .md-table-row.md-selected-single.md-primary .md-checkbox-container:after {\n        border-color: #9c27b0;\n        border-color: var(--md-theme-default-primary, #9c27b0); }\n  .md-table.md-theme-default .md-table-row.md-selected.md-accent, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent-on-background, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-table.md-theme-default .md-table-row.md-selected.md-accent .md-ripple, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent .md-ripple {\n      color: #fff; }\n    .md-table.md-theme-default .md-table-row.md-selected.md-accent .md-checkbox-container, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent .md-checkbox-container {\n      background-color: #fff;\n      border-color: #fff; }\n      .md-table.md-theme-default .md-table-row.md-selected.md-accent .md-checkbox-container:after, .md-table.md-theme-default .md-table-row.md-selected-single.md-accent .md-checkbox-container:after {\n        border-color: #ff5252;\n        border-color: var(--md-theme-default-accent, #ff5252); }\n\n.md-table.md-theme-default .md-table-row td {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-default .md-table-head {\n  color: rgba(0, 0, 0, 0.54);\n  color: var(--md-theme-default-text-accent-on-background, rgba(0, 0, 0, 0.54)); }\n\n.md-table.md-theme-default .md-table-fixed-header-active {\n  border-bottom-color: rgba(0, 0, 0, 0.12);\n  border-bottom-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-table.md-theme-default .md-sortable:hover, .md-table.md-theme-default .md-sortable.md-sorted {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n  .md-table.md-theme-default .md-sortable:hover svg, .md-table.md-theme-default .md-sortable.md-sorted svg {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87));\n    fill: rgba(0, 0, 0, 0.87);\n    fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-table.md-theme-default .md-table-pagination {\n  border-top-color: rgba(0, 0, 0, 0.12);\n  border-top-color: var(--md-theme-default-divider-on-background, rgba(0, 0, 0, 0.12)); }\n\n.md-tabs.md-theme-selection-black .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background-on-background, #fff); }\n  .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #448aff;\n        color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n        .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #448aff;\n          fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black .md-tabs-indicator {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000); }\n  .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background-on-background, #fff); }\n  .md-tabs.md-theme-default .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #9c27b0;\n        color: var(--md-theme-default-primary-on-background, #9c27b0); }\n        .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #9c27b0;\n          fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default .md-tabs-indicator {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-navigation {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-navigation {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent-on-background, #ff5252); }\n  .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-selection-black .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-background-on-background, #fff); }\n  .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active {\n      color: #448aff;\n      color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n      .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #448aff;\n        color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n        .md-tabs.md-theme-selection-black .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #448aff;\n          fill: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black .md-tabs-indicator {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation {\n  background-color: #448aff;\n  background-color: var(--md-theme-selection-black-primary-on-background, #448aff); }\n  .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-selection-black.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation {\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent-on-background, #000); }\n  .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-selection-black-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-selection-black.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-selection-black.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default .md-tabs-navigation {\n  background-color: #fff;\n  background-color: var(--md-theme-default-background-on-background, #fff); }\n  .md-tabs.md-theme-default .md-tabs-navigation .md-button {\n    color: rgba(0, 0, 0, 0.7);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button[disabled] {\n      color: rgba(0, 0, 0, 0.38);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.38)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon {\n      color: rgba(0, 0, 0, 0.7);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(0, 0, 0, 0.7);\n        fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.7)); }\n    .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active {\n      color: #9c27b0;\n      color: var(--md-theme-default-primary-on-background, #9c27b0); }\n      .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #9c27b0;\n        color: var(--md-theme-default-primary-on-background, #9c27b0); }\n        .md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #9c27b0;\n          fill: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default .md-tabs-indicator {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-navigation {\n  background-color: #9c27b0;\n  background-color: var(--md-theme-default-primary-on-background, #9c27b0); }\n  .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-primary, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-primary, #fff); }\n        .md-tabs.md-theme-default.md-primary .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-primary .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-primary, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-navigation {\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent-on-background, #ff5252); }\n  .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button {\n    color: rgba(255, 255, 255, 0.7);\n    color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button[disabled] {\n      color: rgba(255, 255, 255, 0.38);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.38)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon {\n      color: rgba(255, 255, 255, 0.7);\n      color: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button .md-icon svg {\n        fill: rgba(255, 255, 255, 0.7);\n        fill: var(--md-theme-default-text-primary-on-accent, rgba(255, 255, 255, 0.7)); }\n    .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon {\n        color: #fff;\n        color: var(--md-theme-default-text-primary-on-accent, #fff); }\n        .md-tabs.md-theme-default.md-accent .md-tabs-navigation .md-button.md-active .md-icon svg {\n          fill: #fff;\n          fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-tabs.md-theme-default.md-accent .md-tabs-indicator {\n  background-color: #fff;\n  background-color: var(--md-theme-default-text-primary-on-accent, #fff); }\n\n.md-toolbar.md-theme-selection-black {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87));\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-selection-black-toolbarvariant, #f5f5f5); }\n  .md-toolbar.md-theme-selection-black .md-icon {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-selection-black .md-icon svg {\n      fill: rgba(0, 0, 0, 0.87);\n      fill: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-selection-black .md-title,\n  .md-toolbar.md-theme-selection-black .md-display-1,\n  .md-toolbar.md-theme-selection-black .md-display-2 {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-selection-black.md-primary {\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-selection-black.md-primary .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n      .md-toolbar.md-theme-selection-black.md-primary .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-selection-black.md-primary .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-selection-black.md-primary .md-title,\n    .md-toolbar.md-theme-selection-black.md-primary .md-display-1,\n    .md-toolbar.md-theme-selection-black.md-primary .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-primary, #fff); }\n  .md-toolbar.md-theme-selection-black.md-accent {\n    background-color: #000;\n    background-color: var(--md-theme-selection-black-accent, #000);\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-selection-black.md-accent .md-icon {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n      .md-toolbar.md-theme-selection-black.md-accent .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-selection-black.md-accent .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-selection-black.md-accent .md-title,\n    .md-toolbar.md-theme-selection-black.md-accent .md-display-1,\n    .md-toolbar.md-theme-selection-black.md-accent .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-selection-black-text-primary-on-accent, #fff); }\n  .md-toolbar.md-theme-selection-black.md-transparent {\n    background-color: transparent;\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-selection-black.md-transparent .md-icon {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n      .md-toolbar.md-theme-selection-black.md-transparent .md-icon svg {\n        fill: rgba(0, 0, 0, 0.87);\n        fill: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-selection-black.md-transparent .md-title,\n    .md-toolbar.md-theme-selection-black.md-transparent .md-display-1,\n    .md-toolbar.md-theme-selection-black.md-transparent .md-display-2 {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-selection-black-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-toolbar.md-theme-default {\n  color: rgba(0, 0, 0, 0.87);\n  color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87));\n  background-color: #f5f5f5;\n  background-color: var(--md-theme-default-toolbarvariant, #f5f5f5); }\n  .md-toolbar.md-theme-default .md-icon {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-default .md-icon svg {\n      fill: rgba(0, 0, 0, 0.87);\n      fill: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-default .md-title,\n  .md-toolbar.md-theme-default .md-display-1,\n  .md-toolbar.md-theme-default .md-display-2 {\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background-variant, rgba(0, 0, 0, 0.87)); }\n  .md-toolbar.md-theme-default.md-primary {\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-default.md-primary .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n      .md-toolbar.md-theme-default.md-primary .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-default.md-primary .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n    .md-toolbar.md-theme-default.md-primary .md-title,\n    .md-toolbar.md-theme-default.md-primary .md-display-1,\n    .md-toolbar.md-theme-default.md-primary .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-primary, #fff); }\n  .md-toolbar.md-theme-default.md-accent {\n    background-color: #ff5252;\n    background-color: var(--md-theme-default-accent, #ff5252);\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-default.md-accent .md-icon {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n      .md-toolbar.md-theme-default.md-accent .md-icon svg {\n        fill: #fff;\n        fill: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-default.md-accent .md-button:not([disabled]):not(.md-raised) {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n    .md-toolbar.md-theme-default.md-accent .md-title,\n    .md-toolbar.md-theme-default.md-accent .md-display-1,\n    .md-toolbar.md-theme-default.md-accent .md-display-2 {\n      color: #fff;\n      color: var(--md-theme-default-text-primary-on-accent, #fff); }\n  .md-toolbar.md-theme-default.md-transparent {\n    background-color: transparent;\n    color: rgba(0, 0, 0, 0.87);\n    color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-default.md-transparent .md-icon {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n      .md-toolbar.md-theme-default.md-transparent .md-icon svg {\n        fill: rgba(0, 0, 0, 0.87);\n        fill: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n    .md-toolbar.md-theme-default.md-transparent .md-title,\n    .md-toolbar.md-theme-default.md-transparent .md-display-1,\n    .md-toolbar.md-theme-default.md-transparent .md-display-2 {\n      color: rgba(0, 0, 0, 0.87);\n      color: var(--md-theme-default-text-primary-on-background, rgba(0, 0, 0, 0.87)); }\n\n.md-tooltip.md-theme-selection-black {\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-tooltip, #fff);\n  background-color: rgba(97, 97, 97, 0.9);\n  background-color: var(--md-theme-selection-black-tooltip-on-background, rgba(97, 97, 97, 0.9)); }\n\n.md-tooltip.md-theme-default {\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-tooltip, #fff);\n  background-color: rgba(97, 97, 97, 0.9);\n  background-color: var(--md-theme-default-tooltip-on-background, rgba(97, 97, 97, 0.9)); }\n\n.md-badge.md-theme-selection-black {\n  color: #fff;\n  color: var(--md-theme-selection-black-text-primary-on-accent, #fff);\n  background-color: #000;\n  background-color: var(--md-theme-selection-black-accent, #000); }\n  .md-badge.md-theme-selection-black.md-primary {\n    color: #fff;\n    color: var(--md-theme-selection-black-text-primary-on-primary, #fff);\n    background-color: #448aff;\n    background-color: var(--md-theme-selection-black-primary, #448aff); }\n\n.md-badge.md-theme-default {\n  color: #fff;\n  color: var(--md-theme-default-text-primary-on-accent, #fff);\n  background-color: #ff5252;\n  background-color: var(--md-theme-default-accent, #ff5252); }\n  .md-badge.md-theme-default.md-primary {\n    color: #fff;\n    color: var(--md-theme-default-text-primary-on-primary, #fff);\n    background-color: #9c27b0;\n    background-color: var(--md-theme-default-primary, #9c27b0); }\n\n/* ANIMATION */\n/* SHADOWS */\n/* Shadows (from mdl http://www.getmdl.io/) */\n/* perfect-scrollbar v0.6.13 */\n.ps-container {\n  -ms-touch-action: auto;\n  touch-action: auto;\n  overflow: hidden !important;\n  -ms-overflow-style: none; }\n\n@supports (-ms-overflow-style: none) {\n  .ps-container {\n    overflow: auto !important; } }\n\n@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {\n  .ps-container {\n    overflow: auto !important; } }\n\n.ps-container.ps-active-x > .ps-scrollbar-x-rail,\n.ps-container.ps-active-y > .ps-scrollbar-y-rail {\n  display: block;\n  background-color: transparent; }\n\n.ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {\n  background-color: #999;\n  height: 11px; }\n\n.ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {\n  background-color: #999;\n  width: 11px; }\n\n.ps-container > .ps-scrollbar-x-rail {\n  display: none;\n  position: absolute;\n  /* please don't change 'position' */\n  opacity: 0;\n  -webkit-transition: background-color .2s linear, opacity .2s linear;\n  -o-transition: background-color .2s linear, opacity .2s linear;\n  -moz-transition: background-color .2s linear, opacity .2s linear;\n  transition: background-color .2s linear, opacity .2s linear;\n  bottom: 0px;\n  /* there must be 'bottom' for ps-scrollbar-x-rail */\n  height: 15px; }\n\n.ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {\n  position: absolute;\n  /* please don't change 'position' */\n  background-color: #aaa;\n  -webkit-border-radius: 6px;\n  -moz-border-radius: 6px;\n  border-radius: 6px;\n  -webkit-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  -o-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  -moz-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -webkit-border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  bottom: 2px;\n  /* there must be 'bottom' for ps-scrollbar-x */\n  height: 6px; }\n\n.ps-container > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x, .ps-container > .ps-scrollbar-x-rail:active > .ps-scrollbar-x {\n  height: 11px; }\n\n.ps-container > .ps-scrollbar-y-rail {\n  display: none;\n  position: absolute;\n  /* please don't change 'position' */\n  opacity: 0;\n  -webkit-transition: background-color .2s linear, opacity .2s linear;\n  -o-transition: background-color .2s linear, opacity .2s linear;\n  -moz-transition: background-color .2s linear, opacity .2s linear;\n  transition: background-color .2s linear, opacity .2s linear;\n  right: 0;\n  /* there must be 'right' for ps-scrollbar-y-rail */\n  width: 15px; }\n\n.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {\n  position: absolute;\n  /* please don't change 'position' */\n  background-color: #aaa;\n  -webkit-border-radius: 6px;\n  -moz-border-radius: 6px;\n  border-radius: 6px;\n  -webkit-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, -webkit-border-radius .2s ease-in-out;\n  -o-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  -moz-transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out;\n  transition: background-color .2s linear, height .2s linear, width .2s ease-in-out, border-radius .2s ease-in-out, -webkit-border-radius .2s ease-in-out, -moz-border-radius .2s ease-in-out;\n  right: 2px;\n  /* there must be 'right' for ps-scrollbar-y */\n  width: 6px; }\n\n.ps-container > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y, .ps-container > .ps-scrollbar-y-rail:active > .ps-scrollbar-y {\n  width: 11px; }\n\n.ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {\n  background-color: #999;\n  height: 11px; }\n\n.ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {\n  background-color: #999;\n  width: 11px; }\n\n.ps-container:hover > .ps-scrollbar-x-rail,\n.ps-container:hover > .ps-scrollbar-y-rail {\n  opacity: 0.6; }\n\n.ps-container:hover > .ps-scrollbar-x-rail:hover {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {\n  background-color: #999; }\n\n.ps-container:hover > .ps-scrollbar-y-rail:hover {\n  background-color: #eee;\n  opacity: 0.9; }\n\n.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y {\n  background-color: #999; }\n\n/*! nouislider - 11.1.0 - 2018-04-02 11:18:13 */\n/* Functional styling;\r\n * These styles are required for noUiSlider to function.\r\n * You don't need to change these rules to apply your design.\r\n */\n.noUi-target,\n.noUi-target * {\n  -webkit-touch-callout: none;\n  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n  -webkit-user-select: none;\n  -ms-touch-action: none;\n  touch-action: none;\n  -ms-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box; }\n\n.noUi-target {\n  position: relative;\n  direction: ltr; }\n\n.noUi-base,\n.noUi-connects {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  z-index: 1; }\n\n/* Wrapper for all connect elements.\r\n */\n.noUi-connects {\n  overflow: hidden;\n  z-index: 0; }\n\n.noUi-connect,\n.noUi-origin {\n  will-change: transform;\n  position: absolute;\n  z-index: 1;\n  top: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  -ms-transform-origin: 0 0;\n  -webkit-transform-origin: 0 0;\n  transform-origin: 0 0; }\n\n/* Offset direction\r\n */\nhtml:not([dir=\"rtl\"]) .noUi-horizontal .noUi-origin {\n  left: auto;\n  right: 0; }\n\n/* Give origins 0 height/width so they don't interfere with clicking the\r\n * connect elements.\r\n */\n.noUi-vertical .noUi-origin {\n  width: 0; }\n\n.noUi-horizontal .noUi-origin {\n  height: 0; }\n\n.noUi-handle {\n  position: absolute; }\n\n.noUi-state-tap .noUi-connect,\n.noUi-state-tap .noUi-origin {\n  -webkit-transition: transform 0.3s;\n  transition: transform 0.3s; }\n\n.noUi-state-drag * {\n  cursor: inherit !important; }\n\n/* Slider size and handle placement;\r\n */\n.noUi-horizontal {\n  height: 2px;\n  margin: 15px 0; }\n\n.noUi-vertical {\n  width: 18px; }\n\nhtml:not([dir=\"rtl\"]) .noUi-horizontal .noUi-handle {\n  right: -14px;\n  left: auto; }\n\n/* Styling;\r\n * Giving the connect element a border radius causes issues with using transform: scale\r\n */\n.noUi-target {\n  background: #FAFAFA;\n  border-radius: 4px; }\n\n.noUi-connects {\n  border-radius: 3px; }\n\n.noUi-connect {\n  background: #3FB8AF; }\n\n/* Handles and cursors;\r\n */\n.noUi-draggable {\n  cursor: ew-resize; }\n\n.noUi-vertical .noUi-draggable {\n  cursor: ns-resize; }\n\n.noUi-handle {\n  box-sizing: border-box;\n  width: 14px;\n  height: 14px;\n  left: -10px;\n  top: -6px;\n  cursor: pointer;\n  border-radius: 100%;\n  transition: all 0.2s ease-out;\n  border: 1px solid;\n  background: #FFFFFF;\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n  .noUi-handle.noUi-active {\n    transform: scale3d(1.5, 1.5, 1); }\n\n/* Handle stripes;\r\n */\n/* Disabled state;\r\n */\n[disabled] .noUi-connect {\n  background: #B8B8B8; }\n\n[disabled].noUi-target,\n[disabled].noUi-handle,\n[disabled] .noUi-handle {\n  cursor: not-allowed; }\n\n/* Base;\r\n *\r\n */\n.noUi-pips,\n.noUi-pips * {\n  -moz-box-sizing: border-box;\n  box-sizing: border-box; }\n\n.noUi-pips {\n  position: absolute;\n  color: #999; }\n\n/* Values;\r\n *\r\n */\n.noUi-value {\n  position: absolute;\n  white-space: nowrap;\n  text-align: center; }\n\n.noUi-value-sub {\n  color: #ccc;\n  font-size: 10px; }\n\n/* Markings;\r\n *\r\n */\n.noUi-marker {\n  position: absolute;\n  background: #CCC; }\n\n.noUi-marker-sub {\n  background: #AAA; }\n\n.noUi-marker-large {\n  background: #AAA; }\n\n/* Horizontal layout;\r\n *\r\n */\n.noUi-pips-horizontal {\n  padding: 10px 0;\n  height: 80px;\n  top: 100%;\n  left: 0;\n  width: 100%; }\n\n.noUi-value-horizontal {\n  -webkit-transform: translate(-50%, 50%);\n  transform: translate(-50%, 50%); }\n\n.noUi-rtl .noUi-value-horizontal {\n  -webkit-transform: translate(50%, 50%);\n  transform: translate(50%, 50%); }\n\n.noUi-marker-horizontal.noUi-marker {\n  margin-left: -1px;\n  width: 2px;\n  height: 5px; }\n\n.noUi-marker-horizontal.noUi-marker-sub {\n  height: 10px; }\n\n.noUi-marker-horizontal.noUi-marker-large {\n  height: 15px; }\n\n/* Vertical layout;\r\n *\r\n */\n.noUi-pips-vertical {\n  padding: 0 10px;\n  height: 100%;\n  top: 0;\n  left: 100%; }\n\n.noUi-value-vertical {\n  -webkit-transform: translate(0, -50%);\n  transform: translate(0, -50%, 0);\n  padding-left: 25px; }\n\n.noUi-rtl .noUi-value-vertical {\n  -webkit-transform: translate(0, 50%);\n  transform: translate(0, 50%); }\n\n.noUi-marker-vertical.noUi-marker {\n  width: 5px;\n  height: 2px;\n  margin-top: -1px; }\n\n.noUi-marker-vertical.noUi-marker-sub {\n  width: 10px; }\n\n.noUi-marker-vertical.noUi-marker-large {\n  width: 15px; }\n\n.noUi-tooltip {\n  display: block;\n  position: absolute;\n  border: 1px solid #D9D9D9;\n  border-radius: 3px;\n  background: #fff;\n  color: #000;\n  padding: 5px;\n  text-align: center;\n  white-space: nowrap; }\n\n.noUi-horizontal .noUi-tooltip {\n  -webkit-transform: translate(-50%, 0);\n  transform: translate(-50%, 0);\n  left: 50%;\n  bottom: 120%; }\n\n.noUi-vertical .noUi-tooltip {\n  -webkit-transform: translate(0, -50%);\n  transform: translate(0, -50%);\n  top: 50%;\n  right: 120%; }\n\n.slider {\n  background: #c8c8c8; }\n  .slider .noUi-connect {\n    background-color: #9c27b0;\n    border-radius: 4px; }\n  .slider .noUi-handle {\n    border-color: #9c27b0; }\n  .slider.slider-info .noUi-connect {\n    background-color: #00bcd4; }\n  .slider.slider-info .noUi-handle {\n    border-color: #00bcd4; }\n  .slider.slider-success .noUi-connect {\n    background-color: #4caf50; }\n  .slider.slider-success .noUi-handle {\n    border-color: #4caf50; }\n  .slider.slider-warning .noUi-connect {\n    background-color: #ff9800; }\n  .slider.slider-warning .noUi-handle {\n    border-color: #ff9800; }\n  .slider.slider-danger .noUi-connect {\n    background-color: #f44336; }\n  .slider.slider-danger .noUi-handle {\n    border-color: #f44336; }\n  .slider.slider-rose .noUi-connect {\n    background-color: #e91e63; }\n  .slider.slider-rose .noUi-handle {\n    border-color: #e91e63; }\n\nbody, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {\n  font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\n  font-weight: 300; }\n\nh1, h2, h3, .h1, .h2, .h3 {\n  margin-top: 20px;\n  margin-bottom: 10px; }\n\nh4, h5, h6, .h4, .h5, .h6 {\n  margin-top: 10px;\n  margin-bottom: 10px; }\n\nh1, .h1 {\n  font-size: 3.3125rem;\n  line-height: 1.15em; }\n\nh2, .h2 {\n  font-size: 2.25rem;\n  line-height: 1.5em; }\n\nh3, .h3 {\n  font-size: 1.5625rem;\n  line-height: 1.4em; }\n\nh4, .h4 {\n  font-size: 1.125rem;\n  line-height: 1.5em; }\n\nh5, .h5 {\n  font-size: 1.0625rem;\n  line-height: 1.55em;\n  margin-bottom: 15px; }\n\nh6, .h6 {\n  font-size: 0.75rem;\n  text-transform: uppercase;\n  font-weight: 500; }\n\np {\n  font-size: 14px;\n  margin: 0 0 10px; }\n\nh2.title {\n  margin-bottom: 30px; }\n\n.title,\n.card-title,\n.info-title,\n.footer-brand,\n.footer-big h5,\n.footer-big h4,\n.media .media-heading {\n  font-weight: 700;\n  font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif; }\n  .title,\n  .title a,\n  .card-title,\n  .card-title a,\n  .info-title,\n  .info-title a,\n  .footer-brand,\n  .footer-brand a,\n  .footer-big h5,\n  .footer-big h5 a,\n  .footer-big h4,\n  .footer-big h4 a,\n  .media .media-heading,\n  .media .media-heading a {\n    color: #3C4858;\n    text-decoration: none; }\n\n.description,\n.card-description,\n.footer-big p {\n  color: #999999; }\n\n.text-warning {\n  color: #ff9800 !important; }\n\n.text-primary {\n  color: #9c27b0 !important; }\n\n.text-danger {\n  color: #f44336 !important; }\n\n.text-success {\n  color: #4caf50 !important; }\n\n.text-info {\n  color: #00bcd4 !important; }\n\n.text-gray {\n  color: #999999 !important; }\n\n.text-muted {\n  color: #6c757d !important; }\n\n.md-button {\n  border: none;\n  border-radius: 3px;\n  position: relative;\n  margin: .3125rem 1px;\n  height: auto;\n  line-height: 1.42857;\n  font-size: 12px;\n  font-weight: 400;\n  text-transform: uppercase;\n  letter-spacing: 0;\n  will-change: box-shadow, transform;\n  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); }\n  .md-button.md-facebook {\n    background-color: #3b5998 !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(59, 89, 152, 0.14), 0 3px 1px -2px rgba(59, 89, 152, 0.2), 0 1px 5px 0 rgba(59, 89, 152, 0.12); }\n    .md-button.md-facebook:hover, .md-button.md-facebook:focus, .md-button.md-facebook:active, .md-button.md-facebook.active, .md-button.md-facebook:active:focus, .md-button.md-facebook:active:hover, .md-button.md-facebook.active:focus, .md-button.md-facebook.active:hover {\n      background-color: #3b5998 !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(59, 89, 152, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(59, 89, 152, 0.2); }\n    .md-button.md-facebook.btn-simple {\n      color: #3b5998;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button.md-twitter {\n    background-color: #55acee !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(85, 172, 238, 0.14), 0 3px 1px -2px rgba(85, 172, 238, 0.2), 0 1px 5px 0 rgba(85, 172, 238, 0.12); }\n    .md-button.md-twitter:hover, .md-button.md-twitter:focus, .md-button.md-twitter:active, .md-button.md-twitter.active, .md-button.md-twitter:active:focus, .md-button.md-twitter:active:hover, .md-button.md-twitter.active:focus, .md-button.md-twitter.active:hover {\n      background-color: #55acee !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(85, 172, 238, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(85, 172, 238, 0.2); }\n    .md-button.md-twitter.btn-simple {\n      color: #55acee;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button.md-google {\n    background-color: #dd4b39 !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(221, 75, 57, 0.14), 0 3px 1px -2px rgba(221, 75, 57, 0.2), 0 1px 5px 0 rgba(221, 75, 57, 0.12); }\n    .md-button.md-google:hover, .md-button.md-google:focus, .md-button.md-google:active, .md-button.md-google.active, .md-button.md-google:active:focus, .md-button.md-google:active:hover, .md-button.md-google.active:focus, .md-button.md-google.active:hover {\n      background-color: #dd4b39 !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(221, 75, 57, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(221, 75, 57, 0.2); }\n    .md-button.md-google.btn-simple {\n      color: #dd4b39;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button.md-github {\n    background-color: #333333 !important;\n    color: #fff;\n    box-shadow: 0 2px 2px 0 rgba(51, 51, 51, 0.14), 0 3px 1px -2px rgba(51, 51, 51, 0.2), 0 1px 5px 0 rgba(51, 51, 51, 0.12); }\n    .md-button.md-github:hover, .md-button.md-github:focus, .md-button.md-github:active, .md-button.md-github.active, .md-button.md-github:active:focus, .md-button.md-github:active:hover, .md-button.md-github.active:focus, .md-button.md-github.active:hover {\n      background-color: #333333 !important;\n      color: #fff;\n      box-shadow: 0 14px 26px -12px rgba(51, 51, 51, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(51, 51, 51, 0.2); }\n    .md-button.md-github.btn-simple {\n      color: #333333;\n      background-color: transparent;\n      box-shadow: none; }\n  .md-button:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple {\n    padding: 12px 30px;\n    display: flex; }\n  .md-button:not(.md-just-icon) .md-button-content i:not(.md-tab-icon) {\n    font-size: 1.1rem !important;\n    height: 17px; }\n  .md-button.md-wd {\n    min-width: 140px; }\n  .md-button.md-block {\n    width: 100%; }\n  .md-button:before {\n    display: none; }\n  .md-button i {\n    width: 24px;\n    min-width: 24px; }\n  .md-button.md-white {\n    box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12);\n    box-shadow: none; }\n    .md-button.md-white.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12); }\n    .md-button.md-white, .md-button.md-white:hover, .md-button.md-white:focus, .md-button.md-white:active, .md-button.md-white.active, .md-button.md-white:active:focus, .md-button.md-white:active:hover, .md-button.md-white.active:focus, .md-button.md-white.active:hover,\n    .open > .md-button.md-white.dropdown-toggle,\n    .open > .md-button.md-white.dropdown-toggle:focus,\n    .open > .md-button.md-white.dropdown-toggle:hover {\n      background-color: #FFFFFF !important; }\n      .md-button.md-white,\n      .md-button.md-white i, .md-button.md-white:hover,\n      .md-button.md-white:hover i, .md-button.md-white:focus,\n      .md-button.md-white:focus i, .md-button.md-white:active,\n      .md-button.md-white:active i, .md-button.md-white.active,\n      .md-button.md-white.active i, .md-button.md-white:active:focus,\n      .md-button.md-white:active:focus i, .md-button.md-white:active:hover,\n      .md-button.md-white:active:hover i, .md-button.md-white.active:focus,\n      .md-button.md-white.active:focus i, .md-button.md-white.active:hover,\n      .md-button.md-white.active:hover i,\n      .open > .md-button.md-white.dropdown-toggle,\n      .open > .md-button.md-white.dropdown-toggle i,\n      .open > .md-button.md-white.dropdown-toggle:focus,\n      .open > .md-button.md-white.dropdown-toggle:focus i,\n      .open > .md-button.md-white.dropdown-toggle:hover,\n      .open > .md-button.md-white.dropdown-toggle:hover i {\n        color: #999999 !important; }\n    .md-button.md-white:focus, .md-button.md-white:active, .md-button.md-white:hover {\n      box-shadow: 0 14px 26px -12px rgba(255, 255, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 255, 255, 0.2);\n      background-color: #f7f7f7 !important; }\n    .md-button.md-white.disabled, .md-button.md-white.disabled:hover, .md-button.md-white.disabled:focus, .md-button.md-white.disabled.focus, .md-button.md-white.disabled:active, .md-button.md-white.disabled.active, .md-button.md-white:disabled, .md-button.md-white:disabled:hover, .md-button.md-white:disabled:focus, .md-button.md-white:disabled.focus, .md-button.md-white:disabled:active, .md-button.md-white:disabled.active, .md-button.md-white[disabled], .md-button.md-white[disabled]:hover, .md-button.md-white[disabled]:focus, .md-button.md-white[disabled].focus, .md-button.md-white[disabled]:active, .md-button.md-white[disabled].active,\n    fieldset[disabled] .md-button.md-white,\n    fieldset[disabled] .md-button.md-white:hover,\n    fieldset[disabled] .md-button.md-white:focus,\n    fieldset[disabled] .md-button.md-white.focus,\n    fieldset[disabled] .md-button.md-white:active,\n    fieldset[disabled] .md-button.md-white.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-white.md-simple, .md-button.md-white.md-simple:hover, .md-button.md-white.md-simple:focus, .md-button.md-white.md-simple:active, .md-button.md-white.md-simple.active, .md-button.md-white.md-simple:active:focus, .md-button.md-white.md-simple:active:hover, .md-button.md-white.md-simple.active:focus, .md-button.md-white.md-simple.active:hover,\n    .open > .md-button.md-white.md-simple.dropdown-toggle,\n    .open > .md-button.md-white.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-white.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #FFFFFF !important;\n      box-shadow: none; }\n      .md-button.md-white.md-simple i, .md-button.md-white.md-simple:hover i, .md-button.md-white.md-simple:focus i, .md-button.md-white.md-simple:active i, .md-button.md-white.md-simple.active i, .md-button.md-white.md-simple:active:focus i, .md-button.md-white.md-simple:active:hover i, .md-button.md-white.md-simple.active:focus i, .md-button.md-white.md-simple.active:hover i,\n      .open > .md-button.md-white.md-simple.dropdown-toggle i,\n      .open > .md-button.md-white.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-white.md-simple.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n  .md-button, .md-button.md-default {\n    box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12); }\n    .md-button.md-raised, .md-button.md-default.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12); }\n    .md-button, .md-button:hover, .md-button:focus, .md-button:active, .md-button.active, .md-button:active:focus, .md-button:active:hover, .md-button.active:focus, .md-button.active:hover,\n    .open > .md-button.dropdown-toggle,\n    .open > .md-button.dropdown-toggle:focus,\n    .open > .md-button.dropdown-toggle:hover, .md-button.md-default, .md-button.md-default:hover, .md-button.md-default:focus, .md-button.md-default:active, .md-button.md-default.active, .md-button.md-default:active:focus, .md-button.md-default:active:hover, .md-button.md-default.active:focus, .md-button.md-default.active:hover,\n    .open > .md-button.md-default.dropdown-toggle,\n    .open > .md-button.md-default.dropdown-toggle:focus,\n    .open > .md-button.md-default.dropdown-toggle:hover {\n      background-color: #999999 !important; }\n      .md-button,\n      .md-button i, .md-button:hover,\n      .md-button:hover i, .md-button:focus,\n      .md-button:focus i, .md-button:active,\n      .md-button:active i, .md-button.active,\n      .md-button.active i, .md-button:active:focus,\n      .md-button:active:focus i, .md-button:active:hover,\n      .md-button:active:hover i, .md-button.active:focus,\n      .md-button.active:focus i, .md-button.active:hover,\n      .md-button.active:hover i,\n      .open > .md-button.dropdown-toggle,\n      .open > .md-button.dropdown-toggle i,\n      .open > .md-button.dropdown-toggle:focus,\n      .open > .md-button.dropdown-toggle:focus i,\n      .open > .md-button.dropdown-toggle:hover,\n      .open > .md-button.dropdown-toggle:hover i, .md-button.md-default,\n      .md-button.md-default i, .md-button.md-default:hover,\n      .md-button.md-default:hover i, .md-button.md-default:focus,\n      .md-button.md-default:focus i, .md-button.md-default:active,\n      .md-button.md-default:active i, .md-button.md-default.active,\n      .md-button.md-default.active i, .md-button.md-default:active:focus,\n      .md-button.md-default:active:focus i, .md-button.md-default:active:hover,\n      .md-button.md-default:active:hover i, .md-button.md-default.active:focus,\n      .md-button.md-default.active:focus i, .md-button.md-default.active:hover,\n      .md-button.md-default.active:hover i,\n      .open > .md-button.md-default.dropdown-toggle,\n      .open > .md-button.md-default.dropdown-toggle i,\n      .open > .md-button.md-default.dropdown-toggle:focus,\n      .open > .md-button.md-default.dropdown-toggle:focus i,\n      .open > .md-button.md-default.dropdown-toggle:hover,\n      .open > .md-button.md-default.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button:focus, .md-button:active, .md-button:hover, .md-button.md-default:focus, .md-button.md-default:active, .md-button.md-default:hover {\n      box-shadow: 0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2);\n      background-color: #919191 !important; }\n    .md-button.disabled, .md-button.disabled:hover, .md-button.disabled:focus, .md-button.disabled.focus, .md-button.disabled:active, .md-button.disabled.active, .md-button:disabled, .md-button:disabled:hover, .md-button:disabled:focus, .md-button:disabled.focus, .md-button:disabled:active, .md-button:disabled.active, .md-button[disabled], .md-button[disabled]:hover, .md-button[disabled]:focus, .md-button[disabled].focus, .md-button[disabled]:active, .md-button[disabled].active,\n    fieldset[disabled] .md-button,\n    fieldset[disabled] .md-button:hover,\n    fieldset[disabled] .md-button:focus,\n    fieldset[disabled] .md-button.focus,\n    fieldset[disabled] .md-button:active,\n    fieldset[disabled] .md-button.active, .md-button.md-default.disabled, .md-button.md-default.disabled:hover, .md-button.md-default.disabled:focus, .md-button.md-default.disabled.focus, .md-button.md-default.disabled:active, .md-button.md-default.disabled.active, .md-button.md-default:disabled, .md-button.md-default:disabled:hover, .md-button.md-default:disabled:focus, .md-button.md-default:disabled.focus, .md-button.md-default:disabled:active, .md-button.md-default:disabled.active, .md-button.md-default[disabled], .md-button.md-default[disabled]:hover, .md-button.md-default[disabled]:focus, .md-button.md-default[disabled].focus, .md-button.md-default[disabled]:active, .md-button.md-default[disabled].active,\n    fieldset[disabled] .md-button.md-default,\n    fieldset[disabled] .md-button.md-default:hover,\n    fieldset[disabled] .md-button.md-default:focus,\n    fieldset[disabled] .md-button.md-default.focus,\n    fieldset[disabled] .md-button.md-default:active,\n    fieldset[disabled] .md-button.md-default.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-simple, .md-button.md-simple:hover, .md-button.md-simple:focus, .md-button.md-simple:active, .md-button.md-simple.active, .md-button.md-simple:active:focus, .md-button.md-simple:active:hover, .md-button.md-simple.active:focus, .md-button.md-simple.active:hover,\n    .open > .md-button.md-simple.dropdown-toggle,\n    .open > .md-button.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-simple.dropdown-toggle:hover, .md-button.md-default.md-simple, .md-button.md-default.md-simple:hover, .md-button.md-default.md-simple:focus, .md-button.md-default.md-simple:active, .md-button.md-default.md-simple.active, .md-button.md-default.md-simple:active:focus, .md-button.md-default.md-simple:active:hover, .md-button.md-default.md-simple.active:focus, .md-button.md-default.md-simple.active:hover,\n    .open > .md-button.md-default.md-simple.dropdown-toggle,\n    .open > .md-button.md-default.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-default.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #999999 !important;\n      box-shadow: none; }\n      .md-button.md-simple i, .md-button.md-simple:hover i, .md-button.md-simple:focus i, .md-button.md-simple:active i, .md-button.md-simple.active i, .md-button.md-simple:active:focus i, .md-button.md-simple:active:hover i, .md-button.md-simple.active:focus i, .md-button.md-simple.active:hover i,\n      .open > .md-button.md-simple.dropdown-toggle i,\n      .open > .md-button.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-simple.dropdown-toggle:hover i, .md-button.md-default.md-simple i, .md-button.md-default.md-simple:hover i, .md-button.md-default.md-simple:focus i, .md-button.md-default.md-simple:active i, .md-button.md-default.md-simple.active i, .md-button.md-default.md-simple:active:focus i, .md-button.md-default.md-simple:active:hover i, .md-button.md-default.md-simple.active:focus i, .md-button.md-default.md-simple.active:hover i,\n      .open > .md-button.md-default.md-simple.dropdown-toggle i,\n      .open > .md-button.md-default.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-default.md-simple.dropdown-toggle:hover i {\n        color: #999999 !important; }\n  .md-button.md-primary {\n    box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12); }\n    .md-button.md-primary.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12); }\n    .md-button.md-primary, .md-button.md-primary:hover, .md-button.md-primary:focus, .md-button.md-primary:active, .md-button.md-primary.active, .md-button.md-primary:active:focus, .md-button.md-primary:active:hover, .md-button.md-primary.active:focus, .md-button.md-primary.active:hover,\n    .open > .md-button.md-primary.dropdown-toggle,\n    .open > .md-button.md-primary.dropdown-toggle:focus,\n    .open > .md-button.md-primary.dropdown-toggle:hover {\n      background-color: #9c27b0 !important; }\n      .md-button.md-primary,\n      .md-button.md-primary i, .md-button.md-primary:hover,\n      .md-button.md-primary:hover i, .md-button.md-primary:focus,\n      .md-button.md-primary:focus i, .md-button.md-primary:active,\n      .md-button.md-primary:active i, .md-button.md-primary.active,\n      .md-button.md-primary.active i, .md-button.md-primary:active:focus,\n      .md-button.md-primary:active:focus i, .md-button.md-primary:active:hover,\n      .md-button.md-primary:active:hover i, .md-button.md-primary.active:focus,\n      .md-button.md-primary.active:focus i, .md-button.md-primary.active:hover,\n      .md-button.md-primary.active:hover i,\n      .open > .md-button.md-primary.dropdown-toggle,\n      .open > .md-button.md-primary.dropdown-toggle i,\n      .open > .md-button.md-primary.dropdown-toggle:focus,\n      .open > .md-button.md-primary.dropdown-toggle:focus i,\n      .open > .md-button.md-primary.dropdown-toggle:hover,\n      .open > .md-button.md-primary.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-primary:focus, .md-button.md-primary:active, .md-button.md-primary:hover {\n      box-shadow: 0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);\n      background-color: #9124a3 !important; }\n    .md-button.md-primary.disabled, .md-button.md-primary.disabled:hover, .md-button.md-primary.disabled:focus, .md-button.md-primary.disabled.focus, .md-button.md-primary.disabled:active, .md-button.md-primary.disabled.active, .md-button.md-primary:disabled, .md-button.md-primary:disabled:hover, .md-button.md-primary:disabled:focus, .md-button.md-primary:disabled.focus, .md-button.md-primary:disabled:active, .md-button.md-primary:disabled.active, .md-button.md-primary[disabled], .md-button.md-primary[disabled]:hover, .md-button.md-primary[disabled]:focus, .md-button.md-primary[disabled].focus, .md-button.md-primary[disabled]:active, .md-button.md-primary[disabled].active,\n    fieldset[disabled] .md-button.md-primary,\n    fieldset[disabled] .md-button.md-primary:hover,\n    fieldset[disabled] .md-button.md-primary:focus,\n    fieldset[disabled] .md-button.md-primary.focus,\n    fieldset[disabled] .md-button.md-primary:active,\n    fieldset[disabled] .md-button.md-primary.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-primary.md-simple, .md-button.md-primary.md-simple:hover, .md-button.md-primary.md-simple:focus, .md-button.md-primary.md-simple:active, .md-button.md-primary.md-simple.active, .md-button.md-primary.md-simple:active:focus, .md-button.md-primary.md-simple:active:hover, .md-button.md-primary.md-simple.active:focus, .md-button.md-primary.md-simple.active:hover,\n    .open > .md-button.md-primary.md-simple.dropdown-toggle,\n    .open > .md-button.md-primary.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-primary.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #9c27b0 !important;\n      box-shadow: none; }\n      .md-button.md-primary.md-simple i, .md-button.md-primary.md-simple:hover i, .md-button.md-primary.md-simple:focus i, .md-button.md-primary.md-simple:active i, .md-button.md-primary.md-simple.active i, .md-button.md-primary.md-simple:active:focus i, .md-button.md-primary.md-simple:active:hover i, .md-button.md-primary.md-simple.active:focus i, .md-button.md-primary.md-simple.active:hover i,\n      .open > .md-button.md-primary.md-simple.dropdown-toggle i,\n      .open > .md-button.md-primary.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-primary.md-simple.dropdown-toggle:hover i {\n        color: #9c27b0 !important; }\n  .md-button.md-info {\n    box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12); }\n    .md-button.md-info.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12); }\n    .md-button.md-info, .md-button.md-info:hover, .md-button.md-info:focus, .md-button.md-info:active, .md-button.md-info.active, .md-button.md-info:active:focus, .md-button.md-info:active:hover, .md-button.md-info.active:focus, .md-button.md-info.active:hover,\n    .open > .md-button.md-info.dropdown-toggle,\n    .open > .md-button.md-info.dropdown-toggle:focus,\n    .open > .md-button.md-info.dropdown-toggle:hover {\n      background-color: #00bcd4 !important; }\n      .md-button.md-info,\n      .md-button.md-info i, .md-button.md-info:hover,\n      .md-button.md-info:hover i, .md-button.md-info:focus,\n      .md-button.md-info:focus i, .md-button.md-info:active,\n      .md-button.md-info:active i, .md-button.md-info.active,\n      .md-button.md-info.active i, .md-button.md-info:active:focus,\n      .md-button.md-info:active:focus i, .md-button.md-info:active:hover,\n      .md-button.md-info:active:hover i, .md-button.md-info.active:focus,\n      .md-button.md-info.active:focus i, .md-button.md-info.active:hover,\n      .md-button.md-info.active:hover i,\n      .open > .md-button.md-info.dropdown-toggle,\n      .open > .md-button.md-info.dropdown-toggle i,\n      .open > .md-button.md-info.dropdown-toggle:focus,\n      .open > .md-button.md-info.dropdown-toggle:focus i,\n      .open > .md-button.md-info.dropdown-toggle:hover,\n      .open > .md-button.md-info.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-info:focus, .md-button.md-info:active, .md-button.md-info:hover {\n      box-shadow: 0 14px 26px -12px rgba(0, 188, 212, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 188, 212, 0.2);\n      background-color: #00aec5 !important; }\n    .md-button.md-info.disabled, .md-button.md-info.disabled:hover, .md-button.md-info.disabled:focus, .md-button.md-info.disabled.focus, .md-button.md-info.disabled:active, .md-button.md-info.disabled.active, .md-button.md-info:disabled, .md-button.md-info:disabled:hover, .md-button.md-info:disabled:focus, .md-button.md-info:disabled.focus, .md-button.md-info:disabled:active, .md-button.md-info:disabled.active, .md-button.md-info[disabled], .md-button.md-info[disabled]:hover, .md-button.md-info[disabled]:focus, .md-button.md-info[disabled].focus, .md-button.md-info[disabled]:active, .md-button.md-info[disabled].active,\n    fieldset[disabled] .md-button.md-info,\n    fieldset[disabled] .md-button.md-info:hover,\n    fieldset[disabled] .md-button.md-info:focus,\n    fieldset[disabled] .md-button.md-info.focus,\n    fieldset[disabled] .md-button.md-info:active,\n    fieldset[disabled] .md-button.md-info.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-info.md-simple, .md-button.md-info.md-simple:hover, .md-button.md-info.md-simple:focus, .md-button.md-info.md-simple:active, .md-button.md-info.md-simple.active, .md-button.md-info.md-simple:active:focus, .md-button.md-info.md-simple:active:hover, .md-button.md-info.md-simple.active:focus, .md-button.md-info.md-simple.active:hover,\n    .open > .md-button.md-info.md-simple.dropdown-toggle,\n    .open > .md-button.md-info.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-info.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #00bcd4 !important;\n      box-shadow: none; }\n      .md-button.md-info.md-simple i, .md-button.md-info.md-simple:hover i, .md-button.md-info.md-simple:focus i, .md-button.md-info.md-simple:active i, .md-button.md-info.md-simple.active i, .md-button.md-info.md-simple:active:focus i, .md-button.md-info.md-simple:active:hover i, .md-button.md-info.md-simple.active:focus i, .md-button.md-info.md-simple.active:hover i,\n      .open > .md-button.md-info.md-simple.dropdown-toggle i,\n      .open > .md-button.md-info.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-info.md-simple.dropdown-toggle:hover i {\n        color: #00bcd4 !important; }\n  .md-button.md-success {\n    box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12); }\n    .md-button.md-success.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12); }\n    .md-button.md-success, .md-button.md-success:hover, .md-button.md-success:focus, .md-button.md-success:active, .md-button.md-success.active, .md-button.md-success:active:focus, .md-button.md-success:active:hover, .md-button.md-success.active:focus, .md-button.md-success.active:hover,\n    .open > .md-button.md-success.dropdown-toggle,\n    .open > .md-button.md-success.dropdown-toggle:focus,\n    .open > .md-button.md-success.dropdown-toggle:hover {\n      background-color: #4caf50 !important; }\n      .md-button.md-success,\n      .md-button.md-success i, .md-button.md-success:hover,\n      .md-button.md-success:hover i, .md-button.md-success:focus,\n      .md-button.md-success:focus i, .md-button.md-success:active,\n      .md-button.md-success:active i, .md-button.md-success.active,\n      .md-button.md-success.active i, .md-button.md-success:active:focus,\n      .md-button.md-success:active:focus i, .md-button.md-success:active:hover,\n      .md-button.md-success:active:hover i, .md-button.md-success.active:focus,\n      .md-button.md-success.active:focus i, .md-button.md-success.active:hover,\n      .md-button.md-success.active:hover i,\n      .open > .md-button.md-success.dropdown-toggle,\n      .open > .md-button.md-success.dropdown-toggle i,\n      .open > .md-button.md-success.dropdown-toggle:focus,\n      .open > .md-button.md-success.dropdown-toggle:focus i,\n      .open > .md-button.md-success.dropdown-toggle:hover,\n      .open > .md-button.md-success.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-success:focus, .md-button.md-success:active, .md-button.md-success:hover {\n      box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2);\n      background-color: #47a44b !important; }\n    .md-button.md-success.disabled, .md-button.md-success.disabled:hover, .md-button.md-success.disabled:focus, .md-button.md-success.disabled.focus, .md-button.md-success.disabled:active, .md-button.md-success.disabled.active, .md-button.md-success:disabled, .md-button.md-success:disabled:hover, .md-button.md-success:disabled:focus, .md-button.md-success:disabled.focus, .md-button.md-success:disabled:active, .md-button.md-success:disabled.active, .md-button.md-success[disabled], .md-button.md-success[disabled]:hover, .md-button.md-success[disabled]:focus, .md-button.md-success[disabled].focus, .md-button.md-success[disabled]:active, .md-button.md-success[disabled].active,\n    fieldset[disabled] .md-button.md-success,\n    fieldset[disabled] .md-button.md-success:hover,\n    fieldset[disabled] .md-button.md-success:focus,\n    fieldset[disabled] .md-button.md-success.focus,\n    fieldset[disabled] .md-button.md-success:active,\n    fieldset[disabled] .md-button.md-success.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-success.md-simple, .md-button.md-success.md-simple:hover, .md-button.md-success.md-simple:focus, .md-button.md-success.md-simple:active, .md-button.md-success.md-simple.active, .md-button.md-success.md-simple:active:focus, .md-button.md-success.md-simple:active:hover, .md-button.md-success.md-simple.active:focus, .md-button.md-success.md-simple.active:hover,\n    .open > .md-button.md-success.md-simple.dropdown-toggle,\n    .open > .md-button.md-success.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-success.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #4caf50 !important;\n      box-shadow: none; }\n      .md-button.md-success.md-simple i, .md-button.md-success.md-simple:hover i, .md-button.md-success.md-simple:focus i, .md-button.md-success.md-simple:active i, .md-button.md-success.md-simple.active i, .md-button.md-success.md-simple:active:focus i, .md-button.md-success.md-simple:active:hover i, .md-button.md-success.md-simple.active:focus i, .md-button.md-success.md-simple.active:hover i,\n      .open > .md-button.md-success.md-simple.dropdown-toggle i,\n      .open > .md-button.md-success.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-success.md-simple.dropdown-toggle:hover i {\n        color: #4caf50 !important; }\n  .md-button.md-warning {\n    box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12); }\n    .md-button.md-warning.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12); }\n    .md-button.md-warning, .md-button.md-warning:hover, .md-button.md-warning:focus, .md-button.md-warning:active, .md-button.md-warning.active, .md-button.md-warning:active:focus, .md-button.md-warning:active:hover, .md-button.md-warning.active:focus, .md-button.md-warning.active:hover,\n    .open > .md-button.md-warning.dropdown-toggle,\n    .open > .md-button.md-warning.dropdown-toggle:focus,\n    .open > .md-button.md-warning.dropdown-toggle:hover {\n      background-color: #ff9800 !important; }\n      .md-button.md-warning,\n      .md-button.md-warning i, .md-button.md-warning:hover,\n      .md-button.md-warning:hover i, .md-button.md-warning:focus,\n      .md-button.md-warning:focus i, .md-button.md-warning:active,\n      .md-button.md-warning:active i, .md-button.md-warning.active,\n      .md-button.md-warning.active i, .md-button.md-warning:active:focus,\n      .md-button.md-warning:active:focus i, .md-button.md-warning:active:hover,\n      .md-button.md-warning:active:hover i, .md-button.md-warning.active:focus,\n      .md-button.md-warning.active:focus i, .md-button.md-warning.active:hover,\n      .md-button.md-warning.active:hover i,\n      .open > .md-button.md-warning.dropdown-toggle,\n      .open > .md-button.md-warning.dropdown-toggle i,\n      .open > .md-button.md-warning.dropdown-toggle:focus,\n      .open > .md-button.md-warning.dropdown-toggle:focus i,\n      .open > .md-button.md-warning.dropdown-toggle:hover,\n      .open > .md-button.md-warning.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-warning:focus, .md-button.md-warning:active, .md-button.md-warning:hover {\n      box-shadow: 0 14px 26px -12px rgba(255, 152, 0, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 152, 0, 0.2);\n      background-color: #f08f00 !important; }\n    .md-button.md-warning.disabled, .md-button.md-warning.disabled:hover, .md-button.md-warning.disabled:focus, .md-button.md-warning.disabled.focus, .md-button.md-warning.disabled:active, .md-button.md-warning.disabled.active, .md-button.md-warning:disabled, .md-button.md-warning:disabled:hover, .md-button.md-warning:disabled:focus, .md-button.md-warning:disabled.focus, .md-button.md-warning:disabled:active, .md-button.md-warning:disabled.active, .md-button.md-warning[disabled], .md-button.md-warning[disabled]:hover, .md-button.md-warning[disabled]:focus, .md-button.md-warning[disabled].focus, .md-button.md-warning[disabled]:active, .md-button.md-warning[disabled].active,\n    fieldset[disabled] .md-button.md-warning,\n    fieldset[disabled] .md-button.md-warning:hover,\n    fieldset[disabled] .md-button.md-warning:focus,\n    fieldset[disabled] .md-button.md-warning.focus,\n    fieldset[disabled] .md-button.md-warning:active,\n    fieldset[disabled] .md-button.md-warning.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-warning.md-simple, .md-button.md-warning.md-simple:hover, .md-button.md-warning.md-simple:focus, .md-button.md-warning.md-simple:active, .md-button.md-warning.md-simple.active, .md-button.md-warning.md-simple:active:focus, .md-button.md-warning.md-simple:active:hover, .md-button.md-warning.md-simple.active:focus, .md-button.md-warning.md-simple.active:hover,\n    .open > .md-button.md-warning.md-simple.dropdown-toggle,\n    .open > .md-button.md-warning.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-warning.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #ff9800 !important;\n      box-shadow: none; }\n      .md-button.md-warning.md-simple i, .md-button.md-warning.md-simple:hover i, .md-button.md-warning.md-simple:focus i, .md-button.md-warning.md-simple:active i, .md-button.md-warning.md-simple.active i, .md-button.md-warning.md-simple:active:focus i, .md-button.md-warning.md-simple:active:hover i, .md-button.md-warning.md-simple.active:focus i, .md-button.md-warning.md-simple.active:hover i,\n      .open > .md-button.md-warning.md-simple.dropdown-toggle i,\n      .open > .md-button.md-warning.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-warning.md-simple.dropdown-toggle:hover i {\n        color: #ff9800 !important; }\n  .md-button.md-danger {\n    box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12); }\n    .md-button.md-danger.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12); }\n    .md-button.md-danger, .md-button.md-danger:hover, .md-button.md-danger:focus, .md-button.md-danger:active, .md-button.md-danger.active, .md-button.md-danger:active:focus, .md-button.md-danger:active:hover, .md-button.md-danger.active:focus, .md-button.md-danger.active:hover,\n    .open > .md-button.md-danger.dropdown-toggle,\n    .open > .md-button.md-danger.dropdown-toggle:focus,\n    .open > .md-button.md-danger.dropdown-toggle:hover {\n      background-color: #f44336 !important; }\n      .md-button.md-danger,\n      .md-button.md-danger i, .md-button.md-danger:hover,\n      .md-button.md-danger:hover i, .md-button.md-danger:focus,\n      .md-button.md-danger:focus i, .md-button.md-danger:active,\n      .md-button.md-danger:active i, .md-button.md-danger.active,\n      .md-button.md-danger.active i, .md-button.md-danger:active:focus,\n      .md-button.md-danger:active:focus i, .md-button.md-danger:active:hover,\n      .md-button.md-danger:active:hover i, .md-button.md-danger.active:focus,\n      .md-button.md-danger.active:focus i, .md-button.md-danger.active:hover,\n      .md-button.md-danger.active:hover i,\n      .open > .md-button.md-danger.dropdown-toggle,\n      .open > .md-button.md-danger.dropdown-toggle i,\n      .open > .md-button.md-danger.dropdown-toggle:focus,\n      .open > .md-button.md-danger.dropdown-toggle:focus i,\n      .open > .md-button.md-danger.dropdown-toggle:hover,\n      .open > .md-button.md-danger.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-danger:focus, .md-button.md-danger:active, .md-button.md-danger:hover {\n      box-shadow: 0 14px 26px -12px rgba(244, 67, 54, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(244, 67, 54, 0.2);\n      background-color: #f33527 !important; }\n    .md-button.md-danger.disabled, .md-button.md-danger.disabled:hover, .md-button.md-danger.disabled:focus, .md-button.md-danger.disabled.focus, .md-button.md-danger.disabled:active, .md-button.md-danger.disabled.active, .md-button.md-danger:disabled, .md-button.md-danger:disabled:hover, .md-button.md-danger:disabled:focus, .md-button.md-danger:disabled.focus, .md-button.md-danger:disabled:active, .md-button.md-danger:disabled.active, .md-button.md-danger[disabled], .md-button.md-danger[disabled]:hover, .md-button.md-danger[disabled]:focus, .md-button.md-danger[disabled].focus, .md-button.md-danger[disabled]:active, .md-button.md-danger[disabled].active,\n    fieldset[disabled] .md-button.md-danger,\n    fieldset[disabled] .md-button.md-danger:hover,\n    fieldset[disabled] .md-button.md-danger:focus,\n    fieldset[disabled] .md-button.md-danger.focus,\n    fieldset[disabled] .md-button.md-danger:active,\n    fieldset[disabled] .md-button.md-danger.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-danger.md-simple, .md-button.md-danger.md-simple:hover, .md-button.md-danger.md-simple:focus, .md-button.md-danger.md-simple:active, .md-button.md-danger.md-simple.active, .md-button.md-danger.md-simple:active:focus, .md-button.md-danger.md-simple:active:hover, .md-button.md-danger.md-simple.active:focus, .md-button.md-danger.md-simple.active:hover,\n    .open > .md-button.md-danger.md-simple.dropdown-toggle,\n    .open > .md-button.md-danger.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-danger.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #f44336 !important;\n      box-shadow: none; }\n      .md-button.md-danger.md-simple i, .md-button.md-danger.md-simple:hover i, .md-button.md-danger.md-simple:focus i, .md-button.md-danger.md-simple:active i, .md-button.md-danger.md-simple.active i, .md-button.md-danger.md-simple:active:focus i, .md-button.md-danger.md-simple:active:hover i, .md-button.md-danger.md-simple.active:focus i, .md-button.md-danger.md-simple.active:hover i,\n      .open > .md-button.md-danger.md-simple.dropdown-toggle i,\n      .open > .md-button.md-danger.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-danger.md-simple.dropdown-toggle:hover i {\n        color: #f44336 !important; }\n  .md-button.md-rose {\n    box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12); }\n    .md-button.md-rose.md-raised {\n      box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12); }\n    .md-button.md-rose, .md-button.md-rose:hover, .md-button.md-rose:focus, .md-button.md-rose:active, .md-button.md-rose.active, .md-button.md-rose:active:focus, .md-button.md-rose:active:hover, .md-button.md-rose.active:focus, .md-button.md-rose.active:hover,\n    .open > .md-button.md-rose.dropdown-toggle,\n    .open > .md-button.md-rose.dropdown-toggle:focus,\n    .open > .md-button.md-rose.dropdown-toggle:hover {\n      background-color: #e91e63 !important; }\n      .md-button.md-rose,\n      .md-button.md-rose i, .md-button.md-rose:hover,\n      .md-button.md-rose:hover i, .md-button.md-rose:focus,\n      .md-button.md-rose:focus i, .md-button.md-rose:active,\n      .md-button.md-rose:active i, .md-button.md-rose.active,\n      .md-button.md-rose.active i, .md-button.md-rose:active:focus,\n      .md-button.md-rose:active:focus i, .md-button.md-rose:active:hover,\n      .md-button.md-rose:active:hover i, .md-button.md-rose.active:focus,\n      .md-button.md-rose.active:focus i, .md-button.md-rose.active:hover,\n      .md-button.md-rose.active:hover i,\n      .open > .md-button.md-rose.dropdown-toggle,\n      .open > .md-button.md-rose.dropdown-toggle i,\n      .open > .md-button.md-rose.dropdown-toggle:focus,\n      .open > .md-button.md-rose.dropdown-toggle:focus i,\n      .open > .md-button.md-rose.dropdown-toggle:hover,\n      .open > .md-button.md-rose.dropdown-toggle:hover i {\n        color: #FFFFFF !important; }\n    .md-button.md-rose:focus, .md-button.md-rose:active, .md-button.md-rose:hover {\n      box-shadow: 0 14px 26px -12px rgba(233, 30, 99, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(233, 30, 99, 0.2);\n      background-color: #e2165b !important; }\n    .md-button.md-rose.disabled, .md-button.md-rose.disabled:hover, .md-button.md-rose.disabled:focus, .md-button.md-rose.disabled.focus, .md-button.md-rose.disabled:active, .md-button.md-rose.disabled.active, .md-button.md-rose:disabled, .md-button.md-rose:disabled:hover, .md-button.md-rose:disabled:focus, .md-button.md-rose:disabled.focus, .md-button.md-rose:disabled:active, .md-button.md-rose:disabled.active, .md-button.md-rose[disabled], .md-button.md-rose[disabled]:hover, .md-button.md-rose[disabled]:focus, .md-button.md-rose[disabled].focus, .md-button.md-rose[disabled]:active, .md-button.md-rose[disabled].active,\n    fieldset[disabled] .md-button.md-rose,\n    fieldset[disabled] .md-button.md-rose:hover,\n    fieldset[disabled] .md-button.md-rose:focus,\n    fieldset[disabled] .md-button.md-rose.focus,\n    fieldset[disabled] .md-button.md-rose:active,\n    fieldset[disabled] .md-button.md-rose.active {\n      box-shadow: none;\n      opacity: .65;\n      pointer-events: none; }\n    .md-button.md-rose.md-simple, .md-button.md-rose.md-simple:hover, .md-button.md-rose.md-simple:focus, .md-button.md-rose.md-simple:active, .md-button.md-rose.md-simple.active, .md-button.md-rose.md-simple:active:focus, .md-button.md-rose.md-simple:active:hover, .md-button.md-rose.md-simple.active:focus, .md-button.md-rose.md-simple.active:hover,\n    .open > .md-button.md-rose.md-simple.dropdown-toggle,\n    .open > .md-button.md-rose.md-simple.dropdown-toggle:focus,\n    .open > .md-button.md-rose.md-simple.dropdown-toggle:hover {\n      background-color: transparent !important;\n      color: #e91e63 !important;\n      box-shadow: none; }\n      .md-button.md-rose.md-simple i, .md-button.md-rose.md-simple:hover i, .md-button.md-rose.md-simple:focus i, .md-button.md-rose.md-simple:active i, .md-button.md-rose.md-simple.active i, .md-button.md-rose.md-simple:active:focus i, .md-button.md-rose.md-simple:active:hover i, .md-button.md-rose.md-simple.active:focus i, .md-button.md-rose.md-simple.active:hover i,\n      .open > .md-button.md-rose.md-simple.dropdown-toggle i,\n      .open > .md-button.md-rose.md-simple.dropdown-toggle:focus i,\n      .open > .md-button.md-rose.md-simple.dropdown-toggle:hover i {\n        color: #e91e63 !important; }\n  .md-button:focus, .md-button:active, .md-button:active:focus {\n    outline: 0; }\n  .md-button.md-round, .md-button.md-round.md-fab, .md-button.md-round.md-just-icon {\n    border-radius: 30px; }\n  .md-button:not(.btn-just-icon):not(.btn-fab) .fa {\n    font-size: 18px;\n    margin-top: -2px;\n    position: relative;\n    top: 0; }\n  .md-button.btn-fab {\n    border-radius: 50%;\n    font-size: 24px;\n    height: 56px;\n    margin: auto;\n    min-width: 56px;\n    width: 56px;\n    padding: 0;\n    overflow: hidden;\n    position: relative;\n    line-height: normal; }\n    .md-button.btn-fab .ripple-container {\n      border-radius: 50%; }\n    .md-button.btn-fab.btn-fab-mini,\n    .btn-group-sm .md-button.btn-fab {\n      height: 40px;\n      min-width: 40px;\n      width: 40px; }\n      .md-button.btn-fab.btn-fab-mini.material-icons,\n      .btn-group-sm .md-button.btn-fab.material-icons {\n        top: -3.5px;\n        left: -3.5px; }\n      .md-button.btn-fab.btn-fab-mini .material-icons,\n      .btn-group-sm .md-button.btn-fab .material-icons {\n        font-size: 17px; }\n    .md-button.btn-fab i.material-icons {\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-12px, -12px);\n      line-height: 24px;\n      width: 24px;\n      font-size: 24px; }\n  .md-button.md-lg .md-ripple {\n    font-size: 14px;\n    padding: 1.125rem 2.25rem !important;\n    line-height: 1.333333; }\n  .md-button.md-sm .md-ripple {\n    padding: 0.40625rem 1.25rem !important;\n    font-size: 11px; }\n  .md-button.md-fab, .md-button.md-just-icon {\n    height: 41px;\n    min-width: 41px;\n    width: 41px;\n    padding: 0;\n    overflow: hidden;\n    position: relative;\n    line-height: 41px; }\n    .md-button.md-fab i, .md-button.md-fab, .md-button.md-just-icon i, .md-button.md-just-icon {\n      font-size: 20px !important; }\n  .md-button .md-button-content {\n    display: flex;\n    align-items: center; }\n\n.btn .material-icons {\n  vertical-align: middle;\n  font-size: 17px;\n  top: -1px;\n  position: relative; }\n\n.navbar .navbar-nav > li > a.btn {\n  margin-top: 2px;\n  margin-bottom: 2px; }\n  .navbar .navbar-nav > li > a.btn.btn-fab {\n    margin: 5px 2px; }\n\n.navbar .navbar-nav > li > a:not(.btn) .material-icons {\n  margin-top: -3px;\n  top: 0px;\n  position: relative;\n  margin-right: 3px; }\n\n.navbar .navbar-nav > li > .profile-photo {\n  margin: 5px 2px; }\n\n.navbar-default:not(.navbar-transparent) .navbar-nav > li > a.btn.btn-white.btn-simple {\n  color: #555555; }\n\n.button-container {\n  display: flex;\n  align-items: center; }\n\n.md-group > .md-group:not(:last-child) > .md-button, .md-group > .md-button:not(:last-child):not(.dropdown-toggle) {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0; }\n\n.md-group > .md-group:not(:first-child) > .md-button,\n.md-group > .md-button:not(:first-child) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0; }\n\n.md-group {\n  display: inline-flex;\n  vertical-align: middle; }\n  .md-group .md-button {\n    min-width: auto !important;\n    width: auto !important;\n    margin-left: 0;\n    margin-right: 0; }\n\n.VueCarousel-pagination {\n  position: absolute;\n  bottom: 5px;\n  margin-bottom: 15px; }\n\n.VueCarousel-wrapper {\n  border-radius: 6px; }\n\n.VueCarousel-dot-button {\n  display: inline-block;\n  width: 10px !important;\n  height: 10px !important;\n  border: 1px solid #fff !important;\n  background: #FFF !important;\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);\n  border-radius: 2px !important;\n  transition: all .3s linear; }\n  .VueCarousel-dot-button:focus {\n    outline: 0 !important; }\n\n.VueCarousel-dot--active .VueCarousel-dot-button {\n  margin-top: 10px;\n  transform: scale(1.5);\n  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2); }\n\n.carousel-caption {\n  position: absolute;\n  bottom: 25px;\n  left: 0;\n  right: 0;\n  text-align: center;\n  padding-top: 20px;\n  padding-bottom: 45px; }\n  .carousel-caption,\n  .carousel-caption .md-icon,\n  .carousel-caption .fa,\n  .carousel-caption .fab,\n  .carousel-caption .fas {\n    color: #FFFFFF !important; }\n\n.VueCarousel-navigation-prev {\n  left: 95px !important; }\n\n.VueCarousel-navigation-next {\n  right: 95px !important; }\n\n.VueCarousel-navigation-prev i,\n.VueCarousel-navigation-next i {\n  font-size: 50px;\n  color: #FFFFFF !important;\n  opacity: .5; }\n  .VueCarousel-navigation-prev i:hover,\n  .VueCarousel-navigation-next i:hover {\n    opacity: 1; }\n\n.VueCarousel-slide {\n  position: relative; }\n\n.md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item {\n  margin: 0 .3125rem; }\n  .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item:not(:last-child) {\n    margin-bottom: 5px; }\n  .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button {\n    background-color: transparent;\n    color: #333333 !important;\n    border-radius: 3px; }\n    .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button:hover {\n      background-color: #9c27b0 !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6);\n      color: #FFF !important; }\n    .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button .md-list-item-content {\n      min-height: 38px;\n      font-size: 13px; }\n      .md-menu-content:not(.md-select-menu) .md-menu-content-container .md-list .md-list-item .md-list-item-button .md-list-item-content span {\n        top: auto;\n        left: auto;\n        right: 0;\n        padding-left: 15px;\n        padding-right: 15px; }\n\nbody {\n  background-color: #EEEEEE;\n  letter-spacing: unset;\n  font-size: 1rem;\n  color: #3C4858;\n  line-height: 1.5em; }\n\n.main {\n  background: #FFFFFF;\n  position: relative;\n  z-index: 3; }\n\n.main-raised {\n  margin: -60px 30px 0px;\n  border-radius: 6px;\n  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.wrapper.wrapper-full-page {\n  height: auto;\n  min-height: 100vh; }\n\nblockquote p {\n  font-style: italic; }\n\n.life-of-material-dashboard {\n  background: #FFFFFF; }\n\na {\n  color: #9c27b0; }\n  a:hover, a:focus {\n    color: #89229b !important;\n    text-decoration: none !important; }\n  a.text-info:hover, a.text-info:focus {\n    color: #00a5bb; }\n  a .material-icons {\n    vertical-align: middle; }\n\n.dropdown.open .dropdown-toggle .md-ripple:after {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  -webkit-transform: rotate(180deg);\n  -ms-transform: rotate(180deg);\n  transform: rotate(180deg); }\n\n.caret,\n.md-toolbar {\n  -webkit-transition: all 150ms ease-in;\n  -moz-transition: all 150ms ease-in;\n  -o-transition: all 150ms ease-in;\n  -ms-transition: all 150ms ease-in;\n  transition: all 150ms ease-in; }\n\n/*           Animations              */\n.animation-transition-general {\n  -webkit-transition: all 300ms linear;\n  -moz-transition: all 300ms linear;\n  -o-transition: all 300ms linear;\n  -ms-transition: all 300ms linear;\n  transition: all 300ms linear; }\n\n.animation-transition-slow {\n  -webkit-transition: all 370ms linear;\n  -moz-transition: all 370ms linear;\n  -o-transition: all 370ms linear;\n  -ms-transition: all 370ms linear;\n  transition: all 370ms linear; }\n\n.animation-transition-fast {\n  -webkit-transition: all 150ms ease 0s;\n  -moz-transition: all 150ms ease 0s;\n  -o-transition: all 150ms ease 0s;\n  -ms-transition: all 150ms ease 0s;\n  transition: all 150ms ease 0s; }\n\nlegend {\n  border-bottom: 0; }\n\n.pull-left {\n  float: left; }\n\n.pull-right {\n  float: right; }\n\n* {\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n  -webkit-tap-highlight-color: transparent; }\n  *:focus {\n    outline: 0; }\n\n.text-center {\n  text-align: center; }\n\n.text-left {\n  text-align: left; }\n\n.text-right {\n  text-align: right; }\n\n.places-buttons .md-button {\n  width: 30%;\n  margin-left: 10px;\n  margin-right: 10px; }\n\n.md-theme-default :not(input):not(textarea)::selection {\n  background-color: #c8c8c8 !important; }\n\n.container,\n.container-fluid {\n  padding-right: 15px;\n  padding-left: 15px;\n  display: flex;\n  justify-content: space-between;\n  width: 100%;\n  margin-left: auto;\n  margin-right: auto;\n  position: relative; }\n  .section .container, .section\n  .container-fluid {\n    flex-direction: column; }\n\n.md-ripple .md-ripple-wave {\n  border-radius: 50% !important; }\n\n.small, small {\n  font-size: 75%;\n  color: #777;\n  font-weight: 400; }\n\n.ml-auto,\n.mx-auto {\n  margin-left: auto !important; }\n\n.mr-auto,\n.mx-auto {\n  margin-right: auto !important; }\n\n.md-layout {\n  margin-right: -15px;\n  margin-left: -15px; }\n\n.img-thumbnail {\n  border-radius: 16px; }\n\n.img-raised {\n  box-shadow: 0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.rounded {\n  border-radius: 6px !important; }\n\n.rounded-circle {\n  border-radius: 50% !important; }\n\n.responsive-image {\n  max-width: 50%;\n  margin: 0 auto; }\n\n.info {\n  max-width: 360px;\n  margin: 0 auto;\n  padding: 70px 0 30px; }\n  .info .icon {\n    color: #999999; }\n    .info .icon > i {\n      font-size: 3.85rem !important;\n      min-width: auto;\n      width: auto;\n      height: auto;\n      vertical-align: unset; }\n  .info .info-title {\n    color: #3C4858;\n    margin: 1.75rem 0 0.875rem; }\n  .info p {\n    color: #999999; }\n\n.info-horizontal .icon {\n  float: left;\n  margin-top: 24px;\n  margin-right: 10px; }\n  .info-horizontal .icon > i {\n    font-size: 2.25rem; }\n\n.info-horizontal .description {\n  overflow: hidden; }\n\n.icon.icon-primary i {\n  color: #9c27b0 !important; }\n\n.icon.icon-info i {\n  color: #00bcd4 !important; }\n\n.icon.icon-success i {\n  color: #4caf50 !important; }\n\n.icon.icon-warning i {\n  color: #ff9800 !important; }\n\n.icon.icon-danger i {\n  color: #f44336 !important; }\n\n.icon.icon-rose i {\n  color: #e91e63 !important; }\n\n.md-datepicker-body-header .md-icon-button {\n  background-color: transparent !important;\n  box-shadow: none !important;\n  font-weight: 500; }\n  .md-datepicker-body-header .md-icon-button:hover, .md-datepicker-body-header .md-icon-button:focus {\n    background-color: #eee !important; }\n  .md-datepicker-body-header .md-icon-button .md-button-content svg {\n    fill: #212529 !important; }\n\n.md-dialog-actions .md-button, .md-dialog-actions .md-button:hover, .md-dialog-actions .md-button:focus, .md-dialog-actions .md-button:active, .md-dialog-actions .md-button.active, .md-dialog-actions .md-button:active:focus, .md-dialog-actions .md-button:active:hover, .md-dialog-actions .md-button.active:focus, .md-dialog-actions .md-button.active:hover,\n.open > .md-dialog-actions .md-button.dropdown-toggle,\n.open > .md-dialog-actions .md-button.dropdown-toggle:focus,\n.open > .md-dialog-actions .md-button.dropdown-toggle:hover {\n  background-color: #4caf50 !important; }\n\n.md-dialog-actions .md-button:focus, .md-dialog-actions .md-button:active, .md-dialog-actions .md-button:hover {\n  box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2); }\n\n.md-datepicker-header .md-datepicker-date-select {\n  font-size: 30px; }\n\n.md-button[class*=\"md-datepicker-\"] {\n  background-color: transparent !important;\n  box-shadow: none !important;\n  font-weight: 500;\n  border-radius: 3px;\n  margin-left: 48px;\n  margin-right: 48px; }\n  .md-button[class*=\"md-datepicker-\"]:hover, .md-button[class*=\"md-datepicker-\"]:focus {\n    background-color: #eee !important; }\n  .md-button[class*=\"md-datepicker-\"] .md-button-content {\n    color: #212529 !important; }\n\n.md-datepicker-day-button {\n  font-size: 0.875rem; }\n  .md-datepicker-day-button:hover, .md-datepicker-day-button:focus {\n    background-color: #eee !important; }\n\n.md-datepicker-today,\n.md-datepicker-selected {\n  box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);\n  font-weight: lighter !important; }\n  .md-datepicker-today, .md-datepicker-today:hover, .md-datepicker-today:focus,\n  .md-datepicker-selected,\n  .md-datepicker-selected:hover,\n  .md-datepicker-selected:focus {\n    background-color: #4caf50 !important;\n    color: #FFFFFF !important; }\n\n.md-datepicker-month-button,\n.md-datepicker-year-button {\n  font-weight: 300; }\n\n.md-datepicker-dayname,\n.md-datepicker-monthname,\n.md-datepicker-day {\n  font-weight: 300 !important; }\n\n.md-datepicker-dialog .md-datepicker-header {\n  background: linear-gradient(60deg, #66bb6a, #43a047) !important; }\n\n.md-datepicker-overlay,\n.md-datepicker-dialog {\n  z-index: 9999; }\n\n.md-field .md-input,\n.md-field .md-textarea {\n  height: 36px;\n  padding: 7px 0;\n  font-size: 14px !important;\n  -webkit-text-fill-color: #3C4858 !important;\n  appearance: none; }\n\n.md-field > .fas ~ .md-input,\n.md-field > .fab ~ .md-input,\n.md-field > .fa ~ .md-input {\n  margin-left: 12px; }\n\n.md-field > .fas,\n.md-field > .fab,\n.md-field > .fa {\n  width: 24px;\n  min-width: 24px;\n  height: 24px;\n  position: relative;\n  top: 5px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }\n\n.md-field.has-white:not(.md-disabled):after, .md-field.has-white:before {\n  background-color: #FFFFFF !important; }\n\n.md-field.has-white label {\n  color: #FFFFFF !important; }\n\n.md-field.has-white .md-input {\n  -webkit-text-fill-color: #FFFFFF !important;\n  color: #FFFFFF !important; }\n\n.md-field.has-green:before {\n  background-color: #4caf50 !important; }\n\n.md-field.has-green.md-focused .md-icon {\n  color: #4caf50 !important; }\n\n.md-field.has-danger:before {\n  background-color: #f44336 !important; }\n\n.md-field.has-danger.md-focused .md-icon {\n  color: #f44336 !important; }\n\n.md-field.has-warning:before {\n  background-color: #ff9800 !important; }\n\n.md-field.has-warning.md-focused .md-icon {\n  color: #ff9800 !important; }\n\n.md-field.has-rose:before {\n  background-color: #e91e63 !important; }\n\n.md-field.has-rose.md-focused .md-icon {\n  color: #e91e63 !important; }\n\n.md-field.has-info:before {\n  background-color: #00bcd4 !important; }\n\n.md-field.has-info.md-focused .md-icon {\n  color: #00bcd4 !important; }\n\n.md-field.has-primary:before {\n  background-color: #9c27b0 !important; }\n\n.md-field.has-primary.md-focused .md-icon {\n  color: #9c27b0 !important; }\n\n.md-field.md-has-textarea:not(.md-autogrow).md-focused .md-textarea, .md-field.md-has-textarea:not(.md-autogrow).md-has-value .md-textarea {\n  margin-top: 20px;\n  padding-top: 0; }\n\n.md-field.md-valid label {\n  color: #4caf50 !important; }\n\n.md-field.md-valid:before {\n  background-color: #4caf50 !important; }\n\n.md-field.md-valid .md-icon {\n  color: #4caf50 !important; }\n\n.md-field.md-error label {\n  color: #f44336 !important; }\n\n.md-field.md-error:before {\n  background-color: #f44336 !important; }\n\n.md-field.md-error .md-icon {\n  color: #f44336 !important; }\n\n.md-field.md-has-textarea:not(.md-autogrow) .md-textarea {\n  min-height: 85px; }\n\n.md-field.md-has-textarea:not(.md-autogrow) label {\n  left: 0; }\n\n.md-field.md-focused label,\n.md-field.md-has-value label {\n  top: -1rem; }\n\n.md-field .md-helper-text {\n  color: #6c757d !important;\n  bottom: 18px;\n  opacity: 0;\n  font-size: .75rem;\n  visibility: hidden; }\n\n.md-field .md-input::-moz-placeholder {\n  font-size: 14px;\n  color: #aaa !important; }\n\n.md-field .md-input:-ms-input-placeholder {\n  font-size: 14px;\n  color: #aaa !important; }\n\n.md-field .md-input::-webkit-input-placeholder {\n  font-size: 14px;\n  color: #aaa !important; }\n\n.md-field.md-focused .md-helper-text {\n  opacity: 1;\n  bottom: -10px;\n  visibility: visible; }\n\n.sidebar .md-field.md-theme-default.md-focused .md-input {\n  color: #FFFFFF !important;\n  -webkit-text-fill-color: #FFFFFF !important; }\n\n.md-field label {\n  font-size: 14px;\n  font-weight: 400;\n  color: #AAAAAA !important;\n  line-height: 1.4;\n  top: 26px; }\n\n.md-field.md-disabled .md-input {\n  cursor: not-allowed; }\n\n.md-field.md-disabled:after {\n  border-bottom: 1px dotted #d2d2d2;\n  background-color: transparent !important;\n  background-image: none !important; }\n\n.md-field:not(.md-disabled):after {\n  background-color: #d2d2d2 !important; }\n\n.md-field:before {\n  background-color: #9c27b0 !important; }\n\n.md-field.md-focused label,\n.md-field.md-has-value label,\n.md-field.md-focused.md-has-value label {\n  font-size: .6875rem; }\n\n.md-field.md-has-textarea:not(.md-autogrow):after, .md-field.md-has-textarea:not(.md-autogrow):before {\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid transparent;\n  border-color: #d2d2d2 !important; }\n\n.md-field.md-has-textarea:not(.md-autogrow):before {\n  border-bottom: 2px solid transparent;\n  border-color: #4caf50 !important;\n  transform: scaleX(0.12); }\n\n.md-field.md-has-textarea:not(.md-autogrow).md-focused label,\n.md-field.md-has-textarea:not(.md-autogrow).md-has-value label {\n  top: 0; }\n\n.md-field.md-focused.md-has-textarea:not(.md-autogrow):before {\n  transform: scaleX(1); }\n\n.md-field .md-input-action {\n  top: 0;\n  border-radius: 50%;\n  width: 32px !important;\n  height: 32px !important;\n  background-color: #FFFFFF !important; }\n  .md-field .md-input-action .md-button-content i {\n    width: 18px;\n    height: 18px; }\n    .md-field .md-input-action .md-button-content i svg {\n      fill: #999999 !important; }\n\n.md-field {\n  padding-bottom: 10px;\n  padding-top: 0;\n  margin: 13px 0 0;\n  min-height: auto; }\n  .md-field.md-focused label,\n  .md-field.md-field.md-has-value label {\n    top: -.8rem; }\n  .md-field.md-focused > .fa,\n  .md-field.md-focused > .md-icon,\n  .md-field.md-focused > .fas,\n  .md-field.md-focused > .fab {\n    color: #9c27b0 !important; }\n  .md-field .success.md-icon,\n  .md-field .error.md-icon {\n    transition: none;\n    position: absolute;\n    right: 0;\n    top: 3px;\n    font-size: 20px !important; }\n    .md-field .success.md-icon:after,\n    .md-field .error.md-icon:after {\n      display: none; }\n  .md-field:after, .md-field:before {\n    bottom: 10px; }\n  .md-field label {\n    top: 9px; }\n  .md-field.md-form-group > .md-icon, .md-field.md-datepicker > .md-icon {\n    margin: 6px 0; }\n    .md-field.md-form-group > .md-icon:after, .md-field.md-datepicker > .md-icon:after {\n      display: none; }\n  .md-field.md-form-group:after, .md-field.md-form-group:before, .md-field.md-datepicker:after, .md-field.md-datepicker:before {\n    width: calc(100% - 36px);\n    margin-left: auto; }\n\n.form-control-static {\n  margin: 0; }\n\n.form-category {\n  color: #333; }\n\n.md-label-on-right {\n  padding: 20px 5px 0 0;\n  text-align: left; }\n  .md-label-on-right code {\n    padding: 2px 4px;\n    font-size: 90%;\n    color: #c7254e;\n    background-color: #f9f2f4;\n    border-radius: 4px; }\n\ntextarea {\n  resize: none; }\n\n.badge {\n  display: inline-block;\n  border-radius: 12px;\n  padding: 5px 12px;\n  text-transform: uppercase;\n  font-size: 10px;\n  color: #FFFFFF;\n  font-weight: 500;\n  line-height: 1;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: baseline; }\n  .badge:not(:last-child) {\n    margin-right: 5px; }\n  .badge.badge-primary {\n    background-color: #9c27b0; }\n  .badge.badge-info {\n    background-color: #00bcd4; }\n  .badge.badge-success {\n    background-color: #4caf50; }\n  .badge.badge-warning {\n    background-color: #ff9800; }\n  .badge.badge-danger {\n    background-color: #f44336; }\n  .badge.badge-rose {\n    background-color: #e91e63; }\n  .badge.badge-default {\n    background-color: #999999; }\n\n.badge-default[href]:hover,\n.badge-default[href]:focus {\n  background-color: #8c8c8c; }\n\n.badge-primary[href]:hover,\n.badge-primary[href]:focus {\n  background-color: #89229b; }\n\n.badge-info[href]:hover,\n.badge-info[href]:focus {\n  background-color: #00a5bb; }\n\n.badge-success[href]:hover,\n.badge-success[href]:focus {\n  background-color: #449d48; }\n\n.badge-warning[href]:hover,\n.badge-warning[href]:focus {\n  background-color: #e68900;\n  color: #FFFFFF; }\n\n.badge-danger[href]:hover,\n.badge-danger[href]:focus {\n  background-color: #f32c1e; }\n\n.badge-rose[href]:hover,\n.badge-rose[href]:focus {\n  background-color: #d81558; }\n\n.md-progress-bar {\n  height: 4px;\n  margin-bottom: 20px; }\n  .md-progress-bar.md-rose:not(.md-buffer) {\n    background: rgba(233, 30, 99, 0.2); }\n  .md-progress-bar.md-rose .md-progress-bar-fill {\n    background-color: #e91e63 !important; }\n  .md-progress-bar.md-rose.md-buffer .md-progress-bar-fill {\n    background-color: #e91e63; }\n  .md-progress-bar.md-rose.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(233, 30, 99, 0.2); }\n  .md-progress-bar.md-danger:not(.md-buffer) {\n    background: rgba(244, 67, 54, 0.2); }\n  .md-progress-bar.md-danger .md-progress-bar-fill {\n    background-color: #f44336 !important; }\n  .md-progress-bar.md-danger.md-buffer .md-progress-bar-fill {\n    background-color: #f44336; }\n  .md-progress-bar.md-danger.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(244, 67, 54, 0.2); }\n  .md-progress-bar.md-primary:not(.md-buffer) {\n    background: rgba(156, 39, 176, 0.2); }\n  .md-progress-bar.md-primary .md-progress-bar-fill {\n    background-color: #9c27b0 !important; }\n  .md-progress-bar.md-primary.md-buffer .md-progress-bar-fill {\n    background-color: #9c27b0; }\n  .md-progress-bar.md-primary.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(156, 39, 176, 0.2); }\n  .md-progress-bar.md-info:not(.md-buffer) {\n    background: rgba(0, 188, 212, 0.2); }\n  .md-progress-bar.md-info .md-progress-bar-fill {\n    background-color: #00bcd4 !important; }\n  .md-progress-bar.md-info.md-buffer .md-progress-bar-fill {\n    background-color: #00bcd4; }\n  .md-progress-bar.md-info.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(0, 188, 212, 0.2); }\n  .md-progress-bar.md-success:not(.md-buffer) {\n    background: rgba(76, 175, 80, 0.2); }\n  .md-progress-bar.md-success .md-progress-bar-fill {\n    background-color: #4caf50 !important; }\n  .md-progress-bar.md-success.md-buffer .md-progress-bar-fill {\n    background-color: #4caf50; }\n  .md-progress-bar.md-success.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(76, 175, 80, 0.2); }\n  .md-progress-bar.md-warning:not(.md-buffer) {\n    background: rgba(255, 152, 0, 0.2); }\n  .md-progress-bar.md-warning .md-progress-bar-fill {\n    background-color: #ff9800 !important; }\n  .md-progress-bar.md-warning.md-buffer .md-progress-bar-fill {\n    background-color: #ff9800; }\n  .md-progress-bar.md-warning.md-buffer .md-progress-bar-buffer {\n    border-color: rgba(255, 152, 0, 0.2); }\n\n.alert {\n  border: 0;\n  border-radius: 0;\n  position: relative;\n  padding: 20px 15px;\n  line-height: 20px;\n  margin-bottom: 20px;\n  background-color: #999999;\n  color: #FFFFFF;\n  border-radius: 3px;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(153, 153, 153, 0.6); }\n  .notifications .alert {\n    margin-bottom: 0; }\n  .alert .container {\n    flex-direction: unset;\n    display: flow-root;\n    padding: 0 31px;\n    line-height: 1.7; }\n  .alert b {\n    font-weight: 500;\n    text-transform: uppercase;\n    font-size: 12px; }\n  .alert.alert-info {\n    background-color: #00cae3;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 202, 227, 0.6); }\n  .alert.alert-danger {\n    background-color: #f55145;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(245, 81, 69, 0.6); }\n  .alert.alert-primary {\n    background-color: #a72abd;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(167, 42, 189, 0.6); }\n  .alert.alert-warning {\n    background-color: #ff9e0f;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 158, 15, 0.6); }\n  .alert.alert-success {\n    background-color: #55b559;\n    color: #FFFFFF;\n    border-radius: 3px;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(85, 181, 89, 0.6); }\n  .alert-info, .alert-danger, .alert-warning, .alert-success {\n    color: #ffffff; }\n  .alert-default a, .alert-default .alert-link {\n    color: rgba(0,0,0, 0.87); }\n  .alert .close {\n    position: absolute;\n    right: 0;\n    font-size: inherit;\n    font-weight: 700;\n    line-height: 1;\n    color: #FFFFFF;\n    opacity: .9;\n    background-color: transparent;\n    border: 0;\n    cursor: pointer;\n    top: 0;\n    bottom: 0; }\n    .alert .close i {\n      font-size: 20px !important;\n      color: #FFFFFF !important;\n      font-weight: normal; }\n  .alert i[data-notify=\"icon\"] {\n    font-size: 30px;\n    display: block;\n    left: 15px;\n    position: absolute;\n    top: 50%;\n    margin-top: -15px; }\n  .alert .alert-icon {\n    display: inline-block;\n    margin-right: 15px; }\n    .alert .alert-icon i {\n      color: #FFFFFF !important;\n      height: 22px; }\n\n.alert.alert-with-icon {\n  padding-left: 65px; }\n\n.md-table-cell-container {\n  padding: 0; }\n  .md-table-cell:last-child .md-table-cell-container {\n    padding-right: 0;\n    text-align: right;\n    display: flex; }\n\n.md-table-head-container {\n  height: auto;\n  padding: 0; }\n\n.md-tabs-content table thead {\n  display: none; }\n\n.md-tabs-container tbody .md-table-row:first-child td {\n  border: 0; }\n\n.md-table-cell {\n  padding: 12px 8px;\n  font-size: 14px; }\n\n.md-table-head-label {\n  font-size: 1.0625rem;\n  padding-left: 8px;\n  font-weight: 300; }\n\n.md-table .md-table-row:hover .md-table-cell {\n  background-color: transparent !important; }\n\n.md-table .md-table-row:hover {\n  background: #f5f5f5 !important; }\n\n.md-card-plain .md-card-content > div .md-table .md-table-content,\n.md-card-plain .md-card-content > div .md-table {\n  background-color: transparent !important; }\n\n.md-table[table-header-color=\"orange\"] .md-table-head {\n  color: #ff9800 !important; }\n\n.md-table[table-header-color=\"purple\"] .md-table-head {\n  color: #9c27b0 !important; }\n\n.md-table[table-header-color=\"blue\"] .md-table-head {\n  color: #00bcd4 !important; }\n\n.md-table[table-header-color=\"red\"] .md-table-head {\n  color: #f44336 !important; }\n\n.md-table[table-header-color=\"green\"] .md-table-head {\n  color: #4caf50 !important; }\n\n.md-table .md-table-row td {\n  border-top-color: rgba(0, 0, 0, 0.06) !important; }\n\n.md-layout-item {\n  padding-right: 15px;\n  padding-left: 15px; }\n\n.page-header {\n  height: 100vh;\n  background-position: center center;\n  background-size: cover;\n  margin: 0;\n  padding: 0;\n  border: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .page-header .carousel .carousel-indicators {\n    bottom: 60px; }\n  .page-header > .container {\n    color: #FFFFFF; }\n  .page-header .title {\n    color: #FFFFFF; }\n  .page-header.header-small {\n    height: 65vh;\n    min-height: 65vh; }\n  .page-header .iframe-container iframe {\n    width: 100%;\n    box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.header-filter {\n  position: relative; }\n  .header-filter:before, .header-filter:after {\n    position: absolute;\n    z-index: 1;\n    width: 100%;\n    height: 100%;\n    display: block;\n    left: 0;\n    top: 0;\n    content: \"\"; }\n  .header-filter .md-layout {\n    z-index: 2;\n    position: relative; }\n\n.clear-filter::before {\n  background: none; }\n\n.purple-filter:after {\n  background: rgba(101, 47, 142, 0.64);\n  background: linear-gradient(45deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);\n  background: -moz-linear-gradient(135deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);\n  background: -webkit-linear-gradient(135deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%); }\n\n.index-page .section-components h6.description {\n  margin-top: 5px;\n  margin-bottom: 30px; }\n\n.index-page .page-header {\n  height: 10vh;\n  overflow: hidden; }\n\n.index-page .brand {\n  color: #FFFFFF;\n  text-align: center; }\n  .index-page .brand h1 {\n    font-size: 6rem;\n    font-weight: 600;\n    display: inline-block;\n    position: relative;\n    line-height: 1.15em;\n    text-shadow: 0px 15px 102.86px rgba(0, 0, 0, 0.7), 0px 15px 40.02px rgba(0, 0, 0, 0.21); }\n  .index-page .brand h3 {\n    font-size: 2.23rem;\n    margin: 10px auto 0;\n    line-height: 0;\n    font-weight: 400;\n    text-shadow: 0px 15px 102.86px rgba(0, 0, 0, 0.9), 0px 15px 40.02px rgba(0, 0, 0, 0.51); }\n\n.index-page h4.description {\n  font-size: 1.5em; }\n\n.section {\n  padding: 70px 0; }\n\n.profile-page .page-header {\n  height: 380px;\n  background-position: center center; }\n  .profile-page .page-header::before {\n    background: rgba(0, 0, 0, 0.2); }\n\n.profile-page .profile {\n  text-align: center; }\n  .profile-page .profile img {\n    max-width: 160px;\n    width: 100%;\n    margin: 0 auto;\n    -webkit-transform: translate3d(0, -50%, 0);\n    -moz-transform: translate3d(0, -50%, 0);\n    -o-transform: translate3d(0, -50%, 0);\n    -ms-transform: translate3d(0, -50%, 0);\n    transform: translate3d(0, -50%, 0); }\n  .profile-page .profile .name {\n    margin-top: -80px; }\n\n.profile-page .follow {\n  position: absolute;\n  top: 0;\n  right: 0; }\n\n.profile-page .description {\n  margin: 15px auto 0;\n  max-width: 600px; }\n\n.profile-page .profile-tabs {\n  margin-top: 60px; }\n\n.profile-page .gallery {\n  margin-top: 45px;\n  padding-bottom: 50px; }\n  .profile-page .gallery img {\n    width: 100%;\n    margin-bottom: 30px; }\n\n.profile-page .follow .btn-fab {\n  margin-top: -28px; }\n\n.profile-page .card-background .content {\n  padding: 30% 0;\n  min-width: 160px; }\n\n.profile-page .work {\n  padding: 40px 0px; }\n  .profile-page .work .collections {\n    margin-top: 20px; }\n  .profile-page .work .stats ul > li {\n    padding: 5px 0px;\n    font-size: 1em; }\n    .profile-page .work .stats ul > li b {\n      font-size: 1.2em; }\n\n.profile-page .connections {\n  padding: 40px 0px; }\n  .profile-page .connections .card-profile {\n    text-align: left; }\n\n.profile-page .tab-content .collections .card .card-body {\n  display: flex;\n  flex-direction: column;\n  justify-content: center; }\n  .profile-page .tab-content .collections .card .card-body .badge {\n    display: inline-table;\n    margin: 0 auto; }\n\n.landing-page .page-header::before {\n  background: rgba(0, 0, 0, 0.2); }\n\n.login-page .footer {\n  position: absolute;\n  width: 100%;\n  background: transparent;\n  bottom: 0;\n  color: #FFFFFF;\n  z-index: 1; }\n  .login-page .footer .copyright a {\n    color: #FFFFFF; }\n\n.login-page .page-header {\n  height: 100%;\n  min-height: -webkit-fill-available; }\n  .login-page .page-header::before {\n    background: rgba(0, 0, 0, 0.2); }\n  .login-page .page-header > .container {\n    padding-top: 100px;\n    padding-bottom: 150px; }\n\n.md-checkbox .md-checkbox-container {\n  border: 1px solid rgba(0, 0, 0, 0.54);\n  border-radius: 3px; }\n  .md-checkbox .md-checkbox-container .md-ripple {\n    overflow: hidden; }\n\n.md-checkbox.md-checked .md-checkbox-container:after {\n  border-color: #9c27b0 !important;\n  top: 1px;\n  left: 6px; }\n\n.md-checkbox .md-checkbox-label {\n  font-weight: 400;\n  font-size: .875rem;\n  color: #aaa;\n  padding-left: 10px; }\n\n.md-checkbox.md-theme-default.md-checked .md-checkbox-container {\n  background-color: transparent !important;\n  border-color: inherit; }\n\n.md-checkbox.md-theme-default.md-checked .md-ripple {\n  color: inherit; }\n\n.md-checkbox.md-disabled .md-checkbox-label,\n.md-checkbox.md-disabled .md-checkbox-container {\n  opacity: .26;\n  border-color: rgba(0, 0, 0, 0.54) !important; }\n\n.md-checkbox.md-checked.md-disabled .md-checkbox-container {\n  background-color: transparent !important;\n  border-color: rgba(0, 0, 0, 0.54) !important;\n  opacity: .26; }\n  .md-checkbox.md-checked.md-disabled .md-checkbox-container:after {\n    border-color: rgba(0, 0, 0, 0.54) !important; }\n\n.md-switch .md-switch-thumb .md-ripple,\n.md-switch .md-switch-thumb:before {\n  overflow: hidden; }\n\n.md-switch {\n  display: flex;\n  margin: 0; }\n  .md-switch .md-switch-label {\n    color: rgba(0, 0, 0, 0.26);\n    font-size: 14px;\n    line-height: 1.42857;\n    font-weight: 400;\n    margin-bottom: .5rem; }\n  .md-switch .md-switch-container {\n    background-color: rgba(80, 80, 80, 0.7) !important; }\n  .md-switch .md-switch-thumb {\n    background-color: #FFFFFF !important;\n    border: 1px solid rgba(0, 0, 0, 0.54);\n    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4); }\n    .md-switch .md-switch-thumb .md-ripple .md-ripple-wave {\n      background-color: rgba(0, 0, 0, 0.54) !important; }\n  .md-switch.md-checked .md-switch-thumb {\n    border: 1px solid #9c27b0; }\n    .md-switch.md-checked .md-switch-thumb .md-ripple .md-ripple-wave {\n      background-color: rgba(156, 39, 176, 0.7) !important; }\n  .md-switch.md-checked .md-switch-container {\n    background-color: rgba(156, 39, 176, 0.7) !important; }\n\n.page-link {\n  position: relative;\n  display: block;\n  padding: .5rem .75rem;\n  margin-left: 0;\n  line-height: 1.25;\n  color: #2196f3;\n  background-color: transparent;\n  border: 0 solid #dee2e6; }\n\n.no-arrows {\n  display: none; }\n\n.pagination {\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem; }\n  .pagination > .page-item > .page-link,\n  .pagination > .page-item > span {\n    border: 0;\n    border-radius: 30px !important;\n    transition: all .3s;\n    margin: 0 3px;\n    padding: 0;\n    min-width: 30px;\n    height: 30px;\n    line-height: 30px;\n    color: #999999;\n    font-weight: 400;\n    font-size: 12px;\n    text-transform: uppercase;\n    background: transparent;\n    text-align: center;\n    cursor: pointer; }\n    .pagination > .page-item > .page-link:hover, .pagination > .page-item > .page-link:focus,\n    .pagination > .page-item > span:hover,\n    .pagination > .page-item > span:focus {\n      color: #999999 !important; }\n  .pagination > .page-item.active > a,\n  .pagination > .page-item.active > span {\n    color: #999999; }\n    .pagination > .page-item.active > a, .pagination > .page-item.active > a:focus, .pagination > .page-item.active > a:hover,\n    .pagination > .page-item.active > span,\n    .pagination > .page-item.active > span:focus,\n    .pagination > .page-item.active > span:hover {\n      background-color: #9c27b0;\n      border-color: #9c27b0;\n      color: #FFFFFF !important;\n      box-shadow: 0 4px 5px 0 rgba(156, 39, 176, 0.14), 0 1px 10px 0 rgba(156, 39, 176, 0.12), 0 2px 4px -1px rgba(156, 39, 176, 0.2); }\n  .pagination.pagination-info > .page-item.active > a, .pagination.pagination-info > .page-item.active > a:focus, .pagination.pagination-info > .page-item.active > a:hover,\n  .pagination.pagination-info > .page-item.active > span,\n  .pagination.pagination-info > .page-item.active > span:focus,\n  .pagination.pagination-info > .page-item.active > span:hover {\n    background-color: #00bcd4;\n    border-color: #00bcd4;\n    box-shadow: 0 4px 5px 0 rgba(0, 188, 212, 0.14), 0 1px 10px 0 rgba(0, 188, 212, 0.12), 0 2px 4px -1px rgba(0, 188, 212, 0.2); }\n  .pagination.pagination-success > .page-item.active > a, .pagination.pagination-success > .page-item.active > a:focus, .pagination.pagination-success > .page-item.active > a:hover,\n  .pagination.pagination-success > .page-item.active > span,\n  .pagination.pagination-success > .page-item.active > span:focus,\n  .pagination.pagination-success > .page-item.active > span:hover {\n    background-color: #4caf50;\n    border-color: #4caf50;\n    box-shadow: 0 4px 5px 0 rgba(76, 175, 80, 0.14), 0 1px 10px 0 rgba(76, 175, 80, 0.12), 0 2px 4px -1px rgba(76, 175, 80, 0.2); }\n  .pagination.pagination-rose > .page-item.active > a, .pagination.pagination-rose > .page-item.active > a:focus, .pagination.pagination-rose > .page-item.active > a:hover,\n  .pagination.pagination-rose > .page-item.active > span,\n  .pagination.pagination-rose > .page-item.active > span:focus,\n  .pagination.pagination-rose > .page-item.active > span:hover {\n    background-color: #e91e63;\n    border-color: #e91e63;\n    box-shadow: 0 4px 5px 0 rgba(233, 30, 99, 0.14), 0 1px 10px 0 rgba(233, 30, 99, 0.12), 0 2px 4px -1px rgba(233, 30, 99, 0.2); }\n  .pagination.pagination-warning > .page-item.active > a, .pagination.pagination-warning > .page-item.active > a:focus, .pagination.pagination-warning > .page-item.active > a:hover,\n  .pagination.pagination-warning > .page-item.active > span,\n  .pagination.pagination-warning > .page-item.active > span:focus,\n  .pagination.pagination-warning > .page-item.active > span:hover {\n    background-color: #ff9800;\n    border-color: #ff9800;\n    box-shadow: 0 4px 5px 0 rgba(255, 152, 0, 0.14), 0 1px 10px 0 rgba(255, 152, 0, 0.12), 0 2px 4px -1px rgba(255, 152, 0, 0.2); }\n  .pagination.pagination-danger > .page-item.active > a, .pagination.pagination-danger > .page-item.active > a:focus, .pagination.pagination-danger > .page-item.active > a:hover,\n  .pagination.pagination-danger > .page-item.active > span,\n  .pagination.pagination-danger > .page-item.active > span:focus,\n  .pagination.pagination-danger > .page-item.active > span:hover {\n    background-color: #f44336;\n    border-color: #f44336;\n    box-shadow: 0 4px 5px 0 rgba(244, 67, 54, 0.14), 0 1px 10px 0 rgba(244, 67, 54, 0.12), 0 2px 4px -1px rgba(244, 67, 54, 0.2); }\n\n.md-radio .md-radio-label {\n  padding-left: 10px;\n  color: #aaa;\n  font-size: .875rem;\n  font-weight: 400; }\n\n.md-radio .md-radio-container {\n  border: 1px solid rgba(0, 0, 0, 0.54) !important;\n  width: 15px;\n  min-width: 15px;\n  height: 15px;\n  top: 2px;\n  transition: .2s !important; }\n  .md-radio .md-radio-container:after {\n    transform: scale3D(0, 0, 0);\n    transition: .2s !important;\n    right: 2px;\n    bottom: 2px;\n    top: 2px;\n    left: 2px;\n    border-radius: 100%; }\n  .md-radio .md-radio-container .md-ripple {\n    overflow: hidden; }\n    .md-radio .md-radio-container .md-ripple .md-ripple-wave {\n      background-color: #9c27b0; }\n\n.md-radio.md-checked .md-radio-container {\n  border-color: #9c27b0 !important; }\n  .md-radio.md-checked .md-radio-container:after {\n    background-color: #9c27b0 !important; }\n\n.md-radio.md-disabled .md-radio-label,\n.md-radio.md-disabled .md-radio-container {\n  opacity: .26;\n  border-color: rgba(0, 0, 0, 0.54) !important; }\n\n.md-radio.md-checked.md-disabled .md-radio-container {\n  background-color: transparent !important;\n  border-color: rgba(0, 0, 0, 0.54) !important;\n  opacity: .26; }\n  .md-radio.md-checked.md-disabled .md-radio-container:after {\n    background-color: rgba(0, 0, 0, 0.54) !important; }\n\n.section-dark .nav-pills > li > a,\n.section-image .nav-pills > li > a {\n  color: #999999; }\n\n.section-dark .nav-pills > li > a:hover,\n.section-dark .nav-pills > li > a:focus,\n.section-image .nav-pills > li > a:hover,\n.section-image .nav-pills > li > a:focus {\n  background-color: #EEEEEE; }\n\n.nav-pills > li > a {\n  line-height: 24px;\n  text-transform: uppercase;\n  font-size: 12px;\n  font-weight: 500;\n  min-width: 100px;\n  text-align: center;\n  color: #555555;\n  transition: all .3s; }\n  .nav-pills > li > a:hover {\n    background-color: rgba(200, 200, 200, 0.2); }\n\n.nav-pills > li i {\n  display: block;\n  font-size: 30px;\n  padding: 15px 0; }\n\n.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {\n  background-color: #9c27b0;\n  color: #FFFFFF;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n\n.nav-pills:not(.nav-pills-icons) > li > a {\n  border-radius: 30px; }\n\n.nav-pills.nav-stacked > li + li {\n  margin-top: 5px; }\n\n.nav-pills.nav-pills-info > li.active > a, .nav-pills.nav-pills-info > li.active > a:focus, .nav-pills.nav-pills-info > li.active > a:hover {\n  background-color: #00bcd4;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n\n.nav-pills.nav-pills-success > li.active > a, .nav-pills.nav-pills-success > li.active > a:focus, .nav-pills.nav-pills-success > li.active > a:hover {\n  background-color: #4caf50;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n\n.nav-pills.nav-pills-warning > li.active > a, .nav-pills.nav-pills-warning > li.active > a:focus, .nav-pills.nav-pills-warning > li.active > a:hover {\n  background-color: #ff9800;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n\n.nav-pills.nav-pills-danger > li.active > a, .nav-pills.nav-pills-danger > li.active > a:focus, .nav-pills.nav-pills-danger > li.active > a:hover {\n  background-color: #f44336;\n  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n\n.tab-space {\n  padding: 20px 0 50px 0px; }\n\n.modal-mask {\n  position: fixed;\n  z-index: 9998;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.2);\n  display: table;\n  transition: opacity .15s ease; }\n\n.modal-wrapper {\n  display: table-cell;\n  vertical-align: middle; }\n\n.picture {\n  max-width: 150px; }\n  .picture img {\n    border-radius: 6px; }\n\n.modal-title {\n  margin: 0;\n  line-height: 1.5; }\n\n.modal-body {\n  padding: 24px 24px 16px; }\n  .modal-body p {\n    margin-top: 0; }\n\n.modal-container {\n  max-width: 500px;\n  margin: 0px auto;\n  position: relative;\n  background-color: #fff;\n  transition: all .3s ease;\n  box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22);\n  border-radius: 6px;\n  border: none; }\n\n.modal-header {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 24px 0;\n  border-top-left-radius: .3rem;\n  border-top-right-radius: .3rem; }\n  .modal-header .md-button .md-button-content i {\n    font-size: 16px !important;\n    opacity: .5; }\n    .modal-header .md-button .md-button-content i:hover, .modal-header .md-button .md-button-content i:focus {\n      opacity: 1; }\n\n.modal-footer {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  padding: 24px;\n  padding-top: 0; }\n  .modal-footer .md-button {\n    margin: 0; }\n    .modal-footer .md-button .md-ripple {\n      padding-left: 16px !important;\n      padding-right: 16px !important;\n      width: auto; }\n\n.notice-modal + .modal-mask .modal-footer,\n.small-alert-modal + .modal-mask .modal-footer {\n  justify-content: center; }\n\n.instruction {\n  margin-bottom: 25px; }\n\n.small-alert-modal + .modal-mask .modal-container {\n  width: 300px;\n  margin: 0 auto; }\n  .small-alert-modal + .modal-mask .modal-container .modal-body {\n    margin-top: 20px; }\n\n.modal-header h3 {\n  margin-top: 0;\n  color: #42b983; }\n\n.modal-default-button {\n  position: absolute !important;\n  right: 9px;\n  top: 12px; }\n\n.md-toolbar {\n  min-height: 56px;\n  padding: 10px 15px;\n  justify-content: center;\n  border-radius: 3px;\n  margin-bottom: 20px;\n  background-color: #999999 !important;\n  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(153, 153, 153, 0.46); }\n  .md-toolbar.md-transparent {\n    background-color: transparent !important;\n    box-shadow: none;\n    padding-top: 25px; }\n    .md-toolbar.md-transparent .md-title,\n    .md-toolbar.md-transparent .md-list .md-list-item-content,\n    .md-toolbar.md-transparent .md-list-item-container .md-icon, .md-toolbar.md-transparent, .md-toolbar.md-transparent:hover, .md-toolbar.md-transparent:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar .md-toolbar-section-end .md-list {\n    justify-content: flex-end; }\n  .md-toolbar .md-toolbar-section-start .md-list {\n    justify-content: flex-start; }\n  .md-toolbar.md-absolute {\n    position: fixed;\n    z-index: 1030;\n    left: 0;\n    right: 0;\n    border-radius: 0; }\n  .md-toolbar .md-list-item-content .fab,\n  .md-toolbar .md-list-item-content .fa {\n    font-size: 1.25rem;\n    max-width: 24px;\n    width: 24px;\n    text-align: center;\n    margin-right: 4px; }\n  .md-toolbar .notification {\n    position: absolute;\n    top: 5px;\n    border: 1px solid #FFF;\n    right: 10px;\n    font-size: 9px;\n    background: #f44336;\n    color: #FFFFFF;\n    min-width: 20px;\n    padding: 0px 5px;\n    height: 20px;\n    border-radius: 10px;\n    text-align: center;\n    line-height: 19px;\n    vertical-align: middle;\n    display: block; }\n  .md-toolbar .navbar-nav > li > .dropdown-menu {\n    margin-top: -20px; }\n  .md-toolbar .navbar-nav > li.open > .dropdown-menu {\n    margin-top: 0; }\n  .md-toolbar .navbar-nav > .active > a, .md-toolbar .navbar-nav > .active > a:hover, .md-toolbar .navbar-nav > .active > a:focus {\n    color: inherit;\n    background-color: rgba(255, 255, 255, 0.1); }\n  .md-toolbar .navbar-nav > .disabled > a, .md-toolbar .navbar-nav > .disabled > a:hover, .md-toolbar .navbar-nav > .disabled > a:focus {\n    color: inherit;\n    background-color: transparent;\n    opacity: 0.9; }\n  .md-toolbar .navbar-nav .profile-photo {\n    padding: 0 5px 0; }\n    .md-toolbar .navbar-nav .profile-photo .profile-photo-small {\n      height: 40px;\n      width: 40px; }\n  .md-toolbar .dropdown-menu {\n    border-radius: 3px !important; }\n    .md-toolbar .dropdown-menu li > a:hover, .md-toolbar .dropdown-menu li > a:focus {\n      color: #FFFFFF !important;\n      background-color: #4caf50 !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n    .md-toolbar .dropdown-menu .active > a {\n      background-color: #4caf50 !important;\n      color: #FFFFFF !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n      .md-toolbar .dropdown-menu .active > a:hover, .md-toolbar .dropdown-menu .active > a:focus {\n        color: #FFFFFF !important; }\n  .md-toolbar .md-title,\n  .md-toolbar .md-list .md-list-item-content,\n  .md-toolbar .md-toolbar-toggle .icon-bar, .md-toolbar, .md-toolbar:hover, .md-toolbar:focus {\n    color: #FFFFFF !important; }\n  .md-toolbar.md-white {\n    background-color: #FFFFFF !important;\n    box-shadow: 0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15); }\n    .md-toolbar.md-white .md-title,\n    .md-toolbar.md-white .md-list .md-list-item-content,\n    .md-toolbar.md-white .md-toolbar-toggle .icon-bar, .md-toolbar.md-white, .md-toolbar.md-white:hover, .md-toolbar.md-white:focus {\n      color: #555 !important; }\n    .md-toolbar.md-white .md-list-item .md-button.md-simple i, .md-toolbar.md-white .md-list-item .md-button.md-simple, .md-toolbar.md-white .md-list-item .md-button.md-simple:hover i, .md-toolbar.md-white .md-list-item .md-button.md-simple:hover, .md-toolbar.md-white .md-list-item .md-button.md-simple:focus i, .md-toolbar.md-white .md-list-item .md-button.md-simple:focus, .md-toolbar.md-white .md-list-item .md-button.md-simple:active i, .md-toolbar.md-white .md-list-item .md-button.md-simple:active, .md-toolbar.md-white .md-list-item .md-button.md-simple.active i, .md-toolbar.md-white .md-list-item .md-button.md-simple.active, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:focus i, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:focus, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:hover i, .md-toolbar.md-white .md-list-item .md-button.md-simple:active:hover, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:focus i, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:focus, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:hover i, .md-toolbar.md-white .md-list-item .md-button.md-simple.active:hover,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle i,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:focus i,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:focus,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:hover i,\n    .open > .md-toolbar.md-white .md-list-item .md-button.md-simple.dropdown-toggle:hover {\n      color: #555 !important; }\n  .md-toolbar.md-primary {\n    background-color: #9c27b0 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(156, 39, 176, 0.46); }\n    .md-toolbar.md-primary .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-primary .dropdown-menu li > a:hover, .md-toolbar.md-primary .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #9c27b0 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n      .md-toolbar.md-primary .dropdown-menu .active > a {\n        background-color: #9c27b0 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n        .md-toolbar.md-primary .dropdown-menu .active > a:hover, .md-toolbar.md-primary .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-primary .md-title,\n    .md-toolbar.md-primary .md-list .md-list-item-content,\n    .md-toolbar.md-primary .md-toolbar-toggle .icon-bar, .md-toolbar.md-primary, .md-toolbar.md-primary:hover, .md-toolbar.md-primary:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-danger {\n    background-color: #f44336 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(244, 67, 54, 0.46); }\n    .md-toolbar.md-danger .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-danger .dropdown-menu li > a:hover, .md-toolbar.md-danger .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #f44336 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n      .md-toolbar.md-danger .dropdown-menu .active > a {\n        background-color: #f44336 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n        .md-toolbar.md-danger .dropdown-menu .active > a:hover, .md-toolbar.md-danger .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-danger .md-title,\n    .md-toolbar.md-danger .md-list .md-list-item-content,\n    .md-toolbar.md-danger .md-toolbar-toggle .icon-bar, .md-toolbar.md-danger, .md-toolbar.md-danger:hover, .md-toolbar.md-danger:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-warning {\n    background-color: #ff9800 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(255, 152, 0, 0.46); }\n    .md-toolbar.md-warning .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-warning .dropdown-menu li > a:hover, .md-toolbar.md-warning .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #ff9800 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n      .md-toolbar.md-warning .dropdown-menu .active > a {\n        background-color: #ff9800 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n        .md-toolbar.md-warning .dropdown-menu .active > a:hover, .md-toolbar.md-warning .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-warning .md-title,\n    .md-toolbar.md-warning .md-list .md-list-item-content,\n    .md-toolbar.md-warning .md-toolbar-toggle .icon-bar, .md-toolbar.md-warning, .md-toolbar.md-warning:hover, .md-toolbar.md-warning:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-info {\n    background-color: #00bcd4 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(0, 188, 212, 0.46); }\n    .md-toolbar.md-info .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-info .dropdown-menu li > a:hover, .md-toolbar.md-info .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #00bcd4 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n      .md-toolbar.md-info .dropdown-menu .active > a {\n        background-color: #00bcd4 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n        .md-toolbar.md-info .dropdown-menu .active > a:hover, .md-toolbar.md-info .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-info .md-title,\n    .md-toolbar.md-info .md-list .md-list-item-content,\n    .md-toolbar.md-info .md-toolbar-toggle .icon-bar, .md-toolbar.md-info, .md-toolbar.md-info:hover, .md-toolbar.md-info:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-success {\n    background-color: #4caf50 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(76, 175, 80, 0.46); }\n    .md-toolbar.md-success .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-success .dropdown-menu li > a:hover, .md-toolbar.md-success .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #4caf50 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n      .md-toolbar.md-success .dropdown-menu .active > a {\n        background-color: #4caf50 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n        .md-toolbar.md-success .dropdown-menu .active > a:hover, .md-toolbar.md-success .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-success .md-title,\n    .md-toolbar.md-success .md-list .md-list-item-content,\n    .md-toolbar.md-success .md-toolbar-toggle .icon-bar, .md-toolbar.md-success, .md-toolbar.md-success:hover, .md-toolbar.md-success:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-rose {\n    background-color: #e91e63 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(233, 30, 99, 0.46); }\n    .md-toolbar.md-rose .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-rose .dropdown-menu li > a:hover, .md-toolbar.md-rose .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #e91e63 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n      .md-toolbar.md-rose .dropdown-menu .active > a {\n        background-color: #e91e63 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n        .md-toolbar.md-rose .dropdown-menu .active > a:hover, .md-toolbar.md-rose .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-rose .md-title,\n    .md-toolbar.md-rose .md-list .md-list-item-content,\n    .md-toolbar.md-rose .md-toolbar-toggle .icon-bar, .md-toolbar.md-rose, .md-toolbar.md-rose:hover, .md-toolbar.md-rose:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.md-dark {\n    background-color: #212121 !important;\n    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(33, 33, 33, 0.46); }\n    .md-toolbar.md-dark .dropdown-menu {\n      border-radius: 3px !important; }\n      .md-toolbar.md-dark .dropdown-menu li > a:hover, .md-toolbar.md-dark .dropdown-menu li > a:focus {\n        color: #FFFFFF !important;\n        background-color: #212121 !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(33, 33, 33, 0.6); }\n      .md-toolbar.md-dark .dropdown-menu .active > a {\n        background-color: #212121 !important;\n        color: #FFFFFF !important;\n        box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(33, 33, 33, 0.6); }\n        .md-toolbar.md-dark .dropdown-menu .active > a:hover, .md-toolbar.md-dark .dropdown-menu .active > a:focus {\n          color: #FFFFFF !important; }\n    .md-toolbar.md-dark .md-title,\n    .md-toolbar.md-dark .md-list .md-list-item-content,\n    .md-toolbar.md-dark .md-toolbar-toggle .icon-bar, .md-toolbar.md-dark, .md-toolbar.md-dark:hover, .md-toolbar.md-dark:focus {\n      color: #FFFFFF !important; }\n  .md-toolbar.navbar-transparent {\n    background-color: transparent;\n    box-shadow: none;\n    border-bottom: 0; }\n    .md-toolbar.navbar-transparent .logo-container .brand {\n      color: #FFFFFF; }\n  .md-toolbar .md-toolbar-row {\n    min-height: auto;\n    padding-left: 15px;\n    padding-right: 15px; }\n  .md-toolbar .md-button {\n    margin: 0; }\n  .md-toolbar .profile-photo {\n    padding: 0;\n    margin: 0 3px; }\n  .md-toolbar .profile-photo-small {\n    height: 40px;\n    width: 40px;\n    overflow: hidden;\n    border-radius: 50%; }\n  .md-toolbar .dropdown .md-button:not(.md-round).md-just-icon {\n    height: unset;\n    width: unset; }\n  .md-toolbar .md-toolbar-toggle .md-button-content {\n    display: block;\n    align-items: unset; }\n  .md-toolbar .notification {\n    position: absolute;\n    top: 0px;\n    border: 1px solid #FFF;\n    right: 7px;\n    font-size: 9px;\n    background: #f44336;\n    color: #FFFFFF;\n    min-width: 20px;\n    padding: 0px 5px;\n    height: 20px;\n    border-radius: 10px;\n    text-align: center;\n    line-height: 19px;\n    vertical-align: middle;\n    display: block; }\n  .md-toolbar.md-theme-default.md-transparent, .md-toolbar.md-theme-default,\n  .md-toolbar.md-theme-default .md-title,\n  .md-toolbar.md-theme-default.md-transparent .md-title {\n    color: #555555; }\n  .md-toolbar .md-title {\n    height: 50px;\n    min-width: 50px;\n    display: flex;\n    align-items: center;\n    font-size: 18px;\n    margin-left: 0;\n    margin-right: 15px;\n    padding: 10px 0;\n    font-weight: 300;\n    letter-spacing: normal; }\n  .md-toolbar .md-toolbar-toggle {\n    width: 40px; }\n    .md-toolbar .md-toolbar-toggle .icon-bar {\n      position: relative;\n      display: block;\n      width: 22px;\n      height: 2px;\n      background-color: inherit;\n      border: 1px solid;\n      border-radius: 1px; }\n      .md-toolbar .md-toolbar-toggle .icon-bar + .icon-bar {\n        margin-top: 4px; }\n  .md-toolbar .md-list {\n    flex-flow: row;\n    padding-top: 0;\n    padding-bottom: 0;\n    color: inherit !important;\n    background-color: transparent !important; }\n    .md-toolbar .md-list:hover .md-list-item > a,\n    .md-toolbar .md-list:focus .md-list-item > a,\n    .md-toolbar .md-list > a:hover {\n      background-color: transparent !important; }\n    .md-toolbar .md-list .md-list-item > a:not(:last-child) {\n      margin-right: 5px; }\n  .md-toolbar .md-field {\n    padding: 0;\n    margin: 0; }\n    .md-toolbar .md-field:after, .md-toolbar .md-field:before {\n      bottom: 5px; }\n    .md-toolbar .md-field .md-input {\n      margin-top: 6px; }\n    .md-toolbar .md-field label {\n      top: 15px; }\n    .md-toolbar .md-field.md-focused label,\n    .md-toolbar .md-field.md-has-value label {\n      top: -4px; }\n  .md-toolbar .md-collapse {\n    display: flex;\n    width: 100%;\n    justify-content: flex-end; }\n\n.md-menu-content {\n  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);\n  border-radius: 3px !important;\n  overflow: hidden; }\n  .md-menu-content .md-list .md-list-item a {\n    font-size: 10px; }\n\n.md-list-item {\n  list-style: none; }\n  .md-list-item .router-link-active .md-ripple {\n    background-color: rgba(255, 255, 255, 0.1); }\n  .md-list-item a {\n    color: inherit !important;\n    padding-top: 15px;\n    padding-bottom: 15px;\n    font-weight: 400;\n    font-size: 12px;\n    text-transform: uppercase;\n    overflow: visible;\n    border-radius: 3px;\n    position: relative;\n    display: flex;\n    align-items: center;\n    padding: 0;\n    text-decoration: none; }\n    .md-list-item a:hover, .md-list-item a:focus {\n      color: inherit;\n      background-color: transparent; }\n    .md-list-item a .material-icons,\n    .md-list-item a .md-icon,\n    .md-list-item a .fab,\n    .md-list-item a .fa {\n      font-size: 20px !important;\n      margin: 0 !important;\n      width: 24px;\n      min-width: 24px;\n      text-align: center; }\n    .md-list-item a i + p {\n      margin: 0;\n      margin-left: 5px !important; }\n    .md-list-item a .md-ripple {\n      padding: 10px 15px;\n      border-radius: 3px; }\n      .md-list-item a .md-ripple p {\n        font-weight: 400;\n        font-size: 12px;\n        margin: 0; }\n      .md-list-item a .md-ripple .md-icon {\n        transition: none;\n        color: inherit !important; }\n      .md-list-item a .md-ripple > span {\n        border-radius: 3px; }\n  .md-list-item .md-list-item-content:not(.md-ripple) {\n    padding: 0; }\n  .md-list-item .md-list-item-container .md-just-icon .md-ripple .md-icon {\n    margin: 0; }\n  .md-list-item .md-button.md-button-link:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple {\n    padding: 12px 15px;\n    min-height: 48px; }\n    .md-list-item .md-button.md-button-link:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple .md-button-content i {\n      font-size: 20px !important;\n      justify-content: center;\n      display: flex;\n      align-items: center;\n      width: 24px;\n      min-width: 24px; }\n\n.md-tooltip,\n.popover {\n  padding: 10px 15px;\n  min-width: 140px;\n  max-width: 200px;\n  height: auto;\n  text-align: center;\n  border-radius: 3px;\n  background-color: #FFFFFF !important;\n  color: #555555 !important;\n  font-size: 0.875rem;\n  font-weight: 400;\n  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2); }\n  .md-tooltip:after,\n  .popover:after {\n    position: absolute;\n    bottom: -5px;\n    height: 0;\n    left: 0;\n    right: 0;\n    width: 5px;\n    margin-left: auto;\n    margin-right: auto;\n    vertical-align: .255em;\n    content: \"\"; }\n  .md-tooltip.popover,\n  .popover.popover {\n    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n    max-width: 276px;\n    padding: 0;\n    opacity: 0;\n    z-index: 10; }\n    .md-tooltip.popover:after,\n    .popover.popover:after {\n      width: 8px; }\n  .md-tooltip.open,\n  .popover.open {\n    opacity: 1; }\n  .md-tooltip[x-placement=\"top\"]:after,\n  .popover[x-placement=\"top\"]:after {\n    border-top: 6px solid #FFFFFF;\n    border-right: 6px solid transparent;\n    border-bottom: 0;\n    border-left: 6px solid transparent;\n    bottom: -6px; }\n  .md-tooltip.popover[x-placement=\"top\"]:after,\n  .popover.popover[x-placement=\"top\"]:after {\n    margin-left: auto;\n    margin-right: auto;\n    left: 0;\n    right: 0;\n    bottom: -6px;\n    transform: none;\n    top: unset;\n    border-top: 6px solid #FFFFFF;\n    border-right: 6px solid transparent;\n    border-bottom: 0;\n    border-left: 6px solid transparent; }\n  .md-tooltip[x-placement=\"bottom\"]:after,\n  .popover[x-placement=\"bottom\"]:after {\n    border-top: 0;\n    top: -6px;\n    border-right: 6px solid transparent;\n    border-bottom: 6px solid #FFFFFF;\n    border-left: 6px solid transparent; }\n  .md-tooltip.popover[x-placement=\"bottom\"]:after,\n  .popover.popover[x-placement=\"bottom\"]:after {\n    border-top: 0;\n    top: -6px;\n    transform: none;\n    margin-left: auto;\n    margin-right: auto;\n    left: 0;\n    right: 0;\n    border-right: 6px solid transparent;\n    border-bottom: 6px solid #FFFFFF;\n    border-left: 6px solid transparent; }\n  .md-tooltip[x-placement=\"left\"]:after,\n  .popover[x-placement=\"left\"]:after {\n    right: -6px;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-left: 6px solid #FFFFFF;\n    margin-left: unset;\n    margin-right: unset;\n    left: auto;\n    top: 50%;\n    transform: translateY(-50%);\n    -webkit-transform: translateY(-50%); }\n  .md-tooltip.popover[x-placement=\"left\"]:after,\n  .popover.popover[x-placement=\"left\"]:after {\n    right: -8px;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-left: 6px solid #FFFFFF; }\n  .md-tooltip[x-placement=\"right\"]:after,\n  .popover[x-placement=\"right\"]:after {\n    top: 50%;\n    left: auto;\n    margin-left: unset;\n    margin-right: unset;\n    transform: translateY(-50%);\n    -webkit-transform: translateY(-50%);\n    left: -6px;\n    right: auto;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-right: 6px solid #FFFFFF; }\n  .md-tooltip.popover[x-placement=\"right\"]:after,\n  .popover.popover[x-placement=\"right\"]:after {\n    left: -8px;\n    right: auto;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n    border-right: 6px solid #FFFFFF; }\n\n.popover {\n  will-change: opacity, visibility;\n  transition: opacity .15s linear, visibility .15s linear; }\n  .popover:after {\n    top: 50%;\n    left: auto;\n    margin-left: unset;\n    margin-right: unset;\n    transform: translateY(-50%);\n    -webkit-transform: translateY(-50%); }\n\n.popover-header {\n  background-color: #fff;\n  border: none;\n  padding: 15px 15px 5px;\n  font-size: 1.125rem;\n  margin: 0;\n  color: #555;\n  text-align: left; }\n\n.popover-body {\n  padding: 10px 15px 15px;\n  line-height: 1.4;\n  color: #555;\n  text-align: left; }\n\n.v-popover {\n  display: inline-block;\n  margin-left: 5px; }\n\nfooter {\n  padding: 15px 0; }\n  footer nav,\n  footer .copyright {\n    display: inline-block; }\n  footer ul {\n    padding: 0;\n    margin: 0;\n    list-style: none; }\n    footer ul li {\n      display: inline-block; }\n      footer ul li a {\n        color: inherit !important;\n        padding: 15px;\n        font-weight: 500;\n        font-size: 12px;\n        text-transform: uppercase;\n        border-radius: 3px;\n        text-decoration: none;\n        position: relative;\n        display: block; }\n        footer ul li a:hover {\n          text-decoration: none; }\n      footer ul li:first-child a {\n        margin-left: -15px; }\n  footer .copyright {\n    padding: 15px 0;\n    margin: 0; }\n    footer .copyright .md-icon {\n      font-size: 18px !important;\n      color: inherit !important;\n      width: auto !important;\n      min-width: auto !important; }\n\n.dropdown-menu {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  z-index: 1000;\n  display: none;\n  float: left;\n  min-width: 160px;\n  padding: 5px 0;\n  margin: 2px 0 0;\n  font-size: 14px;\n  text-align: left;\n  list-style: none;\n  background-color: #fff;\n  border-radius: 4px;\n  border: 0;\n  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }\n  .dropdown-menu li > a {\n    font-size: 13px;\n    padding: .625rem 1.5rem;\n    margin: 0 5px;\n    text-transform: none;\n    line-height: 1.428571;\n    color: #333333 !important;\n    border-radius: 2px;\n    -webkit-transition: all 150ms linear;\n    -moz-transition: all 150ms linear;\n    -o-transition: all 150ms linear;\n    -ms-transition: all 150ms linear;\n    transition: all 150ms linear; }\n    .dropdown-menu li > a:hover, .dropdown-menu li > a:focus {\n      box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2); }\n  .dropdown-menu.dropdown-with-icons li > a {\n    padding: 12px 20px 12px 12px; }\n    .dropdown-menu.dropdown-with-icons li > a .material-icons {\n      vertical-align: middle;\n      font-size: 24px;\n      position: relative;\n      margin-top: -4px;\n      top: 1px;\n      margin-right: 12px;\n      opacity: .5; }\n  .dropdown-menu li {\n    position: relative; }\n    .dropdown-menu li a:hover,\n    .dropdown-menu li a:focus,\n    .dropdown-menu li a:active {\n      background-color: #4caf50 !important;\n      color: #FFFFFF !important; }\n\n.dropdown-divider {\n  height: 0;\n  margin: .5rem 0;\n  overflow: hidden;\n  border-top: 1px solid #e9ecef; }\n\n.dropdown-header {\n  font-size: .75rem;\n  padding-top: .1875rem;\n  padding-bottom: .1875rem;\n  text-transform: none;\n  color: #777;\n  line-height: 1.428571;\n  font-weight: 300;\n  display: block;\n  padding: .5rem 1.25rem; }\n\n.dropdown-toggle:not(.md-button):after,\n.dropdown-toggle .md-ripple:after {\n  width: 0;\n  height: 0;\n  vertical-align: .255em;\n  content: \"\";\n  border-right: .3em solid transparent;\n  border-left: .3em solid transparent;\n  display: inline-block;\n  margin-left: .555em;\n  border-top: .3em solid;\n  border-bottom: 0;\n  margin-top: -1px;\n  will-change: transform;\n  transition: transform 150ms linear; }\n\n.navbar-nav > li > .dropdown-menu,\n.dropdown .dropdown-menu,\n.dropdown-menu.bootstrap-datetimepicker-widget {\n  -webkit-transition: all 150ms linear;\n  -moz-transition: all 150ms linear;\n  -o-transition: all 150ms linear;\n  -ms-transition: all 150ms linear;\n  transition: all 150ms linear;\n  display: block;\n  transform: scale(0);\n  transform-origin: 0 0;\n  opacity: 0;\n  filter: alpha(opacity=0); }\n\n.navbar-nav > li.open > .dropdown-menu,\n.dropdown.open .dropdown-menu,\n.dropdown-menu.bootstrap-datetimepicker-widget.open {\n  opacity: 1;\n  filter: alpha(opacity=100);\n  transform: scale(1); }\n\n.dropdown .dropdown-menu.dropdown-menu-right {\n  transform-origin: 100% 0; }\n\n.dropdown-menu-right {\n  right: 0;\n  left: auto; }\n\n.md-list-item.dropdown .md-list-item-container a[data-toggle=\"dropdown\"] {\n  padding: 10px 15px; }\n\n.md-list-item.dropdown .md-list-item-container .md-ripple {\n  padding: 0; }\n\n.md-ripple {\n  -webkit-mask-image: none;\n  overflow: hidden; }\n  .md-ripple > span {\n    width: 100%;\n    height: 100%;\n    z-index: -1; }\n\n.md-card {\n  display: inline-block;\n  position: relative;\n  width: 100%;\n  margin: 30px 0;\n  overflow: unset;\n  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n  border-radius: 6px;\n  color: rgba(0,0,0, 0.87);\n  background: #fff; }\n  .md-card.row-space .header {\n    padding: 15px 20px 0; }\n  .md-card .title {\n    margin-top: 0;\n    margin-bottom: 5px; }\n  .md-card .card-image {\n    height: 60%;\n    position: relative;\n    overflow: hidden;\n    margin-left: 15px;\n    margin-right: 15px;\n    margin-top: -30px;\n    border-radius: 6px; }\n    .md-card .card-image img {\n      width: 100%;\n      height: 100%;\n      border-radius: 6px;\n      pointer-events: none; }\n    .md-card .card-image .card-title {\n      position: absolute;\n      bottom: 15px;\n      left: 15px;\n      color: #fff;\n      font-size: 1.125rem;\n      text-shadow: 0 2px 5px rgba(33, 33, 33, 0.5); }\n  .md-card .category:not([class*=\"text-\"]) {\n    color: #999999; }\n  .md-card .md-card-content {\n    padding: .9375rem 1.875rem;\n    line-height: inherit; }\n    .md-card .md-card-content .category {\n      margin: 0; }\n  .md-card .md-card-header {\n    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n    margin: -40px 20px 15px;\n    border-radius: 3px;\n    padding: 20px 0;\n    background-color: #999999; }\n    .md-card .md-card-header .title,\n    .md-card .md-card-header .card-title {\n      color: #FFFFFF; }\n    .md-card .md-card-header .category {\n      margin: 0;\n      color: rgba(255, 255, 255, 0.62); }\n    .md-card .md-card-header a {\n      color: #FFFFFF !important; }\n    .md-card .md-card-header.card-chart {\n      padding: 0;\n      min-height: 160px; }\n      .md-card .md-card-header.card-chart + .content h4 {\n        margin-top: 0; }\n    .md-card .md-card-header .ct-label {\n      color: rgba(255, 255, 255, 0.7); }\n    .md-card .md-card-header .ct-grid {\n      stroke: rgba(255, 255, 255, 0.2); }\n    .md-card .md-card-header .ct-series-a .ct-point,\n    .md-card .md-card-header .ct-series-a .ct-line,\n    .md-card .md-card-header .ct-series-a .ct-bar,\n    .md-card .md-card-header .ct-series-a .ct-slice-donut {\n      stroke: rgba(255, 255, 255, 0.8); }\n    .md-card .md-card-header .ct-series-a .ct-slice-pie,\n    .md-card .md-card-header .ct-series-a .ct-area {\n      fill: rgba(255, 255, 255, 0.4); }\n  .md-card .chart-title {\n    position: absolute;\n    top: 25px;\n    width: 100%;\n    text-align: center; }\n    .md-card .chart-title h3 {\n      margin: 0;\n      color: #FFFFFF; }\n    .md-card .chart-title h6 {\n      margin: 0;\n      color: rgba(255, 255, 255, 0.4); }\n  .md-card .md-card-actions {\n    margin: 0 20px 10px;\n    padding: 10px 0 0 0;\n    border-top: 1px solid #eeeeee; }\n    .md-card .md-card-actions .content {\n      display: block; }\n    .md-card .md-card-actions div {\n      display: inline-block; }\n    .md-card .md-card-actions .author {\n      color: #999999; }\n    .md-card .md-card-actions .stats {\n      line-height: 22px;\n      color: #999999;\n      font-size: 12px; }\n      .md-card .md-card-actions .stats .md-icon.md-theme-default.md-icon-font {\n        position: relative;\n        top: -1px;\n        font-size: 16px !important;\n        color: #999999; }\n    .md-card .md-card-actions h6 {\n      color: #999999; }\n  .md-card img {\n    width: 100%;\n    height: auto; }\n  .md-card .category .md-icon {\n    position: relative;\n    top: 6px;\n    line-height: 0; }\n  .md-card .category-social .fa {\n    font-size: 24px;\n    position: relative;\n    margin-top: -4px;\n    top: 2px;\n    margin-right: 5px; }\n  .md-card .author .avatar {\n    width: 30px;\n    height: 30px;\n    overflow: hidden;\n    border-radius: 50%;\n    margin-right: 5px; }\n  .md-card .author a {\n    color: #3C4858;\n    text-decoration: none; }\n    .md-card .author a .ripple-container {\n      display: none; }\n  .md-card .table {\n    margin-bottom: 0; }\n    .md-card .table tr:first-child td {\n      border-top: none; }\n  .md-card [data-background-color=\"purple\"],\n  .md-card .md-card-header-primary,\n  .md-card .md-tabs.md-primary .md-tabs-navigation {\n    background: linear-gradient(60deg, #ab47bc, #7b1fa2);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n  .md-card [data-background-color=\"blue\"],\n  .md-card .md-card-header-info,\n  .md-card .md-tabs.md-info .md-tabs-navigation {\n    background: linear-gradient(60deg, #26c6da, #0097a7);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n  .md-card [data-background-color=\"green\"],\n  .md-card .md-card-header-green,\n  .md-card .md-tabs.md-success .md-tabs-navigation {\n    background: linear-gradient(60deg, #66bb6a, #388e3c);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n  .md-card [data-background-color=\"orange\"],\n  .md-card .md-card-header-orange,\n  .md-card .md-tabs.md-warning .md-tabs-navigation {\n    background: linear-gradient(60deg, #ffa726, #f57c00);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n  .md-card [data-background-color=\"red\"],\n  .md-card .md-card-header-red,\n  .md-card .md-tabs.md-danger .md-tabs-navigation {\n    background: linear-gradient(60deg, #ef5350, #d32f2f);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n  .md-card [data-background-color=\"rose\"],\n  .md-card .md-card-header-rose,\n  .md-card .md-tabs.md-rose .md-tabs-navigation {\n    background: linear-gradient(60deg, #ec407a, #c2185b);\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n  .md-card [data-background-color] {\n    color: #FFFFFF; }\n    .md-card [data-background-color] a {\n      color: #FFFFFF; }\n\n.md-card-stats .title {\n  margin: 0; }\n  .md-card-stats .title small {\n    color: #999999;\n    font-size: 65%;\n    line-height: 1;\n    font-weight: 400; }\n\n.md-card-stats .md-card-header {\n  float: left;\n  text-align: center; }\n  .md-card-stats .md-card-header i {\n    font-size: 36px !important;\n    line-height: 56px;\n    width: 56px;\n    height: 56px;\n    color: #FFFFFF !important; }\n\n.md-card-stats .md-card-content {\n  text-align: right;\n  padding-top: 10px; }\n\n.card-nav-tabs .header-raised {\n  margin-top: -30px; }\n\n.card-nav-tabs .nav-tabs {\n  background: transparent;\n  padding: 0; }\n\n.card-nav-tabs .nav-tabs-title {\n  float: left;\n  padding: 10px 10px 10px 0;\n  line-height: 24px; }\n\n.md-card-plain {\n  background: transparent !important;\n  box-shadow: none !important; }\n  .md-card-plain .md-card-header {\n    margin-left: 0;\n    margin-right: 0; }\n  .md-card-plain .md-card-content {\n    padding-left: 5px;\n    padding-right: 5px; }\n  .md-card-plain .card-image {\n    margin: 0;\n    border-radius: 3px; }\n    .md-card-plain .card-image img {\n      border-radius: 3px; }\n\n.iframe-container {\n  margin: 0 -20px 0; }\n  .iframe-container iframe {\n    width: 100%;\n    height: 500px;\n    border: 0;\n    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n\n.md-card-profile,\n.card-testimonial {\n  margin-top: 30px;\n  text-align: center; }\n  .md-card-profile .btn-just-icon.btn-raised,\n  .card-testimonial .btn-just-icon.btn-raised {\n    margin-left: 6px;\n    margin-right: 6px; }\n  .md-card-profile .md-card-avatar,\n  .card-testimonial .md-card-avatar {\n    max-width: 130px;\n    max-height: 130px;\n    margin: -50px auto 0;\n    border-radius: 50%;\n    overflow: hidden;\n    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }\n    .md-card-profile .md-card-avatar + .md-card-content,\n    .card-testimonial .md-card-avatar + .md-card-content {\n      margin-top: 15px; }\n  .md-card-profile.md-card-plain .card-avatar,\n  .card-testimonial.md-card-plain .card-avatar {\n    margin-top: 0; }\n\n.md-card-tabs {\n  margin-top: 0; }\n  .md-card-tabs .md-list {\n    flex-flow: initial;\n    padding: 0 15px; }\n  .md-card-tabs.page-subcategories > .md-card-header .title {\n    margin-top: 30px !important;\n    margin-bottom: 25px !important;\n    min-height: 32px; }\n  .md-card-tabs .tab-content {\n    padding: 20px 0 9px; }\n  .md-card-tabs .md-list-item + .md-list-item {\n    margin-left: 5px; }\n  .md-card-tabs .md-list .md-list-item .md-list-item-button {\n    line-height: 24px;\n    text-transform: uppercase;\n    font-size: 12px;\n    font-weight: 500;\n    min-width: 100px;\n    color: #3C4858 !important;\n    transition: all .3s;\n    border-radius: 30px;\n    padding: 0; }\n    .md-card-tabs .md-list .md-list-item .md-list-item-button .md-icon {\n      display: flex;\n      width: auto;\n      height: auto;\n      margin: 0;\n      font-size: 30px !important;\n      padding: 15px 0;\n      color: #555; }\n    .md-card-tabs .md-list .md-list-item .md-list-item-button .md-list-item-content {\n      min-height: auto;\n      padding: 10px 15px;\n      justify-content: center;\n      display: flex; }\n    .md-card-tabs .md-list .md-list-item .md-list-item-button:hover, .md-card-tabs .md-list .md-list-item .md-list-item-button:focus {\n      background-color: rgba(199, 199, 199, 0.2) !important; }\n  .md-card-tabs .md-list .md-list-item:not(.active) .md-list-item-button .md-list-item-content {\n    color: #555; }\n  .md-card-tabs .active.md-list-item .md-list-item-button {\n    color: #FFFFFF !important; }\n    .md-card-tabs .active.md-list-item .md-list-item-button, .md-card-tabs .active.md-list-item .md-list-item-button:hover, .md-card-tabs .active.md-list-item .md-list-item-button:focus {\n      background-color: #999999 !important;\n      box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(153, 153, 153, 0.6); }\n    .md-card-tabs .active.md-list-item .md-list-item-button .md-list-item-content .md-icon, .md-card-tabs .active.md-list-item .md-list-item-button {\n      color: #FFFFFF !important; }\n  .md-card-tabs .active.md-list-item.md-rose .md-list-item-button, .md-card-tabs .active.md-list-item.md-rose .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-rose .md-list-item-button:focus {\n    background-color: #e91e63 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(233, 30, 99, 0.6); }\n  .md-card-tabs .active.md-list-item.md-primary .md-list-item-button, .md-card-tabs .active.md-list-item.md-primary .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-primary .md-list-item-button:focus {\n    background-color: #9c27b0 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6); }\n  .md-card-tabs .active.md-list-item.md-warning .md-list-item-button, .md-card-tabs .active.md-list-item.md-warning .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-warning .md-list-item-button:focus {\n    background-color: #ff9800 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 152, 0, 0.6); }\n  .md-card-tabs .active.md-list-item.md-info .md-list-item-button, .md-card-tabs .active.md-list-item.md-info .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-info .md-list-item-button:focus {\n    background-color: #00bcd4 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(0, 188, 212, 0.6); }\n  .md-card-tabs .active.md-list-item.md-success .md-list-item-button, .md-card-tabs .active.md-list-item.md-success .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-success .md-list-item-button:focus {\n    background-color: #4caf50 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(76, 175, 80, 0.6); }\n  .md-card-tabs .active.md-list-item.md-danger .md-list-item-button, .md-card-tabs .active.md-list-item.md-danger .md-list-item-button:hover, .md-card-tabs .active.md-list-item.md-danger .md-list-item-button:focus {\n    background-color: #f44336 !important;\n    box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(244, 67, 54, 0.6); }\n  .md-card-tabs.md-card-plain .md-card-header,\n  .md-card-tabs.md-card-plain .md-list {\n    background-color: transparent !important; }\n  .md-card-tabs.md-card-plain .title {\n    justify-content: center; }\n\n.flex-column .md-card-content {\n  display: flex;\n  flex-flow: initial; }\n\n.flex-column .md-list {\n  flex-direction: column;\n  min-width: 148px; }\n  .flex-column .md-list .md-list-item + .md-list-item {\n    margin: 0;\n    margin-top: 5px; }\n\n.flex-column .tab-content {\n  padding: 0;\n  padding-left: 30px; }\n\n.nav-pills-icons .md-list .md-list-item .md-list-item-button {\n  border-radius: 4px; }\n  .nav-pills-icons .md-list .md-list-item .md-list-item-button .md-list-item-content {\n    flex-direction: column-reverse; }\n\n.md-card-login {\n  margin: 0 auto; }\n  .md-card-login .md-button {\n    margin: .3125rem 1px; }\n  .md-card-login .social-line {\n    margin-top: 1rem; }\n  .md-card-login .md-card-header,\n  .md-card-login .description {\n    text-align: center; }\n  .md-card-login.md-card-hidden {\n    opacity: 0;\n    transform: translate3d(0, -60px, 0); }\n  .md-card-login .md-card-content {\n    padding-top: 0; }\n  .md-card-login .description {\n    margin-top: 0; }\n  .md-card-login .md-card-actions {\n    border: 0;\n    justify-content: center; }\n\n.team-player .md-card-actions {\n  border: 0; }\n\n.md-tabs-navigation {\n  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n  margin: -50px -15px 0 -15px;\n  border-radius: 3px;\n  padding: 16px 15px 16px 75px;\n  background-color: #999999;\n  overflow: auto; }\n  .md-tabs-navigation .md-icon-label .md-button-content {\n    flex-direction: row; }\n  .md-tabs-navigation + .md-tabs-content .md-checkbox.md-checked .md-checkbox-container:after {\n    top: 0px;\n    left: 5px; }\n  .md-tabs-navigation + .md-tabs-content .md-tab {\n    text-align: center; }\n  .no-label .md-tabs-navigation {\n    padding-left: 15px; }\n  .md-tabs-navigation .md-button,\n  .md-tabs-navigation .md-button:hover,\n  .md-tabs-navigation .md-button:focus,\n  .md-tabs-navigation .md-button:active {\n    background-color: transparent !important;\n    box-shadow: none; }\n  .md-tabs-navigation .md-active,\n  .md-tabs-navigation .md-active:hover,\n  .md-tabs-navigation .md-active:focus {\n    background-color: rgba(255, 255, 255, 0.2) !important;\n    box-shadow: none; }\n  .md-tabs-navigation .md-button {\n    height: auto;\n    border-radius: 3px;\n    font-weight: 500;\n    line-height: 24px;\n    text-transform: uppercase;\n    font-size: 12px; }\n    .md-tabs-navigation .md-button:not(:last-child) {\n      margin-right: 5px; }\n    .md-tabs-navigation .md-button .md-tab-icon + .md-tab-label {\n      margin-top: 0px;\n      margin-left: 7px; }\n    .md-tabs-navigation .md-button .md-ripple {\n      padding: 10px 15px !important; }\n\n.md-tabs-indicator {\n  display: none; }\n\n.md-nav-tabs-title {\n  position: absolute;\n  z-index: 9999;\n  top: 6px;\n  color: white;\n  font-size: initial;\n  margin-left: 15px; }\n\n.md-tab {\n  padding: 15px 0 0 0; }\n\n.md-card-nav-tabs.md-card-plain .md-content.md-theme-default {\n  background-color: transparent; }\n\n@media (min-width: 992px) {\n  .md-toolbar-toggle {\n    display: none; }\n  .footer:not(.footer-big) nav > ul li:first-child {\n    margin-left: 0; } }\n\n/*          Changes for small display      */\n@media (max-width: 991px) {\n  .navbar-transparent {\n    padding-top: 15px;\n    background-color: rgba(0, 0, 0, 0.45); }\n  .md-toolbar-section-start .md-list {\n    display: none; }\n  .footer .container {\n    flex-direction: column;\n    text-align: center; }\n  .md-toolbar-row {\n    will-change: auto;\n    transition-property: none; }\n  .md-toolbar-row:not(.md-collapse-lateral) .md-collapse {\n    display: none; }\n  .md-toolbar.md-transparent .md-list .md-list-item-content {\n    color: #3C4858 !important; }\n  .md-collapse-lateral .md-collapse {\n    position: fixed;\n    display: block;\n    top: 0;\n    height: 100vh;\n    width: 230px !important;\n    right: 0;\n    left: auto;\n    z-index: 1032;\n    visibility: visible;\n    background-color: #9A9A9A;\n    overflow-y: visible;\n    border-top: none;\n    text-align: left;\n    padding-right: 0px;\n    padding-left: 0;\n    -webkit-transform: translate3d(230px, 0, 0);\n    -moz-transform: translate3d(230px, 0, 0);\n    -o-transform: translate3d(230px, 0, 0);\n    -ms-transform: translate3d(230px, 0, 0);\n    transform: translate3d(230px, 0, 0);\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); }\n    .md-collapse-lateral .md-collapse .md-list {\n      flex-flow: column; }\n    .md-collapse-lateral .md-collapse .md-collapse-wrapper {\n      height: calc(100vh - 61px); }\n    .md-collapse-lateral .md-collapse .dropdown-toggle:not(.md-button):after,\n    .md-collapse-lateral .md-collapse .dropdown-toggle .md-ripple:after,\n    .md-collapse-lateral .md-collapse .md-list-item .md-button.md-button-link:not(.md-just-icon):not(.md-btn-fab):not(.md-icon-button):not(.md-toolbar-toggle) .md-ripple .md-button-content i,\n    .md-collapse-lateral .md-collapse .md-list-item a .md-ripple p,\n    .md-collapse-lateral .md-collapse .md-list-item-content i {\n      color: #3C4858 !important; }\n    .md-collapse-lateral .md-collapse .dropdown-toggle:not(.md-button):after,\n    .md-collapse-lateral .md-collapse .dropdown-toggle .md-ripple:after {\n      position: absolute;\n      right: 16px; }\n    .md-collapse-lateral .md-collapse .dropdown .dropdown-menu {\n      background-color: transparent;\n      position: static;\n      border: 0;\n      padding-bottom: 20px;\n      transition: none;\n      -webkit-box-shadow: none;\n      box-shadow: none;\n      transform: none !important;\n      width: 100%;\n      margin-bottom: 15px;\n      padding-top: 0;\n      animation: none;\n      opacity: 1;\n      overflow-y: scroll;\n      display: none; }\n      .md-collapse-lateral .md-collapse .dropdown .dropdown-menu li > a {\n        margin-left: 15px;\n        margin-right: 15px; }\n    .md-collapse-lateral .md-collapse .dropdown-menu.dropdown-with-icons li > a:hover i,\n    .md-collapse-lateral .md-collapse .dropdown-menu.dropdown-with-icons li > a:focus i {\n      color: #FFFFFF !important; }\n    .md-collapse-lateral .md-collapse .dropdown.open .dropdown-menu {\n      display: block; }\n    .md-collapse-lateral .md-collapse .md-list-item > a {\n      margin: 5px 15px; }\n    .md-collapse-lateral .md-collapse .md-list-item .dropdown .dropdown,\n    .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content,\n    .md-collapse-lateral .md-collapse .md-list-item .md-button {\n      width: 100%; }\n    .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content .md-button, .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content .md-button:focus, .md-collapse-lateral .md-collapse .md-list-item .md-list-item-content .md-button:hover {\n      color: #3C4858 !important; }\n    .md-collapse-lateral .md-collapse .md-list-item .md-button .md-ripple {\n      justify-content: flex-start; }\n    .md-collapse-lateral .md-collapse .md-list-item:last-child:after {\n      display: none; }\n    .md-collapse-lateral .md-collapse .nav-mobile-section-start .md-list-item:last-child:after,\n    .md-collapse-lateral .md-collapse .md-list-item:after {\n      width: calc(100% - 30px);\n      content: \"\";\n      display: block;\n      height: 1px;\n      margin-left: 15px;\n      background-color: #e5e5e5; }\n    .md-collapse-lateral .md-collapse .md-list-item-container {\n      width: auto; }\n    .md-collapse-lateral .md-collapse .md-list-item-content {\n      justify-content: flex-start;\n      color: #3C4858 !important; }\n    .md-collapse-lateral .md-collapse > ul {\n      position: relative;\n      z-index: 4;\n      overflow-y: scroll;\n      width: 100%; }\n    .md-collapse-lateral .md-collapse::before {\n      top: 0;\n      left: 0;\n      height: 100%;\n      width: 100%;\n      position: absolute;\n      display: block;\n      background-color: #FFFFFF;\n      content: \"\";\n      z-index: 1; }\n    .md-collapse-lateral .md-collapse .logo {\n      position: relative;\n      z-index: 4; }\n    .md-collapse-lateral .md-collapse .navbar-form {\n      margin: 10px 15px;\n      float: none !important;\n      padding-top: 1px;\n      padding-bottom: 1px; }\n    .md-collapse-lateral .md-collapse .table-responsive {\n      width: 100%;\n      margin-bottom: 15px;\n      overflow-x: scroll;\n      overflow-y: hidden;\n      -ms-overflow-style: -ms-autohiding-scrollbar;\n      -webkit-overflow-scrolling: touch; }\n  .md-collapse-lateral .md-toolbar-toggle,\n  .md-collapse-lateral .md-title {\n    -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);\n    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); }\n    .nav-open .md-collapse-lateral .md-toolbar-toggle, .nav-open\n    .md-collapse-lateral .md-title {\n      -webkit-transform: translate3d(-230px, 0, 0);\n      -moz-transform: translate3d(-230px, 0, 0);\n      -o-transform: translate3d(-230px, 0, 0);\n      -ms-transform: translate3d(-230px, 0, 0);\n      transform: translate3d(-230px, 0, 0); }\n  .nav-open .md-collapse-lateral .md-collapse {\n    -webkit-transform: translate3d(0px, 0, 0);\n    -moz-transform: translate3d(0px, 0, 0);\n    -o-transform: translate3d(0px, 0, 0);\n    -ms-transform: translate3d(0px, 0, 0);\n    transform: translate3d(0px, 0, 0); }\n  .close-layer {\n    height: 100%;\n    width: 100%;\n    position: absolute;\n    opacity: 0;\n    top: 0;\n    left: auto;\n    content: \"\";\n    z-index: 9999;\n    overflow-x: hidden;\n    -webkit-transition: all 370ms ease-in;\n    -moz-transition: all 370ms ease-in;\n    -o-transition: all 370ms ease-in;\n    -ms-transition: all 370ms ease-in;\n    transition: all 370ms ease-in; }\n    .close-layer.visible {\n      opacity: 1; }\n  .navbar-toggle .icon-bar {\n    display: block;\n    position: relative;\n    background: #fff;\n    width: 24px;\n    height: 2px;\n    border-radius: 1px;\n    margin: 0 auto; }\n  .navbar-header .navbar-toggle {\n    margin: 10px 15px 10px 0;\n    width: 40px;\n    height: 40px; }\n  .bar1,\n  .bar2,\n  .bar3 {\n    outline: 1px solid transparent; }\n  @keyframes topbar-x {\n    0% {\n      top: 0px;\n      transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      transform: rotate(145deg); }\n    75% {\n      transform: rotate(130deg); }\n    100% {\n      transform: rotate(135deg); } }\n  @-webkit-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -webkit-transform: rotate(145deg); }\n    75% {\n      -webkit-transform: rotate(130deg); }\n    100% {\n      -webkit-transform: rotate(135deg); } }\n  @-moz-keyframes topbar-x {\n    0% {\n      top: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      top: 6px;\n      -moz-transform: rotate(145deg); }\n    75% {\n      -moz-transform: rotate(130deg); }\n    100% {\n      -moz-transform: rotate(135deg); } }\n  @keyframes topbar-back {\n    0% {\n      top: 6px;\n      transform: rotate(135deg); }\n    45% {\n      transform: rotate(-10deg); }\n    75% {\n      transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -webkit-transform: rotate(135deg); }\n    45% {\n      -webkit-transform: rotate(-10deg); }\n    75% {\n      -webkit-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes topbar-back {\n    0% {\n      top: 6px;\n      -moz-transform: rotate(135deg); }\n    45% {\n      -moz-transform: rotate(-10deg); }\n    75% {\n      -moz-transform: rotate(5deg); }\n    100% {\n      top: 0px;\n      -moz-transform: rotate(0); } }\n  @keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      transform: rotate(-145deg); }\n    75% {\n      transform: rotate(-130deg); }\n    100% {\n      transform: rotate(-135deg); } }\n  @-webkit-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -webkit-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -webkit-transform: rotate(-145deg); }\n    75% {\n      -webkit-transform: rotate(-130deg); }\n    100% {\n      -webkit-transform: rotate(-135deg); } }\n  @-moz-keyframes bottombar-x {\n    0% {\n      bottom: 0px;\n      -moz-transform: rotate(0deg); }\n    45% {\n      bottom: 6px;\n      -moz-transform: rotate(-145deg); }\n    75% {\n      -moz-transform: rotate(-130deg); }\n    100% {\n      -moz-transform: rotate(-135deg); } }\n  @keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      transform: rotate(-135deg); }\n    45% {\n      transform: rotate(10deg); }\n    75% {\n      transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      transform: rotate(0); } }\n  @-webkit-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -webkit-transform: rotate(-135deg); }\n    45% {\n      -webkit-transform: rotate(10deg); }\n    75% {\n      -webkit-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -webkit-transform: rotate(0); } }\n  @-moz-keyframes bottombar-back {\n    0% {\n      bottom: 6px;\n      -moz-transform: rotate(-135deg); }\n    45% {\n      -moz-transform: rotate(10deg); }\n    75% {\n      -moz-transform: rotate(-5deg); }\n    100% {\n      bottom: 0px;\n      -moz-transform: rotate(0); } }\n  .md-toolbar-toggle .icon-bar:nth-child(2) {\n    top: 0px;\n    -webkit-animation: topbar-back 500ms linear 0s;\n    -moz-animation: topbar-back 500ms linear 0s;\n    animation: topbar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .md-toolbar-toggle .icon-bar:nth-child(3) {\n    opacity: 1; }\n  .md-toolbar-toggle .icon-bar:nth-child(4) {\n    bottom: 0px;\n    -webkit-animation: bottombar-back 500ms linear 0s;\n    -moz-animation: bottombar-back 500ms linear 0s;\n    animation: bottombar-back 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .md-toolbar-toggle.toggled .icon-bar:nth-child(1) {\n    top: 6px;\n    -webkit-animation: topbar-x 500ms linear 0s;\n    -moz-animation: topbar-x 500ms linear 0s;\n    animation: topbar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  .md-toolbar-toggle.toggled .icon-bar:nth-child(2) {\n    opacity: 0; }\n  .md-toolbar-toggle.toggled .icon-bar:nth-child(3) {\n    bottom: 6px;\n    -webkit-animation: bottombar-x 500ms linear 0s;\n    -moz-animation: bottombar-x 500ms linear 0s;\n    animation: bottombar-x 500ms 0s;\n    -webkit-animation-fill-mode: forwards;\n    -moz-animation-fill-mode: forwards;\n    animation-fill-mode: forwards; }\n  @-webkit-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @-moz-keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  @keyframes fadeIn {\n    0% {\n      opacity: 0; }\n    100% {\n      opacity: 1; } }\n  .dropdown-menu .divider {\n    background-color: rgba(229, 229, 229, 0.15); }\n  .dropdown-menu {\n    display: none; }\n  .navbar-fixed-top {\n    -webkit-backface-visibility: hidden; }\n  #bodyClick {\n    height: 100%;\n    width: 100%;\n    position: fixed;\n    opacity: 0;\n    top: 0;\n    left: auto;\n    right: 230px;\n    content: \"\";\n    z-index: 9999;\n    overflow-x: hidden; }\n  .social-line .btn {\n    margin: 0 0 10px 0; }\n  .social-line.pull-right {\n    float: none; }\n  .footer:not(.footer-big) nav > ul li {\n    float: none; }\n  .social-area.pull-right {\n    float: none !important; }\n  .navbar-toggle:hover, .navbar-toggle:focus {\n    background-color: transparent !important; } }\n\n@media (max-width: 768px) {\n  .footer nav {\n    display: block; }\n  .index-page .brand h1 {\n    font-size: 4.3rem; }\n  .index-page .brand h3 {\n    max-width: 500px;\n    line-height: normal;\n    font-size: 1.7rem; }\n  .nav-tabs {\n    overflow: auto; }\n  .hidden-sm {\n    display: none !important; } }\n\n@media (min-width: 768px) {\n  .hidden-md {\n    display: none !important; } }\n\n@media screen and (min-width: 768px) {\n  .block-md {\n    display: block !important; } }\n\n@media screen and (max-width: 576px) {\n  .tim-typo {\n    padding-left: 11% !important; }\n    .tim-typo .tim-note {\n      bottom: -25px !important; }\n  .main-raised {\n    margin-left: 15px;\n    margin-right: 15px; }\n  .md-tabs-navigation {\n    flex-direction: column; }\n    .md-tabs-navigation .md-button {\n      max-width: none;\n      margin: 0 !important; }\n  .modal-wrapper .modal-container {\n    max-width: 380px; } }\n\n@media (min-width: 576px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 540px; } }\n\n@media (min-width: 768px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 720px; } }\n\n@media (min-width: 992px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 960px; }\n  .md-list.nav-mobile-menu {\n    display: none; }\n  .hidden-lg {\n    display: none !important; } }\n\n@media (min-width: 1200px) {\n  .md-toolbar-row,\n  .section .container,\n  .footer .container {\n    max-width: 1140px; } }\n\n@media screen and (max-width: 450px) {\n  .index-page .brand {\n    max-width: 300px; } }\n\n.md-card-wizard {\n  -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);\n  min-height: 410px;\n  opacity: 0; }\n  .md-card-wizard .nav-pills {\n    -ms-flex-wrap: wrap;\n    border: 0;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    flex-wrap: wrap;\n    list-style: none;\n    margin: 0;\n    padding: 0;\n    background-color: rgba(200, 200, 200, 0.2); }\n    .md-card-wizard .nav-pills > li {\n      text-align: center; }\n      .md-card-wizard .nav-pills > li > a {\n        border: 0 !important;\n        border-radius: 0;\n        color: #555 !important;\n        display: block;\n        font-size: 12px;\n        font-weight: 500;\n        line-height: 24px;\n        min-width: 100px;\n        padding: 6px 15px !important;\n        text-align: center;\n        text-transform: uppercase; }\n        .md-card-wizard .nav-pills > li > a:focus {\n          -webkit-box-shadow: none;\n          background-color: inherit;\n          box-shadow: none; }\n        .md-card-wizard .nav-pills > li > a:hover {\n          -webkit-box-shadow: none;\n          background-color: inherit;\n          box-shadow: none; }\n      .md-card-wizard .nav-pills > li i {\n        display: block;\n        font-size: 30px;\n        padding: 15px 0; }\n    .md-card-wizard .nav-pills > li + li {\n      margin-left: 0; }\n    .md-card-wizard .nav-pills > li.active > a {\n      -webkit-box-shadow: none;\n      background-color: inherit;\n      box-shadow: none; }\n      .md-card-wizard .nav-pills > li.active > a:focus {\n        -webkit-box-shadow: none;\n        background-color: inherit;\n        box-shadow: none; }\n      .md-card-wizard .nav-pills > li.active > a:hover {\n        -webkit-box-shadow: none;\n        background-color: inherit;\n        box-shadow: none; }\n  .md-card-wizard .md-card-actions {\n    border: 0; }\n  .md-card-wizard .picture-container {\n    cursor: pointer;\n    position: relative;\n    text-align: center; }\n    .md-card-wizard .picture-container .description {\n      margin: 0 0 .5rem; }\n  .md-card-wizard .wizard-navigation {\n    position: relative; }\n  .md-card-wizard .md-card-header {\n    text-align: center; }\n  .md-card-wizard .category {\n    margin-top: 0; }\n  .md-card-wizard .picture {\n    -webkit-transition: all .2s;\n    background-color: #999;\n    border: 4px solid #ccc;\n    border-radius: 50%;\n    color: #fff;\n    height: 106px;\n    margin: 5px auto;\n    overflow: hidden;\n    transition: all .2s;\n    width: 106px; }\n    .md-card-wizard .picture:hover {\n      border-color: #2ca8ff; }\n    .md-card-wizard .picture input[type=file] {\n      cursor: pointer;\n      display: block;\n      height: 100%;\n      left: 0;\n      opacity: 0 !important;\n      position: absolute;\n      top: 0;\n      width: 100%; }\n  .md-card-wizard .moving-tab {\n    -webkit-font-smoothing: subpixel-antialiased;\n    border-radius: 4px;\n    color: #fff;\n    cursor: pointer;\n    font-size: 12px;\n    font-weight: 500;\n    left: 0;\n    padding: 12px;\n    position: absolute;\n    text-align: center;\n    text-transform: uppercase;\n    top: -6px; }\n  .md-card-wizard .picture-src {\n    width: 100%; }\n  .md-card-wizard .tab-content {\n    min-height: 340px;\n    padding: 20px 15px; }\n  .md-card-wizard .wizard-footer {\n    padding: 0 15px; }\n    .md-card-wizard .wizard-footer .checkbox {\n      margin-top: 16px; }\n  .md-card-wizard .disabled {\n    display: none; }\n  .md-card-wizard .wizard-header {\n    padding: 25px 0 35px;\n    text-align: center; }\n    .md-card-wizard .wizard-header h5 {\n      margin: 5px 0 0; }\n  .md-card-wizard .btn {\n    text-transform: uppercase; }\n  .md-card-wizard .info-text {\n    font-weight: 300;\n    margin: 10px 0 30px;\n    text-align: center; }\n  .md-card-wizard .choice {\n    cursor: pointer;\n    margin-top: 20px;\n    text-align: center; }\n    .md-card-wizard .choice .icon {\n      -webkit-transition: all .2s;\n      border: 4px solid #ccc;\n      border-radius: 50%;\n      color: #999;\n      height: 116px;\n      margin: 0 auto 20px;\n      text-align: center;\n      transition: all .2s;\n      vertical-align: middle;\n      width: 116px; }\n    .md-card-wizard .choice i {\n      font-size: 32px;\n      line-height: 111px; }\n    .md-card-wizard .choice:hover .icon {\n      border-color: #2ca8ff; }\n    .md-card-wizard .choice input[type=checkbox] {\n      left: -10000px;\n      position: absolute;\n      z-index: -1; }\n    .md-card-wizard .choice input[type=radio] {\n      left: -10000px;\n      position: absolute;\n      z-index: -1; }\n  .md-card-wizard .choice[disabled] {\n    cursor: not-allowed;\n    opacity: .26;\n    pointer-events: none; }\n  .md-card-wizard .choice.active .icon {\n    border-color: #2ca8ff; }\n  .md-card-wizard .btn-finish {\n    display: none; }\n  .md-card-wizard .description {\n    color: #999;\n    font-size: 14px; }\n  .md-card-wizard .wizard-title {\n    margin: 0; }\n\n.md-card-wizard.active {\n  opacity: 1; }\n\n.md-card-wizard[data-color=purple] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);\n  background-color: #9c27b0;\n  box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2); }\n\n.md-card-wizard[data-color=purple] .picture:hover {\n  border-color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .choice.active .icon {\n  border-color: #9c27b0;\n  color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .choice:hover .icon {\n  border-color: #9c27b0;\n  color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .radio input[type=radio]:checked ~ .check {\n  background-color: #9c27b0; }\n\n.md-card-wizard[data-color=purple] .radio input[type=radio]:checked ~ .circle {\n  border-color: #9c27b0; }\n\n.md-card-wizard[data-color=green] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2);\n  background-color: #4caf50;\n  box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2); }\n\n.md-card-wizard[data-color=green] .picture:hover {\n  border-color: #4caf50; }\n\n.md-card-wizard[data-color=green] .choice.active .icon {\n  border-color: #4caf50;\n  color: #4caf50; }\n\n.md-card-wizard[data-color=green] .choice:hover .icon {\n  border-color: #4caf50;\n  color: #4caf50; }\n\n.md-card-wizard[data-color=green] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #4caf50; }\n\n.md-card-wizard[data-color=green] .radio input[type=radio]:checked ~ .check {\n  background-color: #4caf50; }\n\n.md-card-wizard[data-color=green] .radio input[type=radio]:checked ~ .circle {\n  border-color: #4caf50; }\n\n.md-card-wizard[data-color=blue] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);\n  background-color: #00bcd4;\n  box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2); }\n\n.md-card-wizard[data-color=blue] .picture:hover {\n  border-color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .choice.active .icon {\n  border-color: #00bcd4;\n  color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .choice:hover .icon {\n  border-color: #00bcd4;\n  color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .radio input[type=radio]:checked ~ .check {\n  background-color: #00bcd4; }\n\n.md-card-wizard[data-color=blue] .radio input[type=radio]:checked ~ .circle {\n  border-color: #00bcd4; }\n\n.md-card-wizard[data-color=orange] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2);\n  background-color: #ff9800;\n  box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2); }\n\n.md-card-wizard[data-color=orange] .picture:hover {\n  border-color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .choice.active .icon {\n  border-color: #ff9800;\n  color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .choice:hover .icon {\n  border-color: #ff9800;\n  color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .radio input[type=radio]:checked ~ .check {\n  background-color: #ff9800; }\n\n.md-card-wizard[data-color=orange] .radio input[type=radio]:checked ~ .circle {\n  border-color: #ff9800; }\n\n.md-card-wizard[data-color=red] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);\n  background-color: #f44336;\n  box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2); }\n\n.md-card-wizard[data-color=red] .picture:hover {\n  border-color: #f44336; }\n\n.md-card-wizard[data-color=red] .choice.active .icon {\n  border-color: #f44336;\n  color: #f44336; }\n\n.md-card-wizard[data-color=red] .choice:hover .icon {\n  border-color: #f44336;\n  color: #f44336; }\n\n.md-card-wizard[data-color=red] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #f44336; }\n\n.md-card-wizard[data-color=red] .radio input[type=radio]:checked ~ .check {\n  background-color: #f44336; }\n\n.md-card-wizard[data-color=red] .radio input[type=radio]:checked ~ .circle {\n  border-color: #f44336; }\n\n.md-card-wizard[data-color=rose] .moving-tab {\n  -webkit-box-shadow: 0 12px 20px -10px rgba(233, 30, 99, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(233, 30, 99, 0.2);\n  background-color: #e91e63;\n  box-shadow: 0 12px 20px -10px rgba(233, 30, 99, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(233, 30, 99, 0.2); }\n\n.md-card-wizard[data-color=rose] .picture:hover {\n  border-color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .choice.active .icon {\n  border-color: #e91e63;\n  color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .choice:hover .icon {\n  border-color: #e91e63;\n  color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .checkbox input[type=checkbox]:checked + .checkbox-material .check {\n  background-color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .radio input[type=radio]:checked ~ .check {\n  background-color: #e91e63; }\n\n.md-card-wizard[data-color=rose] .radio input[type=radio]:checked ~ .circle {\n  border-color: #e91e63; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 191 */
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(194);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./common.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./common.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, ".swal2-container .md-button {\r\n    margin: 0 5px;\r\n    min-width: auto;\r\n    padding: 12px 30px;\r\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 195 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_clickaway__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_clickaway__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_clickaway___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_clickaway__);
 
 
@@ -79383,7 +79308,7 @@ var GlobalDirectives = {
 /* harmony default export */ __webpack_exports__["a"] = (GlobalDirectives);
 
 /***/ }),
-/* 192 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79472,7 +79397,7 @@ exports.directive = directive;
 exports.mixin = mixin;
 
 /***/ }),
-/* 193 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -79504,12 +79429,12 @@ var GlobalMixins = {
 /* harmony default export */ __webpack_exports__["a"] = (GlobalMixins);
 
 /***/ }),
-/* 194 */
+/* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_v_tooltip__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_v_tooltip__ = __webpack_require__(199);
 
 
 
@@ -79528,7 +79453,7 @@ var GlobalComponents = {
 /* harmony default export */ __webpack_exports__["a"] = (GlobalComponents);
 
 /***/ }),
-/* 195 */
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85940,7 +85865,7 @@ if (GlobalVue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
 
 /***/ }),
-/* 196 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -85952,7 +85877,7 @@ if (GlobalVue) {
 
 
 /***/ }),
-/* 197 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -85963,7 +85888,7 @@ if (GlobalVue) {
 !function(t,e){ true?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.VueCarousel=e():t.VueCarousel=e()}(window,function(){return function(t){var e={};function n(r){if(e[r])return e[r].exports;var i=e[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,n),i.l=!0,i.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var i in t)n.d(r,i,function(e){return t[e]}.bind(null,i));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=45)}([function(t,e){var n=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=n)},function(t,e){t.exports=function(t){try{return!!t()}catch(t){return!0}}},function(t,e,n){var r=n(7),i=n(35),o=n(11),a=Object.defineProperty;e.f=n(4)?Object.defineProperty:function(t,e,n){if(r(t),e=o(e,!0),r(n),i)try{return a(t,e,n)}catch(t){}if("get"in n||"set"in n)throw TypeError("Accessors not supported!");return"value"in n&&(t[e]=n.value),t}},function(t,e){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,e,n){t.exports=!n(1)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,e){var n={}.hasOwnProperty;t.exports=function(t,e){return n.call(t,e)}},function(t,e){var n=0,r=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++n+r).toString(36))}},function(t,e,n){var r=n(3);t.exports=function(t){if(!r(t))throw TypeError(t+" is not an object!");return t}},function(t,e,n){var r=n(0),i=n(10),o=n(23),a=n(25),s=n(37),u=function(t,e,n){var c,l,f,d,p=t&u.F,h=t&u.G,g=t&u.S,v=t&u.P,m=t&u.B,y=h?r:g?r[e]||(r[e]={}):(r[e]||{}).prototype,b=h?i:i[e]||(i[e]={}),x=b.prototype||(b.prototype={});for(c in h&&(n=e),n)f=((l=!p&&y&&void 0!==y[c])?y:n)[c],d=m&&l?s(f,r):v&&"function"==typeof f?s(Function.call,f):f,y&&a(y,c,f,t&u.U),b[c]!=f&&o(b,c,d),v&&x[c]!=f&&(x[c]=f)};r.core=i,u.F=1,u.G=2,u.S=4,u.P=8,u.B=16,u.W=32,u.U=64,u.R=128,t.exports=u},function(t,e,n){var r=n(40),i=n(27);t.exports=function(t){return r(i(t))}},function(t,e){var n=t.exports={version:"2.5.7"};"number"==typeof __e&&(__e=n)},function(t,e,n){var r=n(3);t.exports=function(t,e){if(!r(t))return t;var n,i;if(e&&"function"==typeof(n=t.toString)&&!r(i=n.call(t)))return i;if("function"==typeof(n=t.valueOf)&&!r(i=n.call(t)))return i;if(!e&&"function"==typeof(n=t.toString)&&!r(i=n.call(t)))return i;throw TypeError("Can't convert object to primitive value")}},function(t,e,n){var r=n(39),i=n(28);t.exports=Object.keys||function(t){return r(t,i)}},function(t,e){e.f={}.propertyIsEnumerable},function(t,e){t.exports=function(t){var e=[];return e.toString=function(){return this.map(function(e){var n=function(t,e){var n=t[1]||"",r=t[3];if(!r)return n;if(e&&"function"==typeof btoa){var i=function(t){return"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(t))))+" */"}(r),o=r.sources.map(function(t){return"/*# sourceURL="+r.sourceRoot+t+" */"});return[n].concat(o).concat([i]).join("\n")}return[n].join("\n")}(e,t);return e[2]?"@media "+e[2]+"{"+n+"}":n}).join("")},e.i=function(t,n){"string"==typeof t&&(t=[[null,t,""]]);for(var r={},i=0;i<this.length;i++){var o=this[i][0];"number"==typeof o&&(r[o]=!0)}for(i=0;i<t.length;i++){var a=t[i];"number"==typeof a[0]&&r[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),e.push(a))}},e}},function(t,e,n){"use strict";function r(t,e){for(var n=[],r={},i=0;i<e.length;i++){var o=e[i],a=o[0],s={id:t+":"+i,css:o[1],media:o[2],sourceMap:o[3]};r[a]?r[a].parts.push(s):n.push(r[a]={id:a,parts:[s]})}return n}n.r(e),n.d(e,"default",function(){return h});var i="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!i)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var o={},a=i&&(document.head||document.getElementsByTagName("head")[0]),s=null,u=0,c=!1,l=function(){},f=null,d="data-vue-ssr-id",p="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());function h(t,e,n,i){c=n,f=i||{};var a=r(t,e);return g(a),function(e){for(var n=[],i=0;i<a.length;i++){var s=a[i];(u=o[s.id]).refs--,n.push(u)}for(e?g(a=r(t,e)):a=[],i=0;i<n.length;i++){var u;if(0===(u=n[i]).refs){for(var c=0;c<u.parts.length;c++)u.parts[c]();delete o[u.id]}}}}function g(t){for(var e=0;e<t.length;e++){var n=t[e],r=o[n.id];if(r){r.refs++;for(var i=0;i<r.parts.length;i++)r.parts[i](n.parts[i]);for(;i<n.parts.length;i++)r.parts.push(m(n.parts[i]));r.parts.length>n.parts.length&&(r.parts.length=n.parts.length)}else{var a=[];for(i=0;i<n.parts.length;i++)a.push(m(n.parts[i]));o[n.id]={id:n.id,refs:1,parts:a}}}}function v(){var t=document.createElement("style");return t.type="text/css",a.appendChild(t),t}function m(t){var e,n,r=document.querySelector("style["+d+'~="'+t.id+'"]');if(r){if(c)return l;r.parentNode.removeChild(r)}if(p){var i=u++;r=s||(s=v()),e=b.bind(null,r,i,!1),n=b.bind(null,r,i,!0)}else r=v(),e=function(t,e){var n=e.css,r=e.media,i=e.sourceMap;if(r&&t.setAttribute("media",r),f.ssrId&&t.setAttribute(d,e.id),i&&(n+="\n/*# sourceURL="+i.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(i))))+" */"),t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}.bind(null,r),n=function(){r.parentNode.removeChild(r)};return e(t),function(r){if(r){if(r.css===t.css&&r.media===t.media&&r.sourceMap===t.sourceMap)return;e(t=r)}else n()}}var y=function(){var t=[];return function(e,n){return t[e]=n,t.filter(Boolean).join("\n")}}();function b(t,e,n,r){var i=n?"":r.css;if(t.styleSheet)t.styleSheet.cssText=y(e,i);else{var o=document.createTextNode(i),a=t.childNodes;a[e]&&t.removeChild(a[e]),a.length?t.insertBefore(o,a[e]):t.appendChild(o)}}},function(t,e,n){var r=n(67);"string"==typeof r&&(r=[[t.i,r,""]]),r.locals&&(t.exports=r.locals),(0,n(15).default)("1c9d4ce3",r,!1,{})},function(t,e,n){var r=n(69);"string"==typeof r&&(r=[[t.i,r,""]]),r.locals&&(t.exports=r.locals),(0,n(15).default)("6a175419",r,!1,{})},function(t,e,n){var r=n(73);"string"==typeof r&&(r=[[t.i,r,""]]),r.locals&&(t.exports=r.locals),(0,n(15).default)("07c48036",r,!1,{})},function(t,e,n){var r=n(75);"string"==typeof r&&(r=[[t.i,r,""]]),r.locals&&(t.exports=r.locals),(0,n(15).default)("6eff00d0",r,!1,{})},function(t,e){t.exports=!1},function(t,e,n){var r=n(22)("wks"),i=n(6),o=n(0).Symbol,a="function"==typeof o;(t.exports=function(t){return r[t]||(r[t]=a&&o[t]||(a?o:i)("Symbol."+t))}).store=r},function(t,e,n){var r=n(10),i=n(0),o=i["__core-js_shared__"]||(i["__core-js_shared__"]={});(t.exports=function(t,e){return o[t]||(o[t]=void 0!==e?e:{})})("versions",[]).push({version:r.version,mode:n(20)?"pure":"global",copyright:"© 2018 Denis Pushkarev (zloirock.ru)"})},function(t,e,n){var r=n(2),i=n(24);t.exports=n(4)?function(t,e,n){return r.f(t,e,i(1,n))}:function(t,e,n){return t[e]=n,t}},function(t,e){t.exports=function(t,e){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:e}}},function(t,e,n){var r=n(0),i=n(23),o=n(5),a=n(6)("src"),s=Function.toString,u=(""+s).split("toString");n(10).inspectSource=function(t){return s.call(t)},(t.exports=function(t,e,n,s){var c="function"==typeof n;c&&(o(n,"name")||i(n,"name",e)),t[e]!==n&&(c&&(o(n,a)||i(n,a,t[e]?""+t[e]:u.join(String(e)))),t===r?t[e]=n:s?t[e]?t[e]=n:i(t,e,n):(delete t[e],i(t,e,n)))})(Function.prototype,"toString",function(){return"function"==typeof this&&this[a]||s.call(this)})},function(t,e){var n={}.toString;t.exports=function(t){return n.call(t).slice(8,-1)}},function(t,e){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,e){t.exports="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",")},function(t,e){e.f=Object.getOwnPropertySymbols},function(t,e,n){var r=n(39),i=n(28).concat("length","prototype");e.f=Object.getOwnPropertyNames||function(t){return r(t,i)}},function(t,e,n){var r=n(13),i=n(24),o=n(9),a=n(11),s=n(5),u=n(35),c=Object.getOwnPropertyDescriptor;e.f=n(4)?c:function(t,e){if(t=o(t),e=a(e,!0),u)try{return c(t,e)}catch(t){}if(s(t,e))return i(!r.f.call(t,e),t[e])}},function(t,e,n){"use strict";var r=n(0),i=n(5),o=n(26),a=n(62),s=n(11),u=n(1),c=n(30).f,l=n(31).f,f=n(2).f,d=n(64).trim,p=r.Number,h=p,g=p.prototype,v="Number"==o(n(43)(g)),m="trim"in String.prototype,y=function(t){var e=s(t,!1);if("string"==typeof e&&e.length>2){var n,r,i,o=(e=m?e.trim():d(e,3)).charCodeAt(0);if(43===o||45===o){if(88===(n=e.charCodeAt(2))||120===n)return NaN}else if(48===o){switch(e.charCodeAt(1)){case 66:case 98:r=2,i=49;break;case 79:case 111:r=8,i=55;break;default:return+e}for(var a,u=e.slice(2),c=0,l=u.length;c<l;c++)if((a=u.charCodeAt(c))<48||a>i)return NaN;return parseInt(u,r)}}return+e};if(!p(" 0o1")||!p("0b1")||p("+0x1")){p=function(t){var e=arguments.length<1?0:t,n=this;return n instanceof p&&(v?u(function(){g.valueOf.call(n)}):"Number"!=o(n))?a(new h(y(e)),n,p):y(e)};for(var b,x=n(4)?c(h):"MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger".split(","),P=0;x.length>P;P++)i(h,b=x[P])&&!i(p,b)&&f(p,b,l(h,b));p.prototype=g,g.constructor=p,n(25)(r,"Number",p)}},function(t,e,n){var r=n(0),i=n(10),o=n(20),a=n(34),s=n(2).f;t.exports=function(t){var e=i.Symbol||(i.Symbol=o?{}:r.Symbol||{});"_"==t.charAt(0)||t in e||s(e,t,{value:a.f(t)})}},function(t,e,n){e.f=n(21)},function(t,e,n){t.exports=!n(4)&&!n(1)(function(){return 7!=Object.defineProperty(n(36)("div"),"a",{get:function(){return 7}}).a})},function(t,e,n){var r=n(3),i=n(0).document,o=r(i)&&r(i.createElement);t.exports=function(t){return o?i.createElement(t):{}}},function(t,e,n){var r=n(38);t.exports=function(t,e,n){if(r(t),void 0===e)return t;switch(n){case 1:return function(n){return t.call(e,n)};case 2:return function(n,r){return t.call(e,n,r)};case 3:return function(n,r,i){return t.call(e,n,r,i)}}return function(){return t.apply(e,arguments)}}},function(t,e){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,e,n){var r=n(5),i=n(9),o=n(51)(!1),a=n(42)("IE_PROTO");t.exports=function(t,e){var n,s=i(t),u=0,c=[];for(n in s)n!=a&&r(s,n)&&c.push(n);for(;e.length>u;)r(s,n=e[u++])&&(~o(c,n)||c.push(n));return c}},function(t,e,n){var r=n(26);t.exports=Object("z").propertyIsEnumerable(0)?Object:function(t){return"String"==r(t)?t.split(""):Object(t)}},function(t,e){var n=Math.ceil,r=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?r:n)(t)}},function(t,e,n){var r=n(22)("keys"),i=n(6);t.exports=function(t){return r[t]||(r[t]=i(t))}},function(t,e,n){var r=n(7),i=n(55),o=n(28),a=n(42)("IE_PROTO"),s=function(){},u=function(){var t,e=n(36)("iframe"),r=o.length;for(e.style.display="none",n(56).appendChild(e),e.src="javascript:",(t=e.contentWindow.document).open(),t.write("<script>document.F=Object<\/script>"),t.close(),u=t.F;r--;)delete u.prototype[o[r]];return u()};t.exports=Object.create||function(t,e){var n;return null!==t?(s.prototype=r(t),n=new s,s.prototype=null,n[a]=t):n=u(),void 0===e?n:i(n,e)}},function(t,e,n){var r=n(27);t.exports=function(t){return Object(r(t))}},function(t,e,n){t.exports=n(76)},function(t,e,n){n(33)("asyncIterator")},function(t,e,n){"use strict";var r=n(0),i=n(5),o=n(4),a=n(8),s=n(25),u=n(48).KEY,c=n(1),l=n(22),f=n(49),d=n(6),p=n(21),h=n(34),g=n(33),v=n(50),m=n(54),y=n(7),b=n(3),x=n(9),P=n(11),S=n(24),C=n(43),w=n(57),O=n(31),_=n(2),T=n(12),E=O.f,N=_.f,M=w.f,j=r.Symbol,k=r.JSON,A=k&&k.stringify,V=p("_hidden"),$=p("toPrimitive"),I={}.propertyIsEnumerable,L=l("symbol-registry"),W=l("symbols"),F=l("op-symbols"),D=Object.prototype,B="function"==typeof j,R=r.QObject,z=!R||!R.prototype||!R.prototype.findChild,U=o&&c(function(){return 7!=C(N({},"a",{get:function(){return N(this,"a",{value:7}).a}})).a})?function(t,e,n){var r=E(D,e);r&&delete D[e],N(t,e,n),r&&t!==D&&N(D,e,r)}:N,X=function(t){var e=W[t]=C(j.prototype);return e._k=t,e},Y=B&&"symbol"==typeof j.iterator?function(t){return"symbol"==typeof t}:function(t){return t instanceof j},G=function(t,e,n){return t===D&&G(F,e,n),y(t),e=P(e,!0),y(n),i(W,e)?(n.enumerable?(i(t,V)&&t[V][e]&&(t[V][e]=!1),n=C(n,{enumerable:S(0,!1)})):(i(t,V)||N(t,V,S(1,{})),t[V][e]=!0),U(t,e,n)):N(t,e,n)},H=function(t,e){y(t);for(var n,r=v(e=x(e)),i=0,o=r.length;o>i;)G(t,n=r[i++],e[n]);return t},J=function(t){var e=I.call(this,t=P(t,!0));return!(this===D&&i(W,t)&&!i(F,t))&&(!(e||!i(this,t)||!i(W,t)||i(this,V)&&this[V][t])||e)},q=function(t,e){if(t=x(t),e=P(e,!0),t!==D||!i(W,e)||i(F,e)){var n=E(t,e);return!n||!i(W,e)||i(t,V)&&t[V][e]||(n.enumerable=!0),n}},K=function(t){for(var e,n=M(x(t)),r=[],o=0;n.length>o;)i(W,e=n[o++])||e==V||e==u||r.push(e);return r},Q=function(t){for(var e,n=t===D,r=M(n?F:x(t)),o=[],a=0;r.length>a;)!i(W,e=r[a++])||n&&!i(D,e)||o.push(W[e]);return o};B||(s((j=function(){if(this instanceof j)throw TypeError("Symbol is not a constructor!");var t=d(arguments.length>0?arguments[0]:void 0),e=function(n){this===D&&e.call(F,n),i(this,V)&&i(this[V],t)&&(this[V][t]=!1),U(this,t,S(1,n))};return o&&z&&U(D,t,{configurable:!0,set:e}),X(t)}).prototype,"toString",function(){return this._k}),O.f=q,_.f=G,n(30).f=w.f=K,n(13).f=J,n(29).f=Q,o&&!n(20)&&s(D,"propertyIsEnumerable",J,!0),h.f=function(t){return X(p(t))}),a(a.G+a.W+a.F*!B,{Symbol:j});for(var Z="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),tt=0;Z.length>tt;)p(Z[tt++]);for(var et=T(p.store),nt=0;et.length>nt;)g(et[nt++]);a(a.S+a.F*!B,"Symbol",{for:function(t){return i(L,t+="")?L[t]:L[t]=j(t)},keyFor:function(t){if(!Y(t))throw TypeError(t+" is not a symbol!");for(var e in L)if(L[e]===t)return e},useSetter:function(){z=!0},useSimple:function(){z=!1}}),a(a.S+a.F*!B,"Object",{create:function(t,e){return void 0===e?C(t):H(C(t),e)},defineProperty:G,defineProperties:H,getOwnPropertyDescriptor:q,getOwnPropertyNames:K,getOwnPropertySymbols:Q}),k&&a(a.S+a.F*(!B||c(function(){var t=j();return"[null]"!=A([t])||"{}"!=A({a:t})||"{}"!=A(Object(t))})),"JSON",{stringify:function(t){for(var e,n,r=[t],i=1;arguments.length>i;)r.push(arguments[i++]);if(n=e=r[1],(b(e)||void 0!==t)&&!Y(t))return m(e)||(e=function(t,e){if("function"==typeof n&&(e=n.call(this,t,e)),!Y(e))return e}),r[1]=e,A.apply(k,r)}}),j.prototype[$]||n(23)(j.prototype,$,j.prototype.valueOf),f(j,"Symbol"),f(Math,"Math",!0),f(r.JSON,"JSON",!0)},function(t,e,n){var r=n(6)("meta"),i=n(3),o=n(5),a=n(2).f,s=0,u=Object.isExtensible||function(){return!0},c=!n(1)(function(){return u(Object.preventExtensions({}))}),l=function(t){a(t,r,{value:{i:"O"+ ++s,w:{}}})},f=t.exports={KEY:r,NEED:!1,fastKey:function(t,e){if(!i(t))return"symbol"==typeof t?t:("string"==typeof t?"S":"P")+t;if(!o(t,r)){if(!u(t))return"F";if(!e)return"E";l(t)}return t[r].i},getWeak:function(t,e){if(!o(t,r)){if(!u(t))return!0;if(!e)return!1;l(t)}return t[r].w},onFreeze:function(t){return c&&f.NEED&&u(t)&&!o(t,r)&&l(t),t}}},function(t,e,n){var r=n(2).f,i=n(5),o=n(21)("toStringTag");t.exports=function(t,e,n){t&&!i(t=n?t:t.prototype,o)&&r(t,o,{configurable:!0,value:e})}},function(t,e,n){var r=n(12),i=n(29),o=n(13);t.exports=function(t){var e=r(t),n=i.f;if(n)for(var a,s=n(t),u=o.f,c=0;s.length>c;)u.call(t,a=s[c++])&&e.push(a);return e}},function(t,e,n){var r=n(9),i=n(52),o=n(53);t.exports=function(t){return function(e,n,a){var s,u=r(e),c=i(u.length),l=o(a,c);if(t&&n!=n){for(;c>l;)if((s=u[l++])!=s)return!0}else for(;c>l;l++)if((t||l in u)&&u[l]===n)return t||l||0;return!t&&-1}}},function(t,e,n){var r=n(41),i=Math.min;t.exports=function(t){return t>0?i(r(t),9007199254740991):0}},function(t,e,n){var r=n(41),i=Math.max,o=Math.min;t.exports=function(t,e){return(t=r(t))<0?i(t+e,0):o(t,e)}},function(t,e,n){var r=n(26);t.exports=Array.isArray||function(t){return"Array"==r(t)}},function(t,e,n){var r=n(2),i=n(7),o=n(12);t.exports=n(4)?Object.defineProperties:function(t,e){i(t);for(var n,a=o(e),s=a.length,u=0;s>u;)r.f(t,n=a[u++],e[n]);return t}},function(t,e,n){var r=n(0).document;t.exports=r&&r.documentElement},function(t,e,n){var r=n(9),i=n(30).f,o={}.toString,a="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[];t.exports.f=function(t){return a&&"[object Window]"==o.call(t)?function(t){try{return i(t)}catch(t){return a.slice()}}(t):i(r(t))}},function(t,e,n){var r=n(8);r(r.S,"Math",{sign:n(59)})},function(t,e){t.exports=Math.sign||function(t){return 0==(t=+t)||t!=t?t:t<0?-1:1}},function(t,e,n){"use strict";var r=n(8),i=n(38),o=n(44),a=n(1),s=[].sort,u=[1,2,3];r(r.P+r.F*(a(function(){u.sort(void 0)})||!a(function(){u.sort(null)})||!n(61)(s)),"Array",{sort:function(t){return void 0===t?s.call(o(this)):s.call(o(this),i(t))}})},function(t,e,n){"use strict";var r=n(1);t.exports=function(t,e){return!!t&&r(function(){e?t.call(null,function(){},1):t.call(null)})}},function(t,e,n){var r=n(3),i=n(63).set;t.exports=function(t,e,n){var o,a=e.constructor;return a!==n&&"function"==typeof a&&(o=a.prototype)!==n.prototype&&r(o)&&i&&i(t,o),t}},function(t,e,n){var r=n(3),i=n(7),o=function(t,e){if(i(t),!r(e)&&null!==e)throw TypeError(e+": can't set as prototype!")};t.exports={set:Object.setPrototypeOf||("__proto__"in{}?function(t,e,r){try{(r=n(37)(Function.call,n(31).f(Object.prototype,"__proto__").set,2))(t,[]),e=!(t instanceof Array)}catch(t){e=!0}return function(t,n){return o(t,n),e?t.__proto__=n:r(t,n),t}}({},!1):void 0),check:o}},function(t,e,n){var r=n(8),i=n(27),o=n(1),a=n(65),s="["+a+"]",u=RegExp("^"+s+s+"*"),c=RegExp(s+s+"*$"),l=function(t,e,n){var i={},s=o(function(){return!!a[t]()||"​"!="​"[t]()}),u=i[t]=s?e(f):a[t];n&&(i[n]=u),r(r.P+r.F*s,"String",i)},f=l.trim=function(t,e){return t=String(i(t)),1&e&&(t=t.replace(u,"")),2&e&&(t=t.replace(c,"")),t};t.exports=l},function(t,e){t.exports="\t\n\v\f\r   ᠎             　\u2028\u2029\ufeff"},function(t,e,n){"use strict";var r=n(16);n.n(r).a},function(t,e,n){(t.exports=n(14)(!1)).push([t.i,'\n.VueCarousel-navigation-button[data-v-453ad8cd] {\n  position: absolute;\n  top: 50%;\n  box-sizing: border-box;\n  color: #000;\n  text-decoration: none;\n  appearance: none;\n  border: none;\n  background-color: transparent;\n  padding: 0;\n  cursor: pointer;\n  outline: none;\n}\n.VueCarousel-navigation-next[data-v-453ad8cd] {\n  right: 0;\n  transform: translateY(-50%) translateX(100%);\n  font-family: "system";\n}\n.VueCarousel-navigation-prev[data-v-453ad8cd] {\n  left: 0;\n  transform: translateY(-50%) translateX(-100%);\n  font-family: "system";\n}\n.VueCarousel-navigation--disabled[data-v-453ad8cd] {\n  opacity: 0.5;\n  cursor: default;\n}\n\n/* Define the "system" font family */\n@font-face {\n  font-family: system;\n  font-style: normal;\n  font-weight: 300;\n  src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"),\n    local(".LucidaGrandeUI"), local("Ubuntu Light"), local("Segoe UI Symbol"),\n    local("Roboto-Light"), local("DroidSans"), local("Tahoma");\n}\n',""])},function(t,e,n){"use strict";var r=n(17);n.n(r).a},function(t,e,n){(t.exports=n(14)(!1)).push([t.i,"\n.VueCarousel-pagination[data-v-438fd353] {\n  width: 100%;\n  text-align: center;\n}\n.VueCarousel-dot-container[data-v-438fd353] {\n  display: inline-block;\n  margin: 0 auto;\n  padding: 0;\n}\n.VueCarousel-dot[data-v-438fd353] {\n  display: inline-block;\n  cursor: pointer;\n}\n.VueCarousel-dot-button[data-v-438fd353] {\n  appearance: none;\n  border: none;\n  background-color: transparent;\n  padding: 0;\n  border-radius: 100%;\n  outline: none;\n  cursor: pointer;\n}\n.VueCarousel-dot-button[data-v-438fd353]:focus {\n  outline: 1px solid lightblue;\n}\n",""])},function(t,e,n){var r=n(8);r(r.S+r.F,"Object",{assign:n(71)})},function(t,e,n){"use strict";var r=n(12),i=n(29),o=n(13),a=n(44),s=n(40),u=Object.assign;t.exports=!u||n(1)(function(){var t={},e={},n=Symbol(),r="abcdefghijklmnopqrst";return t[n]=7,r.split("").forEach(function(t){e[t]=t}),7!=u({},t)[n]||Object.keys(u({},e)).join("")!=r})?function(t,e){for(var n=a(t),u=arguments.length,c=1,l=i.f,f=o.f;u>c;)for(var d,p=s(arguments[c++]),h=l?r(p).concat(l(p)):r(p),g=h.length,v=0;g>v;)f.call(p,d=h[v++])&&(n[d]=p[d]);return n}:u},function(t,e,n){"use strict";var r=n(18);n.n(r).a},function(t,e,n){(t.exports=n(14)(!1)).push([t.i,"\n.VueCarousel-slide {\n  flex-basis: inherit;\n  flex-grow: 0;\n  flex-shrink: 0;\n  user-select: none;\n  backface-visibility: hidden;\n  -webkit-touch-callout: none;\n  outline: none;\n}\n",""])},function(t,e,n){"use strict";var r=n(19);n.n(r).a},function(t,e,n){(t.exports=n(14)(!1)).push([t.i,"\n.VueCarousel {\n  position: relative;\n}\n.VueCarousel-wrapper {\n  width: 100%;\n  position: relative;\n  overflow: hidden;\n}\n.VueCarousel-inner {\n  display: flex;\n  flex-direction: row;\n  backface-visibility: hidden;\n}\n",""])},function(t,e,n){"use strict";n.r(e);var r=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("section",{staticClass:"VueCarousel"},[n("div",{ref:"VueCarousel-wrapper",staticClass:"VueCarousel-wrapper"},[n("div",{ref:"VueCarousel-inner",staticClass:"VueCarousel-inner",style:{transform:"translate("+t.currentOffset+"px, 0)",transition:t.dragging?"none":t.transitionStyle,"ms-flex-preferred-size":t.slideWidth+"px","webkit-flex-basis":t.slideWidth+"px","flex-basis":t.slideWidth+"px",visibility:t.slideWidth?"visible":"hidden","padding-left":t.padding+"px","padding-right":t.padding+"px"},attrs:{role:"listbox"}},[t._t("default")],2)]),t._v(" "),t.paginationEnabled&&t.pageCount>0?n("pagination",{on:{paginationclick:function(e){t.goToPage(e,"pagination")}}}):t._e(),t._v(" "),t.navigationEnabled?n("navigation",{attrs:{clickTargetSize:t.navigationClickTargetSize,nextLabel:t.navigationNextLabel,prevLabel:t.navigationPrevLabel},on:{navigationclick:t.handleNavigation}}):t._e()],1)};r._withStripped=!0,n(46),n(47),n(58),n(60),n(32);var i={props:{autoplay:{type:Boolean,default:!1},autoplayTimeout:{type:Number,default:2e3},autoplayHoverPause:{type:Boolean,default:!0}},data:function(){return{autoplayInterval:null}},destroyed:function(){this.$isServer||(this.$el.removeEventListener("mouseenter",this.pauseAutoplay),this.$el.removeEventListener("mouseleave",this.startAutoplay))},methods:{pauseAutoplay:function(){this.autoplayInterval&&(this.autoplayInterval=clearInterval(this.autoplayInterval))},startAutoplay:function(){this.autoplay&&(this.autoplayInterval=setInterval(this.advancePage,this.autoplayTimeout))},restartAutoplay:function(){this.pauseAutoplay(),this.startAutoplay()}},mounted:function(){!this.$isServer&&this.autoplayHoverPause&&(this.$el.addEventListener("mouseenter",this.pauseAutoplay),this.$el.addEventListener("mouseleave",this.startAutoplay)),this.startAutoplay()}},o=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"VueCarousel-navigation"},[n("button",{staticClass:"VueCarousel-navigation-button VueCarousel-navigation-prev",class:{"VueCarousel-navigation--disabled":!t.canAdvanceBackward},style:"padding: "+t.clickTargetSize+"px; margin-right: -"+t.clickTargetSize+"px;",attrs:{type:"button","aria-label":"Previous page",role:"button"},domProps:{innerHTML:t._s(t.prevLabel)},on:{click:function(e){e.preventDefault(),t.triggerPageAdvance("backward")}}}),t._v(" "),n("button",{staticClass:"VueCarousel-navigation-button VueCarousel-navigation-next",class:{"VueCarousel-navigation--disabled":!t.canAdvanceForward},style:"padding: "+t.clickTargetSize+"px; margin-left: -"+t.clickTargetSize+"px;",attrs:{type:"button","aria-label":"Next page",role:"button"},domProps:{innerHTML:t._s(t.nextLabel)},on:{click:function(e){e.preventDefault(),t.triggerPageAdvance()}}})])};o._withStripped=!0;var a={name:"navigation",inject:["carousel"],props:{clickTargetSize:{type:Number,default:8},nextLabel:{type:String,default:"&#9654"},prevLabel:{type:String,default:"&#9664"}},computed:{canAdvanceForward:function(){return this.carousel.canAdvanceForward||!1},canAdvanceBackward:function(){return this.carousel.canAdvanceBackward||!1}},methods:{triggerPageAdvance:function(t){this.$emit("navigationclick",t)}}};function s(t,e,n,r,i,o,a,s){var u,c="function"==typeof t?t.options:t;if(e&&(c.render=e,c.staticRenderFns=n,c._compiled=!0),r&&(c.functional=!0),o&&(c._scopeId="data-v-"+o),a?(u=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),i&&i.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(a)},c._ssrRegister=u):i&&(u=s?function(){i.call(this,this.$root.$options.shadowRoot)}:i),u)if(c.functional){c._injectStyles=u;var l=c.render;c.render=function(t,e){return u.call(e),l(t,e)}}else{var f=c.beforeCreate;c.beforeCreate=f?[].concat(f,u):[u]}return{exports:t,options:c}}n(66);var u=s(a,o,[],!1,null,"453ad8cd",null);u.options.__file="src/Navigation.vue";var c=u.exports,l=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{directives:[{name:"show",rawName:"v-show",value:t.carousel.pageCount>1,expression:"carousel.pageCount > 1"}],staticClass:"VueCarousel-pagination"},[n("ul",{staticClass:"VueCarousel-dot-container",attrs:{role:"tablist"}},t._l(t.paginationCount,function(e,r){return n("li",{key:e+"_"+r,staticClass:"VueCarousel-dot",class:{"VueCarousel-dot--active":t.isCurrentDot(r)},style:"\n        margin-top: "+2*t.carousel.paginationPadding+"px;\n        padding: "+t.carousel.paginationPadding+"px;\n      ",attrs:{"aria-hidden":"false",role:"presentation","aria-selected":t.isCurrentDot(r)?"true":"false"},on:{click:function(e){t.goToPage(r)}}},[n("button",{staticClass:"VueCarousel-dot-button",style:"\n          width: "+t.carousel.paginationSize+"px;\n          height: "+t.carousel.paginationSize+"px;\n          background: "+(t.isCurrentDot(r)?t.carousel.paginationActiveColor:t.carousel.paginationColor)+";\n        ",attrs:{type:"button",role:"button","aria-label":"`Item ${index}`",title:"Item "+r,tabindex:0}})])}))])};l._withStripped=!0;var f=(n(68),s({name:"pagination",inject:["carousel"],computed:{paginationCount:function(){return this.carousel.scrollPerPage?this.carousel.pageCount:this.carousel.slideCount-2}},methods:{goToPage:function(t){this.$emit("paginationclick",t)},isCurrentDot:function(t){return t===this.carousel.currentPage}}},l,[],!1,null,"438fd353",null));f.options.__file="src/Pagination.vue";var d=f.exports,p=function(){var t=this.$createElement;return(this._self._c||t)("div",{staticClass:"VueCarousel-slide",class:{"VueCarousel-slide-active":this.isActive,"VueCarousel-slide-center":this.isCenter},attrs:{tabindex:"-1"}},[this._t("default")],2)};p._withStripped=!0,n(70);var h={name:"slide",data:function(){return{width:null}},inject:["carousel"],mounted:function(){this.$isServer||this.$el.addEventListener("dragstart",function(t){return t.preventDefault()}),this.$el.addEventListener(this.carousel.isTouch?"touchend":"mouseup",this.onTouchEnd)},computed:{activeSlides:function(){for(var t=this.carousel,e=t.currentPage,n=t.perPage,r=t.$children,i=(t.slideCount,[]),o=r.filter(function(t){return t.$el&&t.$el.className.indexOf("VueCarousel-slide")>=0}).map(function(t){return t._uid}),a=0;a<n;){var s=o[e*n+a];i.push(s),a++}return i},isActive:function(){return this.activeSlides.indexOf(this._uid)>=0},isCenter:function(){var t=this.carousel.perPage;return!(t%2==0||!this.isActive)&&this.activeSlides.indexOf(this._uid)===Math.floor(t/2)}},methods:{onTouchEnd:function(t){var e=this.carousel.isTouch&&t.changedTouches&&t.changedTouches.length>0?t.changedTouches[0].clientX:t.clientX,n=this.carousel.dragStartX-e;(0===this.carousel.minSwipeDistance||Math.abs(n)<this.carousel.minSwipeDistance)&&this.$emit("slideClick",Object.assign({},t.currentTarget.dataset))}}},g=(n(72),s(h,p,[],!1,null,null,null));g.options.__file="src/Slide.vue";var v=g.exports;function m(t){return(m="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}var y={onwebkittransitionend:"webkitTransitionEnd",onmoztransitionend:"transitionend",onotransitionend:"oTransitionEnd otransitionend",ontransitionend:"transitionend"},b=function(){for(var t in y)if(t in window)return y[t]},x={name:"carousel",beforeUpdate:function(){this.computeCarouselWidth()},components:{Navigation:c,Pagination:d,Slide:v},data:function(){return{browserWidth:null,carouselWidth:0,currentPage:0,dragging:!1,dragMomentum:0,dragOffset:0,dragStartY:0,dragStartX:0,isTouch:"undefined"!=typeof window&&"ontouchstart"in window,offset:0,refreshRate:16,slideCount:0,transitionstart:"transitionstart",transitionend:"transitionend"}},mixins:[i],provide:function(){return{carousel:this}},props:{value:{type:Number},easing:{type:String,default:"ease"},minSwipeDistance:{type:Number,default:8},navigationClickTargetSize:{type:Number,default:8},mouseDrag:{type:Boolean,default:!0},navigationEnabled:{type:Boolean,default:!1},navigationNextLabel:{type:String,default:"&#9654"},navigationPrevLabel:{type:String,default:"&#9664"},paginationActiveColor:{type:String,default:"#000000"},paginationColor:{type:String,default:"#efefef"},paginationEnabled:{type:Boolean,default:!0},paginationPadding:{type:Number,default:10},paginationSize:{type:Number,default:10},perPage:{type:Number,default:2},perPageCustom:{type:Array},resistanceCoef:{type:Number,default:20},scrollPerPage:{type:Boolean,default:!0},speed:{type:Number,default:500},loop:{type:Boolean,default:!1},navigateTo:{type:[Number,Array],default:0},spacePadding:{type:Number,default:0},spacePaddingMaxOffsetFactor:{type:Number,default:0}},watch:{value:function(t){t!==this.currentPage&&(this.goToPage(t),this.render())},navigateTo:{immediate:!0,handler:function(t){var e=this;"object"===m(t)?(0==t[1]&&(this.dragging=!0,setTimeout(function(){e.dragging=!1},this.refreshRate)),this.$nextTick(function(){e.goToPage(t[0])})):this.$nextTick(function(){e.goToPage(t)})}},currentPage:function(t){this.$emit("pageChange",t),this.$emit("input",t)}},computed:{breakpointSlidesPerPage:function(){if(!this.perPageCustom)return this.perPage;var t=this.perPageCustom,e=this.browserWidth,n=t.sort(function(t,e){return t[0]>e[0]?-1:1}).filter(function(t){return e>=t[0]});return n[0]&&n[0][1]||this.perPage},canAdvanceForward:function(){return this.loop||this.offset<this.maxOffset},canAdvanceBackward:function(){return this.loop||this.currentPage>0},currentPerPage:function(){return!this.perPageCustom||this.$isServer?this.perPage:this.breakpointSlidesPerPage},currentOffset:function(){return-1*(this.offset+this.dragOffset)},isHidden:function(){return this.carouselWidth<=0},maxOffset:function(){return this.slideWidth*(this.slideCount-this.currentPerPage)-this.spacePadding*this.spacePaddingMaxOffsetFactor},pageCount:function(){return this.scrollPerPage?Math.ceil(this.slideCount/this.currentPerPage):this.slideCount-2},slideWidth:function(){return(this.carouselWidth-2*this.spacePadding)/this.currentPerPage},transitionStyle:function(){return"".concat(this.speed/1e3,"s ").concat(this.easing," transform")},padding:function(){var t=this.spacePadding;return t>0&&t}},methods:{getNextPage:function(){return this.currentPage<this.pageCount-1?this.currentPage+1:this.loop?0:this.currentPage},getPreviousPage:function(){return this.currentPage>0?this.currentPage-1:this.loop?this.pageCount-1:this.currentPage},advancePage:function(t){t&&"backward"===t&&this.canAdvanceBackward?this.goToPage(this.getPreviousPage(),"navigation"):(!t||t&&"backward"!==t)&&this.canAdvanceForward&&this.goToPage(this.getNextPage(),"navigation")},attachMutationObserver:function(){var t=this,e=window.MutationObserver||window.WebKitMutationObserver||window.MozMutationObserver;if(e){var n={attributes:!0,data:!0};if(this.mutationObserver=new e(function(){t.$nextTick(function(){t.computeCarouselWidth()})}),this.$parent.$el)for(var r=this.$el.getElementsByClassName("VueCarousel-inner"),i=0;i<r.length;i++)this.mutationObserver.observe(r[i],n)}},handleNavigation:function(t){this.advancePage(t)},detachMutationObserver:function(){this.mutationObserver&&this.mutationObserver.disconnect()},getBrowserWidth:function(){return this.browserWidth=window.innerWidth,this.browserWidth},getCarouselWidth:function(){for(var t=this.$el.getElementsByClassName("VueCarousel-inner"),e=0;e<t.length;e++)t[e].clientWidth>0&&(this.carouselWidth=t[e].clientWidth||0);return this.carouselWidth},getSlideCount:function(){this.slideCount=this.$slots&&this.$slots.default&&this.$slots.default.filter(function(t){return t.tag&&t.tag.indexOf("slide")>-1}).length||0},goToPage:function(t){t>=0&&t<=this.pageCount&&(this.offset=this.scrollPerPage?Math.min(this.slideWidth*this.currentPerPage*t,this.maxOffset):Math.min(this.slideWidth*t,this.maxOffset),this.autoplay&&!this.autoplayHoverPause&&this.restartAutoplay(),this.currentPage=t)},onStart:function(t){document.addEventListener(this.isTouch?"touchend":"mouseup",this.onEnd,!0),document.addEventListener(this.isTouch?"touchmove":"mousemove",this.onDrag,!0),this.startTime=t.timeStamp,this.dragging=!0,this.dragStartX=this.isTouch?t.touches[0].clientX:t.clientX,this.dragStartY=this.isTouch?t.touches[0].clientY:t.clientY},onEnd:function(t){var e=this.isTouch?t.changedTouches[0].clientX:t.clientX,n=this.dragStartX-e;if(this.dragMomentum=n/(t.timeStamp-this.startTime),0!==this.minSwipeDistance&&Math.abs(n)>=this.minSwipeDistance){var r=this.scrollPerPage?this.slideWidth*this.currentPerPage:this.slideWidth;this.dragOffset=this.dragOffset+Math.sign(n)*(r/2)}this.offset+=this.dragOffset,this.dragOffset=0,this.dragging=!1,this.render(),document.removeEventListener(this.isTouch?"touchend":"mouseup",this.onEnd,!0),document.removeEventListener(this.isTouch?"touchmove":"mousemove",this.onDrag,!0)},onDrag:function(t){var e=this.isTouch?t.touches[0].clientX:t.clientX,n=this.isTouch?t.touches[0].clientY:t.clientY,r=this.dragStartX-e,i=this.dragStartY-n;if(!(this.isTouch&&Math.abs(r)<Math.abs(i))){t.stopImmediatePropagation(),this.dragOffset=r;var o=this.offset+this.dragOffset;o<0?this.dragOffset=-Math.sqrt(-this.resistanceCoef*this.dragOffset):o>this.maxOffset&&(this.dragOffset=Math.sqrt(this.resistanceCoef*this.dragOffset))}},onResize:function(){var t=this;this.computeCarouselWidth(),this.dragging=!0,this.render(),setTimeout(function(){t.dragging=!1},this.refreshRate)},render:function(){this.offset+=Math.max(1-this.currentPerPage,Math.min(Math.round(this.dragMomentum),this.currentPerPage-1))*this.slideWidth;var t=this.scrollPerPage?this.slideWidth*this.currentPerPage:this.slideWidth;this.offset=t*Math.round(this.offset/t),this.offset=Math.max(0,Math.min(this.offset,this.maxOffset)),this.currentPage=this.scrollPerPage?Math.round(this.offset/this.slideWidth/this.currentPerPage):Math.round(this.offset/this.slideWidth)},computeCarouselWidth:function(){this.getSlideCount(),this.getBrowserWidth(),this.getCarouselWidth(),this.setCurrentPageInBounds()},setCurrentPageInBounds:function(){if(!this.canAdvanceForward&&this.scrollPerPage){var t=this.pageCount-1;this.currentPage=t>=0?t:0,this.offset=Math.max(0,Math.min(this.offset,this.maxOffset))}},handleTransitionStart:function(){this.$emit("transitionStart")},handleTransitionEnd:function(){this.$emit("transitionEnd")}},mounted:function(){window.addEventListener("resize",function(t,e,n){var r;return function(){var i=n&&!r;clearTimeout(r),r=setTimeout(function(){r=null,n||t.apply(void 0)},e),i&&t.apply(void 0)}}(this.onResize,this.refreshRate)),(this.isTouch||this.mouseDrag)&&this.$refs["VueCarousel-wrapper"].addEventListener(this.isTouch?"touchstart":"mousedown",this.onStart),this.attachMutationObserver(),this.computeCarouselWidth(),this.transitionstart=b(),this.$refs["VueCarousel-inner"].addEventListener(this.transitionstart,this.handleTransitionStart),this.transitionend=b(),this.$refs["VueCarousel-inner"].addEventListener(this.transitionend,this.handleTransitionEnd),this.$emit("mounted")},beforeDestroy:function(){this.detachMutationObserver(),window.removeEventListener("resize",this.getBrowserWidth),this.$refs["VueCarousel-inner"].removeEventListener(this.transitionstart,this.handleTransitionStart),this.$refs["VueCarousel-inner"].removeEventListener(this.transitionend,this.handleTransitionEnd),this.$refs["VueCarousel-wrapper"].removeEventListener(this.isTouch?"touchstart":"mousedown",this.onStart)}},P=(n(74),s(x,r,[],!1,null,null,null));P.options.__file="src/Carousel.vue";var S=P.exports;n.d(e,"Carousel",function(){return S}),n.d(e,"Slide",function(){return v}),e.default={install:function(t){t.component("carousel",S),t.component("slide",v)}}}])});
 
 /***/ }),
-/* 198 */
+/* 202 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93905,25 +93830,1513 @@ var index_esm = {
 
 
 /***/ }),
-/* 199 */
+/* 203 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2_dist_sweetalert2_min_js__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2_dist_sweetalert2_min_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2_dist_sweetalert2_min_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert2_dist_sweetalert2_min_css__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert2_dist_sweetalert2_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_sweetalert2_dist_sweetalert2_min_css__);
+// @ts-check
+
+
+
+function isBrowser() {
+    return typeof window !== 'undefined';
+}
+
+var VueSweetalert2 = function() {};
+
+VueSweetalert2.install = function(Vue) {
+    // 1. adding a global method or property
+    var _swal = isBrowser() ? __WEBPACK_IMPORTED_MODULE_0_sweetalert2_dist_sweetalert2_min_js___default.a : function() { return Promise.resolve(); };
+
+    Vue.swal = _swal;
+
+    // 4. add the instance method
+    Object.defineProperty(Vue.prototype, '$swal', {
+        get: function get() {
+            return _swal
+        }
+    });
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (VueSweetalert2);
+
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define(t):e.Sweetalert2=t()}(this,function(){"use strict";function V(e){return(V="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function s(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function o(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}function i(e,t,n){return t&&o(e.prototype,t),n&&o(e,n),e}function r(){return(r=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(e[o]=n[o])}return e}).apply(this,arguments)}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&u(e,t)}function c(e){return(c=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function u(e,t){return(u=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function l(e,t,n){return(l=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],function(){})),!0}catch(e){return!1}}()?Reflect.construct:function(e,t,n){var o=[null];o.push.apply(o,t);var i=new(Function.bind.apply(e,o));return n&&u(i,n.prototype),i}).apply(null,arguments)}function d(e,t){return!t||"object"!=typeof t&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function p(e,t,n){return(p="undefined"!=typeof Reflect&&Reflect.get?Reflect.get:function(e,t,n){var o=function(e,t){for(;!Object.prototype.hasOwnProperty.call(e,t)&&null!==(e=c(e)););return e}(e,t);if(o){var i=Object.getOwnPropertyDescriptor(o,t);return i.get?i.get.call(n):i.value}})(e,t,n||e)}var t="SweetAlert2:",f=function(e){return Array.prototype.slice.call(e)},q=function(e){console.warn("".concat(t," ").concat(e))},R=function(e){console.error("".concat(t," ").concat(e))},n=[],m=function(e){-1===n.indexOf(e)&&(n.push(e),q(e))},H=function(e){return"function"==typeof e?e():e},I=function(e){return e&&"object"===V(e)&&"function"==typeof e.then},e=Object.freeze({cancel:"cancel",backdrop:"overlay",close:"close",esc:"esc",timer:"timer"}),h=function(e){var t={};for(var n in e)t[e[n]]="swal2-"+e[n];return t},_=h(["container","shown","height-auto","iosfix","popup","modal","no-backdrop","toast","toast-shown","toast-column","fade","show","hide","noanimation","close","title","header","content","actions","confirm","cancel","footer","icon","icon-text","image","input","file","range","select","radio","checkbox","label","textarea","inputerror","validation-message","progresssteps","activeprogressstep","progresscircle","progressline","loading","styled","top","top-start","top-end","top-left","top-right","center","center-start","center-end","center-left","center-right","bottom","bottom-start","bottom-end","bottom-left","bottom-right","grow-row","grow-column","grow-fullscreen"]),g=h(["success","warning","info","question","error"]),b={previousBodyPadding:null},v=function(e,t){return e.classList.contains(t)},D=function(e){if(e.focus(),"file"!==e.type){var t=e.value;e.value="",e.value=t}},y=function(e,t,n){e&&t&&("string"==typeof t&&(t=t.split(/\s+/).filter(Boolean)),t.forEach(function(t){e.forEach?e.forEach(function(e){n?e.classList.add(t):e.classList.remove(t)}):n?e.classList.add(t):e.classList.remove(t)}))},N=function(e,t){y(e,t,!0)},W=function(e,t){y(e,t,!1)},z=function(e,t){for(var n=0;n<e.childNodes.length;n++)if(v(e.childNodes[n],t))return e.childNodes[n]},U=function(e){e.style.opacity="",e.style.display=e.id===_.content?"block":"flex"},K=function(e){e.style.opacity="",e.style.display="none"},F=function(e){return e&&(e.offsetWidth||e.offsetHeight||e.getClientRects().length)},w=function(){return document.body.querySelector("."+_.container)},C=function(e){var t=w();return t?t.querySelector("."+e):null},k=function(){return C(_.popup)},x=function(){var e=k();return f(e.querySelectorAll("."+_.icon))},A=function(){return C(_.title)},B=function(){return C(_.content)},S=function(){return C(_.image)},P=function(){return C(_.progresssteps)},O=function(){return C(_["validation-message"])},E=function(){return C(_.confirm)},Z=function(){return C(_.cancel)},Q=function(){return C(_.actions)},Y=function(){return C(_.footer)},$=function(){return C(_.close)},J=function(){var e=f(k().querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])')).sort(function(e,t){return e=parseInt(e.getAttribute("tabindex")),(t=parseInt(t.getAttribute("tabindex")))<e?1:e<t?-1:0}),t=f(k().querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable], audio[controls], video[controls]')).filter(function(e){return"-1"!==e.getAttribute("tabindex")});return function(e){for(var t=[],n=0;n<e.length;n++)-1===t.indexOf(e[n])&&t.push(e[n]);return t}(e.concat(t)).filter(function(e){return F(e)})},L=function(){return!T()&&!document.body.classList.contains(_["no-backdrop"])},T=function(){return document.body.classList.contains(_["toast-shown"])},j=function(){return"undefined"==typeof window||"undefined"==typeof document},M='\n <div aria-labelledby="'.concat(_.title,'" aria-describedby="').concat(_.content,'" class="').concat(_.popup,'" tabindex="-1">\n   <div class="').concat(_.header,'">\n     <ul class="').concat(_.progresssteps,'"></ul>\n     <div class="').concat(_.icon," ").concat(g.error,'">\n       <span class="swal2-x-mark"><span class="swal2-x-mark-line-left"></span><span class="swal2-x-mark-line-right"></span></span>\n     </div>\n     <div class="').concat(_.icon," ").concat(g.question,'">\n       <span class="').concat(_["icon-text"],'">?</span>\n      </div>\n     <div class="').concat(_.icon," ").concat(g.warning,'">\n       <span class="').concat(_["icon-text"],'">!</span>\n      </div>\n     <div class="').concat(_.icon," ").concat(g.info,'">\n       <span class="').concat(_["icon-text"],'">i</span>\n      </div>\n     <div class="').concat(_.icon," ").concat(g.success,'">\n       <div class="swal2-success-circular-line-left"></div>\n       <span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>\n       <div class="swal2-success-ring"></div> <div class="swal2-success-fix"></div>\n       <div class="swal2-success-circular-line-right"></div>\n     </div>\n     <img class="').concat(_.image,'" />\n     <h2 class="').concat(_.title,'" id="').concat(_.title,'"></h2>\n     <button type="button" class="').concat(_.close,'">×</button>\n   </div>\n   <div class="').concat(_.content,'">\n     <div id="').concat(_.content,'"></div>\n     <input class="').concat(_.input,'" />\n     <input type="file" class="').concat(_.file,'" />\n     <div class="').concat(_.range,'">\n       <input type="range" />\n       <output></output>\n     </div>\n     <select class="').concat(_.select,'"></select>\n     <div class="').concat(_.radio,'"></div>\n     <label for="').concat(_.checkbox,'" class="').concat(_.checkbox,'">\n       <input type="checkbox" />\n       <span class="').concat(_.label,'"></span>\n     </label>\n     <textarea class="').concat(_.textarea,'"></textarea>\n     <div class="').concat(_["validation-message"],'" id="').concat(_["validation-message"],'"></div>\n   </div>\n   <div class="').concat(_.actions,'">\n     <button type="button" class="').concat(_.confirm,'">OK</button>\n     <button type="button" class="').concat(_.cancel,'">Cancel</button>\n   </div>\n   <div class="').concat(_.footer,'">\n   </div>\n </div>\n').replace(/(^|\n)\s*/g,""),X=function(e){var t=w();if(t&&(t.parentNode.removeChild(t),W([document.documentElement,document.body],[_["no-backdrop"],_["toast-shown"],_["has-column"]])),!j()){var n=document.createElement("div");n.className=_.container,n.innerHTML=M,("string"==typeof e.target?document.querySelector(e.target):e.target).appendChild(n);var o,i=k(),r=B(),a=z(r,_.input),s=z(r,_.file),c=r.querySelector(".".concat(_.range," input")),u=r.querySelector(".".concat(_.range," output")),l=z(r,_.select),d=r.querySelector(".".concat(_.checkbox," input")),p=z(r,_.textarea);i.setAttribute("role",e.toast?"alert":"dialog"),i.setAttribute("aria-live",e.toast?"polite":"assertive"),e.toast||i.setAttribute("aria-modal","true");var f=function(e){He.isVisible()&&o!==e.target.value&&He.resetValidationMessage(),o=e.target.value};return a.oninput=f,s.onchange=f,l.onchange=f,d.onchange=f,p.oninput=f,c.oninput=function(e){f(e),u.value=c.value},c.onchange=function(e){f(e),c.nextSibling.value=c.value},i}R("SweetAlert2 requires document to initialize")},G=function(e,t){if(!e)return K(t);if("object"===V(e))if(t.innerHTML="",0 in e)for(var n=0;n in e;n++)t.appendChild(e[n].cloneNode(!0));else t.appendChild(e.cloneNode(!0));else e&&(t.innerHTML=e);U(t)},ee=function(){if(j())return!1;var e=document.createElement("div"),t={WebkitAnimation:"webkitAnimationEnd",OAnimation:"oAnimationEnd oanimationend",animation:"animationend"};for(var n in t)if(t.hasOwnProperty(n)&&void 0!==e.style[n])return t[n];return!1}(),te=function(e){var t=Q(),n=E(),o=Z();if(e.showConfirmButton||e.showCancelButton?U(t):K(t),e.showCancelButton?o.style.display="inline-block":K(o),e.showConfirmButton?n.style.removeProperty("display"):K(n),n.innerHTML=e.confirmButtonText,o.innerHTML=e.cancelButtonText,n.setAttribute("aria-label",e.confirmButtonAriaLabel),o.setAttribute("aria-label",e.cancelButtonAriaLabel),n.className=_.confirm,N(n,e.confirmButtonClass),o.className=_.cancel,N(o,e.cancelButtonClass),e.buttonsStyling){N([n,o],_.styled),e.confirmButtonColor&&(n.style.backgroundColor=e.confirmButtonColor),e.cancelButtonColor&&(o.style.backgroundColor=e.cancelButtonColor);var i=window.getComputedStyle(n).getPropertyValue("background-color");n.style.borderLeftColor=i,n.style.borderRightColor=i}else W([n,o],_.styled),n.style.backgroundColor=n.style.borderLeftColor=n.style.borderRightColor="",o.style.backgroundColor=o.style.borderLeftColor=o.style.borderRightColor=""},ne=function(e){var t=B().querySelector("#"+_.content);e.html?G(e.html,t):e.text?(t.textContent=e.text,U(t)):K(t)},oe=function(e){for(var t=x(),n=0;n<t.length;n++)K(t[n]);if(e.type)if(-1!==Object.keys(g).indexOf(e.type)){var o=He.getPopup().querySelector(".".concat(_.icon,".").concat(g[e.type]));U(o),e.animation&&N(o,"swal2-animate-".concat(e.type,"-icon"))}else R('Unknown type! Expected "success", "error", "warning", "info" or "question", got "'.concat(e.type,'"'))},ie=function(e){var t=S();e.imageUrl?(t.setAttribute("src",e.imageUrl),t.setAttribute("alt",e.imageAlt),U(t),e.imageWidth?t.setAttribute("width",e.imageWidth):t.removeAttribute("width"),e.imageHeight?t.setAttribute("height",e.imageHeight):t.removeAttribute("height"),t.className=_.image,e.imageClass&&N(t,e.imageClass)):K(t)},re=function(i){var r=P(),a=parseInt(null===i.currentProgressStep?He.getQueueStep():i.currentProgressStep,10);i.progressSteps&&i.progressSteps.length?(U(r),r.innerHTML="",a>=i.progressSteps.length&&q("Invalid currentProgressStep parameter, it should be less than progressSteps.length (currentProgressStep like JS arrays starts from 0)"),i.progressSteps.forEach(function(e,t){var n=document.createElement("li");if(N(n,_.progresscircle),n.innerHTML=e,t===a&&N(n,_.activeprogressstep),r.appendChild(n),t!==i.progressSteps.length-1){var o=document.createElement("li");N(o,_.progressline),i.progressStepsDistance&&(o.style.width=i.progressStepsDistance),r.appendChild(o)}})):K(r)},ae=function(e){var t=A();e.titleText?t.innerText=e.titleText:e.title&&("string"==typeof e.title&&(e.title=e.title.split("\n").join("<br />")),G(e.title,t))},se=function(){null===b.previousBodyPadding&&document.body.scrollHeight>window.innerHeight&&(b.previousBodyPadding=parseInt(window.getComputedStyle(document.body).getPropertyValue("padding-right")),document.body.style.paddingRight=b.previousBodyPadding+function(){if("ontouchstart"in window||navigator.msMaxTouchPoints)return 0;var e=document.createElement("div");e.style.width="50px",e.style.height="50px",e.style.overflow="scroll",document.body.appendChild(e);var t=e.offsetWidth-e.clientWidth;return document.body.removeChild(e),t}()+"px")},ce={},ue=function(e,t){var n=w(),o=k();if(o){null!==e&&"function"==typeof e&&e(o),W(o,_.show),N(o,_.hide);var i=function(){T()?le(t):(new Promise(function(e){var t=window.scrollX,n=window.scrollY;ce.restoreFocusTimeout=setTimeout(function(){ce.previousActiveElement&&ce.previousActiveElement.focus?(ce.previousActiveElement.focus(),ce.previousActiveElement=null):document.body&&document.body.focus(),e()},100),void 0!==t&&void 0!==n&&window.scrollTo(t,n)}).then(function(){return le(t)}),ce.keydownTarget.removeEventListener("keydown",ce.keydownHandler,{capture:ce.keydownListenerCapture}),ce.keydownHandlerAdded=!1),n.parentNode&&n.parentNode.removeChild(n),W([document.documentElement,document.body],[_.shown,_["height-auto"],_["no-backdrop"],_["toast-shown"],_["toast-column"]]),L()&&(null!==b.previousBodyPadding&&(document.body.style.paddingRight=b.previousBodyPadding,b.previousBodyPadding=null),function(){if(v(document.body,_.iosfix)){var e=parseInt(document.body.style.top,10);W(document.body,_.iosfix),document.body.style.top="",document.body.scrollTop=-1*e}}(),f(document.body.children).forEach(function(e){e.hasAttribute("data-previous-aria-hidden")?(e.setAttribute("aria-hidden",e.getAttribute("data-previous-aria-hidden")),e.removeAttribute("data-previous-aria-hidden")):e.removeAttribute("aria-hidden")}))};ee&&!v(o,_.noanimation)?o.addEventListener(ee,function e(){o.removeEventListener(ee,e),v(o,_.hide)&&i()}):i()}},le=function(e){null!==e&&"function"==typeof e&&setTimeout(function(){e()})};function de(e){var t=function e(){for(var t=arguments.length,n=new Array(t),o=0;o<t;o++)n[o]=arguments[o];if(!(this instanceof e))return l(e,n);Object.getPrototypeOf(e).apply(this,n)};return t.prototype=r(Object.create(e.prototype),{constructor:t}),"function"==typeof Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e,t}var pe={title:"",titleText:"",text:"",html:"",footer:"",type:null,toast:!1,customClass:"",target:"body",backdrop:!0,animation:!0,heightAuto:!0,allowOutsideClick:!0,allowEscapeKey:!0,allowEnterKey:!0,stopKeydownPropagation:!0,keydownListenerCapture:!1,showConfirmButton:!0,showCancelButton:!1,preConfirm:null,confirmButtonText:"OK",confirmButtonAriaLabel:"",confirmButtonColor:null,confirmButtonClass:null,cancelButtonText:"Cancel",cancelButtonAriaLabel:"",cancelButtonColor:null,cancelButtonClass:null,buttonsStyling:!0,reverseButtons:!1,focusConfirm:!0,focusCancel:!1,showCloseButton:!1,closeButtonAriaLabel:"Close this dialog",showLoaderOnConfirm:!1,imageUrl:null,imageWidth:null,imageHeight:null,imageAlt:"",imageClass:null,timer:null,width:null,padding:null,background:null,input:null,inputPlaceholder:"",inputValue:"",inputOptions:{},inputAutoTrim:!0,inputClass:null,inputAttributes:{},inputValidator:null,validationMessage:null,grow:!1,position:"center",progressSteps:[],currentProgressStep:null,progressStepsDistance:null,onBeforeOpen:null,onAfterClose:null,onOpen:null,onClose:null,useRejections:!1,expectRejections:!1},fe=["useRejections","expectRejections","extraParams"],me=["allowOutsideClick","allowEnterKey","backdrop","focusConfirm","focusCancel","heightAuto","keydownListenerCapture"],he=function(e){return pe.hasOwnProperty(e)||"extraParams"===e},ge=function(e){return-1!==fe.indexOf(e)},be=function(e){for(var t in e)he(t)||q('Unknown parameter "'.concat(t,'"')),e.toast&&-1!==me.indexOf(t)&&q('The parameter "'.concat(t,'" is incompatible with toasts')),ge(t)&&m('The parameter "'.concat(t,'" is deprecated and will be removed in the next major release.'))},ve='"setDefaults" & "resetDefaults" methods are deprecated in favor of "mixin" method and will be removed in the next major release. For new projects, use "mixin". For past projects already using "setDefaults", support will be provided through an additional package.',ye={};var we=[],Ce=function(){var e=k();e||He(""),e=k();var t=Q(),n=E(),o=Z();U(t),U(n),N([e,t],_.loading),n.disabled=!0,o.disabled=!0,e.setAttribute("data-loading",!0),e.setAttribute("aria-busy",!0),e.focus()},ke=Object.freeze({isValidParameter:he,isDeprecatedParameter:ge,argsToParams:function(n){var o={};switch(V(n[0])){case"object":r(o,n[0]);break;default:["title","html","type"].forEach(function(e,t){switch(V(n[t])){case"string":o[e]=n[t];break;case"undefined":break;default:R("Unexpected type of ".concat(e,'! Expected "string", got ').concat(V(n[t])))}})}return o},adaptInputValidator:function(n){return function(e,t){return n.call(this,e,t).then(function(){},function(e){return e})}},close:ue,closePopup:ue,closeModal:ue,closeToast:ue,isVisible:function(){return!!k()},clickConfirm:function(){return E().click()},clickCancel:function(){return Z().click()},getContainer:w,getPopup:k,getTitle:A,getContent:B,getImage:S,getIcons:x,getCloseButton:$,getButtonsWrapper:function(){return m("swal.getButtonsWrapper() is deprecated and will be removed in the next major release, use swal.getActions() instead"),C(_.actions)},getActions:Q,getConfirmButton:E,getCancelButton:Z,getFooter:Y,getFocusableElements:J,getValidationMessage:O,isLoading:function(){return k().hasAttribute("data-loading")},fire:function(){for(var e=arguments.length,t=new Array(e),n=0;n<e;n++)t[n]=arguments[n];return l(this,t)},mixin:function(n){return de(function(e){function t(){return s(this,t),d(this,c(t).apply(this,arguments))}return a(t,e),i(t,[{key:"_main",value:function(e){return p(c(t.prototype),"_main",this).call(this,r({},n,e))}}]),t}(this))},queue:function(e){var r=this;we=e;var a=function(){we=[],document.body.removeAttribute("data-swal2-queue-step")},s=[];return new Promise(function(i){!function t(n,o){n<we.length?(document.body.setAttribute("data-swal2-queue-step",n),r(we[n]).then(function(e){void 0!==e.value?(s.push(e.value),t(n+1,o)):(a(),i({dismiss:e.dismiss}))})):(a(),i({value:s}))}(0)})},getQueueStep:function(){return document.body.getAttribute("data-swal2-queue-step")},insertQueueStep:function(e,t){return t&&t<we.length?we.splice(t,0,e):we.push(e)},deleteQueueStep:function(e){void 0!==we[e]&&we.splice(e,1)},showLoading:Ce,enableLoading:Ce,getTimerLeft:function(){return ce.timeout&&ce.timeout.getTimerLeft()}}),xe="function"==typeof Symbol?Symbol:function(){var t=0;function e(e){return"__"+e+"_"+Math.floor(1e9*Math.random())+"_"+ ++t+"__"}return e.iterator=e("Symbol.iterator"),e}(),Ae="function"==typeof WeakMap?WeakMap:function(n,o,t){function e(){o(this,n,{value:xe("WeakMap")})}return e.prototype={delete:function(e){delete e[this[n]]},get:function(e){return e[this[n]]},has:function(e){return t.call(e,this[n])},set:function(e,t){o(e,this[n],{configurable:!0,value:t})}},e}(xe("WeakMap"),Object.defineProperty,{}.hasOwnProperty),Be={promise:new Ae,innerParams:new Ae,domCache:new Ae};function Se(){var e=Be.innerParams.get(this),t=Be.domCache.get(this);e.showConfirmButton||(K(t.confirmButton),e.showCancelButton||K(t.actions)),W([t.popup,t.actions],_.loading),t.popup.removeAttribute("aria-busy"),t.popup.removeAttribute("data-loading"),t.confirmButton.disabled=!1,t.cancelButton.disabled=!1}function Pe(e){var t=Be.domCache.get(this);t.validationMessage.innerHTML=e;var n=window.getComputedStyle(t.popup);t.validationMessage.style.marginLeft="-".concat(n.getPropertyValue("padding-left")),t.validationMessage.style.marginRight="-".concat(n.getPropertyValue("padding-right")),U(t.validationMessage);var o=this.getInput();o&&(o.setAttribute("aria-invalid",!0),o.setAttribute("aria-describedBy",_["validation-message"]),D(o),N(o,_.inputerror))}function Oe(){var e=Be.domCache.get(this);e.validationMessage&&K(e.validationMessage);var t=this.getInput();t&&(t.removeAttribute("aria-invalid"),t.removeAttribute("aria-describedBy"),W(t,_.inputerror))}var Ee=function e(t,n){var o,i,r;s(this,e);var a=n;this.start=function(){r=!0,i=new Date,o=setTimeout(t,a)},this.stop=function(){r=!1,clearTimeout(o),a-=new Date-i},this.getTimerLeft=function(){return r&&(this.stop(),this.start()),a},this.start()},Le={email:function(e,t){return/^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9-]{2,24}$/.test(e)?Promise.resolve():Promise.reject(t&&t.validationMessage?t.validationMessage:"Invalid email address")},url:function(e,t){return/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/.test(e)?Promise.resolve():Promise.reject(t&&t.validationMessage?t.validationMessage:"Invalid URL")}};var Te=function(e){var t=w(),n=k();null!==e.onBeforeOpen&&"function"==typeof e.onBeforeOpen&&e.onBeforeOpen(n),e.animation?(N(n,_.show),N(t,_.fade),W(n,_.hide)):W(n,_.fade),U(n),t.style.overflowY="hidden",ee&&!v(n,_.noanimation)?n.addEventListener(ee,function e(){n.removeEventListener(ee,e),t.style.overflowY="auto"}):t.style.overflowY="auto",N([document.documentElement,document.body,t],_.shown),e.heightAuto&&e.backdrop&&!e.toast&&N([document.documentElement,document.body],_["height-auto"]),L()&&(se(),function(){if(/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream&&!v(document.body,_.iosfix)){var e=document.body.scrollTop;document.body.style.top=-1*e+"px",N(document.body,_.iosfix)}}(),f(document.body.children).forEach(function(e){e===w()||e.contains(w())||(e.hasAttribute("aria-hidden")&&e.setAttribute("data-previous-aria-hidden",e.getAttribute("aria-hidden")),e.setAttribute("aria-hidden","true"))})),T()||ce.previousActiveElement||(ce.previousActiveElement=document.activeElement),null!==e.onOpen&&"function"==typeof e.onOpen&&setTimeout(function(){e.onOpen(n)})};var je,Me=Object.freeze({hideLoading:Se,disableLoading:Se,getInput:function(e){var t=Be.innerParams.get(this),n=Be.domCache.get(this);if(!(e=e||t.input))return null;switch(e){case"select":case"textarea":case"file":return z(n.content,_[e]);case"checkbox":return n.popup.querySelector(".".concat(_.checkbox," input"));case"radio":return n.popup.querySelector(".".concat(_.radio," input:checked"))||n.popup.querySelector(".".concat(_.radio," input:first-child"));case"range":return n.popup.querySelector(".".concat(_.range," input"));default:return z(n.content,_.input)}},enableButtons:function(){var e=Be.domCache.get(this);e.confirmButton.disabled=!1,e.cancelButton.disabled=!1},disableButtons:function(){var e=Be.domCache.get(this);e.confirmButton.disabled=!0,e.cancelButton.disabled=!0},enableConfirmButton:function(){Be.domCache.get(this).confirmButton.disabled=!1},disableConfirmButton:function(){Be.domCache.get(this).confirmButton.disabled=!0},enableInput:function(){var e=this.getInput();if(!e)return!1;if("radio"===e.type)for(var t=e.parentNode.parentNode.querySelectorAll("input"),n=0;n<t.length;n++)t[n].disabled=!1;else e.disabled=!1},disableInput:function(){var e=this.getInput();if(!e)return!1;if(e&&"radio"===e.type)for(var t=e.parentNode.parentNode.querySelectorAll("input"),n=0;n<t.length;n++)t[n].disabled=!0;else e.disabled=!0},showValidationMessage:Pe,resetValidationMessage:Oe,resetValidationError:function(){m("Swal.resetValidationError() is deprecated and will be removed in the next major release, use Swal.resetValidationMessage() instead"),Oe.bind(this)()},showValidationError:function(e){m("Swal.showValidationError() is deprecated and will be removed in the next major release, use Swal.showValidationMessage() instead"),Pe.bind(this)(e)},getProgressSteps:function(){return Be.innerParams.get(this).progressSteps},setProgressSteps:function(e){var t=r({},Be.innerParams.get(this),{progressSteps:e});Be.innerParams.set(this,t),re(t)},showProgressSteps:function(){var e=Be.domCache.get(this);U(e.progressSteps)},hideProgressSteps:function(){var e=Be.domCache.get(this);K(e.progressSteps)},_main:function(e){var L=this;be(e);var T=r({},pe,e);!function(t){var e;t.inputValidator||Object.keys(Le).forEach(function(e){t.input===e&&(t.inputValidator=t.expectRejections?Le[e]:He.adaptInputValidator(Le[e]))}),t.validationMessage&&("object"!==V(t.extraParams)&&(t.extraParams={}),t.extraParams.validationMessage=t.validationMessage),(!t.target||"string"==typeof t.target&&!document.querySelector(t.target)||"string"!=typeof t.target&&!t.target.appendChild)&&(q('Target parameter is not valid, defaulting to "body"'),t.target="body");var n=k(),o="string"==typeof t.target?document.querySelector(t.target):t.target;e=n&&o&&n.parentNode!==o.parentNode?X(t):n||X(t),t.width&&(e.style.width="number"==typeof t.width?t.width+"px":t.width),t.padding&&(e.style.padding="number"==typeof t.padding?t.padding+"px":t.padding),t.background&&(e.style.background=t.background);for(var i=window.getComputedStyle(e).getPropertyValue("background-color"),r=e.querySelectorAll("[class^=swal2-success-circular-line], .swal2-success-fix"),a=0;a<r.length;a++)r[a].style.backgroundColor=i;var s=w(),c=$(),u=Y();if(ae(t),ne(t),"string"==typeof t.backdrop?w().style.background=t.backdrop:t.backdrop||N([document.documentElement,document.body],_["no-backdrop"]),!t.backdrop&&t.allowOutsideClick&&q('"allowOutsideClick" parameter requires `backdrop` parameter to be set to `true`'),t.position in _?N(s,_[t.position]):(q('The "position" parameter is not valid, defaulting to "center"'),N(s,_.center)),t.grow&&"string"==typeof t.grow){var l="grow-"+t.grow;l in _&&N(s,_[l])}"function"==typeof t.animation&&(t.animation=t.animation.call()),t.showCloseButton?(c.setAttribute("aria-label",t.closeButtonAriaLabel),U(c)):K(c),e.className=_.popup,t.toast?(N([document.documentElement,document.body],_["toast-shown"]),N(e,_.toast)):N(e,_.modal),t.customClass&&N(e,t.customClass),re(t),oe(t),ie(t),te(t),G(t.footer,u),!0===t.animation?W(e,_.noanimation):N(e,_.noanimation),t.showLoaderOnConfirm&&!t.preConfirm&&q("showLoaderOnConfirm is set to true, but preConfirm is not defined.\nshowLoaderOnConfirm should be used together with preConfirm, see usage example:\nhttps://sweetalert2.github.io/#ajax-request")}(T),Object.freeze(T),Be.innerParams.set(this,T),ce.timeout&&(ce.timeout.stop(),delete ce.timeout),clearTimeout(ce.restoreFocusTimeout);var j={popup:k(),container:w(),content:B(),actions:Q(),confirmButton:E(),cancelButton:Z(),closeButton:$(),validationMessage:O(),progressSteps:P()};Be.domCache.set(this,j);var M=this.constructor;return new Promise(function(t,n){var o=function(e){M.closePopup(T.onClose,T.onAfterClose),T.useRejections?t(e):t({value:e})},c=function(e){M.closePopup(T.onClose,T.onAfterClose),T.useRejections?n(e):t({dismiss:e})},u=function(e){M.closePopup(T.onClose,T.onAfterClose),n(e)};T.timer&&(ce.timeout=new Ee(function(){c("timer"),delete ce.timeout},T.timer)),T.input&&setTimeout(function(){var e=L.getInput();e&&D(e)},0);for(var l=function(t){if(T.showLoaderOnConfirm&&M.showLoading(),T.preConfirm){L.resetValidationMessage();var e=Promise.resolve().then(function(){return T.preConfirm(t,T.extraParams)});T.expectRejections?e.then(function(e){return o(e||t)},function(e){L.hideLoading(),e&&L.showValidationMessage(e)}):e.then(function(e){F(j.validationMessage)||!1===e?L.hideLoading():o(e||t)},function(e){return u(e)})}else o(t)},e=function(e){var t=e.target,n=j.confirmButton,o=j.cancelButton,i=n&&(n===t||n.contains(t)),r=o&&(o===t||o.contains(t));switch(e.type){case"click":if(i&&M.isVisible())if(L.disableButtons(),T.input){var a=function(){var e=L.getInput();if(!e)return null;switch(T.input){case"checkbox":return e.checked?1:0;case"radio":return e.checked?e.value:null;case"file":return e.files.length?e.files[0]:null;default:return T.inputAutoTrim?e.value.trim():e.value}}();if(T.inputValidator){L.disableInput();var s=Promise.resolve().then(function(){return T.inputValidator(a,T.extraParams)});T.expectRejections?s.then(function(){L.enableButtons(),L.enableInput(),l(a)},function(e){L.enableButtons(),L.enableInput(),e&&L.showValidationMessage(e)}):s.then(function(e){L.enableButtons(),L.enableInput(),e?L.showValidationMessage(e):l(a)},function(e){return u(e)})}else l(a)}else l(!0);else r&&M.isVisible()&&(L.disableButtons(),c(M.DismissReason.cancel))}},i=j.popup.querySelectorAll("button"),r=0;r<i.length;r++)i[r].onclick=e,i[r].onmouseover=e,i[r].onmouseout=e,i[r].onmousedown=e;if(j.closeButton.onclick=function(){c(M.DismissReason.close)},T.toast)j.popup.onclick=function(){T.showConfirmButton||T.showCancelButton||T.showCloseButton||T.input||c(M.DismissReason.close)};else{var a=!1;j.popup.onmousedown=function(){j.container.onmouseup=function(e){j.container.onmouseup=void 0,e.target===j.container&&(a=!0)}},j.container.onmousedown=function(){j.popup.onmouseup=function(e){j.popup.onmouseup=void 0,(e.target===j.popup||j.popup.contains(e.target))&&(a=!0)}},j.container.onclick=function(e){a?a=!1:e.target===j.container&&H(T.allowOutsideClick)&&c(M.DismissReason.backdrop)}}T.reverseButtons?j.confirmButton.parentNode.insertBefore(j.cancelButton,j.confirmButton):j.confirmButton.parentNode.insertBefore(j.confirmButton,j.cancelButton);var s=function(e,t){for(var n=J(T.focusCancel),o=0;o<n.length;o++)return(e+=t)===n.length?e=0:-1===e&&(e=n.length-1),n[e].focus();j.popup.focus()};ce.keydownHandlerAdded&&(ce.keydownTarget.removeEventListener("keydown",ce.keydownHandler,{capture:ce.keydownListenerCapture}),ce.keydownHandlerAdded=!1),T.toast||(ce.keydownHandler=function(e){return function(e,t){if(t.stopKeydownPropagation&&e.stopPropagation(),"Enter"!==e.key||e.isComposing)if("Tab"===e.key){for(var n=e.target,o=J(t.focusCancel),i=-1,r=0;r<o.length;r++)if(n===o[r]){i=r;break}e.shiftKey?s(i,-1):s(i,1),e.stopPropagation(),e.preventDefault()}else-1!==["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Left","Right","Up","Down"].indexOf(e.key)?document.activeElement===j.confirmButton&&F(j.cancelButton)?j.cancelButton.focus():document.activeElement===j.cancelButton&&F(j.confirmButton)&&j.confirmButton.focus():"Escape"!==e.key&&"Esc"!==e.key||!0!==H(t.allowEscapeKey)||c(M.DismissReason.esc);else if(e.target&&L.getInput()&&e.target.outerHTML===L.getInput().outerHTML){if(-1!==["textarea","file"].indexOf(t.input))return;M.clickConfirm(),e.preventDefault()}}(e,T)},ce.keydownTarget=T.keydownListenerCapture?window:j.popup,ce.keydownListenerCapture=T.keydownListenerCapture,ce.keydownTarget.addEventListener("keydown",ce.keydownHandler,{capture:ce.keydownListenerCapture}),ce.keydownHandlerAdded=!0),L.enableButtons(),L.hideLoading(),L.resetValidationMessage(),T.toast&&(T.input||T.footer||T.showCloseButton)?N(document.body,_["toast-column"]):W(document.body,_["toast-column"]);for(var d,p,f=["input","file","range","select","radio","checkbox","textarea"],m=0;m<f.length;m++){var h=_[f[m]],g=z(j.content,h);if(d=L.getInput(f[m])){for(var b in d.attributes)if(d.attributes.hasOwnProperty(b)){var v=d.attributes[b].name;"type"!==v&&"value"!==v&&d.removeAttribute(v)}for(var y in T.inputAttributes)d.setAttribute(y,T.inputAttributes[y])}g.className=h,T.inputClass&&N(g,T.inputClass),K(g)}switch(T.input){case"text":case"email":case"password":case"number":case"tel":case"url":d=z(j.content,_.input),"string"==typeof T.inputValue||"number"==typeof T.inputValue?d.value=T.inputValue:q('Unexpected type of inputValue! Expected "string" or "number", got "'.concat(V(T.inputValue),'"')),d.placeholder=T.inputPlaceholder,d.type=T.input,U(d);break;case"file":(d=z(j.content,_.file)).placeholder=T.inputPlaceholder,d.type=T.input,U(d);break;case"range":var w=z(j.content,_.range),C=w.querySelector("input"),k=w.querySelector("output");C.value=T.inputValue,C.type=T.input,k.value=T.inputValue,U(w);break;case"select":var x=z(j.content,_.select);if(x.innerHTML="",T.inputPlaceholder){var A=document.createElement("option");A.innerHTML=T.inputPlaceholder,A.value="",A.disabled=!0,A.selected=!0,x.appendChild(A)}p=function(e){e.forEach(function(e){var t=e[0],n=e[1],o=document.createElement("option");o.value=t,o.innerHTML=n,T.inputValue.toString()===t.toString()&&(o.selected=!0),x.appendChild(o)}),U(x),x.focus()};break;case"radio":var B=z(j.content,_.radio);B.innerHTML="",p=function(e){e.forEach(function(e){var t=e[0],n=e[1],o=document.createElement("input"),i=document.createElement("label");o.type="radio",o.name=_.radio,o.value=t,T.inputValue.toString()===t.toString()&&(o.checked=!0);var r=document.createElement("span");r.innerHTML=n,r.className=_.label,i.appendChild(o),i.appendChild(r),B.appendChild(i)}),U(B);var t=B.querySelectorAll("input");t.length&&t[0].focus()};break;case"checkbox":var S=z(j.content,_.checkbox),P=L.getInput("checkbox");P.type="checkbox",P.value=1,P.id=_.checkbox,P.checked=Boolean(T.inputValue),S.querySelector("span").innerHTML=T.inputPlaceholder,U(S);break;case"textarea":var O=z(j.content,_.textarea);O.value=T.inputValue,O.placeholder=T.inputPlaceholder,U(O);break;case null:break;default:R('Unexpected type of input! Expected "text", "email", "password", "number", "tel", "select", "radio", "checkbox", "textarea", "file" or "url", got "'.concat(T.input,'"'))}if("select"===T.input||"radio"===T.input){var E=function(e){return p((t=e,n=[],"undefined"!=typeof Map&&t instanceof Map?t.forEach(function(e,t){n.push([t,e])}):Object.keys(t).forEach(function(e){n.push([e,t[e]])}),n));var t,n};I(T.inputOptions)?(M.showLoading(),T.inputOptions.then(function(e){L.hideLoading(),E(e)})):"object"===V(T.inputOptions)?E(T.inputOptions):R("Unexpected type of inputOptions! Expected object, Map or Promise, got ".concat(V(T.inputOptions)))}else-1!==["text","email","number","tel","textarea"].indexOf(T.input)&&I(T.inputValue)&&(M.showLoading(),K(d),T.inputValue.then(function(e){d.value="number"===T.input?parseFloat(e)||0:e+"",U(d),d.focus(),L.hideLoading()}).catch(function(e){R("Error in inputValue promise: "+e),d.value="",U(d),d.focus(),L.hideLoading()}));Te(T),T.toast||(H(T.allowEnterKey)?T.focusCancel&&F(j.cancelButton)?j.cancelButton.focus():T.focusConfirm&&F(j.confirmButton)?j.confirmButton.focus():s(-1,1):document.activeElement&&document.activeElement.blur()),j.container.scrollTop=0})}});function Ve(){if("undefined"!=typeof window){"undefined"==typeof Promise&&R("This package requires a Promise library, please include a shim to enable it in this browser (See: https://github.com/sweetalert2/sweetalert2/wiki/Migration-from-SweetAlert-to-SweetAlert2#1-ie-support)");for(var e=arguments.length,t=new Array(e),n=0;n<e;n++)t[n]=arguments[n];if(0===t.length)return R("At least 1 argument is expected!"),!1;je=this;var o=Object.freeze(this.constructor.argsToParams(t));Object.defineProperties(this,{params:{value:o,writable:!1,enumerable:!0}});var i=this._main(this.params);Be.promise.set(this,i)}}Ve.prototype.then=function(e,t){return Be.promise.get(this).then(e,t)},Ve.prototype.catch=function(e){return Be.promise.get(this).catch(e)},Ve.prototype.finally=function(e){return Be.promise.get(this).finally(e)},r(Ve.prototype,Me),r(Ve,ke),Object.keys(Me).forEach(function(t){Ve[t]=function(){var e;if(je)return(e=je)[t].apply(e,arguments)}}),Ve.DismissReason=e,Ve.noop=function(){};var qe,Re,He=de((qe=Ve,Re=function(e){function t(){return s(this,t),d(this,c(t).apply(this,arguments))}return a(t,qe),i(t,[{key:"_main",value:function(e){return p(c(t.prototype),"_main",this).call(this,r({},ye,e))}}],[{key:"setDefaults",value:function(t){if(m(ve),!t||"object"!==V(t))throw new TypeError("SweetAlert2: The argument for setDefaults() is required and has to be a object");be(t),Object.keys(t).forEach(function(e){qe.isValidParameter(e)&&(ye[e]=t[e])})}},{key:"resetDefaults",value:function(){m(ve),ye={}}}]),t}(),"undefined"!=typeof window&&"object"===V(window._swalDefaults)&&Re.setDefaults(window._swalDefaults),Re));return He.default=He}),"undefined"!=typeof window&&window.Sweetalert2&&(window.Sweetalert2.version="7.28.4",window.swal=window.sweetAlert=window.Swal=window.SweetAlert=window.Sweetalert2);
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(206);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../css-loader/index.js!./sweetalert2.min.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./sweetalert2.min.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "@-webkit-keyframes swal2-show{0%{-webkit-transform:scale(.7);transform:scale(.7)}45%{-webkit-transform:scale(1.05);transform:scale(1.05)}80%{-webkit-transform:scale(.95);transform:scale(.95)}100%{-webkit-transform:scale(1);transform:scale(1)}}@keyframes swal2-show{0%{-webkit-transform:scale(.7);transform:scale(.7)}45%{-webkit-transform:scale(1.05);transform:scale(1.05)}80%{-webkit-transform:scale(.95);transform:scale(.95)}100%{-webkit-transform:scale(1);transform:scale(1)}}@-webkit-keyframes swal2-hide{0%{-webkit-transform:scale(1);transform:scale(1);opacity:1}100%{-webkit-transform:scale(.5);transform:scale(.5);opacity:0}}@keyframes swal2-hide{0%{-webkit-transform:scale(1);transform:scale(1);opacity:1}100%{-webkit-transform:scale(.5);transform:scale(.5);opacity:0}}@-webkit-keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.875em;width:1.5625em}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.875em;width:1.5625em}}@-webkit-keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@-webkit-keyframes swal2-rotate-success-circular-line{0%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}5%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}12%{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}100%{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}}@keyframes swal2-rotate-success-circular-line{0%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}5%{-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}12%{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}100%{-webkit-transform:rotate(-405deg);transform:rotate(-405deg)}}@-webkit-keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;-webkit-transform:scale(.4);transform:scale(.4);opacity:0}50%{margin-top:1.625em;-webkit-transform:scale(.4);transform:scale(.4);opacity:0}80%{margin-top:-.375em;-webkit-transform:scale(1.15);transform:scale(1.15)}100%{margin-top:0;-webkit-transform:scale(1);transform:scale(1);opacity:1}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;-webkit-transform:scale(.4);transform:scale(.4);opacity:0}50%{margin-top:1.625em;-webkit-transform:scale(.4);transform:scale(.4);opacity:0}80%{margin-top:-.375em;-webkit-transform:scale(1.15);transform:scale(1.15)}100%{margin-top:0;-webkit-transform:scale(1);transform:scale(1);opacity:1}}@-webkit-keyframes swal2-animate-error-icon{0%{-webkit-transform:rotateX(100deg);transform:rotateX(100deg);opacity:0}100%{-webkit-transform:rotateX(0);transform:rotateX(0);opacity:1}}@keyframes swal2-animate-error-icon{0%{-webkit-transform:rotateX(100deg);transform:rotateX(100deg);opacity:0}100%{-webkit-transform:rotateX(0);transform:rotateX(0);opacity:1}}body.swal2-toast-shown .swal2-container{position:fixed;background-color:transparent}body.swal2-toast-shown .swal2-container.swal2-shown{background-color:transparent}body.swal2-toast-shown .swal2-container.swal2-top{top:0;right:auto;bottom:auto;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{top:0;right:0;bottom:auto;left:auto}body.swal2-toast-shown .swal2-container.swal2-top-left,body.swal2-toast-shown .swal2-container.swal2-top-start{top:0;right:auto;bottom:auto;left:0}body.swal2-toast-shown .swal2-container.swal2-center-left,body.swal2-toast-shown .swal2-container.swal2-center-start{top:50%;right:auto;bottom:auto;left:0;-webkit-transform:translateY(-50%);transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{top:50%;right:auto;bottom:auto;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{top:50%;right:0;bottom:auto;left:auto;-webkit-transform:translateY(-50%);transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-left,body.swal2-toast-shown .swal2-container.swal2-bottom-start{top:auto;right:auto;bottom:0;left:0}body.swal2-toast-shown .swal2-container.swal2-bottom{top:auto;right:auto;bottom:0;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{top:auto;right:0;bottom:0;left:auto}body.swal2-toast-column .swal2-toast{flex-direction:column;align-items:stretch}body.swal2-toast-column .swal2-toast .swal2-actions{flex:1;align-self:stretch;height:2.2em;margin-top:.3125em}body.swal2-toast-column .swal2-toast .swal2-loading{justify-content:center}body.swal2-toast-column .swal2-toast .swal2-input{height:2em;margin:.3125em auto;font-size:1em}body.swal2-toast-column .swal2-toast .swal2-validation-message{font-size:1em}.swal2-popup.swal2-toast{flex-direction:row;align-items:center;width:auto;padding:.625em;box-shadow:0 0 .625em #d9d9d9;overflow-y:hidden}.swal2-popup.swal2-toast .swal2-header{flex-direction:row}.swal2-popup.swal2-toast .swal2-title{flex-grow:1;justify-content:flex-start;margin:0 .6em;font-size:1em}.swal2-popup.swal2-toast .swal2-footer{margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-popup.swal2-toast .swal2-close{position:initial;width:.8em;height:.8em;line-height:.8}.swal2-popup.swal2-toast .swal2-content{justify-content:flex-start;font-size:1em}.swal2-popup.swal2-toast .swal2-icon{width:2em;min-width:2em;height:2em;margin:0}.swal2-popup.swal2-toast .swal2-icon-text{font-size:2em;font-weight:700;line-height:1em}.swal2-popup.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-popup.swal2-toast .swal2-actions{height:auto;margin:0 .3125em}.swal2-popup.swal2-toast .swal2-styled{margin:0 .3125em;padding:.3125em .625em;font-size:1em}.swal2-popup.swal2-toast .swal2-styled:focus{box-shadow:0 0 0 .0625em #fff,0 0 0 .125em rgba(50,100,150,.4)}.swal2-popup.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:2em;height:2.8125em;-webkit-transform:rotate(45deg);transform:rotate(45deg);border-radius:50%}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.25em;left:-.9375em;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);-webkit-transform-origin:2em 2em;transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.25em;left:.9375em;-webkit-transform-origin:0 2em;transform-origin:0 2em;border-radius:0 4em 4em 0}.swal2-popup.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-popup.swal2-toast.swal2-show{-webkit-animation:showSweetToast .5s;animation:showSweetToast .5s}.swal2-popup.swal2-toast.swal2-hide{-webkit-animation:hideSweetToast .2s forwards;animation:hideSweetToast .2s forwards}.swal2-popup.swal2-toast .swal2-animate-success-icon .swal2-success-line-tip{-webkit-animation:animate-toast-success-tip .75s;animation:animate-toast-success-tip .75s}.swal2-popup.swal2-toast .swal2-animate-success-icon .swal2-success-line-long{-webkit-animation:animate-toast-success-long .75s;animation:animate-toast-success-long .75s}@-webkit-keyframes showSweetToast{0%{-webkit-transform:translateY(-.625em) rotateZ(2deg);transform:translateY(-.625em) rotateZ(2deg);opacity:0}33%{-webkit-transform:translateY(0) rotateZ(-2deg);transform:translateY(0) rotateZ(-2deg);opacity:.5}66%{-webkit-transform:translateY(.3125em) rotateZ(2deg);transform:translateY(.3125em) rotateZ(2deg);opacity:.7}100%{-webkit-transform:translateY(0) rotateZ(0);transform:translateY(0) rotateZ(0);opacity:1}}@keyframes showSweetToast{0%{-webkit-transform:translateY(-.625em) rotateZ(2deg);transform:translateY(-.625em) rotateZ(2deg);opacity:0}33%{-webkit-transform:translateY(0) rotateZ(-2deg);transform:translateY(0) rotateZ(-2deg);opacity:.5}66%{-webkit-transform:translateY(.3125em) rotateZ(2deg);transform:translateY(.3125em) rotateZ(2deg);opacity:.7}100%{-webkit-transform:translateY(0) rotateZ(0);transform:translateY(0) rotateZ(0);opacity:1}}@-webkit-keyframes hideSweetToast{0%{opacity:1}33%{opacity:.5}100%{-webkit-transform:rotateZ(1deg);transform:rotateZ(1deg);opacity:0}}@keyframes hideSweetToast{0%{opacity:1}33%{opacity:.5}100%{-webkit-transform:rotateZ(1deg);transform:rotateZ(1deg);opacity:0}}@-webkit-keyframes animate-toast-success-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes animate-toast-success-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@-webkit-keyframes animate-toast-success-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@keyframes animate-toast-success-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:hidden}body.swal2-height-auto{height:auto!important}body.swal2-no-backdrop .swal2-shown{top:auto;right:auto;bottom:auto;left:auto;background-color:transparent}body.swal2-no-backdrop .swal2-shown>.swal2-modal{box-shadow:0 0 10px rgba(0,0,0,.4)}body.swal2-no-backdrop .swal2-shown.swal2-top{top:0;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)}body.swal2-no-backdrop .swal2-shown.swal2-top-left,body.swal2-no-backdrop .swal2-shown.swal2-top-start{top:0;left:0}body.swal2-no-backdrop .swal2-shown.swal2-top-end,body.swal2-no-backdrop .swal2-shown.swal2-top-right{top:0;right:0}body.swal2-no-backdrop .swal2-shown.swal2-center{top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}body.swal2-no-backdrop .swal2-shown.swal2-center-left,body.swal2-no-backdrop .swal2-shown.swal2-center-start{top:50%;left:0;-webkit-transform:translateY(-50%);transform:translateY(-50%)}body.swal2-no-backdrop .swal2-shown.swal2-center-end,body.swal2-no-backdrop .swal2-shown.swal2-center-right{top:50%;right:0;-webkit-transform:translateY(-50%);transform:translateY(-50%)}body.swal2-no-backdrop .swal2-shown.swal2-bottom{bottom:0;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)}body.swal2-no-backdrop .swal2-shown.swal2-bottom-left,body.swal2-no-backdrop .swal2-shown.swal2-bottom-start{bottom:0;left:0}body.swal2-no-backdrop .swal2-shown.swal2-bottom-end,body.swal2-no-backdrop .swal2-shown.swal2-bottom-right{right:0;bottom:0}.swal2-container{display:flex;position:fixed;top:0;right:0;bottom:0;left:0;flex-direction:row;align-items:center;justify-content:center;padding:10px;background-color:transparent;z-index:1060;overflow-x:hidden;-webkit-overflow-scrolling:touch}.swal2-container.swal2-top{align-items:flex-start}.swal2-container.swal2-top-left,.swal2-container.swal2-top-start{align-items:flex-start;justify-content:flex-start}.swal2-container.swal2-top-end,.swal2-container.swal2-top-right{align-items:flex-start;justify-content:flex-end}.swal2-container.swal2-center{align-items:center}.swal2-container.swal2-center-left,.swal2-container.swal2-center-start{align-items:center;justify-content:flex-start}.swal2-container.swal2-center-end,.swal2-container.swal2-center-right{align-items:center;justify-content:flex-end}.swal2-container.swal2-bottom{align-items:flex-end}.swal2-container.swal2-bottom-left,.swal2-container.swal2-bottom-start{align-items:flex-end;justify-content:flex-start}.swal2-container.swal2-bottom-end,.swal2-container.swal2-bottom-right{align-items:flex-end;justify-content:flex-end}.swal2-container.swal2-grow-fullscreen>.swal2-modal{display:flex!important;flex:1;align-self:stretch;justify-content:center}.swal2-container.swal2-grow-row>.swal2-modal{display:flex!important;flex:1;align-content:center;justify-content:center}.swal2-container.swal2-grow-column{flex:1;flex-direction:column}.swal2-container.swal2-grow-column.swal2-bottom,.swal2-container.swal2-grow-column.swal2-center,.swal2-container.swal2-grow-column.swal2-top{align-items:center}.swal2-container.swal2-grow-column.swal2-bottom-left,.swal2-container.swal2-grow-column.swal2-bottom-start,.swal2-container.swal2-grow-column.swal2-center-left,.swal2-container.swal2-grow-column.swal2-center-start,.swal2-container.swal2-grow-column.swal2-top-left,.swal2-container.swal2-grow-column.swal2-top-start{align-items:flex-start}.swal2-container.swal2-grow-column.swal2-bottom-end,.swal2-container.swal2-grow-column.swal2-bottom-right,.swal2-container.swal2-grow-column.swal2-center-end,.swal2-container.swal2-grow-column.swal2-center-right,.swal2-container.swal2-grow-column.swal2-top-end,.swal2-container.swal2-grow-column.swal2-top-right{align-items:flex-end}.swal2-container.swal2-grow-column>.swal2-modal{display:flex!important;flex:1;align-content:center;justify-content:center}.swal2-container:not(.swal2-top):not(.swal2-top-start):not(.swal2-top-end):not(.swal2-top-left):not(.swal2-top-right):not(.swal2-center-start):not(.swal2-center-end):not(.swal2-center-left):not(.swal2-center-right):not(.swal2-bottom):not(.swal2-bottom-start):not(.swal2-bottom-end):not(.swal2-bottom-left):not(.swal2-bottom-right):not(.swal2-grow-fullscreen)>.swal2-modal{margin:auto}@media all and (-ms-high-contrast:none),(-ms-high-contrast:active){.swal2-container .swal2-modal{margin:0!important}}.swal2-container.swal2-fade{transition:background-color .1s}.swal2-container.swal2-shown{background-color:rgba(0,0,0,.4)}.swal2-popup{display:none;position:relative;flex-direction:column;justify-content:center;width:32em;max-width:100%;padding:1.25em;border-radius:.3125em;background:#fff;font-family:inherit;font-size:1rem;box-sizing:border-box}.swal2-popup:focus{outline:0}.swal2-popup.swal2-loading{overflow-y:hidden}.swal2-popup .swal2-header{display:flex;flex-direction:column;align-items:center}.swal2-popup .swal2-title{display:block;position:relative;max-width:100%;margin:0 0 .4em;padding:0;color:#595959;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;word-wrap:break-word}.swal2-popup .swal2-actions{flex-wrap:wrap;align-items:center;justify-content:center;margin:1.25em auto 0;z-index:1}.swal2-popup .swal2-actions:not(.swal2-loading) .swal2-styled[disabled]{opacity:.4}.swal2-popup .swal2-actions:not(.swal2-loading) .swal2-styled:hover{background-image:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.1))}.swal2-popup .swal2-actions:not(.swal2-loading) .swal2-styled:active{background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2))}.swal2-popup .swal2-actions.swal2-loading .swal2-styled.swal2-confirm{width:2.5em;height:2.5em;margin:.46875em;padding:0;border:.25em solid transparent;border-radius:100%;border-color:transparent;background-color:transparent!important;color:transparent;cursor:default;box-sizing:border-box;-webkit-animation:swal2-rotate-loading 1.5s linear 0s infinite normal;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.swal2-popup .swal2-actions.swal2-loading .swal2-styled.swal2-cancel{margin-right:30px;margin-left:30px}.swal2-popup .swal2-actions.swal2-loading :not(.swal2-styled).swal2-confirm::after{display:inline-block;width:15px;height:15px;margin-left:5px;border:3px solid #999;border-radius:50%;border-right-color:transparent;box-shadow:1px 1px 1px #fff;content:'';-webkit-animation:swal2-rotate-loading 1.5s linear 0s infinite normal;animation:swal2-rotate-loading 1.5s linear 0s infinite normal}.swal2-popup .swal2-styled{margin:.3125em;padding:.625em 2em;font-weight:500;box-shadow:none}.swal2-popup .swal2-styled:not([disabled]){cursor:pointer}.swal2-popup .swal2-styled.swal2-confirm{border:0;border-radius:.25em;background:initial;background-color:#3085d6;color:#fff;font-size:1.0625em}.swal2-popup .swal2-styled.swal2-cancel{border:0;border-radius:.25em;background:initial;background-color:#aaa;color:#fff;font-size:1.0625em}.swal2-popup .swal2-styled:focus{outline:0;box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(50,100,150,.4)}.swal2-popup .swal2-styled::-moz-focus-inner{border:0}.swal2-popup .swal2-footer{justify-content:center;margin:1.25em 0 0;padding:1em 0 0;border-top:1px solid #eee;color:#545454;font-size:1em}.swal2-popup .swal2-image{max-width:100%;margin:1.25em auto}.swal2-popup .swal2-close{position:absolute;top:0;right:0;justify-content:center;width:1.2em;height:1.2em;padding:0;transition:color .1s ease-out;border:none;border-radius:0;background:0 0;color:#ccc;font-family:serif;font-size:2.5em;line-height:1.2;cursor:pointer;overflow:hidden}.swal2-popup .swal2-close:hover{-webkit-transform:none;transform:none;color:#f27474}.swal2-popup>.swal2-checkbox,.swal2-popup>.swal2-file,.swal2-popup>.swal2-input,.swal2-popup>.swal2-radio,.swal2-popup>.swal2-select,.swal2-popup>.swal2-textarea{display:none}.swal2-popup .swal2-content{justify-content:center;margin:0;padding:0;color:#545454;font-size:1.125em;font-weight:300;line-height:normal;z-index:1;word-wrap:break-word}.swal2-popup #swal2-content{text-align:center}.swal2-popup .swal2-checkbox,.swal2-popup .swal2-file,.swal2-popup .swal2-input,.swal2-popup .swal2-radio,.swal2-popup .swal2-select,.swal2-popup .swal2-textarea{margin:1em auto}.swal2-popup .swal2-file,.swal2-popup .swal2-input,.swal2-popup .swal2-textarea{width:100%;transition:border-color .3s,box-shadow .3s;border:1px solid #d9d9d9;border-radius:.1875em;font-size:1.125em;box-shadow:inset 0 1px 1px rgba(0,0,0,.06);box-sizing:border-box}.swal2-popup .swal2-file.swal2-inputerror,.swal2-popup .swal2-input.swal2-inputerror,.swal2-popup .swal2-textarea.swal2-inputerror{border-color:#f27474!important;box-shadow:0 0 2px #f27474!important}.swal2-popup .swal2-file:focus,.swal2-popup .swal2-input:focus,.swal2-popup .swal2-textarea:focus{border:1px solid #b4dbed;outline:0;box-shadow:0 0 3px #c4e6f5}.swal2-popup .swal2-file::-webkit-input-placeholder,.swal2-popup .swal2-input::-webkit-input-placeholder,.swal2-popup .swal2-textarea::-webkit-input-placeholder{color:#ccc}.swal2-popup .swal2-file:-ms-input-placeholder,.swal2-popup .swal2-input:-ms-input-placeholder,.swal2-popup .swal2-textarea:-ms-input-placeholder{color:#ccc}.swal2-popup .swal2-file::-ms-input-placeholder,.swal2-popup .swal2-input::-ms-input-placeholder,.swal2-popup .swal2-textarea::-ms-input-placeholder{color:#ccc}.swal2-popup .swal2-file::placeholder,.swal2-popup .swal2-input::placeholder,.swal2-popup .swal2-textarea::placeholder{color:#ccc}.swal2-popup .swal2-range input{width:80%}.swal2-popup .swal2-range output{width:20%;font-weight:600;text-align:center}.swal2-popup .swal2-range input,.swal2-popup .swal2-range output{height:2.625em;margin:1em auto;padding:0;font-size:1.125em;line-height:2.625em}.swal2-popup .swal2-input{height:2.625em;padding:0 .75em}.swal2-popup .swal2-input[type=number]{max-width:10em}.swal2-popup .swal2-file{font-size:1.125em}.swal2-popup .swal2-textarea{height:6.75em;padding:.75em}.swal2-popup .swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;color:#545454;font-size:1.125em}.swal2-popup .swal2-checkbox,.swal2-popup .swal2-radio{align-items:center;justify-content:center}.swal2-popup .swal2-checkbox label,.swal2-popup .swal2-radio label{margin:0 .6em;font-size:1.125em}.swal2-popup .swal2-checkbox input,.swal2-popup .swal2-radio input{margin:0 .4em}.swal2-popup .swal2-validation-message{display:none;align-items:center;justify-content:center;padding:.625em;background:#f0f0f0;color:#666;font-size:1em;font-weight:300;overflow:hidden}.swal2-popup .swal2-validation-message::before{display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center;content:'!';zoom:normal}@supports (-ms-accelerator:true){.swal2-range input{width:100%!important}.swal2-range output{display:none}}@media all and (-ms-high-contrast:none),(-ms-high-contrast:active){.swal2-range input{width:100%!important}.swal2-range output{display:none}}@-moz-document url-prefix(){.swal2-close:focus{outline:2px solid rgba(50,100,150,.4)}}.swal2-icon{position:relative;justify-content:center;width:5em;height:5em;margin:1.25em auto 1.875em;border:.25em solid transparent;border-radius:50%;line-height:5em;cursor:default;box-sizing:content-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;zoom:normal}.swal2-icon-text{font-size:3.75em}.swal2-icon.swal2-error{border-color:#f27474}.swal2-icon.swal2-error .swal2-x-mark{position:relative;flex-grow:1}.swal2-icon.swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;-webkit-transform:rotate(45deg);transform:rotate(45deg)}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}.swal2-icon.swal2-warning{border-color:#facea8;color:#f8bb86}.swal2-icon.swal2-info{border-color:#9de0f6;color:#3fc3ee}.swal2-icon.swal2-question{border-color:#c9dae1;color:#87adbd}.swal2-icon.swal2-success{border-color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;-webkit-transform:rotate(45deg);transform:rotate(45deg);border-radius:50%}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.4375em;left:-2.0635em;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);-webkit-transform-origin:3.75em 3.75em;transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.6875em;left:1.875em;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);-webkit-transform-origin:0 3.75em;transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}.swal2-icon.swal2-success .swal2-success-ring{position:absolute;top:-.25em;left:-.25em;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%;z-index:2;box-sizing:content-box}.swal2-icon.swal2-success .swal2-success-fix{position:absolute;top:.5em;left:1.625em;width:.4375em;height:5.625em;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);z-index:1}.swal2-icon.swal2-success [class^=swal2-success-line]{display:block;position:absolute;height:.3125em;border-radius:.125em;background-color:#a5dc86;z-index:2}.swal2-icon.swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.875em;width:1.5625em;-webkit-transform:rotate(45deg);transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}.swal2-progresssteps{align-items:center;margin:0 0 1.25em;padding:0;font-weight:600}.swal2-progresssteps li{display:inline-block;position:relative}.swal2-progresssteps .swal2-progresscircle{width:2em;height:2em;border-radius:2em;background:#3085d6;color:#fff;line-height:2em;text-align:center;z-index:20}.swal2-progresssteps .swal2-progresscircle:first-child{margin-left:0}.swal2-progresssteps .swal2-progresscircle:last-child{margin-right:0}.swal2-progresssteps .swal2-progresscircle.swal2-activeprogressstep{background:#3085d6}.swal2-progresssteps .swal2-progresscircle.swal2-activeprogressstep~.swal2-progresscircle{background:#add8e6}.swal2-progresssteps .swal2-progresscircle.swal2-activeprogressstep~.swal2-progressline{background:#add8e6}.swal2-progresssteps .swal2-progressline{width:2.5em;height:.4em;margin:0 -1px;background:#3085d6;z-index:10}[class^=swal2]{-webkit-tap-highlight-color:transparent}.swal2-show{-webkit-animation:swal2-show .3s;animation:swal2-show .3s}.swal2-show.swal2-noanimation{-webkit-animation:none;animation:none}.swal2-hide{-webkit-animation:swal2-hide .15s forwards;animation:swal2-hide .15s forwards}.swal2-hide.swal2-noanimation{-webkit-animation:none;animation:none}[dir=rtl] .swal2-close{right:auto;left:0}.swal2-animate-success-icon .swal2-success-line-tip{-webkit-animation:swal2-animate-success-line-tip .75s;animation:swal2-animate-success-line-tip .75s}.swal2-animate-success-icon .swal2-success-line-long{-webkit-animation:swal2-animate-success-line-long .75s;animation:swal2-animate-success-line-long .75s}.swal2-animate-success-icon .swal2-success-circular-line-right{-webkit-animation:swal2-rotate-success-circular-line 4.25s ease-in;animation:swal2-rotate-success-circular-line 4.25s ease-in}.swal2-animate-error-icon{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-animate-error-icon .swal2-x-mark{-webkit-animation:swal2-animate-error-x-mark .5s;animation:swal2-animate-error-x-mark .5s}@-webkit-keyframes swal2-rotate-loading{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes swal2-rotate-loading{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@media print{body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:scroll!important}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container{position:initial!important}}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = function (options) {
+  var mappedProps = options.mappedProps,
+      name = options.name,
+      ctr = options.ctr,
+      ctrArgs = options.ctrArgs,
+      events = options.events,
+      beforeCreate = options.beforeCreate,
+      afterCreate = options.afterCreate,
+      props = options.props,
+      rest = _objectWithoutProperties(options, ['mappedProps', 'name', 'ctr', 'ctrArgs', 'events', 'beforeCreate', 'afterCreate', 'props']);
+
+  var promiseName = '$' + name + 'Promise';
+  var instanceName = '$' + name + 'Object';
+
+  assert(!(rest.props instanceof Array), '`props` should be an object, not Array');
+
+  return _extends({}, typeof GENERATE_DOC !== 'undefined' ? { $vgmOptions: options } : {}, {
+    mixins: [_mapElementMixin2.default],
+    props: _extends({}, props, mappedPropsToVueProps(mappedProps)),
+    render: function render() {
+      return '';
+    },
+    provide: function provide() {
+      var _this = this;
+
+      var promise = this.$mapPromise.then(function (map) {
+        // Infowindow needs this to be immediately available
+        _this.$map = map;
+
+        // Initialize the maps with the given options
+        var options = _extends({}, _this.options, {
+          map: map
+        }, (0, _bindProps.getPropsValues)(_this, mappedProps));
+        delete options.options; // delete the extra options
+
+        if (beforeCreate) {
+          var result = beforeCreate.bind(_this)(options);
+
+          if (result instanceof Promise) {
+            return result.then(function () {
+              return { options: options };
+            });
+          }
+        }
+        return { options: options };
+      }).then(function (_ref) {
+        var _Function$prototype$b;
+
+        var options = _ref.options;
+
+        var ConstructorObject = ctr();
+        // https://stackoverflow.com/questions/1606797/use-of-apply-with-new-operator-is-this-possible
+        _this[instanceName] = ctrArgs ? new ((_Function$prototype$b = Function.prototype.bind).call.apply(_Function$prototype$b, [ConstructorObject, null].concat(_toConsumableArray(ctrArgs(options, (0, _bindProps.getPropsValues)(_this, props || {}))))))() : new ConstructorObject(options);
+
+        (0, _bindProps.bindProps)(_this, _this[instanceName], mappedProps);
+        (0, _bindEvents2.default)(_this, _this[instanceName], events);
+
+        if (afterCreate) {
+          afterCreate.bind(_this)(_this[instanceName]);
+        }
+        return _this[instanceName];
+      });
+      this[promiseName] = promise;
+      return _defineProperty({}, promiseName, promise);
+    },
+    destroyed: function destroyed() {
+      // Note: not all Google Maps components support maps
+      if (this[instanceName] && this[instanceName].setMap) {
+        this[instanceName].setMap(null);
+      }
+    }
+  }, rest);
+};
+
+exports.mappedPropsToVueProps = mappedPropsToVueProps;
+
+var _bindEvents = __webpack_require__(221);
+
+var _bindEvents2 = _interopRequireDefault(_bindEvents);
+
+var _bindProps = __webpack_require__(220);
+
+var _mapElementMixin = __webpack_require__(224);
+
+var _mapElementMixin2 = _interopRequireDefault(_mapElementMixin);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+/**
+ *
+ * @param {Object} options
+ * @param {Object} options.mappedProps - Definitions of props
+ * @param {Object} options.mappedProps.PROP.type - Value type
+ * @param {Boolean} options.mappedProps.PROP.twoWay
+ *  - Whether the prop has a corresponding PROP_changed
+ *   event
+ * @param {Boolean} options.mappedProps.PROP.noBind
+ *  - If true, do not apply the default bindProps / bindEvents.
+ * However it will still be added to the list of component props
+ * @param {Object} options.props - Regular Vue-style props.
+ *  Note: must be in the Object form because it will be
+ *  merged with the `mappedProps`
+ *
+ * @param {Object} options.events - Google Maps API events
+ *  that are not bound to a corresponding prop
+ * @param {String} options.name - e.g. `polyline`
+ * @param {=> String} options.ctr - constructor, e.g.
+ *  `google.maps.Polyline`. However, since this is not
+ *  generally available during library load, this becomes
+ *  a function instead, e.g. () => google.maps.Polyline
+ *  which will be called only after the API has been loaded
+ * @param {(MappedProps, OtherVueProps) => Array} options.ctrArgs -
+ *   If the constructor in `ctr` needs to be called with
+ *   arguments other than a single `options` object, e.g. for
+ *   GroundOverlay, we call `new GroundOverlay(url, bounds, options)`
+ *   then pass in a function that returns the argument list as an array
+ *
+ * Otherwise, the constructor will be called with an `options` object,
+ *   with property and values merged from:
+ *
+ *   1. the `options` property, if any
+ *   2. a `map` property with the Google Maps
+ *   3. all the properties passed to the component in `mappedProps`
+ * @param {Object => Any} options.beforeCreate -
+ *  Hook to modify the options passed to the initializer
+ * @param {(options.ctr, Object) => Any} options.afterCreate -
+ *  Hook called when
+ *
+ */
+
+
+function assert(v, message) {
+  if (!v) throw new Error(message);
+}
+
+/**
+ * Strips out the extraneous properties we have in our
+ * props definitions
+ * @param {Object} props
+ */
+function mappedPropsToVueProps(mappedProps) {
+  return Object.entries(mappedProps).map(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+        key = _ref4[0],
+        prop = _ref4[1];
+
+    var value = {};
+
+    if ('type' in prop) value.type = prop.type;
+    if ('default' in prop) value.default = prop.default;
+    if ('required' in prop) value.required = prop.required;
+
+    return [key, value];
+  }).reduce(function (acc, _ref5) {
+    var _ref6 = _slicedToArray(_ref5, 2),
+        key = _ref6[0],
+        val = _ref6[1];
+
+    acc[key] = val;
+    return acc;
+  }, {});
+}
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getPropsValues = getPropsValues;
+exports.bindProps = bindProps;
+
+var _WatchPrimitiveProperties = __webpack_require__(222);
+
+var _WatchPrimitiveProperties2 = _interopRequireDefault(_WatchPrimitiveProperties);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function getPropsValues(vueInst, props) {
+  return Object.keys(props).reduce(function (acc, prop) {
+    if (vueInst[prop] !== undefined) {
+      acc[prop] = vueInst[prop];
+    }
+    return acc;
+  }, {});
+}
+
+/**
+  * Binds the properties defined in props to the google maps instance.
+  * If the prop is an Object type, and we wish to track the properties
+  * of the object (e.g. the lat and lng of a LatLng), then we do a deep
+  * watch. For deep watch, we also prevent the _changed event from being
+  * emitted if the data source was external.
+  */
+function bindProps(vueInst, googleMapsInst, props) {
+  var _loop = function (attribute) {
+    var _props$attribute = props[attribute],
+        twoWay = _props$attribute.twoWay,
+        type = _props$attribute.type,
+        trackProperties = _props$attribute.trackProperties,
+        noBind = _props$attribute.noBind;
+
+
+    if (noBind) return 'continue';
+
+    var setMethodName = 'set' + capitalizeFirstLetter(attribute);
+    var getMethodName = 'get' + capitalizeFirstLetter(attribute);
+    var eventName = attribute.toLowerCase() + '_changed';
+    var initialValue = vueInst[attribute];
+
+    if (typeof googleMapsInst[setMethodName] === 'undefined') {
+      throw new Error(setMethodName + ' is not a method of (the Maps object corresponding to) ' + vueInst.$options._componentTag);
+    }
+
+    // We need to avoid an endless
+    // propChanged -> event emitted -> propChanged -> event emitted loop
+    // although this may really be the user's responsibility
+    if (type !== Object || !trackProperties) {
+      // Track the object deeply
+      vueInst.$watch(attribute, function () {
+        var attributeValue = vueInst[attribute];
+
+        googleMapsInst[setMethodName](attributeValue);
+      }, {
+        immediate: typeof initialValue !== 'undefined',
+        deep: type === Object
+      });
+    } else {
+      (0, _WatchPrimitiveProperties2.default)(vueInst, trackProperties.map(function (prop) {
+        return attribute + '.' + prop;
+      }), function () {
+        googleMapsInst[setMethodName](vueInst[attribute]);
+      }, vueInst[attribute] !== undefined);
+    }
+
+    if (twoWay && (vueInst.$gmapOptions.autobindAllEvents || vueInst.$listeners[eventName])) {
+      googleMapsInst.addListener(eventName, function () {
+        // eslint-disable-line no-unused-vars
+        vueInst.$emit(eventName, googleMapsInst[getMethodName]());
+      });
+    }
+  };
+
+  for (var attribute in props) {
+    var _ret = _loop(attribute);
+
+    if (_ret === 'continue') continue;
+  }
+}
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (vueInst, googleMapsInst, events) {
+  var _loop = function (eventName) {
+    if (vueInst.$gmapOptions.autobindAllEvents || vueInst.$listeners[eventName]) {
+      googleMapsInst.addListener(eventName, function (ev) {
+        vueInst.$emit(eventName, ev);
+      });
+    }
+  };
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = events[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var eventName = _step.value;
+
+      _loop(eventName);
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+};
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = WatchPrimitiveProperties;
+/**
+ * Watch the individual properties of a PoD object, instead of the object
+ * per se. This is different from a deep watch where both the reference
+ * and the individual values are watched.
+ *
+ * In effect, it throttles the multiple $watch to execute at most once per tick.
+ */
+function WatchPrimitiveProperties(vueInst, propertiesToTrack, handler) {
+  var immediate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+  var isHandled = false;
+
+  function requestHandle() {
+    if (!isHandled) {
+      isHandled = true;
+      vueInst.$nextTick(function () {
+        isHandled = false;
+        handler();
+      });
+    }
+  }
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = propertiesToTrack[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var prop = _step.value;
+
+      vueInst.$watch(prop, requestHandle, { immediate: immediate });
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+}
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/*
+Mixin for objects that are mounted by Google Maps
+Javascript API.
+
+These are objects that are sensitive to element resize
+operations so it exposes a property which accepts a bus
+
+*/
+
+exports.default = {
+  props: ['resizeBus'],
+
+  data: function data() {
+    return {
+      _actualResizeBus: null
+    };
+  },
+  created: function created() {
+    if (typeof this.resizeBus === 'undefined') {
+      this.$data._actualResizeBus = this.$gmapDefaultResizeBus;
+    } else {
+      this.$data._actualResizeBus = this.resizeBus;
+    }
+  },
+
+
+  methods: {
+    _resizeCallback: function _resizeCallback() {
+      this.resize();
+    },
+    _delayedResizeCallback: function _delayedResizeCallback() {
+      var _this = this;
+
+      this.$nextTick(function () {
+        return _this._resizeCallback();
+      });
+    }
+  },
+
+  watch: {
+    resizeBus: function resizeBus(newVal) {
+      // eslint-disable-line no-unused-vars
+      this.$data._actualResizeBus = newVal;
+    },
+    '$data._actualResizeBus': function $data_actualResizeBus(newVal, oldVal) {
+      if (oldVal) {
+        oldVal.$off('resize', this._delayedResizeCallback);
+      }
+      if (newVal) {
+        newVal.$on('resize', this._delayedResizeCallback);
+      }
+    }
+  },
+
+  destroyed: function destroyed() {
+    if (this.$data._actualResizeBus) {
+      this.$data._actualResizeBus.$off('resize', this._delayedResizeCallback);
+    }
+  }
+};
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * @class MapElementMixin
+ *
+ * Extends components to include the following fields:
+ *
+ * @property $map        The Google map (valid only after the promise returns)
+ *
+ *
+ * */
+exports.default = {
+  inject: {
+    '$mapPromise': { default: 'abcdef' }
+  },
+
+  provide: function provide() {
+    var _this = this;
+
+    // Note: although this mixin is not "providing" anything,
+    // components' expect the `$map` property to be present on the component.
+    // In order for that to happen, this mixin must intercept the $mapPromise
+    // .then(() =>) first before its component does so.
+    //
+    // Since a provide() on a mixin is executed before a provide() on the
+    // component, putting this code in provide() ensures that the $map is
+    // already set by the time the
+    // component's provide() is called.
+    this.$mapPromise.then(function (map) {
+      _this.$map = map;
+    });
+
+    return {};
+  }
+};
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = TwoWayBindingWrapper;
+/**
+ * When you have two-way bindings, but the actual bound value will not equal
+ * the value you initially passed in, then to avoid an infinite loop you
+ * need to increment a counter every time you pass in a value, decrement the
+ * same counter every time the bound value changed, but only bubble up
+ * the event when the counter is zero.
+ *
+Example:
+
+Let's say DrawingRecognitionCanvas is a deep-learning backed canvas
+that, when given the name of an object (e.g. 'dog'), draws a dog.
+But whenever the drawing on it changes, it also sends back its interpretation
+of the image by way of the @newObjectRecognized event.
+
+<input
+  type="text"
+  placeholder="an object, e.g. Dog, Cat, Frog"
+  v-model="identifiedObject" />
+<DrawingRecognitionCanvas
+  :object="identifiedObject"
+  @newObjectRecognized="identifiedObject = $event"
+  />
+
+new TwoWayBindingWrapper((increment, decrement, shouldUpdate) => {
+  this.$watch('identifiedObject', () => {
+    // new object passed in
+    increment()
+  })
+  this.$deepLearningBackend.on('drawingChanged', () => {
+    recognizeObject(this.$deepLearningBackend)
+      .then((object) => {
+        decrement()
+        if (shouldUpdate()) {
+          this.$emit('newObjectRecognized', object.name)
+        }
+      })
+  })
+})
+ */
+function TwoWayBindingWrapper(fn) {
+  var counter = 0;
+
+  fn(function () {
+    counter += 1;
+  }, function () {
+    counter = Math.max(0, counter - 1);
+  }, function () {
+    return counter === 0;
+  });
+}
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+// This piece of code was orignally written by amirnissim and can be seen here
+// http://stackoverflow.com/a/11703018/2694653
+// This has been ported to Vanilla.js by GuillaumeLeclerc
+exports.default = function (input) {
+  var _addEventListener = input.addEventListener ? input.addEventListener : input.attachEvent;
+
+  function addEventListenerWrapper(type, listener) {
+    // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected,
+    // and then trigger the original listener.
+    if (type === 'keydown') {
+      var origListener = listener;
+      listener = function (event) {
+        var suggestionSelected = document.getElementsByClassName('pac-item-selected').length > 0;
+        if (event.which === 13 && !suggestionSelected) {
+          var simulatedEvent = document.createEvent('Event');
+          simulatedEvent.keyCode = 40;
+          simulatedEvent.which = 40;
+          origListener.apply(input, [simulatedEvent]);
+        }
+        origListener.apply(input, [event]);
+      };
+    }
+    _addEventListener.apply(input, [type, listener]);
+  }
+
+  input.addEventListener = addEventListenerWrapper;
+  input.attachEvent = addEventListenerWrapper;
+};
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.StreetViewPanorama = exports.MountableMixin = exports.Autocomplete = exports.MapElementFactory = exports.MapElementMixin = exports.PlaceInput = exports.Map = exports.InfoWindow = exports.Rectangle = exports.Cluster = exports.Circle = exports.Polygon = exports.Polyline = exports.Marker = exports.loadGmapApi = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// Vue component imports
+
+
+exports.install = install;
+exports.gmapApi = gmapApi;
+
+var _lazyValue = __webpack_require__(228);
+
+var _lazyValue2 = _interopRequireDefault(_lazyValue);
+
+var _manager = __webpack_require__(229);
+
+var _marker = __webpack_require__(230);
+
+var _marker2 = _interopRequireDefault(_marker);
+
+var _polyline = __webpack_require__(231);
+
+var _polyline2 = _interopRequireDefault(_polyline);
+
+var _polygon = __webpack_require__(232);
+
+var _polygon2 = _interopRequireDefault(_polygon);
+
+var _circle = __webpack_require__(233);
+
+var _circle2 = _interopRequireDefault(_circle);
+
+var _rectangle = __webpack_require__(234);
+
+var _rectangle2 = _interopRequireDefault(_rectangle);
+
+var _infoWindow = __webpack_require__(235);
+
+var _infoWindow2 = _interopRequireDefault(_infoWindow);
+
+var _map = __webpack_require__(239);
+
+var _map2 = _interopRequireDefault(_map);
+
+var _streetViewPanorama = __webpack_require__(245);
+
+var _streetViewPanorama2 = _interopRequireDefault(_streetViewPanorama);
+
+var _placeInput = __webpack_require__(251);
+
+var _placeInput2 = _interopRequireDefault(_placeInput);
+
+var _autocomplete = __webpack_require__(254);
+
+var _autocomplete2 = _interopRequireDefault(_autocomplete);
+
+var _mapElementMixin = __webpack_require__(224);
+
+var _mapElementMixin2 = _interopRequireDefault(_mapElementMixin);
+
+var _mapElementFactory = __webpack_require__(219);
+
+var _mapElementFactory2 = _interopRequireDefault(_mapElementFactory);
+
+var _mountableMixin = __webpack_require__(223);
+
+var _mountableMixin2 = _interopRequireDefault(_mountableMixin);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// HACK: Cluster should be loaded conditionally
+// However in the web version, it's not possible to write
+// `import 'vue2-google-maps/src/components/cluster'`, so we need to
+// import it anyway (but we don't have to register it)
+// Therefore we use babel-plugin-transform-inline-environment-variables to
+// set BUILD_DEV to truthy / falsy
+var Cluster = undefined;
+
+var GmapApi = null;
+
+// export everything
+exports.loadGmapApi = _manager.loadGmapApi;
+exports.Marker = _marker2.default;
+exports.Polyline = _polyline2.default;
+exports.Polygon = _polygon2.default;
+exports.Circle = _circle2.default;
+exports.Cluster = Cluster;
+exports.Rectangle = _rectangle2.default;
+exports.InfoWindow = _infoWindow2.default;
+exports.Map = _map2.default;
+exports.PlaceInput = _placeInput2.default;
+exports.MapElementMixin = _mapElementMixin2.default;
+exports.MapElementFactory = _mapElementFactory2.default;
+exports.Autocomplete = _autocomplete2.default;
+exports.MountableMixin = _mountableMixin2.default;
+exports.StreetViewPanorama = _streetViewPanorama2.default;
+function install(Vue, options) {
+  // Set defaults
+  options = _extends({
+    installComponents: true,
+    autobindAllEvents: false
+  }, options);
+
+  // Update the global `GmapApi`. This will allow
+  // components to use the `google` global reactively
+  // via:
+  //   import {gmapApi} from 'vue2-google-maps'
+  //   export default {  computed: { google: gmapApi }  }
+  GmapApi = new Vue({ data: { gmapApi: null } });
+
+  var defaultResizeBus = new Vue();
+
+  // Use a lazy to only load the API when
+  // a VGM component is loaded
+  var gmapApiPromiseLazy = makeGmapApiPromiseLazy(options);
+
+  Vue.mixin({
+    created: function created() {
+      this.$gmapDefaultResizeBus = defaultResizeBus;
+      this.$gmapOptions = options;
+      this.$gmapApiPromiseLazy = gmapApiPromiseLazy;
+    }
+  });
+  Vue.$gmapDefaultResizeBus = defaultResizeBus;
+  Vue.$gmapApiPromiseLazy = gmapApiPromiseLazy;
+
+  if (options.installComponents) {
+    Vue.component('GmapMap', _map2.default);
+    Vue.component('GmapMarker', _marker2.default);
+    Vue.component('GmapInfoWindow', _infoWindow2.default);
+    Vue.component('GmapPolyline', _polyline2.default);
+    Vue.component('GmapPolygon', _polygon2.default);
+    Vue.component('GmapCircle', _circle2.default);
+    Vue.component('GmapRectangle', _rectangle2.default);
+    Vue.component('GmapAutocomplete', _autocomplete2.default);
+    Vue.component('GmapPlaceInput', _placeInput2.default);
+    Vue.component('GmapStreetViewPanorama', _streetViewPanorama2.default);
+  }
+}
+
+function makeGmapApiPromiseLazy(options) {
+  // Things to do once the API is loaded
+  function onApiLoaded() {
+    GmapApi.gmapApi = {};
+    return window.google;
+  }
+
+  if (options.load) {
+    // If library should load the API
+    return (0, _lazyValue2.default)(function () {
+      // Load the
+      // This will only be evaluated once
+      if (typeof window === 'undefined') {
+        // server side -- never resolve this promise
+        return new Promise(function () {}).then(onApiLoaded);
+      } else {
+        return new Promise(function (resolve, reject) {
+          try {
+            window['vueGoogleMapsInit'] = resolve;
+            (0, _manager.loadGmapApi)(options.load, options.loadCn);
+          } catch (err) {
+            reject(err);
+          }
+        }).then(onApiLoaded);
+      }
+    });
+  } else {
+    // If library should not handle API, provide
+    // end-users with the global `vueGoogleMapsInit: () => undefined`
+    // when the Google Maps API has been loaded
+    var promise = new Promise(function (resolve) {
+      if (typeof window === 'undefined') {
+        // Do nothing if run from server-side
+        return;
+      }
+      window['vueGoogleMapsInit'] = resolve;
+    }).then(onApiLoaded);
+
+    return (0, _lazyValue2.default)(function () {
+      return promise;
+    });
+  }
+}
+
+function gmapApi() {
+  return GmapApi.gmapApi && window.google;
+}
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+// This piece of code was orignally written by sindresorhus and can be seen here
+// https://github.com/sindresorhus/lazy-value/blob/master/index.js
+
+exports.default = function (fn) {
+  var called = false;
+  var ret = void 0;
+
+  return function () {
+    if (!called) {
+      called = true;
+      ret = fn();
+    }
+
+    return ret;
+  };
+};
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var isApiSetUp = false;
+
+/**
+ * @param apiKey    API Key, or object with the URL parameters. For example
+ *                  to use Google Maps Premium API, pass
+ *                    `{ client: <YOUR-CLIENT-ID> }`.
+ *                  You may pass the libraries and/or version (as `v`) parameter into
+ *                  this parameter and skip the next two parameters
+ * @param version   Google for Maps version
+ * @param libraries Libraries to load (@see
+ *                  https://developers.google.com/maps/documentation/javascript/libraries)
+ * @param loadCn    Boolean. If set to true, the map will be loaded form goole maps China
+ *                  (@see https://developers.google.com/maps/documentation/javascript/basics#GoogleMapsChina)
+ *
+ * Example:
+ * ```
+ *      import {load} from 'vue-google-maps'
+ *
+ *      load(<YOUR-API-KEY>)
+ *
+ *      load({
+ *              key: <YOUR-API-KEY>,
+ *      })
+ *
+ *      load({
+ *              client: <YOUR-CLIENT-ID>,
+ *              channel: <YOUR CHANNEL>
+ *      })
+ * ```
+ */
+var loadGmapApi = exports.loadGmapApi = function (options, loadCn) {
+  if (typeof document === 'undefined') {
+    // Do nothing if run from server-side
+    return;
+  }
+  if (!isApiSetUp) {
+    isApiSetUp = true;
+
+    var googleMapScript = document.createElement('SCRIPT');
+
+    // Allow options to be an object.
+    // This is to support more esoteric means of loading Google Maps,
+    // such as Google for business
+    // https://developers.google.com/maps/documentation/javascript/get-api-key#premium-auth
+    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object') {
+      throw new Error('options should  be an object');
+    }
+
+    // libraries
+    if (Array.prototype.isPrototypeOf(options.libraries)) {
+      options.libraries = options.libraries.join(',');
+    }
+    options['callback'] = 'vueGoogleMapsInit';
+
+    var baseUrl = 'https://maps.googleapis.com/';
+
+    if (typeof loadCn === 'boolean' && loadCn === true) {
+      baseUrl = 'http://maps.google.cn/';
+    }
+
+    var url = baseUrl + 'maps/api/js?' + Object.keys(options).map(function (key) {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(options[key]);
+    }).join('&');
+
+    googleMapScript.setAttribute('src', url);
+    googleMapScript.setAttribute('async', '');
+    googleMapScript.setAttribute('defer', '');
+    document.head.appendChild(googleMapScript);
+  } else {
+    throw new Error('You already started the loading of google maps');
+  }
+};
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mapElementFactory = __webpack_require__(219);
+
+var _mapElementFactory2 = _interopRequireDefault(_mapElementFactory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  animation: {
+    twoWay: true,
+    type: Number
+  },
+  attribution: {
+    type: Object
+  },
+  clickable: {
+    type: Boolean,
+    twoWay: true,
+    default: true
+  },
+  cursor: {
+    type: String,
+    twoWay: true
+  },
+  draggable: {
+    type: Boolean,
+    twoWay: true,
+    default: false
+  },
+  icon: {
+    twoWay: true
+  },
+  label: {},
+  opacity: {
+    type: Number,
+    default: 1
+  },
+  options: {
+    type: Object
+  },
+  place: {
+    type: Object
+  },
+  position: {
+    type: Object,
+    twoWay: true
+  },
+  shape: {
+    type: Object,
+    twoWay: true
+  },
+  title: {
+    type: String,
+    twoWay: true
+  },
+  zIndex: {
+    type: Number,
+    twoWay: true
+  },
+  visible: {
+    twoWay: true,
+    default: true
+  }
+};
+
+var events = ['click', 'rightclick', 'dblclick', 'drag', 'dragstart', 'dragend', 'mouseup', 'mousedown', 'mouseover', 'mouseout'];
+
+/**
+ * @class Marker
+ *
+ * Marker class with extra support for
+ *
+ * - Embedded info windows
+ * - Clustered markers
+ *
+ * Support for clustered markers is for backward-compatability
+ * reasons. Otherwise we should use a cluster-marker mixin or
+ * subclass.
+ */
+exports.default = (0, _mapElementFactory2.default)({
+  mappedProps: props,
+  events: events,
+  name: 'marker',
+  ctr: function ctr() {
+    return google.maps.Marker;
+  },
+
+  inject: {
+    '$clusterPromise': {
+      default: null
+    }
+  },
+
+  render: function render(h) {
+    if (!this.$slots.default || this.$slots.default.length === 0) {
+      return '';
+    } else if (this.$slots.default.length === 1) {
+      // So that infowindows can have a marker parent
+      return this.$slots.default[0];
+    } else {
+      return h('div', this.$slots.default);
+    }
+  },
+  destroyed: function destroyed() {
+    if (!this.$markerObject) {
+      return;
+    }
+
+    if (this.$clusterObject) {
+      // Repaint will be performed in `updated()` of cluster
+      this.$clusterObject.removeMarker(this.$markerObject, true);
+    } else {
+      this.$markerObject.setMap(null);
+    }
+  },
+  beforeCreate: function beforeCreate(options) {
+    if (this.$clusterPromise) {
+      options.map = null;
+    }
+
+    return this.$clusterPromise;
+  },
+  afterCreate: function afterCreate(inst) {
+    var _this = this;
+
+    if (this.$clusterPromise) {
+      this.$clusterPromise.then(function (co) {
+        co.addMarker(inst);
+        _this.$clusterObject = co;
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _mapElementFactory = __webpack_require__(219);
+
+var _mapElementFactory2 = _interopRequireDefault(_mapElementFactory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  draggable: {
+    type: Boolean
+  },
+  editable: {
+    type: Boolean
+  },
+  options: {
+    twoWay: false,
+    type: Object
+  },
+  path: {
+    type: Array,
+    twoWay: true
+  }
+};
+
+var events = ['click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+exports.default = (0, _mapElementFactory2.default)({
+  mappedProps: props,
+  props: {
+    deepWatch: {
+      type: Boolean,
+      default: false
+    }
+  },
+  events: events,
+
+  name: 'polyline',
+  ctr: function ctr() {
+    return google.maps.Polyline;
+  },
+
+  afterCreate: function afterCreate() {
+    var _this = this;
+
+    var clearEvents = function () {};
+
+    this.$watch('path', function (path) {
+      if (path) {
+        clearEvents();
+
+        _this.$polylineObject.setPath(path);
+
+        var mvcPath = _this.$polylineObject.getPath();
+        var eventListeners = [];
+
+        var updatePaths = function () {
+          _this.$emit('path_changed', _this.$polylineObject.getPath());
+        };
+
+        eventListeners.push([mvcPath, mvcPath.addListener('insert_at', updatePaths)]);
+        eventListeners.push([mvcPath, mvcPath.addListener('remove_at', updatePaths)]);
+        eventListeners.push([mvcPath, mvcPath.addListener('set_at', updatePaths)]);
+
+        clearEvents = function () {
+          eventListeners.map(function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+                obj = _ref2[0],
+                listenerHandle = _ref2[1];
+
+            return (// eslint-disable-line no-unused-vars
+              google.maps.event.removeListener(listenerHandle)
+            );
+          });
+        };
+      }
+    }, {
+      deep: this.deepWatch,
+      immediate: true
+    });
+  }
+});
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _mapElementFactory = __webpack_require__(219);
+
+var _mapElementFactory2 = _interopRequireDefault(_mapElementFactory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  draggable: {
+    type: Boolean
+  },
+  editable: {
+    type: Boolean
+  },
+  options: {
+    type: Object
+  },
+  path: {
+    type: Array,
+    twoWay: true,
+    noBind: true
+  },
+  paths: {
+    type: Array,
+    twoWay: true,
+    noBind: true
+  }
+};
+
+var events = ['click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+exports.default = (0, _mapElementFactory2.default)({
+  props: {
+    deepWatch: {
+      type: Boolean,
+      default: false
+    }
+  },
+  events: events,
+  mappedProps: props,
+  name: 'polygon',
+  ctr: function ctr() {
+    return google.maps.Polygon;
+  },
+
+  beforeCreate: function beforeCreate(options) {
+    if (!options.path) delete options.path;
+    if (!options.paths) delete options.paths;
+  },
+  afterCreate: function afterCreate(inst) {
+    var _this = this;
+
+    var clearEvents = function () {};
+
+    // Watch paths, on our own, because we do not want to set either when it is
+    // empty
+    this.$watch('paths', function (paths) {
+      if (paths) {
+        clearEvents();
+
+        inst.setPaths(paths);
+
+        var updatePaths = function () {
+          _this.$emit('paths_changed', inst.getPaths());
+        };
+        var eventListeners = [];
+
+        var mvcArray = inst.getPaths();
+        for (var i = 0; i < mvcArray.getLength(); i++) {
+          var mvcPath = mvcArray.getAt(i);
+          eventListeners.push([mvcPath, mvcPath.addListener('insert_at', updatePaths)]);
+          eventListeners.push([mvcPath, mvcPath.addListener('remove_at', updatePaths)]);
+          eventListeners.push([mvcPath, mvcPath.addListener('set_at', updatePaths)]);
+        }
+        eventListeners.push([mvcArray, mvcArray.addListener('insert_at', updatePaths)]);
+        eventListeners.push([mvcArray, mvcArray.addListener('remove_at', updatePaths)]);
+        eventListeners.push([mvcArray, mvcArray.addListener('set_at', updatePaths)]);
+
+        clearEvents = function () {
+          eventListeners.map(function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+                obj = _ref2[0],
+                listenerHandle = _ref2[1];
+
+            return (// eslint-disable-line no-unused-vars
+              google.maps.event.removeListener(listenerHandle)
+            );
+          });
+        };
+      }
+    }, {
+      deep: this.deepWatch,
+      immediate: true
+    });
+
+    this.$watch('path', function (path) {
+      if (path) {
+        clearEvents();
+
+        inst.setPaths(path);
+
+        var mvcPath = inst.getPath();
+        var eventListeners = [];
+
+        var updatePaths = function () {
+          _this.$emit('path_changed', inst.getPath());
+        };
+
+        eventListeners.push([mvcPath, mvcPath.addListener('insert_at', updatePaths)]);
+        eventListeners.push([mvcPath, mvcPath.addListener('remove_at', updatePaths)]);
+        eventListeners.push([mvcPath, mvcPath.addListener('set_at', updatePaths)]);
+
+        clearEvents = function () {
+          eventListeners.map(function (_ref3) {
+            var _ref4 = _slicedToArray(_ref3, 2),
+                obj = _ref4[0],
+                listenerHandle = _ref4[1];
+
+            return (// eslint-disable-line no-unused-vars
+              google.maps.event.removeListener(listenerHandle)
+            );
+          });
+        };
+      }
+    }, {
+      deep: this.deepWatch,
+      immediate: true
+    });
+  }
+});
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mapElementFactory = __webpack_require__(219);
+
+var _mapElementFactory2 = _interopRequireDefault(_mapElementFactory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  center: {
+    type: Object,
+    twoWay: true,
+    required: true
+  },
+  radius: {
+    type: Number,
+    twoWay: true
+  },
+  draggable: {
+    type: Boolean,
+    default: false
+  },
+  editable: {
+    type: Boolean,
+    default: false
+  },
+  options: {
+    type: Object,
+    twoWay: false
+  }
+};
+
+var events = ['click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+exports.default = (0, _mapElementFactory2.default)({
+  mappedProps: props,
+  name: 'circle',
+  ctr: function ctr() {
+    return google.maps.Circle;
+  },
+  events: events
+});
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mapElementFactory = __webpack_require__(219);
+
+var _mapElementFactory2 = _interopRequireDefault(_mapElementFactory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  bounds: {
+    type: Object,
+    twoWay: true
+  },
+  draggable: {
+    type: Boolean,
+    default: false
+  },
+  editable: {
+    type: Boolean,
+    default: false
+  },
+  options: {
+    type: Object,
+    twoWay: false
+  }
+};
+
+var events = ['click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+exports.default = (0, _mapElementFactory2.default)({
+  mappedProps: props,
+  name: 'rectangle',
+  ctr: function ctr() {
+    return google.maps.Rectangle;
+  },
+  events: events
+});
+
+/***/ }),
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(200)
-}
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(202)
+var __vue_script__ = __webpack_require__(236)
 /* template */
-var __vue_template__ = __webpack_require__(203)
+var __vue_template__ = __webpack_require__(238)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-6c0a33b2"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -93934,7 +95347,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/views/Home.vue"
+Component.options.__file = "node_modules/vue2-google-maps/dist/components/infoWindow.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -93943,9 +95356,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6c0a33b2", Component.options)
+    hotAPI.createRecord("data-v-17fc7ddc", Component.options)
   } else {
-    hotAPI.reload("data-v-6c0a33b2", Component.options)
+    hotAPI.reload("data-v-17fc7ddc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -93956,23 +95369,216 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 200 */
+/* 236 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ((function (x) {
+  return x.default || x;
+})(__webpack_require__(237)));
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mapElementFactory = __webpack_require__(219);
+
+var _mapElementFactory2 = _interopRequireDefault(_mapElementFactory);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  options: {
+    type: Object,
+    required: false,
+    default: function _default() {
+      return {};
+    }
+  },
+  position: {
+    type: Object,
+    twoWay: true
+  },
+  zIndex: {
+    type: Number,
+    twoWay: true
+  }
+};
+
+var events = ['domready', 'closeclick', 'content_changed'];
+
+exports.default = (0, _mapElementFactory2.default)({
+  mappedProps: props,
+  events: events,
+  name: 'infoWindow',
+  ctr: function ctr() {
+    return google.maps.InfoWindow;
+  },
+  props: {
+    opened: {
+      type: Boolean,
+      default: true
+    }
+  },
+
+  inject: {
+    '$markerPromise': {
+      default: null
+    }
+  },
+
+  mounted: function mounted() {
+    var el = this.$refs.flyaway;
+    el.parentNode.removeChild(el);
+  },
+  beforeCreate: function beforeCreate(options) {
+    var _this = this;
+
+    options.content = this.$refs.flyaway;
+
+    if (this.$markerPromise) {
+      delete options.position;
+      return this.$markerPromise.then(function (mo) {
+        _this.$markerObject = mo;
+        return mo;
+      });
+    }
+  },
+
+
+  methods: {
+    _openInfoWindow: function _openInfoWindow() {
+      if (this.opened) {
+        if (this.$markerObject !== null) {
+          this.$infoWindowObject.open(this.$map, this.$markerObject);
+        } else {
+          this.$infoWindowObject.open(this.$map);
+        }
+      } else {
+        this.$infoWindowObject.close();
+      }
+    }
+  },
+
+  afterCreate: function afterCreate() {
+    var _this2 = this;
+
+    this._openInfoWindow();
+    this.$watch('opened', function () {
+      _this2._openInfoWindow();
+    });
+  }
+});
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_c("div", { ref: "flyaway" }, [_vm._t("default")], 2)])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-17fc7ddc", module.exports)
+  }
+}
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(240)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(242)
+/* template */
+var __vue_template__ = __webpack_require__(244)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "node_modules/vue2-google-maps/dist/components/map.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-85ca06a4", Component.options)
+  } else {
+    hotAPI.reload("data-v-85ca06a4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(201);
+var content = __webpack_require__(241);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("2d3ba7d6", content, false, {});
+var update = __webpack_require__(2)("325be528", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c0a33b2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c0a33b2\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue");
+   module.hot.accept("!!../../../css-loader/index.js!../../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ca06a4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../vue-loader/lib/selector.js?type=styles&index=0!./map.vue", function() {
+     var newContent = require("!!../../../css-loader/index.js!../../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-85ca06a4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../vue-loader/lib/selector.js?type=styles&index=0!./map.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -93982,7 +95588,7 @@ if(false) {
 }
 
 /***/ }),
-/* 201 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -93990,13 +95596,13 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.section[data-v-6c0a33b2] {\n  padding: 0;\n}\n.container[data-v-6c0a33b2] {\n  padding-top: 84px;\n}\n.md-subhead[data-v-6c0a33b2] {\n  margin-left: 20px;\n}\n", ""]);
+exports.push([module.i, "\n.vue-map-container {\n  position: relative;\n}\n.vue-map-container .vue-map {\n  left: 0; right: 0; top: 0; bottom: 0;\n  position: absolute;\n}\n.vue-map-hidden {\n  display: none;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 202 */
+/* 242 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -94012,38 +95618,907 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ((function (x) {
+  return x.default || x;
+})(__webpack_require__(243)));
 
 /***/ }),
-/* 203 */
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _bindEvents = __webpack_require__(221);
+
+var _bindEvents2 = _interopRequireDefault(_bindEvents);
+
+var _bindProps = __webpack_require__(220);
+
+var _mountableMixin = __webpack_require__(223);
+
+var _mountableMixin2 = _interopRequireDefault(_mountableMixin);
+
+var _TwoWayBindingWrapper = __webpack_require__(225);
+
+var _TwoWayBindingWrapper2 = _interopRequireDefault(_TwoWayBindingWrapper);
+
+var _WatchPrimitiveProperties = __webpack_require__(222);
+
+var _WatchPrimitiveProperties2 = _interopRequireDefault(_WatchPrimitiveProperties);
+
+var _mapElementFactory = __webpack_require__(219);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  center: {
+    required: true,
+    twoWay: true,
+    type: Object,
+    noBind: true
+  },
+  zoom: {
+    required: false,
+    twoWay: true,
+    type: Number,
+    noBind: true
+  },
+  heading: {
+    type: Number,
+    twoWay: true
+  },
+  mapTypeId: {
+    twoWay: true,
+    type: String
+  },
+  tilt: {
+    twoWay: true,
+    type: Number
+  },
+  options: {
+    type: Object,
+    default: function _default() {
+      return {};
+    }
+  }
+};
+
+var events = ['bounds_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'idle', 'mousemove', 'mouseout', 'mouseover', 'resize', 'rightclick', 'tilesloaded'];
+
+// Plain Google Maps methods exposed here for convenience
+var linkedMethods = ['panBy', 'panTo', 'panToBounds', 'fitBounds'].reduce(function (all, methodName) {
+  all[methodName] = function () {
+    if (this.$mapObject) {
+      this.$mapObject[methodName].apply(this.$mapObject, arguments);
+    }
+  };
+  return all;
+}, {});
+
+// Other convenience methods exposed by Vue Google Maps
+var customMethods = {
+  resize: function resize() {
+    if (this.$mapObject) {
+      google.maps.event.trigger(this.$mapObject, 'resize');
+    }
+  },
+  resizePreserveCenter: function resizePreserveCenter() {
+    if (!this.$mapObject) {
+      return;
+    }
+
+    var oldCenter = this.$mapObject.getCenter();
+    google.maps.event.trigger(this.$mapObject, 'resize');
+    this.$mapObject.setCenter(oldCenter);
+  },
+
+
+  /// Override mountableMixin::_resizeCallback
+  /// because resizePreserveCenter is usually the
+  /// expected behaviour
+  _resizeCallback: function _resizeCallback() {
+    this.resizePreserveCenter();
+  }
+};
+
+exports.default = {
+  mixins: [_mountableMixin2.default],
+  props: (0, _mapElementFactory.mappedPropsToVueProps)(props),
+
+  provide: function provide() {
+    var _this = this;
+
+    this.$mapPromise = new Promise(function (resolve, reject) {
+      _this.$mapPromiseDeferred = { resolve: resolve, reject: reject };
+    });
+    return {
+      '$mapPromise': this.$mapPromise
+    };
+  },
+
+
+  computed: {
+    finalLat: function finalLat() {
+      return this.center && typeof this.center.lat === 'function' ? this.center.lat() : this.center.lat;
+    },
+    finalLng: function finalLng() {
+      return this.center && typeof this.center.lng === 'function' ? this.center.lng() : this.center.lng;
+    },
+    finalLatLng: function finalLatLng() {
+      return { lat: this.finalLat, lng: this.finalLng };
+    }
+  },
+
+  watch: {
+    zoom: function zoom(_zoom) {
+      if (this.$mapObject) {
+        this.$mapObject.setZoom(_zoom);
+      }
+    }
+  },
+
+  mounted: function mounted() {
+    var _this2 = this;
+
+    return this.$gmapApiPromiseLazy().then(function () {
+      // getting the DOM element where to create the map
+      var element = _this2.$refs['vue-map'];
+
+      // creating the map
+      var options = _extends({}, _this2.options, (0, _bindProps.getPropsValues)(_this2, props));
+      delete options.options;
+      _this2.$mapObject = new google.maps.Map(element, options);
+
+      // binding properties (two and one way)
+      (0, _bindProps.bindProps)(_this2, _this2.$mapObject, props);
+      // binding events
+      (0, _bindEvents2.default)(_this2, _this2.$mapObject, events);
+
+      // manually trigger center and zoom
+      (0, _TwoWayBindingWrapper2.default)(function (increment, decrement, shouldUpdate) {
+        _this2.$mapObject.addListener('center_changed', function () {
+          if (shouldUpdate()) {
+            _this2.$emit('center_changed', _this2.$mapObject.getCenter());
+          }
+          decrement();
+        });
+
+        (0, _WatchPrimitiveProperties2.default)(_this2, ['finalLat', 'finalLng'], function updateCenter() {
+          increment();
+          _this2.$mapObject.setCenter(_this2.finalLatLng);
+        });
+      });
+      _this2.$mapObject.addListener('zoom_changed', function () {
+        _this2.$emit('zoom_changed', _this2.$mapObject.getZoom());
+      });
+      _this2.$mapObject.addListener('bounds_changed', function () {
+        _this2.$emit('bounds_changed', _this2.$mapObject.getBounds());
+      });
+
+      _this2.$mapPromiseDeferred.resolve(_this2.$mapObject);
+
+      return _this2.$mapObject;
+    }).catch(function (error) {
+      throw error;
+    });
+  },
+
+  methods: _extends({}, customMethods, linkedMethods)
+};
+
+/***/ }),
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "vue-map-container" },
+    [
+      _c("div", { ref: "vue-map", staticClass: "vue-map" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "vue-map-hidden" }, [_vm._t("default")], 2),
+      _vm._v(" "),
+      _vm._t("visible")
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "wrapper" }, [
-      _c("div", { staticClass: "section" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("h3", [_vm._v("Home Page")])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6c0a33b2", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-85ca06a4", module.exports)
+  }
+}
+
+/***/ }),
+/* 245 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(246)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(248)
+/* template */
+var __vue_template__ = __webpack_require__(250)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "node_modules/vue2-google-maps/dist/components/streetViewPanorama.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ed35740a", Component.options)
+  } else {
+    hotAPI.reload("data-v-ed35740a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 246 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(247);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("09541a99", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../css-loader/index.js!../../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-ed35740a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../vue-loader/lib/selector.js?type=styles&index=0!./streetViewPanorama.vue", function() {
+     var newContent = require("!!../../../css-loader/index.js!../../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-ed35740a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../vue-loader/lib/selector.js?type=styles&index=0!./streetViewPanorama.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 247 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.vue-street-view-pano-container {\n  position: relative;\n}\n.vue-street-view-pano-container .vue-street-view-pano {\n  left: 0; right: 0; top: 0; bottom: 0;\n  position: absolute;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 248 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ((function (x) {
+  return x.default || x;
+})(__webpack_require__(249)));
+
+/***/ }),
+/* 249 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _bindEvents = __webpack_require__(221);
+
+var _bindEvents2 = _interopRequireDefault(_bindEvents);
+
+var _bindProps = __webpack_require__(220);
+
+var _mountableMixin = __webpack_require__(223);
+
+var _mountableMixin2 = _interopRequireDefault(_mountableMixin);
+
+var _TwoWayBindingWrapper = __webpack_require__(225);
+
+var _TwoWayBindingWrapper2 = _interopRequireDefault(_TwoWayBindingWrapper);
+
+var _WatchPrimitiveProperties = __webpack_require__(222);
+
+var _WatchPrimitiveProperties2 = _interopRequireDefault(_WatchPrimitiveProperties);
+
+var _mapElementFactory = __webpack_require__(219);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var props = {
+  zoom: {
+    twoWay: true,
+    type: Number
+  },
+  pov: {
+    twoWay: true,
+    type: Object,
+    trackProperties: ['pitch', 'heading']
+  },
+  position: {
+    twoWay: true,
+    type: Object,
+    noBind: true
+  },
+  pano: {
+    twoWay: true,
+    type: String
+  },
+  motionTracking: {
+    twoWay: false,
+    type: Boolean
+  },
+  visible: {
+    twoWay: true,
+    type: Boolean,
+    default: true
+  },
+  options: {
+    twoWay: false,
+    type: Object,
+    default: function _default() {
+      return {};
+    }
+  }
+};
+
+var events = ['closeclick', 'status_changed'];
+
+exports.default = {
+  mixins: [_mountableMixin2.default],
+  props: (0, _mapElementFactory.mappedPropsToVueProps)(props),
+  replace: false, // necessary for css styles
+  methods: {
+    resize: function resize() {
+      if (this.$panoObject) {
+        google.maps.event.trigger(this.$panoObject, 'resize');
+      }
+    }
+  },
+
+  provide: function provide() {
+    var _this = this;
+
+    var promise = new Promise(function (resolve, reject) {
+      _this.$panoPromiseDeferred = { resolve: resolve, reject: reject };
+    });
+    return {
+      '$panoPromise': promise,
+      '$mapPromise': promise // so that we can use it with markers
+    };
+  },
+
+
+  computed: {
+    finalLat: function finalLat() {
+      return this.position && typeof this.position.lat === 'function' ? this.position.lat() : this.position.lat;
+    },
+    finalLng: function finalLng() {
+      return this.position && typeof this.position.lng === 'function' ? this.position.lng() : this.position.lng;
+    },
+    finalLatLng: function finalLatLng() {
+      return {
+        lat: this.finalLat,
+        lng: this.finalLng
+      };
+    }
+  },
+
+  watch: {
+    zoom: function zoom(_zoom) {
+      if (this.$panoObject) {
+        this.$panoObject.setZoom(_zoom);
+      }
+    }
+  },
+
+  mounted: function mounted() {
+    var _this2 = this;
+
+    return this.$gmapApiPromiseLazy().then(function () {
+      // getting the DOM element where to create the map
+      var element = _this2.$refs['vue-street-view-pano'];
+
+      // creating the map
+      var options = _extends({}, _this2.options, (0, _bindProps.getPropsValues)(_this2, props));
+      delete options.options;
+
+      _this2.$panoObject = new google.maps.StreetViewPanorama(element, options);
+
+      // binding properties (two and one way)
+      (0, _bindProps.bindProps)(_this2, _this2.$panoObject, props);
+      // binding events
+      (0, _bindEvents2.default)(_this2, _this2.$panoObject, events);
+
+      // manually trigger position
+      (0, _TwoWayBindingWrapper2.default)(function (increment, decrement, shouldUpdate) {
+        // Panos take a while to load
+        increment();
+
+        _this2.$panoObject.addListener('position_changed', function () {
+          if (shouldUpdate()) {
+            _this2.$emit('position_changed', _this2.$panoObject.getPosition());
+          }
+          decrement();
+        });
+
+        (0, _WatchPrimitiveProperties2.default)(_this2, ['finalLat', 'finalLng'], function updateCenter() {
+          increment();
+          _this2.$panoObject.setPosition(_this2.finalLatLng);
+        });
+      });
+
+      _this2.$panoPromiseDeferred.resolve(_this2.$panoObject);
+
+      return _this2.$panoPromise;
+    }).catch(function (error) {
+      throw error;
+    });
+  }
+};
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "vue-street-view-pano-container" },
+    [
+      _c("div", {
+        ref: "vue-street-view-pano",
+        staticClass: "vue-street-view-pano"
+      }),
+      _vm._v(" "),
+      _vm._t("default")
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ed35740a", module.exports)
+  }
+}
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(252)
+/* template */
+var __vue_template__ = __webpack_require__(253)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "node_modules/vue2-google-maps/dist/components/placeInput.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c1ab87be", Component.options)
+  } else {
+    hotAPI.reload("data-v-c1ab87be", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _bindProps = __webpack_require__(220);
+
+var _simulateArrowDown = __webpack_require__(226);
+
+var _simulateArrowDown2 = _interopRequireDefault(_simulateArrowDown);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _objectWithoutProperties(obj, keys) {
+  var target = {};for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
+  }return target;
+}
+
+var props = {
+  bounds: {
+    type: Object
+  },
+  defaultPlace: {
+    type: String,
+    default: ''
+  },
+  componentRestrictions: {
+    type: Object,
+    default: null
+  },
+  types: {
+    type: Array,
+    default: function _default() {
+      return [];
+    }
+  },
+  placeholder: {
+    required: false,
+    type: String
+  },
+  className: {
+    required: false,
+    type: String
+  },
+  label: {
+    required: false,
+    type: String,
+    default: null
+  },
+  selectFirstOnEnter: {
+    require: false,
+    type: Boolean,
+    default: false
+  }
+};
+
+exports.default = {
+  mounted: function mounted() {
+    var _this = this;
+
+    var input = this.$refs.input;
+
+    // Allow default place to be set
+    input.value = this.defaultPlace;
+    this.$watch('defaultPlace', function () {
+      input.value = _this.defaultPlace;
+    });
+
+    this.$gmapApiPromiseLazy().then(function () {
+      var options = (0, _bindProps.getPropsValues)(_this, props);
+      if (_this.selectFirstOnEnter) {
+        (0, _simulateArrowDown2.default)(_this.$refs.input);
+      }
+
+      if (typeof google.maps.places.Autocomplete !== 'function') {
+        throw new Error('google.maps.places.Autocomplete is undefined. Did you add \'places\' to libraries when loading Google Maps?');
+      }
+
+      _this.autoCompleter = new google.maps.places.Autocomplete(_this.$refs.input, options);
+
+      var placeholder = props.placeholder,
+          place = props.place,
+          defaultPlace = props.defaultPlace,
+          className = props.className,
+          label = props.label,
+          selectFirstOnEnter = props.selectFirstOnEnter,
+          rest = _objectWithoutProperties(props, ['placeholder', 'place', 'defaultPlace', 'className', 'label', 'selectFirstOnEnter']); // eslint-disable-line
+
+
+      (0, _bindProps.bindProps)(_this, _this.autoCompleter, rest);
+
+      _this.autoCompleter.addListener('place_changed', function () {
+        _this.$emit('place_changed', _this.autoCompleter.getPlace());
+      });
+    });
+  },
+  created: function created() {
+    console.warn('The PlaceInput class is deprecated! Please consider using the Autocomplete input instead'); // eslint-disable-line no-console
+  },
+
+  props: props
+};
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("label", [
+    _c("span", { domProps: { textContent: _vm._s(_vm.label) } }),
+    _vm._v(" "),
+    _c("input", {
+      ref: "input",
+      class: _vm.className,
+      attrs: { type: "text", placeholder: _vm.placeholder }
+    })
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c1ab87be", module.exports)
+  }
+}
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(255)
+/* template */
+var __vue_template__ = __webpack_require__(257)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "node_modules/vue2-google-maps/dist/components/autocomplete.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2c922d06", Component.options)
+  } else {
+    hotAPI.reload("data-v-2c922d06", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 255 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ((function (x) {
+  return x.default || x;
+})(__webpack_require__(256)));
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _bindProps = __webpack_require__(220);
+
+var _simulateArrowDown = __webpack_require__(226);
+
+var _simulateArrowDown2 = _interopRequireDefault(_simulateArrowDown);
+
+var _mapElementFactory = __webpack_require__(219);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mappedProps = {
+  bounds: {
+    type: Object
+  },
+  componentRestrictions: {
+    type: Object,
+    // Do not bind -- must check for undefined
+    // in the property
+    noBind: true
+  },
+  types: {
+    type: Array,
+    default: function _default() {
+      return [];
+    }
+  }
+};
+
+var props = {
+  placeholder: {
+    required: false,
+    type: String
+  },
+  selectFirstOnEnter: {
+    require: false,
+    type: Boolean,
+    default: false
+  },
+  value: {
+    type: String,
+    default: ''
+  },
+  options: {
+    type: Object
+  }
+};
+
+exports.default = {
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$gmapApiPromiseLazy().then(function () {
+      if (_this.selectFirstOnEnter) {
+        (0, _simulateArrowDown2.default)(_this.$refs.input);
+      }
+
+      if (typeof google.maps.places.Autocomplete !== 'function') {
+        throw new Error('google.maps.places.Autocomplete is undefined. Did you add \'places\' to libraries when loading Google Maps?');
+      }
+
+      /* eslint-disable no-unused-vars */
+      var finalOptions = _extends({}, (0, _bindProps.getPropsValues)(_this, mappedProps), _this.options);
+
+      _this.$autocomplete = new google.maps.places.Autocomplete(_this.$refs.input, finalOptions);
+      (0, _bindProps.bindProps)(_this, _this.$autocomplete, mappedProps);
+
+      _this.$watch('componentRestrictions', function (v) {
+        if (v !== undefined) {
+          _this.$autocomplete.setComponentRestrictions(v);
+        }
+      });
+
+      // Not using `bindEvents` because we also want
+      // to return the result of `getPlace()`
+      _this.$autocomplete.addListener('place_changed', function () {
+        _this.$emit('place_changed', _this.$autocomplete.getPlace());
+      });
+    });
+  },
+
+  props: _extends({}, (0, _mapElementFactory.mappedPropsToVueProps)(mappedProps), props)
+};
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    ref: "input",
+    attrs: { type: "text", placeholder: _vm.placeholder },
+    domProps: { value: _vm.value }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2c922d06", module.exports)
   }
 }
 

@@ -2,12 +2,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use File;
+use Response;
 
 trait HelperController {
 
     public function saveImage($dir, $request, $name) {
         $image_extensions = array('jpeg', 'png', 'jpg', 'gif','bmp', 'svg');
-        
+        $file_name = "";
         if($request->hasfile($name)) {
             $file = $request->file($name);
             $extension = $file->getClientOriginalExtension();
@@ -20,8 +22,18 @@ trait HelperController {
         return $file_name;
     }
 
-    public function getAuthUser(){
+    public function deleteFile($path) {
+        \Storage::delete($path);
+    }
 
+
+    public function getAuthUserId(Request $request){
+        if ($request->session()->has('user_id')) {
+            $id = $request->session()->get('user_id');
+            return $id;
+        } else {
+            return 0;
+        }        
     }
 
     public function uuid4() {
@@ -45,5 +57,19 @@ trait HelperController {
             (hexdec(substr($hash, 16, 4)) & 0x3fff) | 0x8000,
         // 48 bits for "node"
             substr($hash, 20, 12));
+    }
+
+    static public function downloadImage($path) {
+        if (!File::exists($path)) {
+            abort(404);
+        }
+    
+        $file = File::get($path);
+        $type = File::mimeType($path);
+    
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+    
+        return $response;
     }
 }

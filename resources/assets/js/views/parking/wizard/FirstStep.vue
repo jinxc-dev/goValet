@@ -5,13 +5,10 @@
         <div class="md-layout-item md-size-40 md-small-size-100">
             <div class="pic-container">
                 <div class="pic">
-                    <div v-if="!image">
-                        <img :src="avatar" class="pic-src" title="">
-                    </div>
-                    <div v-else>
+                    <div>
                         <img :src="image" />
                     </div>
-                    <input type="file" @change="onFileChange">
+                    <input type="file" name="image" @change="onFileChange">
                 </div>
                 <h6 class="description">Choose Parking Photo</h6>
             </div>
@@ -20,7 +17,7 @@
             <div class="md-layout">
                 <div class="md-layout-item">
                     <md-field :class="[
-                        {'md-valid': !errors.has('name') && touched.name},
+                        {'md-valid': !errors.has('name')},
                         {'md-error': errors.has('name')}]">
                         <label>Name</label>
                         <md-input
@@ -28,17 +25,13 @@
                             data-vv-name="name"
                             name="name"
                             required
-                            v-validate="modelValidations.name">
+                            v-validate="'required'">
                         </md-input>
-                            <md-icon class="error" v-show="errors.has('name')">close</md-icon>
-                            <md-icon class="success" v-show="!errors.has('name') && touched.name">done</md-icon>
                     </md-field>
                 </div>
                 <div class="md-layout-item">
-                    <md-field :class="[
-                        {'md-valid': !errors.has('t_name') && touched.t_name},
-                        {'md-error': errors.has('t_name')}]">
-                        <label>Name of legal tenant (IF different from legal owner)</label>
+                    <md-field>
+                        <label>Name of legal tenant</label>
                         <md-input
                             v-model="t_name"
                             data-vv-name="t_name"
@@ -48,7 +41,7 @@
                 </div>
             </div>
             <md-field :class="[
-                {'md-valid': !errors.has('city') && touched.city},
+                {'md-valid': !errors.has('city')},
                 {'md-error': errors.has('city')}]">
                 <label>City</label>
                 <md-input
@@ -56,13 +49,11 @@
                     data-vv-name="city"
                     name="city"
                     required
-                    v-validate="modelValidations.city">
+                    v-validate="'required'">
                 </md-input>
-                    <md-icon class="error" v-show="errors.has('city')">close</md-icon>
-                    <md-icon class="success" v-show="!errors.has('city') && touched.city">done</md-icon>
             </md-field>
             <md-field :class="[
-                {'md-valid': !errors.has('state') && touched.state},
+                {'md-valid': !errors.has('state')},
                 {'md-error': errors.has('state')}]">
                 <label>State</label>
                 <md-input
@@ -70,38 +61,27 @@
                     data-vv-name="state"
                     name="state"
                     required
-                    v-validate="modelValidations.state">
+                    v-validate="'required'">
                 </md-input>
-                    <md-icon class="error" v-show="errors.has('state')">close</md-icon>
-                    <md-icon class="success" v-show="!errors.has('state') && touched.state">done</md-icon>
             </md-field>
             <div class="md-layout">
                 <div class="md-layout-item">
-                    <md-field :class="[
-                        {'md-valid': !errors.has('zip') && touched.zip},
-                        {'md-error': errors.has('zip')}]">
+                    <md-field>
                         <label>Zip Code</label>
                         <md-input
-                            v-model="zip"
-                            data-vv-name="zip"
-                            name="zip"
-                            v-validate="modelValidations.zip">
+                            v-model="zip_code"
+                            data-vv-name="zip_code"
+                            name="zip_code">
                         </md-input>
-                        <md-icon class="error" v-show="errors.has('zip')">close</md-icon>
-                        <md-icon class="success" v-show="!errors.has('zip') && touched.zip">done</md-icon>
                     </md-field>
                 </div>
                 <div class="md-layout-item">
-                    <md-field :class="[
-                        {'md-valid': !errors.has('name') && touched.name},
-                        {'md-error': errors.has('name')}]">
+                    <md-field >
                         <label>Country</label>
-                        <md-input
-                            v-model="name"
-                            data-vv-name="name"
-                            name="name"
-                            v-validate="modelValidations.name">
-                        </md-input>
+                        <md-select v-model="country" name="country">
+                            <md-option value="USA">USA</md-option>
+                            <md-option value="Canada">Canada</md-option>
+                        </md-select>
                     </md-field>
                 </div>
             </div>
@@ -111,55 +91,17 @@
   </div>
 </template>
 <script>
-import { SlideYDownTransition } from 'vue2-transitions'
-  export default {
-    components: {
-      SlideYDownTransition
-    },
-    props: {
-      avatar: {
-        type: String,
-        default: require("@/../images/image-empty.jpg")
-      }
-    },
+export default {
     data() {
-      return {
-        image: '',
-        single: null,
-        name: 'sdfsfsfsfsdf',
-        t_name: 'sdfsfsfsfsdf',
-        email: '',
-        zip:'12345678',
-        state:'sdfsfsfsfsdf',
-        city:'sdfsfsfsfsdf',
-        touched: {
-            lastName: false,
-            zip: false
-        },
-        modelValidations: {
-            name: {
-                required: true,
-                min: 5
-            },
-            city: {
-                required: true,
-                min: 2
-            },
-            state: {
-                required: true,
-                min: 2
-
-            },
-            t_name: {
-                required: false,
-                min: 5
-            },
-            zip: {
-                numeric: true,
-                min: 4
-            }
+        return {
+            image: require("@/../images/image-empty.jpg"),
+            name: 'AAAAA',
+            t_name: '',
+            zip_code:'12345678',
+            state:'Phoenix',
+            city:'Hilleman Way',
+            country: 'USA',
         }
-      }
     },
     methods: {
         handlePreview(file) {
@@ -170,7 +112,7 @@ import { SlideYDownTransition } from 'vue2-transitions'
         },
         validate() {
             return this.$validator.validateAll().then(res => {
-                this.$emit('on-validated', res)
+                this.$emit('on-validated', res);
                 return res
             })
         },
@@ -183,36 +125,17 @@ import { SlideYDownTransition } from 'vue2-transitions'
         createImage(file) {
             var reader = new FileReader();
             var vm = this;
-
             reader.onload = (e) => {
                 vm.image = e.target.result;
             };
             reader.readAsDataURL(file);
         }
     },
-    watch: {
-        name () {
-            this.touched.name = true
-        },
-        email () {
-            this.touched.email = true
-        },
-        zip() {
-            this.touched.zip = true;
-        },
-        city() {
-            this.touched.city = true;
-        },
-        state() {
-            this.touched.state = true;
-        }
-    }
-  }
+}
 </script>
 <style lang="scss" scoped>
 
 .pic-container {
-	// margin-top: 50px;
     cursor: pointer;
     position: relative;
     text-align: center;

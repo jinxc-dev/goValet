@@ -18,7 +18,7 @@
 
                     <wizard-tab :before-change="() => validateStep('step2')">
                         <template slot="label" >
-                            Authorization
+                            Parking Type
                         </template>
                         <second-step ref="step2" @on-validated="onStepValidated"></second-step>
                     </wizard-tab>
@@ -27,7 +27,7 @@
                         <template slot="label">
                             location
                         </template>
-                        <third-step ref="step3"></third-step>
+                        <third-step ref="step3" @on-validated="wizardComplete"></third-step>
                     </wizard-tab>
                 </simple-wizard>
                 </div>
@@ -39,7 +39,6 @@
   import FirstStep from './wizard/FirstStep.vue'
   import SecondStep from './wizard/SecondStep.vue'
   import ThirdStep from './wizard/ThirdStep.vue'
-//   import swal from 'sweetalert2'
   import {SimpleWizard, WizardTab} from '@/components'
 
   export default {
@@ -57,14 +56,37 @@
     },
     methods: {
         validateStep(ref) {
-            return this.$refs[ref].validate()
+            return this.$refs[ref].validate();
         },
         onStepValidated(validated, model) {
-            this.wizardModel = {...this.wizardModel, ...model}
+            this.wizardModel = {...this.wizardModel, ...model};
+            console.log(this.wizardModel);
         },
         wizardComplete() {
             console.log('good job');
             // swal('Good job!', 'You clicked the finish button!', 'success');
+            var formElement = document.querySelector("form");
+            var data = new FormData(formElement);
+            data.append('lot_type', this.wizardModel.lot_type);
+            data.append('availability', this.wizardModel.type);
+            // data.append('latitude', this.wizardModel.lat);
+            // data.append('longitude', this.wizardModel.lng);
+
+            console.log(this.wizardModel);
+
+            axios.post('/api/parking/register', data, {headers: { 'Content-Type': 'multipart/form-data' }})
+				.then(response => {
+					// this.$router.push('/vehicle_profile');
+					// this.$swal({
+					// 	position: 'top-end',
+					// 	type: 'success',
+					// 	title: 'Your vehicle has been deleted',
+					// 	showConfirmButton: false,
+					// 	timer: 1000
+					// })
+				}).catch(error => {
+					// console.log(error);
+				})
         }
     }
   }
