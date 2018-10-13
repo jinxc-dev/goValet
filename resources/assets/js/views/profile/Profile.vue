@@ -4,20 +4,22 @@
 		<div class="section">
 			<div class="container">
 				<div class="md-layout">
-					<div class="md-layout-item md-size-50 mx-auto">
+					<div class="md-layout-item md-size-30 md-medium-size-50 md-xsmall-size-50 mx-auto">
 						<div class="profile">
 							<div class="avatar">
-								<img :src="img" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+								<img :src="user.avatar" alt="Circle Image" class="img-raised rounded-circle">
 							</div>
 							<div class="name">
-								<h3 class="title">Carla Hortensia</h3>
-								<h6>Designer</h6>
+								<h3 class="title">{{user.first_name}}  {{user.last_name}}</h3>
+								<h4 class="text-left">Email: <span>{{user.email}}</span></h4>
+								<h4 class="text-left">Phone: <span>{{user.phone}}</span></h4>
+								<h4 class="text-left">Type: 
+									<span v-if='user.type==0'>I am guest.</span>
+									<span v-else>I am host.</span>
+								</h4>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="description text-center">
-					<p>Test user profile. </p>
 				</div>
 			</div>
 		</div>		
@@ -33,26 +35,7 @@ export default {
 	bodyClass: "profile-page",
 	data() {
 		return {
-			tabPane1: [
-				{ image: require("@/../images/examples/studio-1.jpg") },
-				{ image: require("@/../images/examples/studio-2.jpg") },
-				{ image: require("@/../images/examples/studio-4.jpg") },
-				{ image: require("@/../images/examples/studio-5.jpg") }
-			],
-			tabPane2: [
-				{ image: require("@/../images/examples/olu-eletu.jpg") },
-				{ image: require("@/../images/examples/clem-onojeghuo.jpg") },
-				{ image: require("@/../images/examples/cynthia-del-rio.jpg") },
-				{ image: require("@/../images/examples/mariya-georgieva.jpg") },
-				{ image: require("@/../images/examples/clem-onojegaw.jpg") }
-			],
-			tabPane3: [
-				{ image: require("@/../images/examples/mariya-georgieva.jpg") },
-				{ image: require("@/../images/examples/studio-3.jpg") },
-				{ image: require("@/../images/examples/clem-onojeghuo.jpg") },
-				{ image: require("@/../images/examples/olu-eletu.jpg") },
-				{ image: require("@/../images/examples/studio-1.jpg") }
-			]
+			user: helper.getUser(),
 		};
 	},
 	props: {
@@ -64,6 +47,10 @@ export default {
 			type: String,
 			default: require("@/../images/faces/christian.jpg")
 		}
+	},
+
+	mounted() {
+		
 	},
 	computed: {
 		headerStyle() {
@@ -80,18 +67,13 @@ export default {
 	padding: 0;
 }
 
-.profile-tabs /deep/ {
-	.md-card-tabs .md-list {
-		justify-content: center;
-	}
-
-	[class*="tab-pane-"] {
-		margin-top: 3.213rem;
-		padding-bottom: 50px;
-
-		img {
-			margin-bottom: 2.142rem;
-		}
-	}
+.page-header {
+	height: 200px;
 }
+
+.profile-page .profile img {
+    width: 160px;
+	height: 160px;
+}
+
 </style>

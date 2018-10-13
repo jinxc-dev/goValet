@@ -77,8 +77,8 @@ export default {
 			isAgree: true,
 			image: '',
 			dataModel:{
-				first_name: 'ZhangXH',
-				last_name: 'XH',
+				first_name: 'Jin',
+				last_name: 'ZhenFeng',
 				email:'zxhdkdk@126.com',
 				password: 'rlawkdgur15814',
 				pw_confirm:'rlawkdgur15814',
@@ -152,7 +152,6 @@ export default {
 		},
 		
 		submit(data) {
-			console.log(data);
 			data.user_type = 0;
 			if (data.isHost) {
 				data.user_type = 1;
@@ -165,6 +164,25 @@ export default {
 			axios.post('/api/user/register', formdata, {headers: { 'Content-Type': 'multipart/form-data' }})
 				.then(response => {
 					console.log(response);
+					var res_data = response.data;
+					if (res_data.status) {
+						var toast = this.$swal.mixin({
+							toast: true,
+							position:'bottom',
+							showConfirmButton: false,
+							timer:3000,
+						});
+						toast({type: 'success',title: 'Sign Up successfully'});
+						this.$router.push('/login');
+					} else {
+						this.$swal({
+							type: 'error',
+							title: 'Sign up fail',
+							text: res_data.message,
+							confirmButtonClass: 'md-button md-success',
+							buttonsStyling: false
+						})
+					}
 				}).catch(error => {
 					console.log(error);
 				})

@@ -59,15 +59,14 @@ class UserController extends Controller
         ]);
 
         if($validation->fails())
-            return response()->json(['status' => 'fail', 'message' => $validation->messages()->first()]);
+            return response()->json(['status' => false, 'message' => $validation->messages()->first()]);
 
         if (User::where('email', $request->email)->exists()) {
-            return response()->json(['message' => "User already exist"]);
+            return response()->json(['status' => false, 'message' => "User already exist. Try again!"]);
         } else {
             $avatarUrl = '';
             $user = new User();
             $user->uuid = $this->uuid4();
-            // echo $this->uuid4();
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             $user->phone = $request->phone;
@@ -85,7 +84,7 @@ class UserController extends Controller
             //         ->subject('Welcome!');
             // });
 
-            return $user;
+            return response()->json(['status' => true, 'data' => $user]);
         }
         return response()->json(['status' => true, 'message' => 'Reset link sent your email address.']);
     }

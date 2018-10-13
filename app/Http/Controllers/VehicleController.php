@@ -32,7 +32,7 @@ class VehicleController extends Controller
             return response()->json(['status' => 'error', 'message' => "Vehicle already exist"]);
         } else {
             $model = new Vehicle();
-            return $this->save($request, $model, $user_id);            
+            return response()->json(['status' => true, 'data' => $this->save($request, $model, $user_id)]);
         }
         return response()->json(['status' => true, 'message' => 'Reset link sent your email address.']);
     }

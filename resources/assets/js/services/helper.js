@@ -38,5 +38,8 @@ export default {
 
     initUser() {
         store.dispatch('resetAuthUserDetail');
+    },
+    getUser() {
+        return store.getters.getUserProfile;
     }
 }

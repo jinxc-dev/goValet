@@ -17,6 +17,12 @@ trait HelperController {
                 return response()->json(['status' => 'fail', 'message' => 'Your images must be jpeg, png, jpg, gif, svg!']);
             }
             $file_name = $file->store('public/' . $dir);
+        }else {
+            if ($name == 'avatar') {
+                $file_name = 'images/default-avatar.png';
+            } else {
+                $file_name = 'images/image-empty.png';
+            }
         }
 
         return $file_name;

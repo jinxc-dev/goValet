@@ -25,9 +25,9 @@ Route::get('public/vehicle/{id}/{filename}', function ($id, $filename)
     return  HelperController::downloadImage($path); 
 });
 
-Route::get('public/avatar/{filename}', function ($id, $filename)
+Route::get('public/avatars/{filename}', function ($filename)
 {
-    $path = storage_path("app/public/avatar/{$filename}");
+    $path = storage_path("app/public/avatars/{$filename}");
     return  HelperController::downloadImage($path); 
 });
 

@@ -96,14 +96,21 @@ export default {
 			var data = {
 				email: this.email,
 				password: this.password
-			}
+			};
+			var toast = this.$swal.mixin({
+				toast: true,
+				position:'bottom',
+				showConfirmButton: false,
+				timer:3000,
+			});			
 			axios.post('/api/user/login', data)
 				.then(response => {
 					helper.check();
 					if (response.data.authed) {
-						this.$router.push('/');					
+						this.$router.push('/');
+						toast({type: 'success', title: 'Login successfully.Congratulation!'});
 					} else {
-						console.log('faile');
+						toast({type: 'error', title: 'Login fail. Please try again'});
 					}
 				}).catch(error => {
 					console.log(error);

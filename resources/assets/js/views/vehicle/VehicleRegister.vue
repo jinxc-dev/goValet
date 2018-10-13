@@ -175,14 +175,26 @@ export default {
 
 			axios.post('/api/vehicle/register', formData, {headers: { 'Content-Type': 'multipart/form-data' }})
 				.then(response => {
-					this.$router.push('/vehicle_profile');
-					this.$swal({
-						position: 'top-end',
-						type: 'success',
-						title: 'Your vehicle has been deleted',
-						showConfirmButton: false,
-						timer: 1000
-					})
+					var r_data = response.data;
+					console.log(r_data);
+					if (r_data.status == true) {
+						this.$router.push('/vehicle_profile');
+						this.$swal({
+							position: 'top-end',
+							type: 'success',
+							title: 'Your vehicle has been deleted',
+							showConfirmButton: false,
+							timer: 1000
+						})
+					} else {
+						this.$swal({
+							type: 'error',
+							title: 'Register is failed.',
+							text: r_data.message,
+							confirmButtonClass: 'md-button md-success',
+							buttonsStyling: false
+						})
+					}
 				}).catch(error => {
 					console.log(error);
 				})
