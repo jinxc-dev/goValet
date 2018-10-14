@@ -50,5 +50,9 @@ class ParkingController extends Controller
         return $this->get($request);
     }
 
+    public function searchParking(Request $request) {
+
+    }
+
 
 }

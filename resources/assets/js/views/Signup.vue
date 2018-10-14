@@ -1,10 +1,10 @@
 <template>
 	<div class="wrapper">
 		<div class="section page-header">
-			<div class="container md-layout">
+			<div class="container-fluid md-layout">
 				<div class="md-layout-item md-size-66 md-small-size-100 md-xsmall-size-100 md-medium-size-80 mx-auto">
 					<md-card class="md-card-login">
-						<md-card-header class="md-card-header-green">
+						<md-card-header class="md-card-header-green title-header">
 							<h4 class="card-title">SIGN UP</h4>
 						</md-card-header>
 						<md-card-content>
@@ -214,15 +214,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.md-card-header {
-	width: fit-content;
-	margin-top: -20px;
-	padding: 20px;
-}
-.card-title {
-	padding: 0px 20px;
-	margin: 0px; 
-}
+
 
 .picture-container {
 	margin-top: 50px;

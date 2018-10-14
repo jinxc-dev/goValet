@@ -32,7 +32,7 @@
 											</md-button>
 											<ul class="dropdown-menu dropdown-with-icons">
 												<li>
-													<a href="#/landing">
+													<a href="#/search-parking">
 														<md-icon>search</md-icon>
 														<p>Search Places</p>
 													</a>

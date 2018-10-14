@@ -10,6 +10,7 @@ import VehicleProfile from "./views/vehicle/Vehicle.vue";
 import VehicleRegister from "./views/vehicle/VehicleRegister.vue";
 import ParkingRegister from "./views/parking/ParkingRegister.vue";
 import Home from './views/Home.vue';
+import SearchParking from "./views/booking/SearchParking";
 
 Vue.use(Router);
 
@@ -61,6 +62,10 @@ const router = new Router({
 			redirect: '*',
 			// components: { default: ParkingRegister, header: MainNavbar, footer: MainFooter },
 
+		},{
+			path:'/search-parking',
+			name:'search-parking',
+			components: { default: SearchParking, header: MainNavbar, footer: MainFooter },
 		}
 
 	],
