@@ -35,24 +35,30 @@ class ParkingController extends Controller
         $user_id = $this->getAuthUserId($request);
         
         if ($user_id == 0) {
-            return response()->json(['status' => 'error', 'message' => "User is not Authed"]);
+            return response()->json(['status' => false, 'message' => "User is not Authed"]);
         }
-        $v_item = Vehicle::where('user_id', $user_id)->get();
+        $v_item = Parking::where('id', $request->id)->first();
 
-        return $v_item;
+        return response()->json(['status' => true, 'data' => $v_item]);
     }
 
     public function delete($id, Request $request) {
 
-        $item = Vehicle::where('id', $id)->first();
-        $this->deleteFile($item->photo);
-        Vehicle::where('id', $id)->delete();
-        return $this->get($request);
+        // $item = Vehicle::where('id', $id)->first();
+        // $this->deleteFile($item->photo);
+        // Vehicle::where('id', $id)->delete();
+        // return $this->get($request);
     }
 
     public function searchParking(Request $request) {
+        $user_id = $this->getAuthUserId($request);
+        
+        if ($user_id == 0) {
+            return response()->json(['status' => 'error', 'message' => "User is not Authed"]);
+        }
 
+        $_items = Parking::whereIn('availability', $request->type)->get();
+        return response()->json(['status' => true, 'data' => $_items]);
     }
-
 
 }

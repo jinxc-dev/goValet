@@ -1,3 +1,4 @@
+
 <template>
 	<div class="wrapper">
 		<div class="section">
@@ -9,15 +10,12 @@
                     <md-card-content>
                         <div class="md-layout">
                             <div class="md-layout-item md-size-60 md-medium-size-100">
-                                <h4 class="title">Search</h4>
-                                
+                                <h4 class="title">Search</h4>                                
                                 <div>
-                                    <!-- <h4>Select parking type</h4> -->
                                     <md-radio v-model="type" :value="1">Monthly</md-radio>
                                     <md-radio v-model="type" :value="2">Daily</md-radio>
                                     <md-radio v-model="type" :value="3">Houly</md-radio>
                                 </div>
-                                <!-- </md-field> -->
                                 <md-field class="md-form-group">
                                     <md-icon>search</md-icon>
                                     <gmap-autocomplete @place_changed="setPlace" class="md-input"></gmap-autocomplete>				
@@ -25,25 +23,37 @@
                                 <gmap-map class="google-map"
                                     ref="mapRef"
                                     :center="center"
-                                    :zoom="13">
+                                    :zoom="15">
                                     <gmap-marker
-                                        :position="marker"
+                                        :position="center"
                                         :clickable="true"
-                                        @click="center=marker"
                                     />
+                                    <gmap-marker
+                                        :key="index"
+                                        v-for="(m, index) in markers"
+                                        :position="m.position"
+                                        :clickable="true"
+                                        icon="/images/map/map-marker.png"
+                                        @click="selectParking(m.id)"></gmap-marker>
+                                    <gmap-marker                                        
+                                        v-for="(m, idx) in otherMarkers"
+                                        :key="m.id"
+                                        :index=idx
+                                        :position="m.position"
+                                        icon="/images/map/yellow-dot.png"></gmap-marker>
                                 </gmap-map>
                             </div>
                             <div class="md-layout-item md-size-40 md-medium-size-100">
                                 <h4 class="title">Selected parking information</h4>
                                 <div class="parking-info-form">
                                     <img :src="parkingInfo.photo" class="mx-auto">
-                                    <h5 class="name text-center">Parking Name</h5>
+                                    <h5 class="name text-center">{{parkingInfo.name}}</h5>
                                     <div class="md-layout">
                                         <div class="md-layout-item md-size-30">
                                             <h6 class="sub-title">Address</h6>
                                         </div>
                                         <div class="md-layout-item md-size-70">
-                                            <div class="sub-content">62 Avenue du Mont-Royal E, Mont-Royal, QC H3P 3B8, Canada</div>
+                                            <div class="sub-content">{{parkingInfo.address}}</div>
                                         </div>
                                     </div>
                                     <div class="md-layout">
@@ -51,7 +61,7 @@
                                             <h6 class="sub-title">Parking Spot</h6>
                                         </div>
                                         <div class="md-layout-item md-size-70">
-                                            <div class="sub-content"><small>5</small>/4</div>
+                                            <div class="sub-content"><small>{{parkingInfo.spotTotal}}</small>/{{parkingInfo.spotCurrent}}</div>
                                         </div>
                                     </div>
                                     <md-divider></md-divider>
@@ -60,7 +70,7 @@
                                             <h6 class="sub-title">Parking Type</h6>
                                         </div>
                                         <div class="md-layout-item md-size-70">
-                                            <div class="sub-content">Monthly(24Hours)</div>
+                                            <div class="sub-content">{{parkingInfo.type}}</div>
                                         </div>
                                     </div>
                                     <div class="md-layout">
@@ -68,7 +78,7 @@
                                             <h6 class="sub-title">Rate</h6>
                                         </div>
                                         <div class="md-layout-item md-size-70">
-                                            <div class="sub-content">$200</div>
+                                            <div class="sub-content">${{parkingInfo.rate}}</div>
                                         </div>
                                     </div>
                                     <div class="md-layout">
@@ -76,28 +86,83 @@
                                             <h6 class="sub-title">Time</h6>
                                         </div>
                                         <div class="md-layout-item md-size-70">
-                                            <div class="sub-content">8:30 AM ~ 6:30 PM</div>
+                                            <div class="sub-content">{{parkingInfo.time}}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="md-layout">
-                            <div class="md-layout-item">
-                                <md-datepicker format="yyyy-mm-dd">
-                                    <label>Expire Date</label>
-                                </md-datepicker>
-                            </div>
-                            <div class="md-layout-item">
-                                <md-field >
-                                    <label>Rate</label>				
-                                    <md-input  
-                                        required
-                                        name="address" 
-                                        readonly ></md-input >
-                                </md-field>
-                            </div>
+                        <div>
+                            <md-dialog :md-active.sync="showDialog">
+                                <md-dialog-title>Booking and Pay</md-dialog-title>
+                                <md-dialog-content>
+                                    <md-datepicker 
+                                        format="yyyy-mm-dd"
+                                        v-model="bookingDate"
+                                        :md-disabled-dates="disabledDates">
+                                        <label>Booking Date</label>
+                                    </md-datepicker>
+                                    <div class="md-layout">
+                                        <div class="md-layout-item">
+                                            <md-field >
+                                                <label>Selected Vehicle</label>
+                                                <md-select v-model="selectedVehicle">
+                                                    <md-option 
+                                                        v-for="item in vehicleList"
+                                                        :key="item.id"
+                                                        :value="item.id">
+                                                        {{item.brand}} {{item.model}} ({{item.plate_number}})
+                                                    </md-option>
+                                                </md-select>
+                                            </md-field>
+                                        </div>
+                                        <div class="md-layout-item">
+                                            <md-field >
+                                                <label>Parking Spots(Max/Booked)</label>
+                                                <md-input  
+                                                    readonly
+                                                    v-model="parkingSpotLabel"></md-input >
+                                            </md-field>
+                                        </div>                                        
+                                    </div>
+                                    <div class="md-layout">
+                                        <div class="md-layout-item md-size-60">
+                                            <md-field >
+                                                <label>Paking type</label>
+                                                <md-input  
+                                                    name="paking-type" 
+                                                    v-model="parkingInfo.type"
+                                                    readonly></md-input >
+                                            </md-field>
+                                        </div>
+                                        <div class="md-layout-item md-size-40">
+                                            <md-field >
+                                                <label>Rate</label>
+                                                <span class="md-prefix">$</span>
+                                                <md-input  
+                                                    name="rate" 
+                                                    v-model="parkingInfo.rate"
+                                                    readonly ></md-input >
+                                            </md-field>
+                                        </div>
+                                    </div>
+                                    <card class="stripe-card"
+                                        :class="{complete}"
+                                        stripe="pk_test_EmCGPVTE5CjNEgsGDw0wDlKo"
+                                        :options='stripeOptions'
+                                        @chanage='complete = $event.complete'/>
+                          
+                                </md-dialog-content>
+                                <div class="dlg-action-group">
+                                    <md-button class="pull-left" @click="showDialog = false">Close</md-button>
+                                    <md-button class='md-success pull-right' @click='pay' :disabled="!seletedPayBtn">Pay($600)</md-button>
+                                </div>
+                            </md-dialog>
+                           
                         </div>
+                        <md-card-actions>
+                             <md-button class="md-success md-raised" @click="showBookingDlg">Booking</md-button>
+                        </md-card-actions>
                     </md-card-content>
                 </md-card>
             </div>
@@ -107,15 +172,67 @@
 
 
 <script>
+
+import { Card, createToken } from 'vue-stripe-elements-plus'
+
 export default {
+    components: { Card },
     data() {
         return {
-        	center: { lat: 45.508, lng: -73.587 },
-            marker:{ lat: 45.508, lng: -73.587 },            
-            type: 1,
-            parkingInfo: {
-                photo: require("@/../images/image-empty.jpg")
-            }
+        	center: { lat: 33.45, lng: -112.0723 },
+            markers: [],
+            otherMarkers:[],
+            type: 1, 
+            defaultPhoto: require("@/../images/image-empty.jpg"), 
+            parkingInfo:{},
+
+            typeString: {
+                2 : "Monthly-24 hours",
+                3 : "Monthly-Daylight hours only",
+                4 : "Daily",
+                5 : "Hourly"
+            },
+
+            vehicleList: [],
+            bookingDate: new Date(),
+            disabledDates: date => {
+                return date < new Date();
+            },
+            selectedVehicle: 0,
+            parkingSpotLabel: "5/4",
+
+            complete: false,
+            stripeOptions: {
+                // hidePostalCode:true
+            },
+            showDialog: false,
+            seletedPayBtn: true,
+        }
+    },
+
+    mounted() {
+		this.$refs.mapRef.$mapPromise.then((map) => {
+            this.service = new google.maps.places.PlacesService(map);
+            this.setParkingData();
+            this.searchParking();
+        });
+        var obj = this;
+        axios.get("/api/vehicle/get")
+            .then(response => {
+                console.log(response);
+                if (response.data.length > 0) {
+                    obj.vehicleList = response.data;
+                    obj.selectedVehicle = obj.vehicleList[0].id;
+                } else {
+                    console.log('error');
+                }
+            });
+        
+	},
+
+    watch: {
+        type() {
+            this.searchParking();
         }
     },
 
@@ -123,12 +240,163 @@ export default {
         setPlace(place) {
 			this.currentPlace = place;
 			this.center = this.currentPlace.geometry.location;
-		},
+        },
+        pay() {
+            if (this.bookingDate == null || this.bookingDate == "") {
+                return;
+            }
+            this.seletedPayBtn = false;
+            var obj = this;
+            createToken().then(data => {
+                obj.seletedPayBtn = true;
+                if (data.token != null) {
+                    console.log(data);
+                    console.log(data.token.card.last4);
+                    var data = {}
+                    axios.post("/api/vehicle/get", data)
+                        .then(response => {
+                            console.log(response);
+                            if (response.data.length > 0) {
+                                obj.vehicleList = response.data;
+                                obj.selectedVehicle = obj.vehicleList[0].id;
+                            } else {
+                                console.log('error');
+                            }
+                        });
+                }
+            });
+        },
+
+        showBookingDlg() {
+            this.showDialog = true;
+            return;
+            var msg = "Please select parking";
+            if (this.parkingInfo.rate <= 0 ) {                
+                msg = "Please select parking";
+            } else if (this.parkingInfo.spotTotal <= this.parkingInfo.spotCurrent ){
+                msg = "Available spots don't exist!";
+            } else {
+                this.showDialog = true;
+                return;
+            }
+            this.$swal({
+                type: 'info',
+                title: msg,
+                confirmButtonClass: 'md-button md-success',
+                buttonsStyling: false
+            });
+        },
+
+        searchParking() {
+            console.log("type:" + this.type);
+            var parkingType = [];
+            if (this.type == 1) {
+                parkingType.push(2);
+                parkingType.push(3);
+            } else {
+                parkingType.push(this.type + 2);
+            }
+            var data = {};
+            data.type = parkingType;
+            var obj = this;
+
+            axios.get('/api/parking/searchParking', {params:data})
+                .then(response => {
+                    if (response.data.status) {
+                        obj.setMarkers(response.data.data);
+                    }
+                });
+        },
+
+        setMarkers(data) {
+            this.markers = [];
+            for (var i = 0; i < data.length; i++) {
+                var tmp = {};                
+                tmp.position = {
+                    lat: data[i].latitude,
+                    lng: data[i].longitude
+                }
+                tmp.id = data[i].id;
+                this.markers.push(tmp);
+            }
+
+            this.nearBySearch();
+            this.setParkingData();
+        },
+
+        selectParking(id) {
+            var data = {
+                id: id
+            };
+            var obj = this;
+            axios.get('/api/parking/get', {params:data})
+                .then(response => {
+                    if (response.data.status) {
+                        var tmp_data = response.data.data;
+                        obj.setParkingData(tmp_data);
+                    }
+                });
+        },
+
+        nearBySearch() {
+            var obj = this;
+            this.service.nearbySearch({
+                location: this.center,
+                radius: 10000,
+                type:['parking']
+            }, function(results, status){
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(results);
+                    obj.otherMarkers = [];
+                    for (var i = 0; i < results.length; i++) {
+                        obj.otherMarkers.push({
+                            position: results[i].geometry.location,
+                            id: 'near-' + i
+                        });
+                    }
+                }
+            });
+        },
+        setParkingData(data) {
+            if (data != null) {
+                var info = {
+                    id: data.id,
+                    name: data.name,                            
+                    address: data.address,
+                    spotTotal: data.capacity,
+                    spotCurrent: 0,
+                    type: this.typeString[data.availability],
+                    rate: data.rate,
+                    time: data.from_time + "~" + data.to_time               
+                };
+                if (data.image == "" || data.image == null) {
+                    info.photo = this.defaultPhoto;
+                } else {
+                    info.photo = data.image;
+                }
+                this.parkingInfo = info;
+            } else {
+                this.parkingInfo = {
+                    id: 0,
+                    name: "",
+                    photo: require("@/../images/image-empty.jpg"),
+                    address: "",
+                    spotTotal: 0,
+                    spotCurrent: 0,
+                    type: "",
+                    rate: 0,
+                    time: ""               
+                };
+            }
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.md-dialog {
+    width: 500px;
+}
 .section {
     padding: 0;
     display: flex;
@@ -164,6 +432,10 @@ export default {
     .name {
         text-transform: uppercase;
     }
+}
+
+.dlg-action-group {
+    padding: 10px 30px;
 }
 </style>
 

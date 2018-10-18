@@ -35,6 +35,7 @@
         "vee-validate": "^2.1.0-beta.9"
     },
     "dependencies": {
+        "vue-stripe-elements-plus": "^0.2.9",
         "vue-sweetalert2": "^1.5.5",
         "vue2-google-maps": "^0.10.2",
         "vue2-transitions": "^0.2.3"

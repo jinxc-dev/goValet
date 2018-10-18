@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('phone');
             $table->string('avatar')->nullable();
             $table->string('type')->default(0);
+            $table->string('stripe_user_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

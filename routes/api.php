@@ -38,7 +38,12 @@ Route::group(['prefix' => 'vehicle'], function () {
 Route::group(['prefix' => 'parking'], function () {
     Route::post('/register','ParkingController@register');
     Route::get('/get', 'ParkingController@get');
+    Route::get('/searchParking', 'ParkingController@searchParking');
     // Route::delete('/delete/{id}', 'VehicleController@delete');
+});
+
+Route::group(['prefix' => 'booking'], function () {
+    Route::post('/pay', 'BookingController@pay');
 });
 
 
