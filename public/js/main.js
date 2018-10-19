@@ -49585,7 +49585,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: { Card: __WEBPACK_IMPORTED_MODULE_0_vue_stripe_elements_plus__["Card"] },
     data: function data() {
         return {
-            center: { lat: 33.45, lng: -112.0723 },
+            // center: { lat: 33.45, lng: -112.0723 },
+            center: {},
             markers: [],
             otherMarkers: [],
             type: 1,
@@ -49618,8 +49619,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(this.getCurrentPlace);
+        }
         this.$refs.mapRef.$mapPromise.then(function (map) {
             _this.service = new google.maps.places.PlacesService(map);
+            console.log(map);
+            _this.center = map.center;
             _this.setParkingData();
             _this.searchParking();
         });
@@ -49643,10 +49649,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        getCurrentPlace: function getCurrentPlace(position) {
+            this.center.lat = position.coords.latitude;
+            this.center.lng = position.coords.longitude;
+        },
         setPlace: function setPlace(place) {
             this.currentPlace = place;
             this.center = this.currentPlace.geometry.location;
             this.nearBySearch();
+            this.searchParking();
         },
         pay: function pay() {
             if (this.bookingDate == null || this.bookingDate == "") {
@@ -49673,7 +49684,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 type: 'success',
                                 title: "Congratulations on your successful booking",
                                 showConfirmButton: false,
-                                timer: 1000
+                                timer: 3000
                             });
                             // } else {
                             //     obj.$swal({
@@ -49719,6 +49730,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             var data = {};
             data.type = parkingType;
+            data.lat = this.center.lat();
+            data.lng = this.center.lng();
             var obj = this;
 
             axios.get('/api/parking/searchParking', { params: data }).then(function (response) {

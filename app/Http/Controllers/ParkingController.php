@@ -6,6 +6,7 @@ use App\Parking;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ParkingController extends Controller
 {
@@ -57,7 +58,17 @@ class ParkingController extends Controller
             return response()->json(['status' => 'error', 'message' => "User is not Authed"]);
         }
 
-        $_items = Parking::whereIn('availability', $request->type)->get();
+        // $_items = Parking::whereIn('availability', $request->type)->get();        
+
+        $select = '*, ( 6371 * acos( cos( radians("' . $request->lat . '") ) *
+            cos( radians(latitude) ) *
+            cos( radians(longitude) - radians("' . $request->lng . '") ) + 
+            sin( radians("' . $request->lat . '") ) *
+            sin( radians(latitude) ) ) ) 
+            AS distance';
+        $_items = DB::table('parkings')->selectRaw($select)
+                ->having('distance', '<', 50)
+                ->whereIn('availability', $request->type)->get();
         return response()->json(['status' => true, 'data' => $_items]);
     }
 

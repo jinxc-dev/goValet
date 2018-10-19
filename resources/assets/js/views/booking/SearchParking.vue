@@ -180,7 +180,8 @@ export default {
     components: { Card },
     data() {
         return {
-        	center: { lat: 33.45, lng: -112.0723 },
+            // center: { lat: 33.45, lng: -112.0723 },
+            center: {},
             markers: [],
             otherMarkers:[],
             type: 1, 
@@ -212,8 +213,13 @@ export default {
     },
 
     mounted() {
-		this.$refs.mapRef.$mapPromise.then((map) => {
+        if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(this.getCurrentPlace);
+        }
+		this.$refs.mapRef.$mapPromise.then((map) => {     
             this.service = new google.maps.places.PlacesService(map);
+            console.log(map);
+            this.center = map.center;
             this.setParkingData();
             this.searchParking();
         });
@@ -238,10 +244,15 @@ export default {
     },
 
     methods: {
+        getCurrentPlace(position) {
+            this.center.lat = position.coords.latitude;
+            this.center.lng = position.coords.longitude;
+        },
         setPlace(place) {
 			this.currentPlace = place;
             this.center = this.currentPlace.geometry.location;
             this.nearBySearch();
+            this.searchParking();
         },
         pay() {
             if (this.bookingDate == null || this.bookingDate == "") {
@@ -269,7 +280,7 @@ export default {
                                     type: 'success',
                                     title: "Congratulations on your successful booking",
                                     showConfirmButton: false,
-                                    timer: 1000
+                                    timer: 3000
                                 });
                             // } else {
                             //     obj.$swal({
@@ -317,6 +328,8 @@ export default {
             }
             var data = {};
             data.type = parkingType;
+            data.lat = this.center.lat();
+            data.lng = this.center.lng();
             var obj = this;
 
             axios.get('/api/parking/searchParking', {params:data})
