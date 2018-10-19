@@ -73,19 +73,17 @@
             // data.append('longitude', this.wizardModel.lng);
 
             console.log(this.wizardModel);
-
             axios.post('/api/parking/register', data, {headers: { 'Content-Type': 'multipart/form-data' }})
 				.then(response => {
-					// this.$router.push('/vehicle_profile');
-					// this.$swal({
-					// 	position: 'top-end',
-					// 	type: 'success',
-					// 	title: 'Your vehicle has been deleted',
-					// 	showConfirmButton: false,
-					// 	timer: 1000
-					// })
+					this.$swal({
+							type: 'success',
+							title: "Registration of parking place is successful",
+							showConfirmButton: false,
+							timer: 1000
+                        })
+                    this.$router.push('/');
 				}).catch(error => {
-					// console.log(error);
+
 				})
         }
     }

@@ -20,7 +20,8 @@ class BookingController extends Controller
         }
         $token = $request->token;
 
-        \Stripe\Stripe::setApiKey("sk_test_ycrFkbDFj65ONW3rOQn2P3vx");
+        // \Stripe\Stripe::setApiKey("sk_test_ycrFkbDFj65ONW3rOQn2P3vx");
+        \Stripe\Stripe::setApiKey("sk_test_bNdusoN6ZkcByEUJK1OcRqx5");
         $parkingInfo = Parking::where('id', $request->parking_id)->first();
         $host = User::where('id', $parkingInfo->user_id)->first();
         $user = User::where('id', $user_id)->first();
@@ -31,10 +32,10 @@ class BookingController extends Controller
                 "currency" => "usd",
                 "source" => $token,
                 "description" => "Parking Charges",
-                "destination" => array(
-                    "amount"=>($parkingInfo->rate * 100) - 2,
-                    "account" => $host->stripe_user_id,
-                ),
+                // "destination" => array(
+                //     "amount"=>($parkingInfo->rate * 100) - 2,
+                //     "account" => $host->stripe_user_id,
+                // ),
             ));
             if ( strcmp ( $charge->status, "succeeded") == 0 ){
                 $payment = new PaymentDetail();
@@ -51,7 +52,7 @@ class BookingController extends Controller
                 $purchased->user_id = $user_id;
                 $purchased->vehicle_id = $request->vehicle_id;
                 $purchased->parking_id = $request->parking_id;
-                $purchased->parking_date = $request->parking_date;
+                $purchased->parking_date = $request->booking_date;
                 $purchased->transaction_id = $charge->id;
                 $purchased->amount = $parkingInfo->rate;
                 $purchased->save();
@@ -66,9 +67,12 @@ class BookingController extends Controller
                 //         ->to($user->email, $user->first_name)
                 //         ->subject('GoValet - Request for parking.');
                 // });
+                return response()->json(['status' => true]);
+            } else {
+                return response()->json(['status' => false]);
             }
         } catch (\Stripe\Error\Card $e) {
-
+            return response()->json(['status' => false]);
         }
 
     }

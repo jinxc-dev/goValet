@@ -148,7 +148,7 @@
                                     </div>
                                     <card class="stripe-card"
                                         :class="{complete}"
-                                        stripe="pk_test_EmCGPVTE5CjNEgsGDw0wDlKo"
+                                        stripe="pk_test_ynUTEJ283sxZWedZ64yu8yrn"
                                         :options='stripeOptions'
                                         @chanage='complete = $event.complete'/>
                           
@@ -174,6 +174,7 @@
 <script>
 
 import { Card, createToken } from 'vue-stripe-elements-plus'
+import moment from 'moment'
 
 export default {
     components: { Card },
@@ -239,40 +240,58 @@ export default {
     methods: {
         setPlace(place) {
 			this.currentPlace = place;
-			this.center = this.currentPlace.geometry.location;
+            this.center = this.currentPlace.geometry.location;
+            this.nearBySearch();
         },
         pay() {
             if (this.bookingDate == null || this.bookingDate == "") {
                 return;
             }
+            var parking_date = moment(this.bookingDate).format('YYYY-MM-DD');
             this.seletedPayBtn = false;
             var obj = this;
-            createToken().then(data => {
-                obj.seletedPayBtn = true;
+            createToken().then(data => {                
                 if (data.token != null) {
-                    console.log(data);
-                    console.log(data.token.card.last4);
-                    var data = {}
-                    axios.post("/api/vehicle/get", data)
+                    var data = {
+                        card_number: "************" + data.token.card.last4,
+                        token: data.token.id,
+                        vehicle_id: obj.selectedVehicle,
+                        booking_date: parking_date,
+                        parking_id: obj.parkingInfo.id
+                    }
+                    axios.post("/api/booking/pay", data)
                         .then(response => {
-                            console.log(response);
-                            if (response.data.length > 0) {
-                                obj.vehicleList = response.data;
-                                obj.selectedVehicle = obj.vehicleList[0].id;
-                            } else {
-                                console.log('error');
+                            
+                            obj.seletedPayBtn = true;
+                            if (response.data.status) {
+                                obj.showDialog = false;
+                                obj.$swal({
+                                    type: 'success',
+                                    title: "Congratulations on your successful booking",
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                });
+                            // } else {
+                            //     obj.$swal({
+                            //         type: 'info',
+                            //         title: "Fail is",
+                            //         showConfirmButton: false,
+                            //         timer: 1000
+                            //     });
                             }
+
+                            return;
                         });
                 }
             });
         },
 
         showBookingDlg() {
-            this.showDialog = true;
-            return;
-            var msg = "Please select parking";
+            // this.showDialog = true;
+            this.seletedPayBtn = true;
+            var msg = "Please select parking place";
             if (this.parkingInfo.rate <= 0 ) {                
-                msg = "Please select parking";
+                msg = "Please select parking place";
             } else if (this.parkingInfo.spotTotal <= this.parkingInfo.spotCurrent ){
                 msg = "Available spots don't exist!";
             } else {
@@ -309,6 +328,7 @@ export default {
         },
 
         setMarkers(data) {
+            console.log(data);
             this.markers = [];
             for (var i = 0; i < data.length; i++) {
                 var tmp = {};                
