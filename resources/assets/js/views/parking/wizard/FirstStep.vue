@@ -78,10 +78,17 @@
                 <div class="md-layout-item">
                     <md-field >
                         <label>Country</label>
-                        <md-select v-model="country" name="country">
+                        <!-- <md-select v-model="country" name="country">
                             <md-option value="USA">USA</md-option>
                             <md-option value="Canada">Canada</md-option>
+                        </md-select> -->
+                        <md-select v-model="country" name="country">
+                            <md-option 
+                                v-for="item in countryList"
+                                :key="item.country_code"
+                                :value="item.country_code">{{item.country_name}}</md-option>
                         </md-select>
+
                     </md-field>
                 </div>
             </div>
@@ -100,8 +107,16 @@ export default {
             zip_code:'12345678',
             state:'Phoenix',
             city:'Hilleman Way',
-            country: 'USA',
+            country: 'US',
+            countryList: []
         }
+    },
+    mounted() {
+        axios.get("/api/country-list")
+            .then(response => {
+                console.log(response);
+                this.countryList = response.data;                
+            });
     },
     methods: {
         handlePreview(file) {

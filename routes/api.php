@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,10 @@ Route::group(['prefix' => 'parking'], function () {
 
 Route::group(['prefix' => 'booking'], function () {
     Route::post('/pay', 'BookingController@pay');
+});
+
+Route::get('/country-list', function() {
+    return DB::table('apps_countries')->get();
 });
 
 
