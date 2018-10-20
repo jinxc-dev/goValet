@@ -13,6 +13,18 @@ window.helper = helper;
 helper.check();
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+window.formatDate = function(date){
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+    
+        return [year, month, day].join('-');
+};
+
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just

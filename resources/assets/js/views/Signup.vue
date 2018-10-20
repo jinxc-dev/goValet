@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
 		<div class="section page-header">
-			<div class="container-fluid md-layout">
+			<div class="container md-layout">
 				<div class="md-layout-item md-size-66 md-small-size-100 md-xsmall-size-100 md-medium-size-80 mx-auto">
 					<md-card class="md-card-login">
 						<md-card-header class="md-card-header-green title-header">

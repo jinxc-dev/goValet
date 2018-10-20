@@ -174,14 +174,14 @@
 <script>
 
 import { Card, createToken } from 'vue-stripe-elements-plus'
-import moment from 'moment'
+// import moment from 'moment'
 
 export default {
     components: { Card },
     data() {
         return {
-            // center: { lat: 33.45, lng: -112.0723 },
-            center: {},
+            center: { lat: 33.45, lng: -112.0723 },
+            // center: {},
             markers: [],
             otherMarkers:[],
             type: 1, 
@@ -214,7 +214,7 @@ export default {
 
     mounted() {
         if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(this.getCurrentPlace);
+                // navigator.geolocation.getCurrentPosition(this.getCurrentPlace);
         }
 		this.$refs.mapRef.$mapPromise.then((map) => {     
             this.service = new google.maps.places.PlacesService(map);
@@ -258,10 +258,12 @@ export default {
             if (this.bookingDate == null || this.bookingDate == "") {
                 return;
             }
-            var parking_date = moment(this.bookingDate).format('YYYY-MM-DD');
-            this.seletedPayBtn = false;
+            var parking_date =window.formatDate(this.bookingDate);//  "2018-09-12";// moment(this.bookingDate).format('YYYY-MM-DD');
+            
             var obj = this;
-            createToken().then(data => {                
+            obj.seletedPayBtn = false;
+            createToken().then(data => {  
+                // obj.seletedPayBtn = false;
                 if (data.token != null) {
                     var data = {
                         card_number: "************" + data.token.card.last4,
@@ -293,6 +295,8 @@ export default {
 
                             return;
                         });
+                } else {
+                    obj.seletedPayBtn = true;    
                 }
             });
         },

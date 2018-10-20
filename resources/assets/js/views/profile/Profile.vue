@@ -45,7 +45,7 @@ export default {
 		},
 		img: {
 			type: String,
-			default: require("@/../images/faces/christian.jpg")
+			default: require("@/../images/default-avatar.png")
 		}
 	},
 
