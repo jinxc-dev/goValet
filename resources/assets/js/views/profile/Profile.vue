@@ -3,7 +3,7 @@
 		<div class="section page-header" :style="headerStyle"></div>
 		<div class="section">
 			<div class="container">
-				<div class="md-layout">
+				<!-- <div class="md-layout">
 					<div class="md-layout-item md-size-30 md-medium-size-50 md-xsmall-size-50 mx-auto">
 						<div class="profile">
 							<div class="avatar">
@@ -20,6 +20,14 @@
 							</div>
 						</div>
 					</div>
+				</div> -->
+				<div class="md-layout md-gutter">
+					<div class="md-layout-item md-size-40 md-xsmall-size-100">
+					<user-profile ></user-profile>
+					</div>
+					<div class="md-layout-item md-size-60 md-xsmall-size-100">
+						<vehicle-list></vehicle-list>
+					</div>
 				</div>
 			</div>
 		</div>		
@@ -27,26 +35,18 @@
 </template>
 
 <script>
-import { Tabs } from "@/components";
+import UserProfile from "./UserProfile.vue";
+import VehicleList from "./VehicleList.vue";
 export default {
 	components: {
-		Tabs
+		UserProfile,
+		VehicleList
 	},
 	bodyClass: "profile-page",
 	data() {
 		return {
 			user: helper.getUser(),
 		};
-	},
-	props: {
-		header: {
-			type: String,
-			// default: require("@/../images/city-profile.jpg")
-		},
-		img: {
-			type: String,
-			default: require("@/../images/default-avatar.png")
-		}
 	},
 
 	mounted() {
