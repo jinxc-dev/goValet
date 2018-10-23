@@ -77,7 +77,7 @@
 						</md-card-content>
 
 						<md-card-actions>
-							<md-button class="md-simple md-danger" to="/vehicle_profile">
+							<md-button class="md-simple md-danger" to="/profile">
 								cancel
 							</md-button>
 							<md-button class="md-simple md-success" @click="validate">
@@ -178,7 +178,7 @@ export default {
 					var r_data = response.data;
 					console.log(r_data);
 					if (r_data.status == true) {
-						this.$router.push('/vehicle_profile');
+						this.$router.push('/profile');
 						this.$swal({
 							position: 'top-end',
 							type: 'success',

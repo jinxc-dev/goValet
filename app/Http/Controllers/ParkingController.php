@@ -32,6 +32,9 @@ class ParkingController extends Controller
         return response()->json(['status' => true, 'data' => $data]);
     }
 
+    /**
+     * get parking info by id
+     */
     public function get(Request $request) {
         $user_id = $this->getAuthUserId($request);
         
@@ -39,6 +42,20 @@ class ParkingController extends Controller
             return response()->json(['status' => false, 'message' => "User is not Authed"]);
         }
         $v_item = Parking::where('id', $request->id)->first();
+
+        return response()->json(['status' => true, 'data' => $v_item]);
+    }
+
+    /**
+     * get parking list by user.
+     */
+    public function getByUser(Request $request) {
+        $user_id = $this->getAuthUserId($request);
+        
+        if ($user_id == 0) {
+            return response()->json(['status' => false, 'message' => "User is not Authed"]);
+        }
+        $v_item = Parking::where('user_id', $user_id)->get();
 
         return response()->json(['status' => true, 'data' => $v_item]);
     }
@@ -51,6 +68,9 @@ class ParkingController extends Controller
         // return $this->get($request);
     }
 
+    /**
+     * search parking by distance 
+     */
     public function searchParking(Request $request) {
         $user_id = $this->getAuthUserId($request);
         

@@ -29,6 +29,9 @@
 						<vehicle-list></vehicle-list>
 					</div>
 				</div>
+				<div>
+					<parking-list></parking-list>
+				</div>
 			</div>
 		</div>		
 	</div>
@@ -37,10 +40,12 @@
 <script>
 import UserProfile from "./UserProfile.vue";
 import VehicleList from "./VehicleList.vue";
+import ParkingList from "./ParkingList.vue";
 export default {
 	components: {
 		UserProfile,
-		VehicleList
+		VehicleList,
+		ParkingList
 	},
 	bodyClass: "profile-page",
 	data() {
@@ -68,7 +73,7 @@ export default {
 }
 
 .page-header {
-	height: 200px;
+	height: 160px;
 }
 
 .profile-page .profile img {

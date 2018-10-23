@@ -55,7 +55,6 @@ export default {
 	mounted() {
 		axios.get('/api/vehicle/get')
 			.then(response => {
-				console.log(response.data);
 				this.dataModel = response.data;
 				this.isShowAddButton();
 			}).catch(error => {
@@ -77,7 +76,6 @@ export default {
 				if (result.value) {
 					axios.delete('/api/vehicle/delete/' + id)
 						.then(response => {
-							console.log(response.data);
 							this.$swal({
 								position: 'top-end',
 								type: 'success',
@@ -116,7 +114,7 @@ export default {
 }
 
 .vehicle-card{
-	margin: 5px;
+	margin: 5px 0;
 	background-color: #fdf7f7
 }
 

@@ -7,11 +7,25 @@
         </div>
         <md-card-content>
             <div class="name">
-                <h2 class="title">{{user.first_name}}  {{user.last_name}}</h2>
+                <h3 class="title">{{user.first_name}}  {{user.last_name}}</h3>
                 <!-- <md-divider></md-divider> -->
                 <div class="card-content">
-                    <h4 class="card-title">Email <small>{{user.email}}</small></h4>
-                    <h4 class="card-title">Phone <small>{{user.phone}}</small></h4>
+                    <div class="md-layout">
+                        <div class="md-layout-item md-size-40 ">
+                            <h4 class="card-title pull-right">EMAIL</h4>
+                        </div>
+                        <div class="md-layout-item md-size-60">
+                            <h5 class="card-title pull-left">{{user.email}}</h5>
+                        </div>
+                    </div>
+                    <div class="md-layout">
+                        <div class="md-layout-item md-size-40 ">
+                            <h4 class="card-title pull-right">PHONE</h4>
+                        </div>
+                        <div class="md-layout-item md-size-60">
+                            <h5 class="card-title pull-left">{{user.phone}}</h5>
+                        </div>
+                    </div>
                 </div>            
             </div>
         </md-card-content>

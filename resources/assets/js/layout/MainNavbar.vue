@@ -48,7 +48,7 @@
 									</div>
 								</a>								
 							</li>
-							<li class="md-list-item"  v-if="isAuthed()" >
+							<!-- <li class="md-list-item"  v-if="isAuthed()" >
 								<a href="javascript:void(0)" class="md-list-item-router md-list-item-container md-button-clean dropdown">
 									<div class="md-list-item-content">
 										<drop-down direction="down">
@@ -78,7 +78,10 @@
 										</drop-down>
 									</div>
 								</a>								
-							</li>
+							</li> -->
+							<md-list-item to="/profile" v-if="isAuthed()">
+								<p>PROFILE</p>
+							</md-list-item>
 							<md-list-item to="/profile">
 								<p>RATE GUIDE</p>
 							</md-list-item>

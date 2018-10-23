@@ -155,7 +155,7 @@
                                 </md-dialog-content>
                                 <div class="dlg-action-group">
                                     <md-button class="pull-left" @click="showDialog = false">Close</md-button>
-                                    <md-button class='md-success pull-right' @click='pay' :disabled="!seletedPayBtn">Pay($600)</md-button>
+                                    <md-button class='md-success pull-right' @click='pay' :disabled="!seletedPayBtn">Pay(${{parkingInfo.rate}})</md-button>
                                 </div>
                             </md-dialog>
                            

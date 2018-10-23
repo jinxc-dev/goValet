@@ -81,7 +81,7 @@
 							showConfirmButton: false,
 							timer: 1000
                         })
-                    this.$router.push('/');
+                    this.$router.push('/profile');
 				}).catch(error => {
 
 				})

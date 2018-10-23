@@ -45492,6 +45492,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -45857,110 +45860,8 @@ var render = function() {
                         : _vm._e(),
                       _vm._v(" "),
                       _vm.isAuthed()
-                        ? _c("li", { staticClass: "md-list-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "md-list-item-router md-list-item-container md-button-clean dropdown",
-                                attrs: { href: "javascript:void(0)" }
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  { staticClass: "md-list-item-content" },
-                                  [
-                                    _c(
-                                      "drop-down",
-                                      { attrs: { direction: "down" } },
-                                      [
-                                        _c(
-                                          "md-button",
-                                          {
-                                            staticClass:
-                                              "md-button md-button-link md-white md-simple dropdown-toggle",
-                                            attrs: {
-                                              slot: "title",
-                                              "data-toggle": "dropdown"
-                                            },
-                                            slot: "title"
-                                          },
-                                          [_c("p", [_vm._v("PROFILE")])]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "ul",
-                                          {
-                                            staticClass:
-                                              "dropdown-menu dropdown-with-icons"
-                                          },
-                                          [
-                                            _c("li", [
-                                              _c(
-                                                "a",
-                                                {
-                                                  attrs: { href: "#/profile" }
-                                                },
-                                                [
-                                                  _c("md-icon", [
-                                                    _vm._v("account_circle")
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("p", [_vm._v("User")])
-                                                ],
-                                                1
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("li", [
-                                              _c(
-                                                "a",
-                                                {
-                                                  attrs: {
-                                                    href: "#/vehicle_profile"
-                                                  }
-                                                },
-                                                [
-                                                  _c("md-icon", [
-                                                    _vm._v("directions_car")
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("p", [_vm._v("Vehicle")])
-                                                ],
-                                                1
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("li", [
-                                              _c(
-                                                "a",
-                                                {
-                                                  attrs: {
-                                                    href: "#/add-parking"
-                                                  }
-                                                },
-                                                [
-                                                  _c("md-icon", [
-                                                    _vm._v("local_parking")
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("p", [
-                                                    _vm._v("Parking Spot")
-                                                  ])
-                                                ],
-                                                1
-                                              )
-                                            ])
-                                          ]
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              ]
-                            )
+                        ? _c("md-list-item", { attrs: { to: "/profile" } }, [
+                            _c("p", [_vm._v("PROFILE")])
                           ])
                         : _vm._e(),
                       _vm._v(" "),
@@ -46332,7 +46233,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.section[data-v-0395a9c0] {\n  padding: 0;\n}\n.page-header[data-v-0395a9c0] {\n  height: 200px;\n}\n.profile-page .profile img[data-v-0395a9c0] {\n  width: 160px;\n  height: 160px;\n}\n", ""]);
+exports.push([module.i, "\n.section[data-v-0395a9c0] {\n  padding: 0;\n}\n.page-header[data-v-0395a9c0] {\n  height: 160px;\n}\n.profile-page .profile img[data-v-0395a9c0] {\n  width: 160px;\n  height: 160px;\n}\n", ""]);
 
 // exports
 
@@ -46347,6 +46248,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UserProfile_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UserProfile_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__VehicleList_vue__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__VehicleList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__VehicleList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ParkingList_vue__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ParkingList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ParkingList_vue__);
 //
 //
 //
@@ -46383,13 +46286,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	components: {
 		UserProfile: __WEBPACK_IMPORTED_MODULE_0__UserProfile_vue___default.a,
-		VehicleList: __WEBPACK_IMPORTED_MODULE_1__VehicleList_vue___default.a
+		VehicleList: __WEBPACK_IMPORTED_MODULE_1__VehicleList_vue___default.a,
+		ParkingList: __WEBPACK_IMPORTED_MODULE_2__ParkingList_vue___default.a
 	},
 	bodyClass: "profile-page",
 	data: function data() {
@@ -46435,7 +46343,9 @@ var render = function() {
             [_c("vehicle-list")],
             1
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _c("div", [_c("parking-list")], 1)
       ])
     ])
   ])
@@ -47066,7 +46976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				var r_data = response.data;
 				console.log(r_data);
 				if (r_data.status == true) {
-					_this2.$router.push('/vehicle_profile');
+					_this2.$router.push('/profile');
 					_this2.$swal({
 						position: 'top-end',
 						type: 'success',
@@ -47417,7 +47327,7 @@ var render = function() {
                       "md-button",
                       {
                         staticClass: "md-simple md-danger",
-                        attrs: { to: "/vehicle_profile" }
+                        attrs: { to: "/profile" }
                       },
                       [_vm._v("\n\t\t\t\t\t\t\tcancel\n\t\t\t\t\t\t")]
                     ),
@@ -47600,7 +47510,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           showConfirmButton: false,
           timer: 1000
         });
-        _this.$router.push('/');
+        _this.$router.push('/profile');
       }).catch(function (error) {});
     }
   }
@@ -50393,7 +50303,11 @@ var render = function() {
                                   attrs: { disabled: !_vm.seletedPayBtn },
                                   on: { click: _vm.pay }
                                 },
-                                [_vm._v("Pay($600)")]
+                                [
+                                  _vm._v(
+                                    "Pay($" + _vm._s(_vm.parkingInfo.rate) + ")"
+                                  )
+                                ]
                               )
                             ],
                             1
@@ -97748,7 +97662,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97759,6 +97673,20 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -97811,21 +97739,39 @@ var render = function() {
       _vm._v(" "),
       _c("md-card-content", [
         _c("div", { staticClass: "name" }, [
-          _c("h2", { staticClass: "title" }, [
+          _c("h3", { staticClass: "title" }, [
             _vm._v(
               _vm._s(_vm.user.first_name) + "  " + _vm._s(_vm.user.last_name)
             )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-content" }, [
-            _c("h4", { staticClass: "card-title" }, [
-              _vm._v("Email "),
-              _c("small", [_vm._v(_vm._s(_vm.user.email))])
+            _c("div", { staticClass: "md-layout" }, [
+              _c("div", { staticClass: "md-layout-item md-size-40 " }, [
+                _c("h4", { staticClass: "card-title pull-right" }, [
+                  _vm._v("EMAIL")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "md-layout-item md-size-60" }, [
+                _c("h5", { staticClass: "card-title pull-left" }, [
+                  _vm._v(_vm._s(_vm.user.email))
+                ])
+              ])
             ]),
             _vm._v(" "),
-            _c("h4", { staticClass: "card-title" }, [
-              _vm._v("Phone "),
-              _c("small", [_vm._v(_vm._s(_vm.user.phone))])
+            _c("div", { staticClass: "md-layout" }, [
+              _c("div", { staticClass: "md-layout-item md-size-40 " }, [
+                _c("h4", { staticClass: "card-title pull-right" }, [
+                  _vm._v("PHONE")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "md-layout-item md-size-60" }, [
+                _c("h5", { staticClass: "card-title pull-left" }, [
+                  _vm._v(_vm._s(_vm.user.phone))
+                ])
+              ])
             ])
           ])
         ])
@@ -97936,7 +97882,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.section[data-v-8b3b83fe] {\n  padding: 0;\n}\n.container[data-v-8b3b83fe] {\n  padding-top: 84px;\n}\n.md-subhead[data-v-8b3b83fe] {\n  margin-left: 20px;\n}\n.vehicle-card[data-v-8b3b83fe] {\n  margin: 5px;\n  background-color: #fdf7f7;\n}\n", ""]);
+exports.push([module.i, "\n.section[data-v-8b3b83fe] {\n  padding: 0;\n}\n.container[data-v-8b3b83fe] {\n  padding-top: 84px;\n}\n.md-subhead[data-v-8b3b83fe] {\n  margin-left: 20px;\n}\n.vehicle-card[data-v-8b3b83fe] {\n  margin: 5px 0;\n  background-color: #fdf7f7;\n}\n", ""]);
 
 // exports
 
@@ -98004,7 +97950,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		var _this = this;
 
 		axios.get('/api/vehicle/get').then(function (response) {
-			console.log(response.data);
 			_this.dataModel = response.data;
 			_this.isShowAddButton();
 		}).catch(function (error) {
@@ -98028,7 +97973,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				console.log(result);
 				if (result.value) {
 					axios.delete('/api/vehicle/delete/' + id).then(function (response) {
-						console.log(response.data);
 						_this2.$swal({
 							position: 'top-end',
 							type: 'success',
@@ -98161,6 +98105,330 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-8b3b83fe", module.exports)
+  }
+}
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(254)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(256)
+/* template */
+var __vue_template__ = __webpack_require__(257)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-06c0168d"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/profile/ParkingList.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-06c0168d", Component.options)
+  } else {
+    hotAPI.reload("data-v-06c0168d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(255);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("edd8f80c", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-06c0168d\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ParkingList.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-06c0168d\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ParkingList.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.table-parking .img-container[data-v-06c0168d] {\n  display: block;\n  max-height: 160px;\n  overflow: hidden;\n  width: 120px;\n}\n.table-parking .td-name[data-v-06c0168d] {\n  min-width: 200px;\n  font-size: 1.5em !important;\n  font-weight: 400;\n  line-height: 1.42857143;\n  color: #3C4858;\n}\n.table-parking table > thead > tr > th[data-v-06c0168d] {\n  font-size: .75rem;\n  text-transform: uppercase;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 256 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			dataModel: [],
+			showAddButton: true,
+			typeString: {
+				2: "Monthly-24 hours",
+				3: "Monthly-Daylight hours only",
+				4: "Daily",
+				5: "Hourly"
+			}
+		};
+	},
+
+	computed: {},
+	mounted: function mounted() {
+		var _this = this;
+
+		axios.get('/api/parking/getByUser').then(function (response) {
+			console.log(response.data);
+			if (response.data.status) {
+				_this.dataModel = response.data.data;
+			}
+
+			console.log(_this.dataModel);
+
+			_this.isShowAddButton();
+		}).catch(function (error) {
+			console.log(error);
+		});
+	},
+
+	methods: {
+		removeItem: function removeItem(id) {
+			// this.$swal({
+			// 	title: 'Are you sure?',
+			// 	type: 'warning',
+			// 	showCancelButton: true,				
+			// 	confirmButtonClass: 'md-button md-success',
+			// 	cancelButtonClass: 'md-button md-danger',
+			// 	confirmButtonText: 'Yes, delete it!',
+			// 	buttonsStyling: false				
+			// }).then((result) => {
+			// 	console.log(result);
+			// 	if (result.value) {
+			// 		axios.delete('/api/vehicle/delete/' + id)
+			// 			.then(response => {
+			// 				console.log(response.data);
+			// 				this.$swal({
+			// 					position: 'top-end',
+			// 					type: 'success',
+			// 					title: 'Your vehicle has been deleted',
+			// 					showConfirmButton: false,
+			// 					timer: 1000
+			// 				})
+			// 				this.dataModel = response.data;
+			// 				this.isShowAddButton();
+			// 			}).catch(error => {
+			// 				console.log(error);
+			// 			})
+			// 	}
+			// });
+		},
+		isShowAddButton: function isShowAddButton() {
+			this.showAddButton = false;
+			if (this.dataModel.length < 6) this.showAddButton = true;
+		}
+	}
+});
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "md-card",
+    [
+      _c(
+        "md-card-header",
+        { staticClass: "md-card-header-green title-header" },
+        [_c("h4", { staticClass: "card-title" }, [_vm._v("Parking Places")])]
+      ),
+      _vm._v(" "),
+      _c(
+        "md-card-content",
+        [
+          _c("md-table", {
+            staticClass: "table-parking",
+            scopedSlots: _vm._u([
+              {
+                key: "md-table-row",
+                fn: function(ref) {
+                  var item = ref.item
+                  return _c(
+                    "md-table-row",
+                    {},
+                    [
+                      _c("md-table-cell", { attrs: { "md-label": "Photo" } }, [
+                        _c("div", { staticClass: "img-container" }, [
+                          _c("img", {
+                            attrs: { src: item.image, alt: "products" }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "md-table-cell",
+                        {
+                          staticClass: "td-name",
+                          attrs: { "md-label": "Name" }
+                        },
+                        [_vm._v(_vm._s(item.name))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "md-table-cell",
+                        { attrs: { "md-label": "Address" } },
+                        [_vm._v(_vm._s(item.address))]
+                      ),
+                      _vm._v(" "),
+                      _c("md-table-cell", { attrs: { "md-label": "Type" } }, [
+                        _vm._v(_vm._s(_vm.typeString[item.availability]))
+                      ]),
+                      _vm._v(" "),
+                      _c("md-table-cell", { attrs: { "md-label": "Rate" } }, [
+                        _vm._v("$ " + _vm._s(item.rate))
+                      ]),
+                      _vm._v(" "),
+                      _c("md-table-cell", { attrs: { "md-label": "Time" } }, [
+                        _vm._v(
+                          _vm._s(item.from_time) + " ~ " + _vm._s(item.to_time)
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("md-table-cell", { attrs: { "md-label": "Spot" } }, [
+                        _vm._v(_vm._s(item.capacity))
+                      ])
+                    ],
+                    1
+                  )
+                }
+              }
+            ]),
+            model: {
+              value: _vm.dataModel,
+              callback: function($$v) {
+                _vm.dataModel = $$v
+              },
+              expression: "dataModel"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "md-card-actions",
+        [
+          _c(
+            "md-button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showAddButton,
+                  expression: "showAddButton"
+                }
+              ],
+              staticClass: "md-success",
+              attrs: { to: "/add-parking" }
+            },
+            [_vm._v("\n\t\t\t\tAdd Parking\n\t\t\t")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-06c0168d", module.exports)
   }
 }
 

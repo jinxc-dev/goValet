@@ -40,6 +40,7 @@ Route::group(['prefix' => 'parking'], function () {
     Route::post('/register','ParkingController@register');
     Route::get('/get', 'ParkingController@get');
     Route::get('/searchParking', 'ParkingController@searchParking');
+    Route::get('/getByUser', 'ParkingController@getByUser');
     // Route::delete('/delete/{id}', 'VehicleController@delete');
 });
 
