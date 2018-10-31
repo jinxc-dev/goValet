@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Parking;
 use App\PaymentDetail;
 use App\PurchasedDetail;
+use App\Vehicle;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -20,7 +21,6 @@ class BookingController extends Controller
         }
         $token = $request->token;
 
-        // \Stripe\Stripe::setApiKey("sk_test_ycrFkbDFj65ONW3rOQn2P3vx");
         \Stripe\Stripe::setApiKey("sk_test_bNdusoN6ZkcByEUJK1OcRqx5");
         $parkingInfo = Parking::where('id', $request->parking_id)->first();
         $host = User::where('id', $parkingInfo->user_id)->first();
@@ -75,6 +75,46 @@ class BookingController extends Controller
             return response()->json(['status' => false]);
         }
 
+    }
+
+    public function getPurchasedInfo(Request $request) {
+        $user_id = $this->getAuthUserId($request);
+        if ($user_id == 0) {
+            return response()->json(['status' => false, 'message' => "User is not Authed"]);
+        }
+
+        $query = PurchasedDetail::with('vehicle', 'parking', 'payment');
+        $type = $request->type;
+
+        $query->whereHas('parking', function($q) {
+            $q->where('availability', request('type'));
+        });
+        $info = $query
+                    ->where('user_id', $user_id)
+                    ->where('parking_date', '>=', date('Y-m-d'))
+                    ->orderBy('parking_date')
+                    ->get();
+        return response()->json(['status' => true, 'data' => $info]);
+    }
+
+    public function getPurchasedMonthly(Request $request) {
+        $user_id = $this->getAuthUserId($request);
+        if ($user_id == 0) {
+            return response()->json(['status' => false, 'message' => "User is not Authed"]);
+        }
+        $query = PurchasedDetail::with('vehicle', 'parking', 'payment');
+        $query->whereHas('parking', function($q) {
+            $q->where('availability', '<', 3);
+        });
+        $query->whereHas('vehicle', function($q) {
+            $q->where('id', '>', 0);
+        });
+        $info = $query
+                    ->where('user_id', $user_id)
+                    ->where('is_canceled', 0)
+                    ->orderBy('parking_date')
+                    ->get();
+        return response()->json(['status' => true, 'data' => $info]);;
     }
 
 }

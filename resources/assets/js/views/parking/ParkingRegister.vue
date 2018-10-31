@@ -5,7 +5,8 @@
                 <div class="md-layout-item md-size-80 md-xsmall-size-100 mx-auto">
                 <simple-wizard>
                     <template slot="header">
-                        <h3 class="card-title" style="text-transform: uppercase">Register Parking Information</h3>
+                        <h3 class="card-title" style="text-transform: uppercase" v-if="isUpdate">Update Parking Information</h3>
+                        <h3 class="card-title" style="text-transform: uppercase" v-else>Register Parking Information</h3>
                         <h5 class="category">This information will let us know more about your parking spots.</h5>
                     </template>
 
@@ -13,7 +14,7 @@
                         <template slot="label">
                             General
                         </template>
-                        <first-step ref="step1" @on-validated="onStepValidated"></first-step>
+                        <first-step ref="step1" @on-validated="onStepValidated" ></first-step>
                     </wizard-tab>
 
                     <wizard-tab :before-change="() => validateStep('step2')">
@@ -43,9 +44,10 @@
 
   export default {
     data() {
-      return {
-        wizardModel: {}
-      }
+        return {
+            wizardModel: {},
+            isUpdate: false
+        }
     },
     components: {
       FirstStep,
@@ -53,6 +55,9 @@
       ThirdStep,
       SimpleWizard,
       WizardTab
+    },
+    mounted() {
+
     },
     methods: {
         validateStep(ref) {
@@ -63,16 +68,11 @@
             console.log(this.wizardModel);
         },
         wizardComplete() {
-            console.log('good job');
-            // swal('Good job!', 'You clicked the finish button!', 'success');
             var formElement = document.querySelector("form");
             var data = new FormData(formElement);
             data.append('lot_type', this.wizardModel.lot_type);
             data.append('availability', this.wizardModel.type);
-            // data.append('latitude', this.wizardModel.lat);
-            // data.append('longitude', this.wizardModel.lng);
 
-            console.log(this.wizardModel);
             axios.post('/api/parking/register', data, {headers: { 'Content-Type': 'multipart/form-data' }})
 				.then(response => {
 					this.$swal({

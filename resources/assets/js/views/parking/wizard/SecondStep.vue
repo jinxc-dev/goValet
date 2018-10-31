@@ -101,6 +101,7 @@
 				description: 'description'
 			}
 		},
+		// props: ['type', 'from', 'to', 'rate', 'lot_type', 'parking_spots', 'description'],
 		methods: {
 			// validate() {
 			// 	this.$emit('on-validated', true, this.model)

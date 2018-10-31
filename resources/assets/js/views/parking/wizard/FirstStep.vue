@@ -111,6 +111,7 @@ export default {
             countryList: []
         }
     },
+
     mounted() {
         axios.get("/api/country-list")
             .then(response => {
@@ -149,36 +150,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
-.pic-container {
-    cursor: pointer;
-    position: relative;
-    text-align: center;
-}
-.pic {
-    -webkit-transition: all .2s;
-    background-color: #999;
-    border: 1px solid #ccc;
-    color: #fff;
-    // height: 400px;
-    margin: 5px auto;
-    overflow: hidden;
-    transition: all .2s;
-    width: 100%;
-}
-
-.pic-src {
-    width: 100%;
-}
-
-.pic input[type=file] {
-    cursor: pointer;
-    display: block;
-    height: 100%;
-    left: 0;
-    opacity: 0!important;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
 </style>

@@ -46,6 +46,8 @@ Route::group(['prefix' => 'parking'], function () {
 
 Route::group(['prefix' => 'booking'], function () {
     Route::post('/pay', 'BookingController@pay');
+    Route::get('/purchased-info', 'BookingController@getPurchasedInfo');
+    Route::get('/purchased-info/monthly', 'BookingController@getPurchasedMonthly');
 });
 
 Route::get('/country-list', function() {

@@ -1,7 +1,7 @@
 import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
 import "@/../scss/material-kit.scss";
-import "@/../common.css";
+import "@/../common.scss";
 import globalDirectives from "./globalDirectives";
 import globalMixins from "./globalMixins";
 import globalComponents from "./globalComponents";

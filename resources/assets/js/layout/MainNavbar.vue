@@ -38,7 +38,7 @@
 													</a>
 												</li>
 												<li>
-													<a href="#/landing">
+													<a href="#/purchased-place">
 														<md-icon>change_history</md-icon>
 														<p>Purchased Places</p>
 													</a>

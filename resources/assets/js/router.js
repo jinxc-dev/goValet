@@ -11,6 +11,7 @@ import VehicleRegister from "./views/vehicle/VehicleRegister.vue";
 import ParkingRegister from "./views/parking/ParkingRegister.vue";
 import Home from './views/Home.vue';
 import SearchParking from "./views/booking/SearchParking";
+import PurchasedInfo from "./views/booking/PurchasedInfo";
 
 Vue.use(Router);
 
@@ -57,6 +58,11 @@ const router = new Router({
 			components: { default: ParkingRegister, header: MainNavbar, footer: MainFooter },
 		},
 		{
+			path: "/edit-parking/:id",
+			name: "editParking",
+			components: { default: ParkingRegister, header: MainNavbar, footer: MainFooter },
+		},
+		{
 			path: "/logout",
 			name: "logout",
 			redirect: '*',
@@ -66,6 +72,11 @@ const router = new Router({
 			path:'/search-parking',
 			name:'search-parking',
 			components: { default: SearchParking, header: MainNavbar, footer: MainFooter },
+			
+		},{
+			path:'/purchased-place',
+			name:'purchased-place',
+			components: { default: PurchasedInfo, header: MainNavbar, footer: MainFooter },
 		}
 
 	],
