@@ -33,7 +33,7 @@ Route::group(['prefix' => 'user'], function () {
 Route::group(['prefix' => 'vehicle'], function () {
     Route::post('/register','VehicleController@register');
     Route::get('/get', 'VehicleController@get');
-    Route::delete('/delete/{id}', 'VehicleController@delete');
+    Route::delete('/delete/{id}/{u_id}', 'VehicleController@delete');
 });
 
 Route::group(['prefix' => 'parking'], function () {
@@ -41,7 +41,8 @@ Route::group(['prefix' => 'parking'], function () {
     Route::get('/get', 'ParkingController@get');
     Route::get('/searchParking', 'ParkingController@searchParking');
     Route::get('/getByUser', 'ParkingController@getByUser');
-    // Route::delete('/delete/{id}', 'VehicleController@delete');
+    Route::post('/update', 'ParkingController@update');
+    Route::delete('/delete/{id}/{u_id}', 'ParkingController@delete');
 });
 
 Route::group(['prefix' => 'booking'], function () {

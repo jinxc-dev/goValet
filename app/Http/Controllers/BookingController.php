@@ -114,7 +114,9 @@ class BookingController extends Controller
                     ->where('is_canceled', 0)
                     ->orderBy('parking_date')
                     ->get();
-        return response()->json(['status' => true, 'data' => $info]);;
+        return response()->json(['status' => true, 'data' => $info]);
     }
+
+
 
 }

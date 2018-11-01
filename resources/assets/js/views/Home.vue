@@ -9,7 +9,7 @@
 						<h1 class="home-title">Welcome to</h1>
 						<h1 class="gv-title">GOVALET</h1>
 					</div>	
-					<div class="md-layout-item md-size-60">
+					<div class="md-layout-item md-size-60 booking-item" @click="searchParking">
 						<img :src="itemsImg"/>
 					</div>
 				</div>
@@ -27,6 +27,12 @@ export default {
 			itemsImg: require("@/../images/items.png")
 		};
 	},
+
+	methods: {
+		searchParking() {
+			this.$router.push('/search-parking');
+		}
+	}
 };
 </script>
 
@@ -65,5 +71,13 @@ export default {
 
 .bg-img {
 	background: #ffffff;
+}
+
+.booking-item:hover {
+	transform: translate3d(0, -20px, 0);
+}
+
+.booking-item {
+	cursor: pointer;
 }
 </style>

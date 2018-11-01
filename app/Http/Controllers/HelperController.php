@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use File;
 use Response;
 
@@ -21,15 +22,26 @@ trait HelperController {
             if ($name == 'avatar') {
                 $file_name = 'images/default-avatar.png';
             } else {
-                $file_name = 'images/image-empty.png';
+                $file_name = 'images/image-empty.jpg';
             }
         }
 
         return $file_name;
     }
 
+    public function deleteImage($fileName) {
+        $prefix = substr($fileName, 0, 7);
+        if ($prefix === "public/") {            
+            Storage::delete($fileName);
+        }
+    }
+
     public function deleteFile($path) {
-        \Storage::delete($path);
+        Storage::delete($path);
+    }
+
+    public function deleteDirectory($path) {
+        Storage::deleteDirectory($path);
     }
 
 
@@ -77,5 +89,18 @@ trait HelperController {
         $response->header("Content-Type", $type);
     
         return $response;
+    }
+
+    public function getBookedSpots($p_id) {
+        $parking_info = \App\Parking::where('id', $p_id)->first();
+        //. monthly booking 
+        $query = \App\PurchasedDetail::where('parking_id', $p_id)
+                    ->where('is_canceled', 0);
+
+        if ($parking_info->availability >= 4) {
+            $query->where('parking_date', '>=', date('Y-m-d'));
+        }
+        $count = $query->groupBy('vehicle_id')->count();
+        return $count;
     }
 }

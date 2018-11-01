@@ -59,8 +59,13 @@ class VehicleController extends Controller
         return $v_item;
     }
 
-    public function delete($id, Request $request) {
+    public function delete($id, $u_id, Request $request) {
 
+        $user_id = $this->getAuthUserId($request);
+        
+        if ($user_id == 0 || $user_id != $u_id) {
+            return response()->json(['status' => 'error', 'message' => "User is not Authed"]);
+        }
         $item = Vehicle::where('id', $id)->first();
         $this->deleteFile($item->photo);
         Vehicle::where('id', $id)->delete();

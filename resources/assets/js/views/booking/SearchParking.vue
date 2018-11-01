@@ -118,10 +118,10 @@
                                         </div>
                                         <div class="md-layout-item">
                                             <md-field >
-                                                <label>Parking Spots(Max/Booked)</label>
+                                                <label>Available Spots</label>
                                                 <md-input  
                                                     readonly
-                                                    v-model="parkingSpotLabel"></md-input >
+                                                    :value="parkingInfo.spotTotal-parkingInfo.spotCurrent"></md-input >
                                             </md-field>
                                         </div>                                        
                                     </div>
@@ -296,13 +296,17 @@ export default {
                             return;
                         });
                 } else {
-                    obj.seletedPayBtn = true;    
+                    obj.seletedPayBtn = true;
                 }
             });
         },
 
         showBookingDlg() {
-            // this.showDialog = true;
+            
+            if(!helper.authedStatus()) {
+                this.$router.push('/login');
+                return;
+            }
             this.seletedPayBtn = true;
             var msg = "Please select parking place";
             if (this.parkingInfo.rate <= 0 ) {                
@@ -401,11 +405,12 @@ export default {
                     name: data.name,                            
                     address: data.address,
                     spotTotal: data.capacity,
-                    spotCurrent: 0,
+                    spotCurrent: data.currentCnt,
                     type: this.typeString[data.availability],
                     rate: data.rate,
                     time: data.from_time + "~" + data.to_time               
                 };
+
                 if (data.image == "" || data.image == null) {
                     info.photo = this.defaultPhoto;
                 } else {

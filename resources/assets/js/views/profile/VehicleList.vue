@@ -15,7 +15,7 @@
 						<h4 class="card-title">Plate Number  <small>{{item.plate_number}}</small></h4>
 					</md-card-content>
 					<md-card-actions>
-						<md-button class="md-just-icon md-round md-danger" @click="removeItem(item.id)">
+						<md-button class="md-just-icon md-round md-danger" @click="removeItem(item.id, item.user_id)">
 								<md-icon>delete</md-icon>
 						</md-button>
 					</md-card-actions>
@@ -62,7 +62,7 @@ export default {
 			})
 	},
 	methods: {
-		removeItem(id) {
+		removeItem(id, user_id) {
 			this.$swal({
 				title: 'Are you sure?',
 				type: 'warning',
@@ -72,9 +72,8 @@ export default {
 				confirmButtonText: 'Yes, delete it!',
 				buttonsStyling: false				
 			}).then((result) => {
-				console.log(result);
 				if (result.value) {
-					axios.delete('/api/vehicle/delete/' + id)
+					axios.delete('/api/vehicle/delete/' + id + '/' + user_id)
 						.then(response => {
 							this.$swal({
 								position: 'top-end',

@@ -21,7 +21,7 @@
 						<md-button class="md-just-icon md-round md-info" @click="showUpdateDlg(item.id)">
 							<md-icon>edit</md-icon>
 						</md-button>
-						<md-button class="md-just-icon md-round md-danger" style="margin-left: 10px">
+						<md-button class="md-just-icon md-round md-danger" @click="removeItem(item.id, item.user_id)" style="margin-left: 10px">
 							<md-icon>delete</md-icon>
 						</md-button>
 					</md-table-cell>
@@ -38,14 +38,22 @@
 		    <md-dialog :md-active.sync="showDialog">
 				<md-dialog-title>Parking Update</md-dialog-title>
 				<md-dialog-content>
-					<form class="form-horizontal" action="" method="post">
+					<form>
 					<div class="parking-img">
-						<div class="pic-container" style="width: 300px;">
+						<div class="pic-container" style="width: 250px; ">
 							<div class="pic">
-								<div><img :src="selectedInfo.image" /></div>
+								<div><img :src="selectedImage" /></div>
 								<input type="file" name="image" @change="onFileChange"/>
 							</div>
 							<h6 class="description">Choose Parking Photo</h6>
+						</div>
+					</div>
+					<div class="md-layout">
+						<label class="md-layout-item md-size-35 md-form-label">Name</label>
+						<div class="md-layout-item md-size-60">
+							<md-field :class="[{'md-valid': !errors.has('name')},{'md-error': errors.has('name')}]">
+								<md-input name="name" v-model="selectedInfo.name" data-vv-name="name" v-validate="'required'"></md-input>
+							</md-field>
 						</div>
 					</div>
 					<div class="md-layout">
@@ -83,7 +91,7 @@
 				</md-dialog-content>
 				<div class="dlg-action-group">
 					<md-button class="pull-left" @click="showDialog = false">Close</md-button>
-					<md-button class='md-success pull-right' @click='updateSelectedParking'>Update</md-button>
+					<md-button class='md-success pull-right' @click='validateUpdate'>Update</md-button>
 				</div>
 			</md-dialog>
 		</div>
@@ -100,6 +108,7 @@ export default {
 			dataModel: [],
 			showAddButton: true,
 			showDialog: false,
+			selectedImage: "",
 			selectedInfo:{},
 			typeString: {
                 2 : "Monthly-24 hours",
@@ -114,48 +123,55 @@ export default {
 
 	},
 	mounted() {
-		axios.get('/api/parking/getByUser')
-			.then(response => {
-				console.log(response.data);
-				if (response.data.status) {
-					this.dataModel = response.data.data;
-				}
-			
-				this.isShowAddButton();
-			}).catch(error => {
-				console.log(error);
-			})
+		this.getParkingList();
 	},
 	methods: {
-		removeItem(id) {
-			// this.$swal({
-			// 	title: 'Are you sure?',
-			// 	type: 'warning',
-			// 	showCancelButton: true,				
-			// 	confirmButtonClass: 'md-button md-success',
-			// 	cancelButtonClass: 'md-button md-danger',
-			// 	confirmButtonText: 'Yes, delete it!',
-			// 	buttonsStyling: false				
-			// }).then((result) => {
-			// 	console.log(result);
-			// 	if (result.value) {
-			// 		axios.delete('/api/vehicle/delete/' + id)
-			// 			.then(response => {
-			// 				console.log(response.data);
-			// 				this.$swal({
-			// 					position: 'top-end',
-			// 					type: 'success',
-			// 					title: 'Your vehicle has been deleted',
-			// 					showConfirmButton: false,
-			// 					timer: 1000
-			// 				})
-			// 				this.dataModel = response.data;
-			// 				this.isShowAddButton();
-			// 			}).catch(error => {
-			// 				console.log(error);
-			// 			})
-			// 	}
-			// });
+		removeItem(id, user_id) {
+			this.$swal({
+				title: 'Are you sure?',
+				type: 'warning',
+				showCancelButton: true,				
+				confirmButtonClass: 'md-button md-success',
+				cancelButtonClass: 'md-button md-danger',
+				confirmButtonText: 'Yes, delete it!',
+				buttonsStyling: false				
+			}).then((result) => {
+				if (result.value) {
+					axios.delete('/api/parking/delete/' + id + '/' + user_id)
+						.then(response => {
+							console.log(response.data);
+							var type = 'warning';
+							if (response.data.status) {
+								type ='success',
+								this.getParkingList();
+							} 
+							console.log(response);
+							this.$swal({
+								position: 'top-end',
+								type: type,
+								title: response.data.message,
+								showConfirmButton: false,
+								timer: 2000
+							});
+						}).catch(error => {
+							console.log(error);
+						})
+				}
+			});
+		},
+
+		getParkingList() {
+			axios.get('/api/parking/getByUser')
+				.then(response => {
+					console.log(response.data);
+					if (response.data.status) {
+						this.dataModel = response.data.data;
+					}
+				
+					this.isShowAddButton();
+				}).catch(error => {
+					console.log(error);
+				})
 		},
 
 		isShowAddButton() {
@@ -173,20 +189,35 @@ export default {
 			console.log('close dlg');
 			this.showDialog = false;
 		},
+		validateUpdate() {
+			return this.$validator.validateAll().then(res => {
+				console.log(res);
+				if (res) {
+					this.updateSelectedParking();
+				}
+				return res
+			})
+		},
 		updateSelectedParking() {
+
 			var formElement = document.querySelector("form");
-			console.log(formElement);
-            var data = new FormData(formElement);
+			var data = new FormData(formElement);
+			data.append('id', this.p_id);
+			data.append('imageName', this.selectedInfo.image);
+			data.append('user_id', this.selectedInfo.user_id);
 
             axios.post('/api/parking/update', data, {headers: { 'Content-Type': 'multipart/form-data' }})
 				.then(response => {
-					this.$swal({
-							type: 'success',
-							title: "Registration of parking place is successful",
-							showConfirmButton: false,
-							timer: 1000
-                        })
-                    this.$router.push('/profile');
+					if (response.data.status) {
+						this.$swal({
+								type: 'success',
+								title: "Update of parking place is successful",
+								showConfirmButton: false,
+								timer: 1000
+							});
+						this.closeUpdateDlg();
+						this.getParkingList();
+					}
 				}).catch(error => {
 
 				})			
@@ -195,7 +226,8 @@ export default {
 			axios.get('/api/parking/get?id=' + this.p_id)
                 .then(response => {
                     if (response.data.status) {
-                        this.selectedInfo = response.data.data;
+						this.selectedInfo = response.data.data;
+						this.selectedImage = this.selectedInfo.image;
                     }
                 });
 		},
@@ -203,14 +235,14 @@ export default {
 			var files = e.target.files || e.dataTransfer.files;
 			if (!files.length)
 				return;
-			this.photo = files[0];
+			// this.image = files[0];
 			this.createImage(files[0]);
 		},
 		createImage(file) {
 			var reader = new FileReader();
 			var vm = this;
 			reader.onload = (e) => {
-				vm.selectedInfo.image = e.target.result;
+				vm.selectedImage = e.target.result;
 			};
 			reader.readAsDataURL(file);
 		},
