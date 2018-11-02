@@ -23,4 +23,8 @@ class PurchasedDetail extends Model
     public function payment() {
         return $this->belongsTo('App\PaymentDetail', 'transaction_id', 'transaction_id');
     }
+
+    public function user() {
+        return $this->belongsTo('App\User', 'user_id');
+    }
 }

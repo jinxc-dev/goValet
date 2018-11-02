@@ -85,12 +85,12 @@ class BookingController extends Controller
 
         $query = PurchasedDetail::with('vehicle', 'parking', 'payment');
         $type = $request->type;
-
         $query->whereHas('parking', function($q) {
             $q->where('availability', request('type'));
         });
         $info = $query
                     ->where('user_id', $user_id)
+                    ->where('is_canceled', 0)
                     ->where('parking_date', '>=', date('Y-m-d'))
                     ->orderBy('parking_date')
                     ->get();
@@ -116,6 +116,27 @@ class BookingController extends Controller
                     ->get();
         return response()->json(['status' => true, 'data' => $info]);
     }
+
+    public function getBookingByParkingId($id, Request $request) {
+        // $p_id = $request->p_id;
+        $parking_info = \App\Parking::where('id', $id)->first();
+        
+        $user_id = $this->getAuthUserId($request);
+        if ($user_id == 0) {
+            return response()->json(['status' => false, 'message' => "User is not Authed"]);
+        }
+        //. monthly booking 
+        $query = \App\PurchasedDetail::with('vehicle', 'user')
+                    ->where('parking_id', $id)
+                    ->where('is_canceled', 0);
+
+        if ($parking_info->availability >= 4) {
+            $query->where('parking_date', '>=', date('Y-m-d'));
+        }
+        $items = $query->get();
+        return response()->json(['status' => true, 'data' => compact('items', 'parking_info')]);
+    }
+
 
 
 

@@ -50,11 +50,11 @@
         }
     },
     components: {
-      FirstStep,
-      SecondStep,
-      ThirdStep,
-      SimpleWizard,
-      WizardTab
+        FirstStep,
+        SecondStep,
+        ThirdStep,
+        SimpleWizard,
+        WizardTab
     },
     mounted() {
 

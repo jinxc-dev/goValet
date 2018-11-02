@@ -12,6 +12,7 @@ import ParkingRegister from "./views/parking/ParkingRegister.vue";
 import Home from './views/Home.vue';
 import SearchParking from "./views/booking/SearchParking";
 import PurchasedInfo from "./views/booking/PurchasedInfo";
+import ParkingDetail from "./views/parking/ParkingDetail";
 
 Vue.use(Router);
 
@@ -77,6 +78,10 @@ const router = new Router({
 			path:'/purchased-place',
 			name:'purchased-place',
 			components: { default: PurchasedInfo, header: MainNavbar, footer: MainFooter },
+		}, {
+			path: '/parking/:id/detail',
+			name:'parking-detail',
+			components: { default: ParkingDetail, header: MainNavbar, footer: MainFooter },
 		}
 
 	],

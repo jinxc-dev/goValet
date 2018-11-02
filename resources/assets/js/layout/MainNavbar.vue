@@ -1,7 +1,7 @@
 <template>
 	<md-toolbar id="toolbar" md-elevation="5" class="md-white md-absolute" :class="extraNavClasses" :color-on-scroll="colorOnScroll">
 		<div class="md-toolbar-row md-collapse-lateral">
-			<div class="md-toolbar-section-start">
+			<div class="md-toolbar-section-start govalet-marker" @click="goHome">
 				<div class="avatar">
 					<img :src="markImg" alt="Mark Image" class="">
 				</div>
@@ -115,6 +115,10 @@
 	.avatar img {
 		height: 64px;
 	}
+
+	.govalet-marker {
+		cursor: pointer;
+	}
 	
 </style>
 <script>
@@ -207,6 +211,9 @@ export default {
 		},
 		isAuthed() {
 			return helper.authedStatus();
+		},
+		goHome() {
+			this.$router.push('/');
 		}
 	},
 	mounted() {

@@ -49,6 +49,7 @@ Route::group(['prefix' => 'booking'], function () {
     Route::post('/pay', 'BookingController@pay');
     Route::get('/purchased-info', 'BookingController@getPurchasedInfo');
     Route::get('/purchased-info/monthly', 'BookingController@getPurchasedMonthly');
+    Route::get('/status/{id}', 'BookingController@getBookingByParkingId');
 });
 
 Route::get('/country-list', function() {

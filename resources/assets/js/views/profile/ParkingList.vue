@@ -5,10 +5,10 @@
         </md-card-header>
 		<md-card-content>
 			<md-table v-model="dataModel" class="table-parking">
-				<md-table-row slot="md-table-row" slot-scope="{ item }">
+				<md-table-row slot="md-table-row" slot-scope="{ item }" >
 					<md-table-cell >
 						<div class="img-container">
-							<img :src="item.image" alt="products"/>
+							<img :src="item.image" alt="products" @click="selectParking(item.id)"/>
 						</div>
 					</md-table-cell>
 					<md-table-cell md-label="Name" class="td-name" style="min-width: 150px;">{{ item.name }}</md-table-cell>
@@ -246,6 +246,10 @@ export default {
 			};
 			reader.readAsDataURL(file);
 		},
+
+		selectParking(id) {
+			this.$router.push('/parking/' + id + "/detail");
+		}
 	}
 };
 </script>
@@ -271,5 +275,9 @@ export default {
     margin-bottom: 0;
     padding: 20px 5px 0 0;
     text-align: right;
+}
+
+.img-container img {
+	cursor: pointer;
 }
 </style>

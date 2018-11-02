@@ -35581,6 +35581,9 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_booking_SearchParking___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__views_booking_SearchParking__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_booking_PurchasedInfo__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_booking_PurchasedInfo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__views_booking_PurchasedInfo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_parking_ParkingDetail__ = __webpack_require__(268);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_parking_ParkingDetail___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__views_parking_ParkingDetail__);
+
 
 
 
@@ -35650,6 +35653,10 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 		path: '/purchased-place',
 		name: 'purchased-place',
 		components: { default: __WEBPACK_IMPORTED_MODULE_12__views_booking_PurchasedInfo___default.a, header: __WEBPACK_IMPORTED_MODULE_4__layout_MainNavbar_vue___default.a, footer: __WEBPACK_IMPORTED_MODULE_5__layout_MainFooter_vue___default.a }
+	}, {
+		path: '/parking/:id/detail',
+		name: 'parking-detail',
+		components: { default: __WEBPACK_IMPORTED_MODULE_13__views_parking_ParkingDetail___default.a, header: __WEBPACK_IMPORTED_MODULE_4__layout_MainNavbar_vue___default.a, footer: __WEBPACK_IMPORTED_MODULE_5__layout_MainFooter_vue___default.a }
 	}],
 	scrollBehavior: function scrollBehavior(to) {
 		if (to.hash) {
@@ -45375,7 +45382,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.md-toolbar .md-title[data-v-00ae5ee8] {\n  font-size: 40px;\n  font-weight: bolder;\n}\n.md-list-item a .md-ripple p[data-v-00ae5ee8] {\n  font-size: 16px;\n}\n.avatar img[data-v-00ae5ee8] {\n  height: 64px;\n}\n", ""]);
+exports.push([module.i, "\n.md-toolbar .md-title[data-v-00ae5ee8] {\n  font-size: 40px;\n  font-weight: bolder;\n}\n.md-list-item a .md-ripple p[data-v-00ae5ee8] {\n  font-size: 16px;\n}\n.avatar img[data-v-00ae5ee8] {\n  height: 64px;\n}\n.govalet-marker[data-v-00ae5ee8] {\n  cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -45388,6 +45395,10 @@ exports.push([module.i, "\n.md-toolbar .md-title[data-v-00ae5ee8] {\n  font-size
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__layout_MobileMenu__ = __webpack_require__(133);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__layout_MobileMenu___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__layout_MobileMenu__);
+//
+//
+//
+//
 //
 //
 //
@@ -45598,6 +45609,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		isAuthed: function isAuthed() {
 			return helper.authedStatus();
+		},
+		goHome: function goHome() {
+			this.$router.push('/');
 		}
 	},
 	mounted: function mounted() {
@@ -45732,13 +45746,20 @@ var render = function() {
     },
     [
       _c("div", { staticClass: "md-toolbar-row md-collapse-lateral" }, [
-        _c("div", { staticClass: "md-toolbar-section-start" }, [
-          _c("div", { staticClass: "avatar" }, [
-            _c("img", { attrs: { src: _vm.markImg, alt: "Mark Image" } })
-          ]),
-          _vm._v(" "),
-          _c("h1", { staticClass: "md-title" }, [_vm._v("GOVALET")])
-        ]),
+        _c(
+          "div",
+          {
+            staticClass: "md-toolbar-section-start govalet-marker",
+            on: { click: _vm.goHome }
+          },
+          [
+            _c("div", { staticClass: "avatar" }, [
+              _c("img", { attrs: { src: _vm.markImg, alt: "Mark Image" } })
+            ]),
+            _vm._v(" "),
+            _c("h1", { staticClass: "md-title" }, [_vm._v("GOVALET")])
+          ]
+        ),
         _vm._v(" "),
         _c(
           "div",
@@ -46947,7 +46968,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.dlg-action-group[data-v-06c0168d] {\n  padding: 10px 30px;\n}\n.parking-img[data-v-06c0168d] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.md-dialog[data-v-06c0168d] {\n  width: 400px;\n}\n.md-form-label[data-v-06c0168d] {\n  color: #aaa;\n  font-size: inherit;\n  font-weight: 400;\n  line-height: 1.5;\n  margin-bottom: 0;\n  padding: 20px 5px 0 0;\n  text-align: right;\n}\n", ""]);
+exports.push([module.i, "\n.dlg-action-group[data-v-06c0168d] {\n  padding: 10px 30px;\n}\n.parking-img[data-v-06c0168d] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.md-dialog[data-v-06c0168d] {\n  width: 400px;\n}\n.md-form-label[data-v-06c0168d] {\n  color: #aaa;\n  font-size: inherit;\n  font-weight: 400;\n  line-height: 1.5;\n  margin-bottom: 0;\n  padding: 20px 5px 0 0;\n  text-align: right;\n}\n.img-container img[data-v-06c0168d] {\n  cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -47201,6 +47222,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				vm.selectedImage = e.target.result;
 			};
 			reader.readAsDataURL(file);
+		},
+		selectParking: function selectParking(id) {
+			this.$router.push('/parking/' + id + "/detail");
 		}
 	}
 });
@@ -47239,7 +47263,12 @@ var render = function() {
                       _c("md-table-cell", [
                         _c("div", { staticClass: "img-container" }, [
                           _c("img", {
-                            attrs: { src: item.image, alt: "products" }
+                            attrs: { src: item.image, alt: "products" },
+                            on: {
+                              click: function($event) {
+                                _vm.selectParking(item.id)
+                              }
+                            }
                           })
                         ])
                       ]),
@@ -82984,7 +83013,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, ".swal2-container .md-button {\n  margin: 0 5px;\n  min-width: auto;\n  padding: 12px 30px; }\n\n.md-card-header.title-header {\n  width: fit-content;\n  margin-top: -20px;\n  padding: 20px; }\n\n.title-header > .card-title {\n  padding: 0px 20px;\n  margin: 0px; }\n\n.table-parking .img-container {\n  display: block;\n  max-height: 160px;\n  overflow: hidden;\n  width: 120px; }\n\n.table-parking .td-name {\n  min-width: 200px;\n  font-size: 1.5em;\n  font-weight: 400;\n  line-height: 1.42857143;\n  color: #3C4858; }\n\n.table-parking table > thead > tr > th {\n  font-size: .75rem;\n  text-transform: uppercase; }\n\n.md-table-head-label {\n  font-size: 0.9rem;\n  font-weight: 700; }\n\n.pic-container {\n  cursor: pointer;\n  position: relative;\n  text-align: center; }\n\n.pic {\n  -webkit-transition: all .2s;\n  background-color: #999;\n  border: 1px solid #ccc;\n  color: #fff;\n  margin: 5px auto;\n  overflow: hidden;\n  transition: all .2s;\n  width: 100%; }\n\n.pic-src {\n  width: 100%; }\n\n.pic input[type=file] {\n  cursor: pointer;\n  display: block;\n  height: 100%;\n  left: 0;\n  opacity: 0 !important;\n  position: absolute;\n  top: 0;\n  width: 100%; }\n", ""]);
+exports.push([module.i, ".swal2-container .md-button {\n  margin: 0 5px;\n  min-width: auto;\n  padding: 12px 30px; }\n\n.md-card-header.title-header {\n  width: fit-content;\n  margin-top: -20px;\n  padding: 20px; }\n\n.title-header > .card-title {\n  padding: 0px 20px;\n  margin: 0px; }\n\n.table-parking .img-container {\n  display: block;\n  max-height: 160px;\n  overflow: hidden;\n  width: 120px; }\n\n.table-parking .td-name {\n  min-width: 150px;\n  font-size: 1.5em;\n  font-weight: 400;\n  line-height: 1.42857143;\n  color: #3C4858; }\n\n.sort-table .md-table-head-label {\n  padding-left: 24px; }\n\n.sort-table .md-table-cell {\n  padding-left: 24px; }\n\n.table-parking table > thead > tr > th {\n  font-size: .75rem;\n  text-transform: uppercase; }\n\n.md-table-head-label {\n  font-size: 0.9rem;\n  font-weight: 700; }\n\n.pic-container {\n  cursor: pointer;\n  position: relative;\n  text-align: center; }\n\n.pic {\n  -webkit-transition: all .2s;\n  background-color: #999;\n  border: 1px solid #ccc;\n  color: #fff;\n  margin: 5px auto;\n  overflow: hidden;\n  transition: all .2s;\n  width: 100%; }\n\n.pic-src {\n  width: 100%; }\n\n.pic input[type=file] {\n  cursor: pointer;\n  display: block;\n  height: 100%;\n  left: 0;\n  opacity: 0 !important;\n  position: absolute;\n  top: 0;\n  width: 100%; }\n", ""]);
 
 // exports
 
@@ -99617,6 +99646,475 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 267 */,
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(269)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(271)
+/* template */
+var __vue_template__ = __webpack_require__(272)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-7032974f"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/parking/ParkingDetail.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7032974f", Component.options)
+  } else {
+    hotAPI.reload("data-v-7032974f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 269 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(270);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("1bd73aeb", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7032974f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ParkingDetail.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7032974f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ParkingDetail.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.section[data-v-7032974f] {\n  padding: 0;\n}\n.container[data-v-7032974f] {\n  padding-top: 100px;\n}\n.md-toolbar.md-theme-default[data-v-7032974f] {\n  padding-top: 10px;\n  color: #555555 !important;\n}\n.parking-info[data-v-7032974f] {\n  font-weight: bolder;\n  padding-right: 20px;\n  text-transform: uppercase;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 271 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+var toLower = function toLower(text) {
+	return text.toString().toLowerCase();
+};
+var searchByName = function searchByName(items, term) {
+	if (term) {
+		return items.filter(function (item) {
+			return toLower(item.vehicle.plate_number).includes(toLower(term));
+		});
+	}
+	return items;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	components: {},
+	bodyClass: "profile-page",
+	data: function data() {
+		return {
+			id: this.$route.params.id,
+			search: null,
+			parkingInfo: {},
+			searched: [],
+			dataList: []
+		};
+	},
+	mounted: function mounted() {
+		var _this = this;
+
+		console.log(this.id);
+		axios.get("/api/booking/status/" + this.id).then(function (response) {
+			if (response.data.status) {
+				console.log(response.data.data);
+				_this.dataList = response.data.data.items;
+				_this.parkingInfo = response.data.data.parking_info;
+				_this.searched = _this.dataList;
+			}
+		});
+	},
+
+	methods: {
+		newUser: function newUser() {
+			window.alert('Noop');
+		},
+		searchOnTable: function searchOnTable() {
+			this.searched = searchByName(this.dataList, this.search);
+		}
+	}
+});
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "section" }, [
+    _c(
+      "div",
+      { staticClass: "container" },
+      [
+        _c(
+          "md-card",
+          [
+            _c(
+              "md-card-header",
+              { staticClass: "md-card-header-green title-header" },
+              [
+                _c("h4", { staticClass: "card-title" }, [
+                  _vm._v("Booking List")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "md-card-content",
+              [
+                _c(
+                  "md-table",
+                  {
+                    staticClass: "sort-table",
+                    attrs: {
+                      "md-sort": "date",
+                      "md-sort-order": "asc",
+                      "md-fixed-header": ""
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "md-table-row",
+                        fn: function(ref) {
+                          var item = ref.item
+                          return _c(
+                            "md-table-row",
+                            {},
+                            [
+                              _c(
+                                "md-table-cell",
+                                {
+                                  attrs: {
+                                    "md-label": "Date",
+                                    "md-sort-by": "date"
+                                  }
+                                },
+                                [_vm._v(_vm._s(item.parking_date))]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "md-table-cell",
+                                {
+                                  attrs: {
+                                    "md-label": "Amount",
+                                    "md-sort-by": "amount"
+                                  }
+                                },
+                                [_vm._v("$ " + _vm._s(item.amount))]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "md-table-cell",
+                                {
+                                  attrs: {
+                                    "md-label": "Name",
+                                    "md-sort-by": "name"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(item.user.first_name) +
+                                      " " +
+                                      _vm._s(item.user.last_name)
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "md-table-cell",
+                                {
+                                  attrs: {
+                                    "md-label": "Plate Number",
+                                    "md-sort-by": "plate_number"
+                                  }
+                                },
+                                [_vm._v(_vm._s(item.vehicle.plate_number))]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "md-table-cell",
+                                {
+                                  attrs: {
+                                    "md-label": "Brand",
+                                    "md-sort-by": "brand"
+                                  }
+                                },
+                                [_vm._v(_vm._s(item.vehicle.brand))]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "md-table-cell",
+                                {
+                                  attrs: {
+                                    "md-label": "Model",
+                                    "md-sort-by": "model"
+                                  }
+                                },
+                                [_vm._v(_vm._s(item.vehicle.model))]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "md-table-cell",
+                                { attrs: { "md-label": "Image" } },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticStyle: { width: "100px" } },
+                                    [
+                                      _c("img", {
+                                        attrs: { src: item.vehicle.photo }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        }
+                      }
+                    ]),
+                    model: {
+                      value: _vm.searched,
+                      callback: function($$v) {
+                        _vm.searched = $$v
+                      },
+                      expression: "searched"
+                    }
+                  },
+                  [
+                    _c(
+                      "md-table-toolbar",
+                      [
+                        _c("div", { staticClass: "md-toolbar-section-start" }, [
+                          _c("h4", { staticClass: "parking-info" }, [
+                            _vm._v(_vm._s(_vm.parkingInfo.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("h4", { staticClass: "parking-info" }, [
+                            _vm._v("Spots"),
+                            _c("small", [
+                              _vm._v(
+                                "(" + _vm._s(_vm.parkingInfo.capacity) + ")"
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("h4", { staticClass: "parking-info" }, [
+                            _vm._v("Rate"),
+                            _c("small", [
+                              _vm._v("(" + _vm._s(_vm.parkingInfo.rate) + ")")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("h4", { staticClass: "parking-info" }, [
+                            _vm._v("Total"),
+                            _c("small", [
+                              _vm._v("(" + _vm._s(_vm.searched.length) + ")")
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "md-field",
+                          {
+                            staticClass: "md-toolbar-section-end",
+                            staticStyle: { "margin-left": "20px" },
+                            attrs: { "md-clearable": "" }
+                          },
+                          [
+                            _c("md-input", {
+                              attrs: {
+                                placeholder: "Search by plate number..."
+                              },
+                              on: { input: _vm.searchOnTable },
+                              model: {
+                                value: _vm.search,
+                                callback: function($$v) {
+                                  _vm.search = $$v
+                                },
+                                expression: "search"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "md-table-empty-state",
+                      {
+                        attrs: {
+                          "md-label": "No users found",
+                          "md-description":
+                            "No user found for this '" +
+                            _vm.search +
+                            "' query. Try a different search term or create a new user."
+                        }
+                      },
+                      [
+                        _c(
+                          "md-button",
+                          {
+                            staticClass: "md-primary md-raised",
+                            on: { click: _vm.newUser }
+                          },
+                          [_vm._v("Create New User")]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "md-card-actions",
+              [
+                _c(
+                  "md-button",
+                  { staticClass: "md-success", attrs: { to: "/profile" } },
+                  [_vm._v("\n\t\t\t\t\tBACK\n\t\t\t\t")]
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7032974f", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
