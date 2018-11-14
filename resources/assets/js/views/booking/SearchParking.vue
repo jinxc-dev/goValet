@@ -98,7 +98,9 @@
                                 <md-dialog-content>
                                     <md-datepicker 
                                         format="yyyy-mm-dd"
+                                        md-immediately
                                         v-model="bookingDate"
+                                        @md-chanage="changeBookingDate"
                                         :md-disabled-dates="disabledDates">
                                         <label>Booking Date</label>
                                     </md-datepicker>
@@ -155,7 +157,7 @@
                                 </md-dialog-content>
                                 <div class="dlg-action-group">
                                     <md-button class="pull-left" @click="showDialog = false">Close</md-button>
-                                    <md-button class='md-success pull-right' @click='pay' :disabled="!seletedPayBtn">Pay(${{parkingInfo.rate}})</md-button>
+                                    <md-button class='md-success pull-right' @click='pay' :disabled="!seletedPayBtn">Pay(${{calcPayAmount}})</md-button>
                                 </div>
                             </md-dialog>
                            
@@ -187,6 +189,7 @@ export default {
             type: 1, 
             defaultPhoto: require("@/../images/image-empty.jpg"), 
             parkingInfo:{},
+            payAmount: 0,
 
             typeString: {
                 2 : "Monthly-24 hours",
@@ -233,9 +236,22 @@ export default {
                 } else {
                     console.log('error');
                 }
-            });
-        
-	},
+            });        
+    },
+
+    computed: {
+        calcPayAmount() {
+            if (this.parkingInfo.availability > 3) {
+                this.payAmount = this.parkingInfo.rate;
+            } else {
+                var day = this.bookingDate.getDate();
+                var amount = this.parkingInfo.rate * (31 - day) / 30;
+                this.payAmount =  Math.round(amount);
+            }
+            console.log(this.payAmount);
+            return this.payAmount;
+        }
+    },
 
     watch: {
         type() {
@@ -259,7 +275,8 @@ export default {
                 return;
             }
             var parking_date =window.formatDate(this.bookingDate);//  "2018-09-12";// moment(this.bookingDate).format('YYYY-MM-DD');
-            
+            console.log(parking_date);
+            return;
             var obj = this;
             obj.seletedPayBtn = false;
             createToken().then(data => {  
@@ -406,6 +423,7 @@ export default {
                     address: data.address,
                     spotTotal: data.capacity,
                     spotCurrent: data.currentCnt,
+                    availability: data.availability,
                     type: this.typeString[data.availability],
                     rate: data.rate,
                     time: data.from_time + "~" + data.to_time               
@@ -430,6 +448,10 @@ export default {
                     time: ""               
                 };
             }
+        },
+
+        changeBookingDate() {
+            console.log(this.bookingDate.getDate());
         }
     }
 }

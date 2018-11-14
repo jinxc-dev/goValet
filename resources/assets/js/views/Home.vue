@@ -6,8 +6,8 @@
 			<div class="context-home">
 				<div class="md-layout">
 					<div class="md-layout-item md-size-40">
-						<h1 class="home-title">Welcome to</h1>
-						<h1 class="gv-title">GOVALET</h1>
+						<!-- <h1 class="home-title">Welcome to</h1>
+						<h1 class="gv-title">GOVALET</h1> -->
 					</div>	
 					<div class="md-layout-item md-size-60 booking-item" @click="searchParking">
 						<img :src="itemsImg"/>

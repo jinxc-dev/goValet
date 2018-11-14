@@ -26,9 +26,16 @@ class BookingController extends Controller
         $host = User::where('id', $parkingInfo->user_id)->first();
         $user = User::where('id', $user_id)->first();
 
+        $amount = $parking_info->rate;
+
+        //. case month payment.
+        if ($parking_info.availability < 4) {
+            $amount = $this->calcPayAmount($request->booking_date, $amount, 1);
+        } 
+
         try {
             $charge = \Stripe\Charge::create(array(
-                "amount" => $parkingInfo->rate * 100, // Amount in cents
+                "amount" => $amount * 100, // Amount in cents
                 "currency" => "usd",
                 "source" => $token,
                 "description" => "Parking Charges",
@@ -135,6 +142,19 @@ class BookingController extends Controller
         }
         $items = $query->get();
         return response()->json(['status' => true, 'data' => compact('items', 'parking_info')]);
+    }
+
+    /*
+    type:    1 => last days of month
+            -1 => first days of month
+    */
+    public function calcPayAmount($date, $rate, $type = 1) {
+        $day = (int) substr($date, -2);
+        if (type == 1) {
+            $day = 31 - $day;
+        }
+        $amount = round($rate * $day / 30); 
+        return $amount;
     }
 
 
