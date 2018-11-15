@@ -50919,7 +50919,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: { Card: __WEBPACK_IMPORTED_MODULE_0_vue_stripe_elements_plus__["Card"] },
     data: function data() {
         return {
-            center: { lat: 33.45, lng: -112.0723 },
+            center: { lat: 45.508, lng: -73.58 },
             // center: {},
             markers: [],
             otherMarkers: [],
@@ -51013,11 +51013,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
             var parking_date = window.formatDate(this.bookingDate); //  "2018-09-12";// moment(this.bookingDate).format('YYYY-MM-DD');
-            console.log(parking_date);
-            return;
+            // console.log(parking_date);
+            // return;
             var obj = this;
             obj.seletedPayBtn = false;
             Object(__WEBPACK_IMPORTED_MODULE_0_vue_stripe_elements_plus__["createToken"])().then(function (data) {
+                console.log(data);
                 // obj.seletedPayBtn = false;
                 if (data.token != null) {
                     var data = {
@@ -51924,6 +51925,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -51933,6 +51946,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             monthlyInfo: [],
             dailyInfo: [],
             hourlyInfo: [],
+            showDialog: false,
             typeString: {
                 2: "24 hours",
                 3: "Daylight hours only",
@@ -51965,7 +51979,118 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    methods: {}
+    methods: {
+        getMonthly: function getMonthly() {
+            var _this2 = this;
+
+            axios.get("/api/booking/purchased-info/monthly").then(function (response) {
+                if (response.data.status) {
+                    _this2.monthlyInfo = response.data.data;
+                }
+            });
+        },
+        getPurchased: function getPurchased() {
+            var _this3 = this;
+
+            axios.get("/api/booking/purchased-info?type=4").then(function (response) {
+                if (response.data.status) {
+                    _this3.dailyInfo = response.data.data;
+                }
+                console.log(_this3.dailyInfo);
+            });
+            axios.get("/api/booking/purchased-info?type=5").then(function (response) {
+                if (response.data.status) {
+                    _this3.hourlyInfo = response.data.data;
+                }
+                console.log(_this3.hourlyInfo);
+            });
+        },
+        doTeminate: function doTeminate(id) {
+            var _this4 = this;
+
+            console.log(id);
+            this.$swal({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: 'md-button md-success',
+                cancelButtonClass: 'md-button md-danger',
+                confirmButtonText: 'Yes, teminate it!',
+                buttonsStyling: false
+            }).then(function (result) {
+                if (result.value) {
+                    _this4.showDialog = true;
+                    axios.post('/api/booking/teminate', { id: id }).then(function (response) {
+                        _this4.showDialog = false;
+                        var type = 'warning';
+                        var msg = response.data.message;
+                        if (response.data.status) {
+                            type = 'success';
+                            msg = "Your expire date is " + response.data.data.expire_date + "\n You paid $" + response.data.data.amount;
+                            _this4.getMonthly();
+                        }
+                        console.log(response);
+                        _this4.$swal({
+                            // position: 'top-end',
+                            type: type,
+                            title: msg,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }).catch(function (error) {
+                        _this4.showDialog = false;
+                        console.log(error);
+                    });
+                }
+            });
+        },
+        doCancel: function doCancel(id) {
+            var _this5 = this;
+
+            this.$swal({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: 'md-button md-success',
+                cancelButtonClass: 'md-button md-danger',
+                confirmButtonText: 'Yes',
+                buttonsStyling: false
+            }).then(function (result) {
+                console.log(result);
+                if (result.value) {
+                    _this5.showDialog = true;
+                    axios.post('/api/booking/cancel', { id: id }).then(function (response) {
+                        _this5.showDialog = false;
+                        var type = 'warning';
+                        var msg = response.data.message;
+                        if (response.data.status) {
+                            type = 'success';
+                            msg = "Cancel Successed!";
+                            // msg = "Your expire date is " + response.data.data.expire_date + "\n You paid $" + response.data.data.amount;
+                            _this5.getPurchased();
+                        }
+                        _this5.$swal({
+                            // position: 'top-end',
+                            type: type,
+                            title: msg,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }).catch(function (error) {
+                        _this5.showDialog = false;
+                        console.log(error);
+                        _this5.$swal({
+                            // position: 'top-end',
+                            type: 'warning',
+                            title: 'Server error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    });
+                }
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -52095,6 +52220,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			type: Array,
 			default: []
 		}
+	},
+	methods: {
+		doCancel: function doCancel(id) {
+			this.$emit('on-cancel', id);
+			// console.log(id);
+		}
 	}
 });
 
@@ -52173,9 +52304,18 @@ var render = function() {
                 "md-table-cell",
                 { attrs: { "md-label": "Action" } },
                 [
-                  _c("md-button", { staticClass: "md-info md-ripple" }, [
-                    _vm._v("Cancel")
-                  ])
+                  _c(
+                    "md-button",
+                    {
+                      staticClass: "md-info md-ripple",
+                      on: {
+                        click: function($event) {
+                          _vm.doCancel(item.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Cancel")]
+                  )
                 ],
                 1
               )
@@ -52350,13 +52490,27 @@ var render = function() {
                                       _vm._v(" "),
                                       _c(
                                         "md-table-cell",
-                                        { attrs: { "md-label": "Action" } },
+                                        {
+                                          staticStyle: { width: "100px" },
+                                          attrs: { "md-label": "Action" }
+                                        },
                                         [
-                                          _c(
-                                            "md-button",
-                                            { staticClass: "md-danger" },
-                                            [_vm._v("Teminate")]
-                                          )
+                                          item.is_canceled == 0
+                                            ? _c(
+                                                "md-button",
+                                                {
+                                                  staticClass: "md-danger",
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.doTeminate(item.id)
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v("Teminate")]
+                                              )
+                                            : _c("div", [
+                                                _vm._v(_vm._s(item.expire_date))
+                                              ])
                                         ],
                                         1
                                       )
@@ -52392,7 +52546,8 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("purchased-table", {
-                            attrs: { data: _vm.dailyInfo }
+                            attrs: { data: _vm.dailyInfo },
+                            on: { "on-cancel": _vm.doCancel }
                           })
                         ],
                         1
@@ -52412,7 +52567,8 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("purchased-table", {
-                            attrs: { data: _vm.hourlyInfo }
+                            attrs: { data: _vm.hourlyInfo },
+                            on: { "on-event": _vm.doCancel }
                           })
                         ],
                         1
@@ -52421,6 +52577,42 @@ var render = function() {
                 ],
                 1
               )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "md-dialog",
+            {
+              attrs: {
+                "md-active": _vm.showDialog,
+                "md-click-outside-to-close": false
+              },
+              on: {
+                "update:mdActive": function($event) {
+                  _vm.showDialog = $event
+                }
+              }
+            },
+            [
+              _c(
+                "md-dialog-title",
+                { staticStyle: { "text-align": "center" } },
+                [_vm._v("Processing")]
+              ),
+              _vm._v(" "),
+              _c("md-content", [
+                _c(
+                  "div",
+                  { staticStyle: { "text-align": "center", padding: "20px" } },
+                  [
+                    _c("md-progress-spinner", {
+                      attrs: { "md-mode": "indeterminate" }
+                    })
+                  ],
+                  1
+                )
+              ])
             ],
             1
           )

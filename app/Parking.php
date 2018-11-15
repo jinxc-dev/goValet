@@ -26,7 +26,9 @@ class Parking extends Model
         'rate',
         'availability',
         'from_time',
-        'to_time'
+        'to_time',
+        's_prod_id',
+        's_plan_id'
         //'cancellation_charges'
     ];
 }

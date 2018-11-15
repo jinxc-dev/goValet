@@ -36,6 +36,8 @@ class CreateParkingsTable extends Migration
             $table->string('from_time')->nullable();
             $table->string('to_time')->nullable();
             $table->integer('cancellation_charges')->default(0);
+            $table->string('s_prod_id')->nullable();
+            $table->string('s_plan_id')->nullable();
             $table->timestamps();
         });
     }

@@ -50,6 +50,8 @@ Route::group(['prefix' => 'booking'], function () {
     Route::get('/purchased-info', 'BookingController@getPurchasedInfo');
     Route::get('/purchased-info/monthly', 'BookingController@getPurchasedMonthly');
     Route::get('/status/{id}', 'BookingController@getBookingByParkingId');
+    Route::post('/teminate', 'BookingController@setTeminateBooking');
+    Route::post('/cancel', 'BookingController@setCancelBooking');
 });
 
 Route::get('/country-list', function() {

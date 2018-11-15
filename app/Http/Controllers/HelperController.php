@@ -94,13 +94,25 @@ trait HelperController {
     public function getBookedSpots($p_id) {
         $parking_info = \App\Parking::where('id', $p_id)->first();
         //. monthly booking 
-        $query = \App\PurchasedDetail::where('parking_id', $p_id)
-                    ->where('is_canceled', 0);
+        $query = \App\PurchasedDetail::where('parking_id', $p_id);
+                    
+                    // ->where('is_canceled', 0);
 
         if ($parking_info->availability >= 4) {
-            $query->where('parking_date', '>=', date('Y-m-d'));
+            $query->where('is_canceled', 0)
+                  ->where('parking_date', '>=', date('Y-m-d'));
+        } else {
+            $query->where(function($q){
+                    $q->where('is_canceled', 0)
+                      ->orWhere('expire_date', '>', date('Y-m-d'));
+                });
         }
         $count = $query->groupBy('vehicle_id')->count();
         return $count;
+    }
+
+    static function getDiffHours($str_date1, $str_date2) {
+        $diff = date_diff(date_create($str_date1), date_create($str_date2));
+        return $diff->days * 24 + $diff->h;
     }
 }

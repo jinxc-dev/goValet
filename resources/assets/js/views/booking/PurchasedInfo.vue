@@ -27,8 +27,9 @@
                                     <md-table-cell md-label="Address">{{ item.parking.address }}</md-table-cell>
                                     <md-table-cell md-label="Type">{{ typeString[item.parking.availability] }}</md-table-cell>
                                     <md-table-cell md-label="Amount" class="td-name">$ {{ item.amount }}</md-table-cell>
-                                    <md-table-cell md-label="Action">
-                                        <md-button class="md-danger">Teminate</md-button>
+                                    <md-table-cell md-label="Action" style="width: 100px">
+                                        <md-button v-if="item.is_canceled==0" class="md-danger" @click="doTeminate(item.id)">Teminate</md-button>
+                                        <div v-else>{{item.expire_date}}</div>
                                     </md-table-cell>
                                 </md-table-row>
                             </md-table>
@@ -36,16 +37,27 @@
                         <md-divider></md-divider>
                         <div v-if="dailyInfo.length > 0">
                             <h2 class="md-display-1 text-center"> DAILY LIST</h2>
-                            <purchased-table :data="dailyInfo"></purchased-table>
+                            <purchased-table :data="dailyInfo" v-on:on-cancel="doCancel"></purchased-table>
                         </div>
 
                         <md-divider></md-divider>
                         <div v-if="hourlyInfo.length > 0">
                             <h2 class="md-display-1 text-center"> HOURLY LIST</h2>
-                            <purchased-table :data="hourlyInfo"></purchased-table>
+                            <purchased-table :data="hourlyInfo" v-on:on-event="doCancel"></purchased-table>
                         </div>
                     </md-card-content>
                 </md-card>
+
+                <md-dialog :md-active.sync="showDialog" :md-click-outside-to-close="false">
+                    <md-dialog-title style="text-align:center">Processing</md-dialog-title>
+                    <md-content>
+                        <div style="text-align:center; padding: 20px">
+                            <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+                        </div>
+                    </md-content>
+                </md-dialog>
+
+                
             </div>
         </div>
     </div>
@@ -61,6 +73,7 @@ export default {
             monthlyInfo: [],
             dailyInfo: [],
             hourlyInfo: [],
+            showDialog: false,
             typeString: {
                 2 : "24 hours",
                 3 : "Daylight hours only",
@@ -95,7 +108,116 @@ export default {
 	},
 
     methods: {
-        
+
+        getMonthly() {
+            axios.get("/api/booking/purchased-info/monthly")
+                .then(response => {                
+                    if (response.data.status) {
+                        this.monthlyInfo = response.data.data;
+                    }
+                });
+        },
+
+        getPurchased() {
+            axios.get("/api/booking/purchased-info?type=4")
+                .then(response => {                
+                    if (response.data.status) {
+                        this.dailyInfo = response.data.data;
+                    }
+                    console.log(this.dailyInfo);
+                });
+            axios.get("/api/booking/purchased-info?type=5")
+                .then(response => {                
+                    if (response.data.status) {
+                        this.hourlyInfo = response.data.data;
+                    }
+                    console.log(this.hourlyInfo);
+                });     
+        },
+
+        doTeminate(id) {
+            console.log(id);
+            this.$swal({
+				title: 'Are you sure?',
+				type: 'warning',
+				showCancelButton: true,				
+				confirmButtonClass: 'md-button md-success',
+				cancelButtonClass: 'md-button md-danger',
+				confirmButtonText: 'Yes, teminate it!',
+				buttonsStyling: false
+			}).then((result) => {
+				if (result.value) {
+                    this.showDialog = true;
+					axios.post('/api/booking/teminate', {id: id})
+						.then(response => {
+                            this.showDialog = false;
+                            var type = 'warning';
+                            var msg = response.data.message;
+							if (response.data.status) {
+                                type ='success';
+                                msg = "Your expire date is " + response.data.data.expire_date + "\n You paid $" + response.data.data.amount;
+								this.getMonthly();
+							} 
+							console.log(response);
+							this.$swal({
+								// position: 'top-end',
+								type: type,
+								title: msg,
+								showConfirmButton: false,
+								timer: 2000
+							});
+						}).catch(error => {
+                            this.showDialog = false;
+							console.log(error);
+						})
+				}
+			});
+        },
+        doCancel(id) {
+            this.$swal({
+				title: 'Are you sure?',
+				type: 'warning',
+				showCancelButton: true,				
+				confirmButtonClass: 'md-button md-success',
+				cancelButtonClass: 'md-button md-danger',
+				confirmButtonText: 'Yes',
+				buttonsStyling: false
+			}).then((result) => {
+                console.log(result);
+				if (result.value) {
+                    this.showDialog = true;
+					axios.post('/api/booking/cancel', {id: id})
+						.then(response => {
+                            this.showDialog = false;
+                            var type = 'warning';
+                            var msg = response.data.message;
+							if (response.data.status) {
+                                type ='success';
+                                msg = "Cancel Successed!";
+                                // msg = "Your expire date is " + response.data.data.expire_date + "\n You paid $" + response.data.data.amount;
+								this.getPurchased();
+							} 
+							this.$swal({
+								// position: 'top-end',
+								type: type,
+								title: msg,
+								showConfirmButton: false,
+								timer: 2000
+							});
+						}).catch(error => {
+                            this.showDialog = false;
+                            console.log(error);
+                            this.$swal({
+								// position: 'top-end',
+								type: 'warning',
+								title: 'Server error',
+								showConfirmButton: false,
+								timer: 2000
+							});
+						})
+				}
+			});
+        }
     }
 }
 </script>

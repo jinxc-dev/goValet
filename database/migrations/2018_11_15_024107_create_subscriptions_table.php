@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePurchasedDetails extends Migration
+class CreateSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,13 @@ class CreatePurchasedDetails extends Migration
      */
     public function up()
     {
-        Schema::create('purchased_details', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('parking_id');
-            $table->integer('vehicle_id');
-            $table->date('parking_date');
-            $table->string('transaction_id');
-            $table->float('amount')->default(0);
-            $table->boolean('is_canceled')->default(0);
-            $table->boolean('is_accepted')->nullable();
+            $table->string('s_cus_id'); //. stripe customer id
+            $table->string('s_sub_id'); //. stripe subscription id
+            $table->integer('is_used')->default(1);
             $table->string('expire_date')->nullable();
-            $table->integer('subscription_id')->default(0);
             $table->timestamps();
         });
     }
@@ -36,6 +31,6 @@ class CreatePurchasedDetails extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('subscriptions');
     }
 }

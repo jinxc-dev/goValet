@@ -7,6 +7,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\StripeProcess;
 
 class ParkingController extends Controller
 {
@@ -24,6 +25,18 @@ class ParkingController extends Controller
 
         $data = $request->all();
         $data['image'] = $this->saveImage("parking/{$user_id}", $request, 'image');
+
+        //. monthly parking
+        if ($request->availability < 4) {
+            $product = StripeProcess::createProduct($request->name);
+            $plan = StripeProcess::createPlan($product->id, $request->name, $request->rate);
+            $data['s_prod_id'] = $product->id;
+            $data['s_plan_id'] = $plan->id;
+        }
+
+
+        // return response()->json(['result' => $p_id]);
+
         $data['user_id'] = $user_id;
         $data['capacity'] = $request->parking_spots;
 

@@ -8,7 +8,7 @@ class PurchasedDetail extends Model
 {
 
     protected $fillable = [
-        'user_id', 'vehicle_id', 'parking_id', 'parking_date', 'transaction_id', 'amount'
+        'user_id', 'vehicle_id', 'parking_id', 'parking_date', 'transaction_id', 'amount', 'subscription_id'
     ];
 
     public function vehicle() {

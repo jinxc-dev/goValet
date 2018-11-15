@@ -7,13 +7,13 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\StripeProcess;
 
 class UserController extends Controller
 {
     use HelperController;
 
     public function login(Request $request) {
-
         $user = User::where('email', $request->email)->first();
         $isAuthed = false;
         if ($user){

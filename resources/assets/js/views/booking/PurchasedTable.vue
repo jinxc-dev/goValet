@@ -16,7 +16,7 @@
 			<md-table-cell md-label="Address">{{ item.parking.address }}</md-table-cell>
 			<md-table-cell md-label="Time">{{ item.parking.from_time }} ~ {{ item.parking.to_time }}</md-table-cell>
 			<md-table-cell md-label="Amount" class="td-name">$ {{ item.amount }}</md-table-cell>
-			<md-table-cell md-label="Action"><md-button class="md-info md-ripple">Cancel</md-button></md-table-cell>
+			<md-table-cell md-label="Action"><md-button class="md-info md-ripple" @click="doCancel(item.id)">Cancel</md-button></md-table-cell>
 		</md-table-row>
 	</md-table>
 </template>
@@ -27,6 +27,12 @@ export default {
 		data: {
 			type: Array,
 			default: []
+		}
+	},
+	methods: {
+		doCancel(id) {
+			this.$emit('on-cancel', id);
+			// console.log(id);
 		}
 	}
 };
