@@ -44,5 +44,11 @@
     }
 
 </script>
-<style>
+<style lang="scss" scoped>
+
+.profile-page .profile img {
+    width: 160px;
+	height: 160px;
+}
+
 </style>
