@@ -50,9 +50,12 @@
 								</div>
 							</div>
 							<div style="padding-left: 20px;">
-								<md-checkbox class="md-form-group" v-model="isAgree">
-									By checking, you agree to our <a href="/help/Terms and Conditions.pdf">Terms and Conditions</a>.
+								<md-checkbox class="md-form-group" v-model="isAgree" style="display: -webkit-inline-box;">
+									By checking, you agree to our 
 								</md-checkbox>
+								<div style="display:inline-flex;position: relative;">
+									<a href="/help/Terms and Conditions.pdf" target="_blank">Terms and Conditions.</a>
+								</div>
 							</div>
 						</md-card-content>
 						<md-card-actions>
@@ -77,12 +80,12 @@ export default {
 			isAgree: true,
 			image: '',
 			dataModel:{
-				first_name: 'Jin',
-				last_name: 'ZhenFeng',
-				email:'zxhdkdk@126.com',
-				password: 'rlawkdgur15814',
-				pw_confirm:'rlawkdgur15814',
-				phone:'0123456789',
+				first_name: '', //'Jin',
+				last_name: '', //'ZhenFeng',
+				email: '',//'zxhdkdk@126.com',
+				password: '',//'rlawkdgur15814',
+				pw_confirm: '',//'rlawkdgur15814',
+				phone: '', //'0123456789',
 				isHost: false,
 				avatar: ''
 			},

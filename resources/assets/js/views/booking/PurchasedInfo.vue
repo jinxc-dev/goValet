@@ -193,7 +193,7 @@ export default {
                             var msg = response.data.message;
 							if (response.data.status) {
                                 type ='success';
-                                msg = "Cancel Successed!";
+                                msg = "Cancellation Success!";
                                 // msg = "Your expire date is " + response.data.data.expire_date + "\n You paid $" + response.data.data.amount;
 								this.getPurchased();
 							} 

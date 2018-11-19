@@ -102,11 +102,11 @@ export default {
     data() {
         return {
             image: require("@/../images/image-empty.jpg"),
-            name: 'AAAAA',
+            name: '',
             t_name: '',
-            zip_code:'12345678',
-            state:'Phoenix',
-            city:'Hilleman Way',
+            zip_code:'',
+            state:'',
+            city:'',
             country: 'US',
             countryList: []
         }

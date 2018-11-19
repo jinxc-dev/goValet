@@ -73,8 +73,8 @@ export default {
 	},
 	data() {
 		return {
-			email:'zxhdkdk@126.com',// null,
-			password: 'rlawkdgur15814', // null,
+			email:'',// null,zxhdkdk@126.com
+			password: '', // null,rlawkdgur15814
 		    touched: {
 				email: false,
 				password: false

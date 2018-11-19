@@ -38518,8 +38518,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	data: function data() {
 		return {
-			email: 'zxhdkdk@126.com', // null,
-			password: 'rlawkdgur15814', // null,
+			email: '', // null,zxhdkdk@126.com
+			password: '', // null,rlawkdgur15814
 			touched: {
 				email: false,
 				password: false
@@ -44916,6 +44916,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	bodyClass: "register-page",
@@ -44924,12 +44927,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			isAgree: true,
 			image: '',
 			dataModel: {
-				first_name: 'Jin',
-				last_name: 'ZhenFeng',
-				email: 'zxhdkdk@126.com',
-				password: 'rlawkdgur15814',
-				pw_confirm: 'rlawkdgur15814',
-				phone: '0123456789',
+				first_name: '', //'Jin',
+				last_name: '', //'ZhenFeng',
+				email: '', //'zxhdkdk@126.com',
+				password: '', //'rlawkdgur15814',
+				pw_confirm: '', //'rlawkdgur15814',
+				phone: '', //'0123456789',
 				isHost: false,
 				avatar: ''
 			},
@@ -45235,6 +45238,7 @@ var render = function() {
                         "md-checkbox",
                         {
                           staticClass: "md-form-group",
+                          staticStyle: { display: "-webkit-inline-box" },
                           model: {
                             value: _vm.isAgree,
                             callback: function($$v) {
@@ -45245,16 +45249,30 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n\t\t\t\t\t\t\t\tBy checking, you agree to our "
-                          ),
+                            "\n\t\t\t\t\t\t\t\tBy checking, you agree to our \n\t\t\t\t\t\t\t"
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticStyle: {
+                            display: "inline-flex",
+                            position: "relative"
+                          }
+                        },
+                        [
                           _c(
                             "a",
                             {
-                              attrs: { href: "/help/Terms and Conditions.pdf" }
+                              attrs: {
+                                href: "/help/Terms and Conditions.pdf",
+                                target: "_blank"
+                              }
                             },
-                            [_vm._v("Terms and Conditions")]
-                          ),
-                          _vm._v(".\n\t\t\t\t\t\t\t")
+                            [_vm._v("Terms and Conditions.")]
+                          )
                         ]
                       )
                     ],
@@ -48283,9 +48301,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			image: '',
-			brand: 'Kia',
-			model: 'Rondo',
-			plate_number: 'BEZ2685',
+			brand: '',
+			model: '',
+			plate_number: '',
 			expire_date: new Date(),
 			photo: '',
 
@@ -49095,11 +49113,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             image: __webpack_require__(9),
-            name: 'AAAAA',
+            name: '',
             t_name: '',
-            zip_code: '12345678',
-            state: 'Phoenix',
-            city: 'Hilleman Way',
+            zip_code: '',
+            state: '',
+            city: '',
             country: 'US',
             countryList: []
         };
@@ -52065,7 +52083,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         var msg = response.data.message;
                         if (response.data.status) {
                             type = 'success';
-                            msg = "Cancel Successed!";
+                            msg = "Cancellation Success!";
                             // msg = "Your expire date is " + response.data.data.expire_date + "\n You paid $" + response.data.data.amount;
                             _this5.getPurchased();
                         }

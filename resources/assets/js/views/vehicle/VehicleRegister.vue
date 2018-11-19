@@ -105,9 +105,9 @@ export default {
 	data() {
 		return {
 			image: '',
-			brand: 'Kia',
-			model: 'Rondo',
-			plate_number: 'BEZ2685',
+			brand: '',
+			model: '',
+			plate_number: '',
 			expire_date: new Date(),
 			photo: '',
 
