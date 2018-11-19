@@ -82,10 +82,10 @@
 							<md-list-item to="/profile" v-if="isAuthed()">
 								<p>PROFILE</p>
 							</md-list-item>
-							<md-list-item to="/profile">
+							<md-list-item to="/">
 								<p>RATE GUIDE</p>
 							</md-list-item>
-							<md-list-item to="/profile">
+							<md-list-item to="/">
 								<p>ABOUT</p>
 							</md-list-item>
 							<md-list-item to="/login" v-if="!isAuthed()">
