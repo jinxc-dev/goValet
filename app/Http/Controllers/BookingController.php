@@ -23,8 +23,8 @@ class BookingController extends Controller
         }
         $token = $request->token;
 
-        // \Stripe\Stripe::setApiKey("sk_test_bNdusoN6ZkcByEUJK1OcRqx5");
-        \Stripe\Stripe::setApiKey("sk_live_wk3a64pOm7kNHH5jYPTj72dT");
+        \Stripe\Stripe::setApiKey("sk_test_bNdusoN6ZkcByEUJK1OcRqx5");
+
 
         
         $parkingInfo = Parking::where('id', $request->parking_id)->first();
