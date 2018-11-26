@@ -18,8 +18,7 @@ export default {
                 store.dispatch('setAuthStatus');
                 // store.dispatch('setPermission',response.permissions);
                 // store.dispatch('setDefaultRole',response.default_role);
-            } else {
-                
+            } else {                
                 store.dispatch('resetAuthUserDetail');
             }
 

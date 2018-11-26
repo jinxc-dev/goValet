@@ -30,7 +30,7 @@
             </div>
         </md-card-content>
         <md-card-actions>
-            <md-button class=" md-success">Update</md-button>
+            <md-button class=" md-success" to="/user_update">Update</md-button>
         </md-card-actions>
     </md-card>
 </template>

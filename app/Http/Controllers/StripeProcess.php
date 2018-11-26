@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 class StripeProcess {
-    private static $key = "sk_test_bNdusoN6ZkcByEUJK1OcRqx5";
+    // private static $key = "sk_test_bNdusoN6ZkcByEUJK1OcRqx5";
+
+    private static $key = "sk_live_wk3a64pOm7kNHH5jYPTj72dT";
 
     /**
      * product & plan managememnt (create, delete)

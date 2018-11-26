@@ -23,7 +23,10 @@ class BookingController extends Controller
         }
         $token = $request->token;
 
-        \Stripe\Stripe::setApiKey("sk_test_bNdusoN6ZkcByEUJK1OcRqx5");
+        // \Stripe\Stripe::setApiKey("sk_test_bNdusoN6ZkcByEUJK1OcRqx5");
+        \Stripe\Stripe::setApiKey("sk_live_wk3a64pOm7kNHH5jYPTj72dT");
+
+        
         $parkingInfo = Parking::where('id', $request->parking_id)->first();
         $host = User::where('id', $parkingInfo->user_id)->first();
         $user = User::where('id', $user_id)->first();
@@ -154,9 +157,9 @@ class BookingController extends Controller
     }
 
     /**
-     * cancel or teminate process
+     * cancel or terminate process
      */
-    public function setTeminateBooking(Request $request) {
+    public function setTerminateBooking(Request $request) {
         $user_id = $this->getAuthUserId($request);
         if ($user_id == 0) {
             return response()->json(['status' => false, 'message' => "User is not Authed"]);

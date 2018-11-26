@@ -45,7 +45,7 @@
 										<h6 class="description">Choose Picture</h6>
 									</div>
 									<div class="text-center">
-										<md-checkbox v-model="dataModel.isHost" value="1">I would like to host</md-checkbox>
+										<md-checkbox v-model="dataModel.isHost" value="1" name="type">I would like to host</md-checkbox>
 									</div>
 								</div>
 							</div>

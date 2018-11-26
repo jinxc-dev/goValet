@@ -89,5 +89,43 @@ class UserController extends Controller
         return response()->json(['status' => true, 'message' => 'Reset link sent your email address.']);
     }
 
+    public function update(Request $request) {
+        $user_id = $this->getAuthUserId($request);
+        
+        if ($user_id == 0) {
+            return response()->json(['status' => false, 'message' => "User is not Authed"]);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $isAuthed = false;
+        if ($user){
+            if (Hash::check($request->password, $user->password)) {
+                $isAuthed = true;
+            }
+        }
+        
+        if ($isAuthed) {
+            $avatar = $request->avatarName;
+            if($request->hasfile('avatar')) {
+                $this->deleteImage($avatar);
+                $avatar = $this->saveImage('avatars', $request, 'avatar');
+            } 
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->avatar = $avatar;
+            if ($request->new_password != "") {
+                $user->password = Hash::make($request->new_password);
+            }
+            $user->type = $request->type;
+            $user->save();
+            return response()->json(['status' => true, 'data' => "Update Success"]);
+        } else {
+            return response()->json(['status' => false, 'message' => "User is not Authed"]);
+        }
+
+
+    }
+
+
 
 }

@@ -5,12 +5,16 @@
 
 			<div class="context-home">
 				<div class="md-layout">
-					<div class="md-layout-item md-size-40">
+					<div class="md-layout-item md-size-20">
 						<!-- <h1 class="home-title">Welcome to</h1>
 						<h1 class="gv-title">GOVALET</h1> -->
 					</div>	
 					<div class="md-layout-item md-size-60 booking-item" @click="searchParking">
 						<img :src="itemsImg"/>
+					</div>
+					<div class="md-layout-item md-size-20">
+						<!-- <h1 class="home-title">Welcome to</h1>
+						<h1 class="gv-title">GOVALET</h1> -->
 					</div>
 				</div>
 
@@ -41,7 +45,7 @@ export default {
 	padding: 0;
 }
 .context-home {
-	margin-top: -250px;
+	// margin-top: -250px;
 
 	padding-right: 15px;
     padding-left: 15px;
@@ -53,14 +57,14 @@ export default {
     position: relative;
 }
 .home-title {
-	color: #ffffff;
+	color: #70706E;
 	font-weight: bolder;
 	font-size: 72px;
 	// font-style: italic;
 }
 
 .gv-title {
-	color: #ffffff;
+	color: #70706E;
     font-weight: bolder;
     font-size: 80px;
     text-shadow: 5px 2px 5px #ad7d7d; 

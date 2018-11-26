@@ -28,7 +28,7 @@
                                     <md-table-cell md-label="Type">{{ typeString[item.parking.availability] }}</md-table-cell>
                                     <md-table-cell md-label="Amount" class="td-name">$ {{ item.amount }}</md-table-cell>
                                     <md-table-cell md-label="Action" style="width: 100px">
-                                        <md-button v-if="item.is_canceled==0" class="md-danger" @click="doTeminate(item.id)">Teminate</md-button>
+                                        <md-button v-if="item.is_canceled==0" class="md-danger" @click="doTerminate(item.id)">Terminate</md-button>
                                         <div v-else>{{item.expire_date}}</div>
                                     </md-table-cell>
                                 </md-table-row>
@@ -135,7 +135,7 @@ export default {
                 });     
         },
 
-        doTeminate(id) {
+        doTerminate(id) {
             console.log(id);
             this.$swal({
 				title: 'Are you sure?',
@@ -143,12 +143,12 @@ export default {
 				showCancelButton: true,				
 				confirmButtonClass: 'md-button md-success',
 				cancelButtonClass: 'md-button md-danger',
-				confirmButtonText: 'Yes, teminate it!',
+				confirmButtonText: 'Yes, terminate it!',
 				buttonsStyling: false
 			}).then((result) => {
 				if (result.value) {
                     this.showDialog = true;
-					axios.post('/api/booking/teminate', {id: id})
+					axios.post('/api/booking/terminate', {id: id})
 						.then(response => {
                             this.showDialog = false;
                             var type = 'warning';

@@ -150,7 +150,7 @@
                                     </div>
                                     <card class="stripe-card"
                                         :class="{complete}"
-                                        stripe="pk_test_ynUTEJ283sxZWedZ64yu8yrn"
+                                        stripe="pk_live_RXliVvIidI5RopSUyuTZ4BFG"
                                         :options='stripeOptions'
                                         @chanage='complete = $event.complete'/>
                           
@@ -372,8 +372,8 @@ export default {
             for (var i = 0; i < data.length; i++) {
                 var tmp = {};                
                 tmp.position = {
-                    lat: data[i].latitude,
-                    lng: data[i].longitude
+                    lat: parseFloat(data[i].latitude),
+                    lng: parseFloat(data[i].longitude)
                 }
                 tmp.id = data[i].id;
                 this.markers.push(tmp);

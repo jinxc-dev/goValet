@@ -13,6 +13,7 @@ import Home from './views/Home.vue';
 import SearchParking from "./views/booking/SearchParking";
 import PurchasedInfo from "./views/booking/PurchasedInfo";
 import ParkingDetail from "./views/parking/ParkingDetail";
+import UpdateUserProfile from "./views/profile/UpdateUserProfile";
 
 Vue.use(Router);
 
@@ -29,9 +30,9 @@ const router = new Router({
 			components: { default: SignUp, header: MainNavbar, footer: MainFooter },
 		},
 		{
-			path: "/signup",
-			name: "signup",
-			components: { default: SignUp, header: MainNavbar, footer: MainFooter },
+			path: "/user_update",
+			name: "Update",
+			components: { default: UpdateUserProfile, header: MainNavbar, footer: MainFooter },
 		},
 		{
 			path: "/login",

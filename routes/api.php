@@ -22,7 +22,8 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('/register','UserController@register');
     Route::post('/login','UserController@login');
     Route::post('/check','UserController@check');
-    Route::post('/logout','UserController@logout');       
+    Route::post('/logout','UserController@logout');
+    Route::post('/update','UserController@update');       
     Route::get('/activate/{token}','AuthController@activate');
     Route::post('/password','AuthController@password');
     Route::post('/validate-password-reset','AuthController@validatePasswordReset');
@@ -50,7 +51,7 @@ Route::group(['prefix' => 'booking'], function () {
     Route::get('/purchased-info', 'BookingController@getPurchasedInfo');
     Route::get('/purchased-info/monthly', 'BookingController@getPurchasedMonthly');
     Route::get('/status/{id}', 'BookingController@getBookingByParkingId');
-    Route::post('/teminate', 'BookingController@setTeminateBooking');
+    Route::post('/terminate', 'BookingController@setTerminateBooking');
     Route::post('/cancel', 'BookingController@setCancelBooking');
 });
 
